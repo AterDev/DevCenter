@@ -1,4 +1,5 @@
-﻿using Share.Models.AuthDtos;
+﻿using Http.Application.Services;
+using Share.Models.AuthDtos;
 
 namespace Http.API.Controllers;
 
@@ -33,7 +34,10 @@ public class AuthController : ControllerBase
         //var user = _store.Db.Where(u => u.UserName.Equals(dto.UserName))
         //    .Include(u => u.Roles)
         //    .FirstOrDefault();
-        if (user == null) return NotFound("不存在该用户");
+        if (user == null)
+        {
+            return NotFound("不存在该用户");
+        }
 
         if (HashCrypto.Validate(dto.Password, user.PasswordSalt, user.PasswordHash))
         {

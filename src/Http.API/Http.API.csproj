@@ -4,7 +4,6 @@
 		<AssemblyName>Http.API</AssemblyName>
 		<RootNamespace>Http.API</RootNamespace>
 		<Nullable>enable</Nullable>
-		<UserSecretsId>94802c6f-ec5e-41f2-9c61-0403ff5ab431</UserSecretsId>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -14,6 +13,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 		<DockerfileContext>..\..</DockerfileContext>
+		<UserSecretsId>398c08b7-8501-459c-b761-76eb7887678b</UserSecretsId>
 	</PropertyGroup>
 
 	<ItemGroup>

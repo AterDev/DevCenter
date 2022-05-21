@@ -29,7 +29,7 @@ public static class StringExtension
                     builder.Append('-');
                 }
             }
-            else if (item == '_' || item == ' ')
+            else if (item is '_' or ' ')
             {
                 builder.Append('-');
             }

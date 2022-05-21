@@ -7,7 +7,7 @@ namespace Core.Utils;
 /// </summary>
 public class HashCrypto
 {
-    private readonly static RandomNumberGenerator Rng = RandomNumberGenerator.Create();
+    private static readonly RandomNumberGenerator Rng = RandomNumberGenerator.Create();
     public static string Create(string value, string salt)
     {
         var encrpty = new Rfc2898DeriveBytes(value, Encoding.UTF8.GetBytes(salt), 100, HashAlgorithmName.SHA512);

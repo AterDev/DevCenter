@@ -1,7 +1,8 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using Http.Application.Services;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-namespace Http.API.Middleware;
+namespace Http.API.Middlewares;
 
 public class JwtMiddleware
 {
