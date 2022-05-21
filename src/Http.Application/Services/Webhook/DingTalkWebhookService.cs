@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Core.Utils;
+using Microsoft.Extensions.Configuration;
 using Share.Models.Webhook.DingTalk;
 using Share.Models.Webhook.GitLab;
 using System.Net.Http.Json;
@@ -28,7 +29,6 @@ namespace Http.Application.Services.Webhook
             {
 
             }
-
         }
 
         public async Task TestAsync()
@@ -41,14 +41,15 @@ namespace Http.Application.Services.Webhook
                 ProjectName = "项目名称",
                 Url = "http://219.147.85.131:9080/testing-room/admin",
                 FinishTime = DateTime.Now,
-                Status = "成功"
+                Status = "success"
             };
-            var content = "- 提交人:" + pipeLineInfo.CommitUserName;
-            content += "- 提交内容:" + pipeLineInfo.CommitContent;
-            content += "- 完成时间:" + pipeLineInfo.FinishTime?.ToString("yyyy-MM-dd HH:mm:ss");
-            content += "- 耗时:*" + pipeLineInfo.Duration + "*秒";
-            content += $@"[查看详情]({pipeLineInfo.Url})";
-            var title = pipeLineInfo.ProjectName + " 构建" + pipeLineInfo.Status;
+            var title = pipeLineInfo.GetTitle();
+            var content = $"## {title}" + Environment.NewLine;
+            content += "- 提交人: " + pipeLineInfo.CommitUserName + Environment.NewLine;
+            content += "- 提交内容: " + pipeLineInfo.CommitContent + Environment.NewLine;
+            content += "- 完成时间: " + pipeLineInfo.FinishTime?.ToString("yyyy-MM-dd HH:mm:ss") + Environment.NewLine;
+            content += "- 耗时: **" + pipeLineInfo.Duration + "**秒" + Environment.NewLine;
+            content += $@"## [查看详情]({pipeLineInfo.Url})" + Environment.NewLine;
             var msg = new MarkdownMessage
             {
                 MarkdownText = new MarkdownText(title, content)
@@ -57,15 +58,29 @@ namespace Http.Application.Services.Webhook
 
         }
 
+        /// <summary>
+        /// 发送通知
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         protected async Task PostNotifyAsync(object data)
         {
+            var timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            var sign = HashCrypto.HMACSHA256(Secret, timestamp.ToString() + "\n" + Secret);
+            sign = WebUtility.UrlEncode(sign);
             var content = JsonContent.Create(data);
+            Url += $"&timestamp={timestamp}&sign={sign}";
             var response = await HttpClient.PostAsync(Url, content);
             if (response.IsSuccessStatusCode)
             {
-                await response.Content.ReadAsStringAsync();
+                var res = await response.Content.ReadAsStringAsync();
+
+                // {"errcode":0,"errmsg":"ok"}
+
             }
         }
+
+
     }
 
 }

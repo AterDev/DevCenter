@@ -1,4 +1,5 @@
 ﻿using Http.Application.Services;
+using Microsoft.AspNetCore.Authorization;
 using Share.Models.AuthDtos;
 
 namespace Http.API.Controllers;
@@ -8,6 +9,7 @@ namespace Http.API.Controllers;
 /// </summary>
 [Route("api/[controller]")]
 [ApiController]
+//[Authorize]
 public class AuthController : ControllerBase
 {
     //private readonly UserDataStore _store;
@@ -84,4 +86,6 @@ public class AuthController : ControllerBase
         //await _redis.Cache.RemoveAsync(id.ToString());
         return true;
     }
+
+
 }

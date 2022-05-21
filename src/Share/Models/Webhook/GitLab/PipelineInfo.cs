@@ -9,4 +9,17 @@ public class PipelineInfo
     public long? Duration { get; set; }
     public DateTimeOffset? FinishTime { get; set; }
     public string? Status { get; set; }
+
+    public string GetTitle()
+    {
+        var res = ProjectName + " 构建 ";
+        if (Status == "success")
+        {
+            return "✔" + res + "成功";
+        }
+        else
+        {
+            return "❌" + res + Status;
+        }
+    }
 }

@@ -1,4 +1,5 @@
 using Http.Application.Services;
+using Http.Application.Services.Webhook;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -15,6 +16,7 @@ services.AddDbContextPool<ContextBase>(option =>
     option.UseNpgsql(connectionString, sql => { sql.MigrationsAssembly("EntityFramework.Migrator"); });
 });
 
+
 // redis
 //builder.Services.AddStackExchangeRedisCache(options =>
 //{
@@ -23,7 +25,8 @@ services.AddDbContextPool<ContextBase>(option =>
 //});
 //services.AddSingleton(typeof(RedisService));
 
-services.AddScoped(typeof(FileService));
+services.AddSingleton(typeof(DingTalkWebhookService));
+//services.AddScoped(typeof(FileService));
 
 #region 接口相关内容:jwt/授权/cors
 // use jwt
