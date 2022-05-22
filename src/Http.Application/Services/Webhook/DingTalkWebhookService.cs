@@ -23,11 +23,22 @@ namespace Http.Application.Services.Webhook
             HttpClient.Timeout = TimeSpan.FromSeconds(5);
         }
 
-        public void SendPipelineNotify(PipelineInfo? pipelineInfo)
+        public async Task SendPipelineNotifyAsync(PipelineInfo? pipelineInfo)
         {
             if (pipelineInfo != null)
             {
-
+                var title = pipelineInfo.GetTitle();
+                var content = $"## {title}" + Environment.NewLine;
+                content += "- 提交人: " + pipelineInfo.CommitUserName + Environment.NewLine;
+                content += "- 提交内容: " + pipelineInfo.CommitContent + Environment.NewLine;
+                content += "- 提交时间: " + pipelineInfo.FinishTime?.ToString("yyyy-MM-dd HH:mm:ss") + Environment.NewLine;
+                content += "- 耗时: **" + pipelineInfo.Duration + "**秒" + Environment.NewLine;
+                content += $@"## [查看详情]({pipelineInfo.Url})" + Environment.NewLine;
+                var msg = new MarkdownMessage
+                {
+                    MarkdownText = new MarkdownText(title, content)
+                };
+                await PostNotifyAsync(msg);
             }
         }
 
@@ -73,10 +84,9 @@ namespace Http.Application.Services.Webhook
             var response = await HttpClient.PostAsync(Url, content);
             if (response.IsSuccessStatusCode)
             {
-                var res = await response.Content.ReadAsStringAsync();
-
+                _ = await response.Content.ReadAsStringAsync();
+                // TODO: 结果处理
                 // {"errcode":0,"errmsg":"ok"}
-
             }
         }
 

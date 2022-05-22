@@ -42,10 +42,10 @@ public partial class Build
     public string? CreatedAt { get; set; }
 
     [JsonPropertyName("started_at")]
-    public DateTimeOffset StartedAt { get; set; }
+    public string? StartedAt { get; set; }
 
     [JsonPropertyName("finished_at")]
-    public DateTimeOffset FinishedAt { get; set; }
+    public string? FinishedAt { get; set; }
 
     [JsonPropertyName("duration")]
     public double Duration { get; set; }
@@ -183,10 +183,10 @@ public partial class ObjectAttributes
     public List<string>? Stages { get; set; }
 
     [JsonPropertyName("created_at")]
-    public DateTimeOffset CreatedAt { get; set; }
+    public string? CreatedAt { get; set; }
 
     [JsonPropertyName("finished_at")]
-    public DateTimeOffset FinishedAt { get; set; }
+    public string? FinishedAt { get; set; }
 
     [JsonPropertyName("duration")]
     public long Duration { get; set; }

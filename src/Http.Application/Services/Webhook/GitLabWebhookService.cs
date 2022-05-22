@@ -23,7 +23,7 @@ public class GitLabWebhookService
             CommitContent = request.Commit?.Title,
             CommitUserName = request.Commit?.Author?.Name,
             Duration = request.ObjectAttributes?.Duration,
-            FinishTime = request.ObjectAttributes?.FinishedAt,
+            FinishTime = request.Commit?.Timestamp,
             ProjectName = request.Project?.Name,
             Url = request.Project?.WebUrl + "/-/pipelines/" + request.ObjectAttributes?.Id,
             Status = status

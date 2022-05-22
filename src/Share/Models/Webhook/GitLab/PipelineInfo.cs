@@ -15,11 +15,11 @@ public class PipelineInfo
         var res = ProjectName + " 构建 ";
         if (Status == "success")
         {
-            return "✔" + res + "成功";
+            return "👍 " + res + "成功";
         }
         else
         {
-            return "❌" + res + Status;
+            return "❗ " + res + Status;
         }
     }
 }

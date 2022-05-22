@@ -24,8 +24,9 @@ services.AddDbContextPool<ContextBase>(option =>
 //    options.InstanceName = builder.Configuration.GetConnectionString("RedisInstanceName");
 //});
 //services.AddSingleton(typeof(RedisService));
-
+services.AddSingleton(typeof(GitLabWebhookService));
 services.AddSingleton(typeof(DingTalkWebhookService));
+
 //services.AddScoped(typeof(FileService));
 
 #region 接口相关内容:jwt/授权/cors
