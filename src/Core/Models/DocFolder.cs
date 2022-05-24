@@ -1,7 +1,7 @@
 ﻿namespace Core.Models
 {
     /// <summary>
-    /// 文件夹
+    /// 文档目录
     /// </summary>
     public class DocFolder : EntityBase
     {

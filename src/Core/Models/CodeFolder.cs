@@ -1,7 +1,7 @@
 ﻿namespace Core.Models
 {
     /// <summary>
-    /// 文件夹
+    /// 代码目录
     /// </summary>
     public class CodeFolder : EntityBase
     {
