@@ -9,8 +9,6 @@ public class ContextBase : DbContext
     public DbSet<ConfigOption> ConfigOptions { get; set; } = null!;
     public DbSet<DocFolder> DocFolders { get; set; } = null!;
     public DbSet<Document> Documents { get; set; } = null!;
-    public DbSet<Navigation> Navigations { get; set; } = null!;
-    public DbSet<NavigationGroup> NavigationGroups { get; set; } = null!;
     public DbSet<Permission> Permissions { get; set; } = null!;
     public DbSet<RolePermission> RolePermissions { get; set; } = null!;
     public DbSet<SecretInfo> SecretInfos { get; set; } = null!;
