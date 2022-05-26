@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Security.Cryptography;
 
 namespace Core.Utils;
@@ -29,7 +28,11 @@ public class HashCrypto
         return Convert.ToBase64String(valueBytes);
     }
 
-    public static bool Validate(string value, string salt, string hash) => GeneratePwd(value, salt) == hash;
+    public static bool Validate(string value, string salt, string hash)
+    {
+        return GeneratePwd(value, salt) == hash;
+    }
+
     public static string BuildSalt()
     {
         var randomBytes = new byte[128 / 8];

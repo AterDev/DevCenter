@@ -8,7 +8,7 @@
         [MaxLength(60)]
         public string Name { get; set; } = default!;
 
-        public OptionType Type { get; set; } = OptionType.Default;
+        public ValueType Type { get; set; } = ValueType.Default;
         [MaxLength(20)]
         public string? DisplayValue { get; set; }
         [MaxLength(100)]

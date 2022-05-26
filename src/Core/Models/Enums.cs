@@ -19,9 +19,15 @@ public enum NavigationType
     Inner
 }
 
-public enum OptionType
+public enum ValueType
 {
-    Default
+    Default,
+    String,
+    Long,
+    Boolean,
+    Double,
+    Datetime,
+    Json
 }
 public enum SecretType
 {

@@ -82,11 +82,7 @@ public static class StringExtension
     }
     public static string ToUpperFirst(this string str)
     {
-        if (string.IsNullOrWhiteSpace(str))
-        {
-            return string.Empty;
-        }
-        return char.ToUpper(str[0]) + str[1..];
+        return string.IsNullOrWhiteSpace(str) ? string.Empty : char.ToUpper(str[0]) + str[1..];
     }
 
     /// <summary>
