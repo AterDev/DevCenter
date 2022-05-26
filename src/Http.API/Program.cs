@@ -1,4 +1,3 @@
-using Http.Application.Services;
 using Http.Application.Services.Webhook;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;

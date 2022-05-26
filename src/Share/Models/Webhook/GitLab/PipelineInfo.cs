@@ -13,13 +13,6 @@ public class PipelineInfo
     public string GetTitle()
     {
         var res = ProjectName + " 构建 ";
-        if (Status == "success")
-        {
-            return "👍 " + res + "成功";
-        }
-        else
-        {
-            return "❗ " + res + Status;
-        }
+        return Status == "success" ? "👍 " + res + "成功" : "❗ " + res + Status;
     }
 }

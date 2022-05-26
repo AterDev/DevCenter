@@ -7,10 +7,7 @@ namespace Http.Application.Services;
 /// </summary>
 public class RedisService
 {
-    public IDistributedCache Cache
-    {
-        get { return _cache; }
-    }
+    public IDistributedCache Cache => _cache;
 
     private readonly IDistributedCache _cache;
     public RedisService(IDistributedCache cache)

@@ -33,7 +33,11 @@ public class WebHookNotifyController : ControllerBase
             if (secret.FirstOrDefault()!.Equals("genars.gitlab"))
             {
                 var req = _gitLab.GetPipeLineInfo(request);
-                if (req == null) return Ok();
+                if (req == null)
+                {
+                    return Ok();
+                }
+
                 await _webhookService.SendPipelineNotifyAsync(req);
                 return Ok();
             }

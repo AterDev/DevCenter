@@ -1,8 +1,8 @@
-﻿using Core.Utils;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Share.Models.Webhook.DingTalk;
 using Share.Models.Webhook.GitLab;
 using System.Net.Http.Json;
+using Environment = System.Environment;
 
 namespace Http.Application.Services.Webhook
 {

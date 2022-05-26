@@ -1,5 +1,4 @@
-﻿using Http.Application.Services;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace Http.API.Middlewares;
