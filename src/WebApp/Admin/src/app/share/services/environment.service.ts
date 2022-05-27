@@ -1,0 +1,61 @@
+import { Injectable } from '@angular/core';
+import { BaseService } from './base.service';
+import { Observable } from 'rxjs';
+import { EnvironmentFilterDto } from '../models/environment/environment-filter-dto.model';
+import { EnvironmentAddDto } from '../models/environment/environment-add-dto.model';
+import { EnvironmentUpdateDto } from '../models/environment/environment-update-dto.model';
+import { PageResultOfEnvironmentItemDto } from '../models/environment/page-result-of-environment-item-dto.model';
+import { Environment } from '../models/environment/environment.model';
+
+/**
+ * 环境
+ */
+@Injectable({ providedIn: 'root' })
+export class EnvironmentService extends BaseService {
+  /**
+   * 分页筛选
+   * @param data EnvironmentFilterDto
+   */
+  filter(data: EnvironmentFilterDto): Observable<PageResultOfEnvironmentItemDto> {
+    const url = `/api/Environment/filter`;
+    return this.request<PageResultOfEnvironmentItemDto>('post', url, data);
+  }
+
+  /**
+   * 添加
+   * @param data EnvironmentAddDto
+   */
+  add(data: EnvironmentAddDto): Observable<Environment> {
+    const url = `/api/Environment`;
+    return this.request<Environment>('post', url, data);
+  }
+
+  /**
+   * ⚠更新
+   * @param id string
+   * @param data EnvironmentUpdateDto
+   */
+  update(id: string, data: EnvironmentUpdateDto): Observable<Environment> {
+    const url = `/api/Environment/${id}`;
+    return this.request<Environment>('put', url, data);
+  }
+
+  /**
+   * ⚠删除
+   * @param id string
+   */
+  delete(id: string): Observable<boolean> {
+    const url = `/api/Environment/${id}`;
+    return this.request<boolean>('delete', url);
+  }
+
+  /**
+   * 详情
+   * @param id string
+   */
+  getDetail(id: string): Observable<Environment> {
+    const url = `/api/Environment/${id}`;
+    return this.request<Environment>('get', url);
+  }
+
+}

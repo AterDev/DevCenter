@@ -1,0 +1,44 @@
+<mat-toolbar fxLayoutGap="4px">
+  <button color="basic" mat-icon-button matTooltip="返回" (click)="back()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <button color="primary" mat-icon-button matTooltip="编辑" (click)="edit()">
+    <mat-icon>edit</mat-icon>
+  </button>
+</mat-toolbar>
+<div *ngIf="!isLoading" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="8px">
+  <mat-card class="" style="width: 100%;">
+    <!-- <mat-card-header>
+      <div mat-card-avatar class=""></div>
+      <mat-card-title></mat-card-title>
+      <mat-card-subtitle></mat-card-subtitle>
+    </mat-card-header> -->
+    <!-- <img mat-card-image src="" alt=""> -->
+    <mat-card-content>
+      <p>UserName: <span class="text-primary">{{data.userName}}</span></p>
+      <p>RealName: <span class="text-primary">{{data.realName}}</span></p>
+      <p>Position: <span class="text-primary">{{data.position}}</span></p>
+      <p>Email: <span class="text-primary">{{data.email}}</span></p>
+      <p>EmailConfirmed: <span class="text-primary">{{data.emailConfirmed}}</span></p>
+      <p>PhoneNumber: <span class="text-primary">{{data.phoneNumber}}</span></p>
+      <p>PhoneNumberConfirmed: <span class="text-primary">{{data.phoneNumberConfirmed}}</span></p>
+      <p>TwoFactorEnabled: <span class="text-primary">{{data.twoFactorEnabled}}</span></p>
+      <p>LockoutEnd: <span class="text-primary">{{data.lockoutEnd}}</span></p>
+      <p>LockoutEnabled: <span class="text-primary">{{data.lockoutEnabled}}</span></p>
+      <p>AccessFailedCount: <span class="text-primary">{{data.accessFailedCount}}</span></p>
+      <p>LastLoginTime: <span class="text-primary">{{data.lastLoginTime}}</span></p>
+      <p>RetryCount: <span class="text-primary">{{data.retryCount}}</span></p>
+      <p>IsDeleted: <span class="text-primary">{{data.isDeleted}}</span></p>
+      <p>Avatar: <span class="text-primary">{{data.avatar}}</span></p>
+      <p>Id: <span class="text-primary">{{data.id}}</span></p>
+      <p>Status: <span class="text-primary">{{data.status}}</span></p>
+      <p>CreatedTime: <span class="text-primary">{{data.createdTime}}</span></p>
+      <p>UpdatedTime: <span class="text-primary">{{data.updatedTime}}</span></p>
+
+    </mat-card-content>
+    <mat-card-actions>
+      <!-- <button mat-button></button>
+      <button mat-button></button> -->
+    </mat-card-actions>
+  </mat-card>
+</div>

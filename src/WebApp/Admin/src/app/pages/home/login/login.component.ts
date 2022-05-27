@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 // import { OAuthService, OAuthErrorEvent, UserInfo } from 'angular-oauth2-oidc';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/share/services/auth.service';
+import { LoginService } from 'src/app/auth/login.service';
+import { LoginDto } from 'src/app/share/models/auth/login-dto.model';
 
 @Component({
   selector: 'app-login',
@@ -10,7 +13,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 })
 export class LoginComponent implements OnInit {
   public loginForm!: FormGroup; constructor(
-    // private oauthService: OAuthService,
+    private authService: AuthService,
+    private loginService: LoginService,
     private router: Router
 
   ) {
@@ -18,27 +22,6 @@ export class LoginComponent implements OnInit {
   get email() { return this.loginForm.get('email'); }
   get password() { return this.loginForm.get('password'); }
   ngOnInit(): void {
-    // const token = this.oauthService.getAccessToken();
-    // const cliams = this.oauthService.getIdentityClaims();
-    // if (token && cliams) {
-    //   this.router.navigateByUrl('/index');
-    // }
-
-    // this.oauthService.events.subscribe(event => {
-    //   if (event instanceof OAuthErrorEvent) {
-    //     // TODO:处理错误
-    //     console.error(event);
-    //   } else {
-    //     if (event.type === 'token_received' || event.type === 'token_refreshed') {
-    //       this.oauthService.loadUserProfile()
-    //         .then(() => {
-    //           this.router.navigateByUrl('/index');
-    //         });
-    //     }
-    //   }
-    // });
-    console.log('asdas');
-
     this.loginForm = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(50)])
@@ -65,7 +48,11 @@ export class LoginComponent implements OnInit {
     return '';
   }
   doLogin(): void {
-
+    let data = this.loginForm.value;
+    this.authService.login({userName:data.email,password:data.password})
+      .subscribe(res => {
+        console.log(res);
+      });
   }
 
   logout(): void {

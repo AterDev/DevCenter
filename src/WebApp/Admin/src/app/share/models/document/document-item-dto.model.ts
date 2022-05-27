@@ -1,0 +1,26 @@
+import { Status } from '../enum/status.model';
+/**
+ * 文档管理
+ */
+export interface DocumentItemDto {
+  /**
+   * 文件名
+   */
+  fileName: string;
+  /**
+   * 文件类型
+   */
+  ext: string;
+  /**
+   * 文件路径
+   */
+  filePath: string;
+  id: string;
+  /**
+   * 状态
+   */
+  status?: Status;
+  createdTime: Date;
+  updatedTime: Date;
+
+}
