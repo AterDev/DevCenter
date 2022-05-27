@@ -7,19 +7,19 @@ namespace Http.API.Controllers;
 /// </summary>
 [Route("api/[controller]")]
 [ApiController]
-//[Authorize]
 public class AuthController : ControllerBase
 {
-    //private readonly UserDataStore _store;
+    private readonly UserDataStore _store;
     private readonly IConfiguration _config;
-    private readonly RedisService _redis;
-    public AuthController(
-        //UserDataStore userDataStore, 
-        IConfiguration config, RedisService redis)
+    //private readonly RedisService _redis;
+    public AuthController(UserDataStore userDataStore,
+                          IConfiguration config
+                          //RedisService redis
+        )
     {
-        //_store = userDataStore;
+        _store = userDataStore;
         _config = config;
-        _redis = redis;
+        //_redis = redis;
     }
 
     /// <summary>
@@ -30,10 +30,10 @@ public class AuthController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<AuthResult>> LoginAsync(LoginDto dto)
     {
-        var user = new User();
-        //var user = _store.Db.Where(u => u.UserName.Equals(dto.UserName))
-        //    .Include(u => u.Roles)
-        //    .FirstOrDefault();
+        var user = await _store.Db.Where(u => u.UserName.Equals(dto.UserName)
+            || u.Email.Equals(dto.UserName))
+            .Include(u => u.Roles)
+            .FirstOrDefaultAsync();
         if (user == null)
         {
             return NotFound("不存在该用户");
@@ -46,7 +46,6 @@ public class AuthController : ControllerBase
             var audience = _config.GetSection("Jwt")["Audience"];
 
             var role = user.Roles?.FirstOrDefault();
-
             var time = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
             //1天后过期
             var jwt = new JwtService(sign, audience, issuer)
@@ -55,7 +54,7 @@ public class AuthController : ControllerBase
             };
             var token = jwt.GetToken(user.Id.ToString(), role?.Name ?? "");
             // 登录状态存储到Redis
-            await _redis.SetValueAsync("login" + user.Id.ToString(), true, 60 * 24 * 7);
+            //await _redis.SetValueAsync("login" + user.Id.ToString(), true, 60 * 24 * 7);
 
             return new AuthResult
             {

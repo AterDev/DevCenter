@@ -4,8 +4,12 @@ using Share.Models.Webhook.GitLab;
 
 namespace Http.API.Controllers;
 
+/// <summary>
+/// WebHook Notify
+/// </summary>
 [Route("api/[controller]")]
 [ApiController]
+[ApiExplorerSettings(IgnoreApi = true)]
 public class WebHookNotifyController : ControllerBase
 {
     private readonly DingTalkWebhookService _webhookService;

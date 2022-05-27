@@ -1,5 +1,6 @@
 using Http.Application.Services.Webhook;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -25,6 +26,7 @@ services.AddDbContextPool<ContextBase>(option =>
 //services.AddSingleton(typeof(RedisService));
 services.AddSingleton(typeof(GitLabWebhookService));
 services.AddSingleton(typeof(DingTalkWebhookService));
+services.AddDataStore();
 
 //services.AddScoped(typeof(FileService));
 
@@ -112,8 +114,14 @@ services.AddControllers()
         options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     });
 
-
 var app = builder.Build();
+
+// 初始化工作
+await using (var scope = app.Services.CreateAsyncScope())
+{
+    var provider = scope.ServiceProvider;
+    await InitDataTask.InitDataAsync(provider);
+}
 if (app.Environment.IsDevelopment())
 {
     app.UseCors("default");
@@ -130,22 +138,22 @@ else
     app.UseHttpsRedirection();
 }
 // 异常统一处理
-//app.UseExceptionHandler(handler =>
-//{
-//    handler.Run(async context =>
-//    {
-//        context.Response.StatusCode = 500;
-//        var exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
-//        var result = new
-//        {
-//            Title = "程序内部错误:" + exception?.Message,
-//            Detail = exception?.Source,
-//            Status = 500,
-//            TraceId = context.TraceIdentifier
-//        };
-//        await context.Response.WriteAsJsonAsync(result);
-//    });
-//});
+app.UseExceptionHandler(handler =>
+{
+    handler.Run(async context =>
+    {
+        context.Response.StatusCode = 500;
+        var exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
+        var result = new
+        {
+            Title = "程序内部错误:" + exception?.Message,
+            Detail = exception?.Source,
+            Status = 500,
+            TraceId = context.TraceIdentifier
+        };
+        await context.Response.WriteAsJsonAsync(result);
+    });
+});
 
 app.UseHealthChecks("/health");
 

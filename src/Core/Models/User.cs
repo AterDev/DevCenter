@@ -20,7 +20,7 @@ public class User : EntityBase
     [MaxLength(30)]
     public string? Position { get; set; }
     [MaxLength(100)]
-    public string? Email { get; set; } = null!;
+    public string Email { get; set; } = null!;
     public bool EmailConfirmed { get; set; } = false;
     [MaxLength(100)]
     public string PasswordHash { get; set; } = default!;

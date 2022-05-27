@@ -9,5 +9,4 @@ public class LoginDto
     public string UserName { get; set; } = default!;
     [MaxLength(60)]
     public string Password { get; set; } = default!;
-
 }
