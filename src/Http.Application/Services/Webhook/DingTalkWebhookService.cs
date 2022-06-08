@@ -1,7 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
+
+using Share.Models.Webhook;
 using Share.Models.Webhook.DingTalk;
 using Share.Models.Webhook.GitLab;
+
 using System.Net.Http.Json;
+
 using Environment = System.Environment;
 
 namespace Http.Application.Services.Webhook
@@ -42,6 +46,34 @@ namespace Http.Application.Services.Webhook
             }
         }
 
+        public async Task SendExceptionNotifyAsync(ErrorLoggingRequest request)
+        {
+            var title = "❗异常:" + request.ProjectName + request.FilterName;
+            var content = $"## {title}" + Environment.NewLine;
+            AppendListItem(content, "服务名", request.ServiceName);
+            AppendListItem(content, "路由", request.Route);
+            AppendListItem(content, "请求体", request.RequestBody);
+            AppendListItem(content, "请求参数", request.QueryString);
+            AppendListItem(content, "TraceId", request.TraceId);
+            content += "- 错误详情：" + Environment.NewLine
+                + "```text" + Environment.NewLine
+                + request.ErrorDetail + "```" + Environment.NewLine;
+
+            var msg = new MarkdownMessage
+            {
+                MarkdownText = new MarkdownText(title, content)
+            };
+            await PostNotifyAsync(msg);
+        }
+
+        private string AppendListItem(string content, string prefix, string? append)
+        {
+            if (!string.IsNullOrEmpty(append))
+            {
+                content += $"- {prefix}: {append}" + Environment.NewLine;
+            }
+            return content;
+        }
         public async Task TestAsync()
         {
             var pipeLineInfo = new PipelineInfo

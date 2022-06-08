@@ -1,5 +1,8 @@
 ﻿using Http.Application.Services.Webhook;
+
 using Microsoft.Extensions.Primitives;
+
+using Share.Models.Webhook;
 using Share.Models.Webhook.GitLab;
 
 namespace Http.API.Controllers;
@@ -33,7 +36,7 @@ public class WebHookNotifyController : ControllerBase
     {
         if (Request.Headers.TryGetValue("X-Gitlab-Token", out StringValues secret))
         {
-            // TODO: secret 配置及验证
+            // secret 配置及验证
             if (secret.FirstOrDefault()!.Equals("genars.gitlab"))
             {
                 var req = _gitLab.GetPipeLineInfo(request);
@@ -47,6 +50,18 @@ public class WebHookNotifyController : ControllerBase
             }
         }
         return Forbid();
+    }
+
+    /// <summary>
+    /// 错误信息
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
+    [HttpPost("exception")]
+    public async Task<ActionResult> ErrorNotifyAsync([FromBody] ErrorLoggingRequest request)
+    {
+        await _webhookService.SendExceptionNotifyAsync(request);
+        return Ok();
     }
 
 }
