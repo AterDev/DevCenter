@@ -12,7 +12,7 @@ namespace Http.API.Controllers;
 /// </summary>
 [Route("api/[controller]")]
 [ApiController]
-[ApiExplorerSettings(IgnoreApi = true)]
+//[ApiExplorerSettings(IgnoreApi = true)]
 public class WebHookNotifyController : ControllerBase
 {
     private readonly DingTalkWebhookService _webhookService;
@@ -44,7 +44,7 @@ public class WebHookNotifyController : ControllerBase
                 {
                     return Ok();
                 }
-
+                _webhookService.SetDefault();
                 await _webhookService.SendPipelineNotifyAsync(req);
                 return Ok();
             }
@@ -60,8 +60,11 @@ public class WebHookNotifyController : ControllerBase
     [HttpPost("exception")]
     public async Task<ActionResult> ErrorNotifyAsync([FromBody] ErrorLoggingRequest request)
     {
+        var secret = "SEC0a23c111ecd82915286c674ae4d392d1d58564caf81fc7dcf4ac58c3744ff4c1";
+        var url = "https://oapi.dingtalk.com/robot/send?access_token=ec387e595b12ad632050bc56f672f79f34f626523d51ed812e2be18bb045717b";
+        _webhookService.SetSecretAndUrl(url, secret);
+
         await _webhookService.SendExceptionNotifyAsync(request);
         return Ok();
     }
-
 }

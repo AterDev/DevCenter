@@ -2,6 +2,7 @@
 {
     public class ErrorLoggingRequest
     {
+        public string Environment { get; set; } = string.Empty;
         public string TraceId { get; set; } = string.Empty;
         /// <summary>
         /// 详细信息

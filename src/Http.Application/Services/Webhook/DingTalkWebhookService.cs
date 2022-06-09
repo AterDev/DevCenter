@@ -23,8 +23,18 @@ namespace Http.Application.Services.Webhook
             _config = configuration;
             Url = _config.GetSection("Webhook")["DingTalk:NotifyUrl"];
             Secret = _config.GetSection("Webhook")["DingTalk:Secret"];
-
             HttpClient.Timeout = TimeSpan.FromSeconds(5);
+        }
+
+        public void SetSecretAndUrl(string url, string secret)
+        {
+            Url = url;
+            Secret = secret;
+        }
+        public void SetDefault()
+        {
+            Url = _config.GetSection("Webhook")["DingTalk:NotifyUrl"];
+            Secret = _config.GetSection("Webhook")["DingTalk:Secret"];
         }
 
         public async Task SendPipelineNotifyAsync(PipelineInfo? pipelineInfo)
@@ -50,14 +60,14 @@ namespace Http.Application.Services.Webhook
         {
             var title = "❗异常:" + request.ProjectName + request.FilterName;
             var content = $"## {title}" + Environment.NewLine;
-            AppendListItem(content, "服务名", request.ServiceName);
-            AppendListItem(content, "路由", request.Route);
-            AppendListItem(content, "请求体", request.RequestBody);
-            AppendListItem(content, "请求参数", request.QueryString);
-            AppendListItem(content, "TraceId", request.TraceId);
+            AppendListItem(ref content, "服务名", request.ServiceName);
+            AppendListItem(ref content, "路由", request.Route);
+            AppendListItem(ref content, "请求体", request.RequestBody);
+            AppendListItem(ref content, "请求参数", request.QueryString);
+            AppendListItem(ref content, "TraceId", request.TraceId);
             content += "- 错误详情：" + Environment.NewLine
                 + "```text" + Environment.NewLine
-                + request.ErrorDetail + "```" + Environment.NewLine;
+                + request.ErrorDetail + Environment.NewLine + "```" + Environment.NewLine;
 
             var msg = new MarkdownMessage
             {
@@ -66,13 +76,12 @@ namespace Http.Application.Services.Webhook
             await PostNotifyAsync(msg);
         }
 
-        private string AppendListItem(string content, string prefix, string? append)
+        private void AppendListItem(ref string content, string prefix, string? append)
         {
             if (!string.IsNullOrEmpty(append))
             {
                 content += $"- {prefix}: {append}" + Environment.NewLine;
             }
-            return content;
         }
         public async Task TestAsync()
         {
