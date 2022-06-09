@@ -61,13 +61,16 @@ namespace Http.Application.Services.Webhook
             var title = "❗异常:" + request.ProjectName + request.FilterName;
             var content = $"## {title}" + Environment.NewLine;
             AppendListItem(ref content, "服务名", request.ServiceName);
-            AppendListItem(ref content, "路由", request.Route);
+            AppendListItem(ref content, "请求路由", request.Route);
             AppendListItem(ref content, "请求体", request.RequestBody);
             AppendListItem(ref content, "请求参数", request.QueryString);
             AppendListItem(ref content, "TraceId", request.TraceId);
             content += "- 错误详情：" + Environment.NewLine
-                + "```text" + Environment.NewLine
-                + request.ErrorDetail + Environment.NewLine + "```" + Environment.NewLine;
+                + "> " + Environment.NewLine
+                + request.ErrorDetail + Environment.NewLine;
+
+            // TODO:详情跳转页面
+            content += $"### [查看详情]({request.TraceId})";
 
             var msg = new MarkdownMessage
             {
