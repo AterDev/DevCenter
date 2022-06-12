@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 // import { OAuthService, OAuthErrorEvent, UserInfo } from 'angular-oauth2-oidc';
 import { Router } from '@angular/router';
-import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, Validators, FormGroup, FormControl } from '@angular/forms';
 import { AuthService } from 'src/app/share/services/auth.service';
 import { LoginService } from 'src/app/auth/login.service';
 import { LoginDto } from 'src/app/share/models/auth/login-dto.model';
@@ -12,19 +12,24 @@ import { LoginDto } from 'src/app/share/models/auth/login-dto.model';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  public loginForm!: UntypedFormGroup; constructor(
+  public loginForm!: FormGroup;
+  loginDto: LoginDto;
+  constructor(
     private authService: AuthService,
     private loginService: LoginService,
     private router: Router
-
   ) {
+    this.loginDto = {
+      userName: '',
+      password: ''
+    };
   }
-  get email() { return this.loginForm.get('email'); }
+  get username() { return this.loginForm.get('email'); }
   get password() { return this.loginForm.get('password'); }
   ngOnInit(): void {
-    this.loginForm = new UntypedFormGroup({
-      email: new UntypedFormControl('', [Validators.required, Validators.email]),
-      password: new UntypedFormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(50)])
+    this.loginForm = new FormGroup({
+      email: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(20)]),
+      password: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(50)])
     });
   }
 
@@ -36,8 +41,9 @@ export class LoginComponent implements OnInit {
   getValidatorMessage(type: string): string {
     switch (type) {
       case 'email':
-        return this.email?.errors?.['required'] ? '邮箱必填' :
-          this.email?.errors?.['email'] ? '错误的邮箱格式' : '';
+        return this.username?.errors?.['required'] ? '用户名必填' :
+          this.username?.errors?.['minlength']
+            || this.username?.errors?.['maxlength'] ? '用户名长度4-20位' : '';
       case 'password':
         return this.password?.errors?.['required'] ? '密码必填' :
           this.password?.errors?.['minlength'] ? '密码长度不可低于6位' :
@@ -49,18 +55,14 @@ export class LoginComponent implements OnInit {
   }
   doLogin(): void {
     let data = this.loginForm.value;
-    this.authService.login({userName:data.email,password:data.password})
+    this.authService.login({ userName: data.email, password: data.password })
       .subscribe(res => {
-        console.log(res);
+        this.router.navigate(['/']);
       });
   }
 
   logout(): void {
 
-  }
-
-  get userName(): string | null {
-    return '';
   }
 
 }
