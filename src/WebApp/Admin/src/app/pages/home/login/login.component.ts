@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 // import { OAuthService, OAuthErrorEvent, UserInfo } from 'angular-oauth2-oidc';
 import { Router } from '@angular/router';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/share/services/auth.service';
 import { LoginService } from 'src/app/auth/login.service';
 import { LoginDto } from 'src/app/share/models/auth/login-dto.model';
@@ -12,7 +12,7 @@ import { LoginDto } from 'src/app/share/models/auth/login-dto.model';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  public loginForm!: FormGroup; constructor(
+  public loginForm!: UntypedFormGroup; constructor(
     private authService: AuthService,
     private loginService: LoginService,
     private router: Router
@@ -22,9 +22,9 @@ export class LoginComponent implements OnInit {
   get email() { return this.loginForm.get('email'); }
   get password() { return this.loginForm.get('password'); }
   ngOnInit(): void {
-    this.loginForm = new FormGroup({
-      email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(50)])
+    this.loginForm = new UntypedFormGroup({
+      email: new UntypedFormControl('', [Validators.required, Validators.email]),
+      password: new UntypedFormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(50)])
     });
   }
 
