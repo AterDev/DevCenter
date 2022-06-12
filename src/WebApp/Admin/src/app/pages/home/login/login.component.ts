@@ -24,11 +24,11 @@ export class LoginComponent implements OnInit {
       password: ''
     };
   }
-  get username() { return this.loginForm.get('email'); }
+  get username() { return this.loginForm.get('username'); }
   get password() { return this.loginForm.get('password'); }
   ngOnInit(): void {
     this.loginForm = new FormGroup({
-      email: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(20)]),
+      username: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(20)]),
       password: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(50)])
     });
   }
@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
    */
   getValidatorMessage(type: string): string {
     switch (type) {
-      case 'email':
+      case 'username':
         return this.username?.errors?.['required'] ? '用户名必填' :
           this.username?.errors?.['minlength']
             || this.username?.errors?.['maxlength'] ? '用户名长度4-20位' : '';
@@ -54,15 +54,14 @@ export class LoginComponent implements OnInit {
     return '';
   }
   doLogin(): void {
-    let data = this.loginForm.value;
-    this.authService.login({ userName: data.email, password: data.password })
+    let data = this.loginForm.value as LoginDto;
+    this.authService.login(data)
       .subscribe(res => {
         this.router.navigate(['/']);
       });
   }
 
   logout(): void {
-
+    this.loginService.logout();
   }
-
 }
