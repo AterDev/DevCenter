@@ -5,13 +5,24 @@ public class InitDataTask
     public static async Task InitDataAsync(IServiceProvider provider)
     {
         var context = provider.GetRequiredService<ContextBase>();
-        // 判断是否初始化
-        var role = await context.Roles.SingleOrDefaultAsync(r => r.Name.ToLower() == "admin");
-        if (role == null)
+        try
         {
-            Console.WriteLine("初始化数据");
-            await InitRoleAndUserAsync(context);
+            var timeout = context.Database.GetCommandTimeout();
+            context.Database.SetCommandTimeout(5);
+            // 判断是否初始化
+            var role = await context.Roles.SingleOrDefaultAsync(r => r.Name.ToLower() == "admin");
+            if (role == null)
+            {
+                Console.WriteLine("初始化数据");
+                await InitRoleAndUserAsync(context);
+            }
+            context.Database.SetCommandTimeout(timeout);
         }
+        catch (Exception ex)
+        {
+            Console.WriteLine("检查数据库连接:" + ex.Message);
+        }
+
     }
 
     /// <summary>

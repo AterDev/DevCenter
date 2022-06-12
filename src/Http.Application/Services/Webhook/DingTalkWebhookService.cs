@@ -1,7 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
+
+using Share.Models.Webhook;
 using Share.Models.Webhook.DingTalk;
 using Share.Models.Webhook.GitLab;
+
 using System.Net.Http.Json;
+
 using Environment = System.Environment;
 
 namespace Http.Application.Services.Webhook
@@ -19,8 +23,18 @@ namespace Http.Application.Services.Webhook
             _config = configuration;
             Url = _config.GetSection("Webhook")["DingTalk:NotifyUrl"];
             Secret = _config.GetSection("Webhook")["DingTalk:Secret"];
-
             HttpClient.Timeout = TimeSpan.FromSeconds(5);
+        }
+
+        public void SetSecretAndUrl(string url, string secret)
+        {
+            Url = url;
+            Secret = secret;
+        }
+        public void SetDefault()
+        {
+            Url = _config.GetSection("Webhook")["DingTalk:NotifyUrl"];
+            Secret = _config.GetSection("Webhook")["DingTalk:Secret"];
         }
 
         public async Task SendPipelineNotifyAsync(PipelineInfo? pipelineInfo)
@@ -42,6 +56,36 @@ namespace Http.Application.Services.Webhook
             }
         }
 
+        public async Task SendExceptionNotifyAsync(ErrorLoggingRequest request)
+        {
+            var title = "❗异常:" + request.ProjectName + request.FilterName;
+            var content = $"## {title}" + Environment.NewLine;
+            AppendListItem(ref content, "服务名", request.ServiceName);
+            AppendListItem(ref content, "请求路由", request.Route);
+            AppendListItem(ref content, "请求体", request.RequestBody);
+            AppendListItem(ref content, "请求参数", request.QueryString);
+            AppendListItem(ref content, "TraceId", request.TraceId);
+            content += "- 错误详情：" + Environment.NewLine
+                + "> " + Environment.NewLine
+                + request.ErrorDetail + Environment.NewLine;
+
+            // TODO:详情跳转页面
+            content += $"### [查看详情]({request.TraceId})";
+
+            var msg = new MarkdownMessage
+            {
+                MarkdownText = new MarkdownText(title, content)
+            };
+            await PostNotifyAsync(msg);
+        }
+
+        private void AppendListItem(ref string content, string prefix, string? append)
+        {
+            if (!string.IsNullOrEmpty(append))
+            {
+                content += $"- {prefix}: {append}" + Environment.NewLine;
+            }
+        }
         public async Task TestAsync()
         {
             var pipeLineInfo = new PipelineInfo
