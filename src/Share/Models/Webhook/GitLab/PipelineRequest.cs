@@ -48,10 +48,10 @@ public partial class Build
     public string? FinishedAt { get; set; }
 
     [JsonPropertyName("duration")]
-    public double Duration { get; set; }
+    public double? Duration { get; set; }
 
     [JsonPropertyName("queued_duration")]
-    public double QueuedDuration { get; set; }
+    public double? QueuedDuration { get; set; }
 
     [JsonPropertyName("when")]
     public string? When { get; set; }

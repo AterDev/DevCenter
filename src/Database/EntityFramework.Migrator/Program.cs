@@ -2,12 +2,17 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-var config = new ConfigurationBuilder()
+var configBuilder = new ConfigurationBuilder()
     .AddJsonFile($"appsettings.json", true, true)
-    .AddJsonFile($"appsettings.Development.json", true, true)
     .AddUserSecrets(typeof(Program).Assembly)
-    .AddEnvironmentVariables()
-    .Build();
+    .AddEnvironmentVariables();
+
+var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+if (!string.IsNullOrEmpty(env))
+{
+    configBuilder.AddJsonFile($"appsettings.{env}.json", true, true);
+}
+var config = configBuilder.Build();
 
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureDefaults(args)
