@@ -4,6 +4,7 @@ using Share.Models.Webhook;
 using Share.Models.Webhook.DingTalk;
 using Share.Models.Webhook.GitLab;
 
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Http.Json;
 
 using Environment = System.Environment;
@@ -67,7 +68,7 @@ namespace Http.Application.Services.Webhook
             AppendListItem(ref content, "TraceId", request.TraceId);
             content += "- 错误详情：" + Environment.NewLine
                 + "> " + Environment.NewLine
-                + request.ErrorDetail + Environment.NewLine;
+                + FormatStackTrace(request.ErrorDetail) + Environment.NewLine;
 
             // TODO:详情跳转页面
             content += $"### [查看详情]({request.TraceId})";
@@ -77,6 +78,20 @@ namespace Http.Application.Services.Webhook
                 MarkdownText = new MarkdownText(title, content)
             };
             await PostNotifyAsync(msg);
+        }
+
+        public string FormatStackTrace(string content)
+        {
+            var lines = content.Split("\n");
+            content = "";
+            foreach (var line in lines)
+            {
+                if (line.Contains(":line"))
+                {
+                    content += line + Environment.NewLine;
+                }
+            }
+            return content;
         }
 
         private void AppendListItem(ref string content, string prefix, string? append)
@@ -125,6 +140,8 @@ namespace Http.Application.Services.Webhook
             sign = WebUtility.UrlEncode(sign);
             var content = JsonContent.Create(data);
             Url += $"&timestamp={timestamp}&sign={sign}";
+
+            Console.WriteLine(Url + sign);
             var response = await HttpClient.PostAsync(Url, content);
             if (response.IsSuccessStatusCode)
             {

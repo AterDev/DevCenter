@@ -1,7 +1,5 @@
 ﻿using Http.Application.Services.Webhook;
-
 using Microsoft.Extensions.Primitives;
-
 using Share.Models.Webhook;
 using Share.Models.Webhook.GitLab;
 
@@ -42,11 +40,15 @@ public class WebHookNotifyController : ControllerBase
                 var req = _gitLab.GetPipeLineInfo(request);
                 if (req == null)
                 {
-                    return Ok();
+                    return Ok("过滤掉正在运行的流水线");
                 }
                 _webhookService.SetDefault();
                 await _webhookService.SendPipelineNotifyAsync(req);
                 return Ok();
+            }
+            else
+            {
+                return Forbid("wrong header");
             }
         }
         return Forbid();

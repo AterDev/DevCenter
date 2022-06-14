@@ -189,10 +189,10 @@ public partial class ObjectAttributes
     public string? FinishedAt { get; set; }
 
     [JsonPropertyName("duration")]
-    public long Duration { get; set; }
+    public long? Duration { get; set; }
 
     [JsonPropertyName("queued_duration")]
-    public long QueuedDuration { get; set; }
+    public long? QueuedDuration { get; set; }
 
     [JsonPropertyName("variables")]
     public List<string?>? Variables { get; set; }
