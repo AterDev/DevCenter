@@ -122,6 +122,8 @@ await using (var scope = app.Services.CreateAsyncScope())
     var provider = scope.ServiceProvider;
     await InitDataTask.InitDataAsync(provider);
 }
+
+
 if (app.Environment.IsDevelopment())
 {
     app.UseCors("default");
@@ -134,8 +136,9 @@ else
 {
     // 生产环境需要新的配置
     app.UseCors("default");
+    app.UseStaticFiles();
     //app.UseHsts();
-    app.UseHttpsRedirection();
+    //app.UseHttpsRedirection();
 }
 // 异常统一处理
 app.UseExceptionHandler(handler =>
