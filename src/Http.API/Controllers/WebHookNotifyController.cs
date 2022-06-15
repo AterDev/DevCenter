@@ -71,7 +71,8 @@ public class WebHookNotifyController : ControllerBase
             case GitLabEventType.Issue:
                 var issue = GitLabWebhookService.GetIssueInfo(request.Deserialize<IssueRequest>()!);
                 await _webhookService.SendIssueNotifyAsync(issue);
-
+                break;
+            case GitLabEventType.Note:
                 break;
             default:
                 break;

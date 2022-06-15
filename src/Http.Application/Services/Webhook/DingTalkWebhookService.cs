@@ -92,7 +92,7 @@ namespace Http.Application.Services.Webhook
                 + "> " + Environment.NewLine
                 + FormatStackTrace(request.ErrorDetail) + Environment.NewLine;
 
-            // TODO:详情跳转页面
+            // 详情跳转页面
             content += $"### [查看详情]({request.TraceId})";
 
             var msg = new MarkdownMessage
