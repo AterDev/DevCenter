@@ -22,7 +22,6 @@ public class InitDataTask
         {
             Console.WriteLine("检查数据库连接:" + ex.Message);
         }
-
     }
 
     /// <summary>

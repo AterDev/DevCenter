@@ -1,12 +1,12 @@
 ﻿namespace Share.Models.Webhook.GitLab;
 
-public partial class PipelineRequest
+public class PipelineRequest
 {
     [JsonPropertyName("object_kind")]
     public string? ObjectKind { get; set; }
 
     [JsonPropertyName("object_attributes")]
-    public ObjectAttributes? ObjectAttributes { get; set; }
+    public ObjectAttributes ObjectAttributes { get; set; } = null!;
 
     [JsonPropertyName("merge_request")]
     public string? MergeRequest { get; set; }
@@ -24,7 +24,7 @@ public partial class PipelineRequest
     public List<Build>? Builds { get; set; }
 }
 
-public partial class Build
+public class Build
 {
     [JsonPropertyName("id")]
     public long Id { get; set; }
@@ -75,7 +75,7 @@ public partial class Build
     public string? Environment { get; set; }
 }
 
-public partial class ArtifactsFile
+public class ArtifactsFile
 {
     [JsonPropertyName("filename")]
     public string? Filename { get; set; }
@@ -84,7 +84,7 @@ public partial class ArtifactsFile
     public string? Size { get; set; }
 }
 
-public partial class Runner
+public class Runner
 {
     [JsonPropertyName("id")]
     public long Id { get; set; }
@@ -105,7 +105,7 @@ public partial class Runner
     public List<string>? Tags { get; set; }
 }
 
-public partial class User
+public class User
 {
     [JsonPropertyName("id")]
     public long Id { get; set; }

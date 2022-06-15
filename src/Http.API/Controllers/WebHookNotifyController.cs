@@ -1,5 +1,9 @@
-﻿using Http.Application.Services.Webhook;
+﻿using System.Text.Json;
+
+using Http.Application.Services.Webhook;
+
 using Microsoft.Extensions.Primitives;
+
 using Share.Models.Webhook;
 using Share.Models.Webhook.GitLab;
 
@@ -30,21 +34,21 @@ public class WebHookNotifyController : ControllerBase
     /// <param name="request"></param>
     /// <returns></returns>
     [HttpPost("gitlab")]
-    public async Task<ActionResult> GitLabNotifyAsync([FromBody] PipelineRequest request)
+    public async Task<ActionResult> GitLabNotifyAsync([FromBody] JsonElement request)
     {
-        if (Request.Headers.TryGetValue("X-Gitlab-Token", out StringValues secret))
+        if (Request.Headers.TryGetValue(GitLabHeader.Token, out StringValues secret))
         {
             // secret 配置及验证
             if (secret.FirstOrDefault()!.Equals("genars.gitlab"))
             {
-                var req = _gitLab.GetPipeLineInfo(request);
-                if (req == null)
+                if (Request.Headers.TryGetValue(GitLabHeader.Event, out StringValues events))
                 {
-                    return Ok("过滤掉正在运行的流水线");
+                    var eventType = events.FirstOrDefault();
+                    _webhookService.SetDefault();
+                    await HookHandlerAsync(eventType!, request);
+                    return Ok();
                 }
-                _webhookService.SetDefault();
-                await _webhookService.SendPipelineNotifyAsync(req);
-                return Ok();
+                return Forbid("wrong header");
             }
             else
             {
@@ -52,6 +56,26 @@ public class WebHookNotifyController : ControllerBase
             }
         }
         return Forbid();
+    }
+
+    private async Task HookHandlerAsync(string eventType, JsonElement request)
+    {
+        switch (eventType)
+        {
+            case GitLabEventType.Pipeline:
+                var pipeline = GitLabWebhookService.GetPipeLineInfo(request.Deserialize<PipelineRequest>()!);
+
+                await _webhookService.SendPipelineNotifyAsync(pipeline);
+                break;
+
+            case GitLabEventType.Issue:
+                var issue = GitLabWebhookService.GetIssueInfo(request.Deserialize<IssueRequest>()!);
+                await _webhookService.SendIssueNotifyAsync(issue);
+
+                break;
+            default:
+                break;
+        }
     }
 
     /// <summary>

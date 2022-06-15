@@ -56,9 +56,31 @@ namespace Http.Application.Services.Webhook
                 await PostNotifyAsync(msg);
             }
         }
+        public async Task SendIssueNotifyAsync(IssueInfo? issueInfo)
+        {
+            if (issueInfo != null)
+            {
+                var title = "任务:" + issueInfo.Title;
+                var content = $"## {title}" + Environment.NewLine;
+                content += "概要: " + Environment.NewLine
+                    + issueInfo.Content + Environment.NewLine;
+                content += "标签: **" + issueInfo.Tags + "**" + Environment.NewLine;
+                content += $@"## [查看详情]({issueInfo.Url})" + Environment.NewLine;
+                var msg = new MarkdownMessage
+                {
+                    MarkdownText = new MarkdownText(title, content)
+                };
+                await PostNotifyAsync(msg);
+            }
+        }
 
         public async Task SendExceptionNotifyAsync(ErrorLoggingRequest request)
         {
+            // 本地开发环境不发通知
+            if (request.Environment.ToLower().Equals("development"))
+            {
+                return;
+            }
             var title = "❗异常:" + request.ProjectName + request.FilterName;
             var content = $"## {title}" + Environment.NewLine;
             AppendListItem(ref content, "服务名", request.ServiceName);
@@ -141,7 +163,6 @@ namespace Http.Application.Services.Webhook
             var content = JsonContent.Create(data);
             Url += $"&timestamp={timestamp}&sign={sign}";
 
-            Console.WriteLine(Url + sign);
             var response = await HttpClient.PostAsync(Url, content);
             if (response.IsSuccessStatusCode)
             {

@@ -9,7 +9,7 @@ public class GitLabWebhookService
     }
 
 
-    public PipelineInfo? GetPipeLineInfo(PipelineRequest request)
+    public static PipelineInfo? GetPipeLineInfo(PipelineRequest request)
     {
         var status = request.ObjectAttributes?.Status;
         return string.IsNullOrWhiteSpace(status)
@@ -27,5 +27,23 @@ public class GitLabWebhookService
                 Status = status
             };
     }
+
+    public static IssueInfo? GetIssueInfo(IssueRequest request)
+    {
+        //var state = request.ObjectAttributes.State;
+        var content = request.ObjectAttributes.Description;
+        if (content.Length > 50)
+        {
+            content = content[..50];
+        }
+        var tags = request.Labels?.Select(l => l.Title).ToList();
+        return new IssueInfo(request.ObjectAttributes.Title, content)
+        {
+            ProjectName = request.Project?.Name,
+            Url = request.ObjectAttributes.Url,
+            Tags = tags != null ? string.Join(";", tags) : ""
+        };
+    }
+
 
 }
