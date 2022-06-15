@@ -60,7 +60,13 @@ namespace Http.Application.Services.Webhook
         {
             if (issueInfo != null)
             {
-                var title = "任务:" + issueInfo.Title;
+                var action = issueInfo.Action switch
+                {
+                    "open" => "👀新任务: ",
+                    "close" => "👍完成任务: ",
+                    _ => "任务:"
+                };
+                var title = action + issueInfo.Title;
                 var content = $"## {title}" + Environment.NewLine;
                 content += "概要: " + Environment.NewLine
                     + issueInfo.Content + Environment.NewLine;
@@ -73,7 +79,6 @@ namespace Http.Application.Services.Webhook
                 await PostNotifyAsync(msg);
             }
         }
-
         public async Task SendExceptionNotifyAsync(ErrorLoggingRequest request)
         {
             // 本地开发环境不发通知

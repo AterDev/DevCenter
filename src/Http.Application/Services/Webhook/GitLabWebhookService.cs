@@ -30,7 +30,10 @@ public class GitLabWebhookService
 
     public static IssueInfo? GetIssueInfo(IssueRequest request)
     {
-        //var state = request.ObjectAttributes.State;
+        // close,update,open
+        var action = request.ObjectAttributes.Action!;
+        if (action.Equals("update")) return default;
+
         var content = request.ObjectAttributes.Description;
         if (content.Length > 50)
         {
@@ -41,24 +44,9 @@ public class GitLabWebhookService
         {
             ProjectName = request.Project?.Name,
             Url = request.ObjectAttributes.Url,
-            Tags = tags != null ? string.Join(";", tags) : ""
+            Tags = tags != null ? string.Join(";", tags) : "",
+            Action = action
         };
     }
 
-    public static IssueInfo? GetNoteInfo(NoteRequest request)
-    {
-        //var state = request.ObjectAttributes.State;
-        var content = request.ObjectAttributes.Description;
-        if (content.Length > 50)
-        {
-            content = content[..50];
-        }
-        var tags = request.Labels?.Select(l => l.Title).ToList();
-        return new IssueInfo(request.ObjectAttributes.Title, content)
-        {
-            ProjectName = request.Project?.Name,
-            Url = request.ObjectAttributes.Url,
-            Tags = tags != null ? string.Join(";", tags) : ""
-        };
-    }
 }

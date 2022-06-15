@@ -106,7 +106,7 @@ public partial class ObjectAttributes
     public long AuthorId { get; set; }
 
     [JsonPropertyName("closed_at")]
-    public DateTimeOffset? ClosedAt { get; set; }
+    public string? ClosedAt { get; set; }
 
     [JsonPropertyName("confidential")]
     public bool Confidential { get; set; }
@@ -118,7 +118,7 @@ public partial class ObjectAttributes
     public string? DiscussionLocked { get; set; }
 
     [JsonPropertyName("due_date")]
-    public DateTimeOffset DueDate { get; set; }
+    public string? DueDate { get; set; }
 
 
     [JsonPropertyName("iid")]
