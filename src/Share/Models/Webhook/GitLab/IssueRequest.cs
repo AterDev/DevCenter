@@ -122,13 +122,13 @@ public partial class ObjectAttributes
 
 
     [JsonPropertyName("iid")]
-    public long Iid { get; set; }
+    public long? Iid { get; set; }
 
     [JsonPropertyName("last_edited_at")]
     public string? LastEditedAt { get; set; }
 
     [JsonPropertyName("last_edited_by_id")]
-    public long LastEditedById { get; set; }
+    public long? LastEditedById { get; set; }
 
     [JsonPropertyName("milestone_id")]
     public long? MilestoneId { get; set; }
@@ -149,7 +149,7 @@ public partial class ObjectAttributes
     public long? StateId { get; set; }
 
     [JsonPropertyName("time_estimate")]
-    public long TimeEstimate { get; set; }
+    public long? TimeEstimate { get; set; }
 
     [JsonPropertyName("title")]
     public string Title { get; set; } = string.Empty;
@@ -158,16 +158,16 @@ public partial class ObjectAttributes
     public string? UpdatedAt { get; set; }
 
     [JsonPropertyName("updated_by_id")]
-    public long UpdatedById { get; set; }
+    public long? UpdatedById { get; set; }
 
     [JsonPropertyName("url")]
     public string? Url { get; set; }
 
     [JsonPropertyName("total_time_spent")]
-    public long TotalTimeSpent { get; set; }
+    public long? TotalTimeSpent { get; set; }
 
     [JsonPropertyName("time_change")]
-    public long TimeChange { get; set; }
+    public long? TimeChange { get; set; }
 
     [JsonPropertyName("human_total_time_spent")]
     public string? HumanTotalTimeSpent { get; set; }
