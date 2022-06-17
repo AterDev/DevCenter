@@ -143,7 +143,7 @@ public partial class ObjectAttributes
     public long? ProjectId { get; set; }
 
     [JsonPropertyName("relative_position")]
-    public long RelativePosition { get; set; }
+    public long? RelativePosition { get; set; }
 
     [JsonPropertyName("state_id")]
     public long? StateId { get; set; }
@@ -182,7 +182,7 @@ public partial class ObjectAttributes
     public List<long>? AssigneeIds { get; set; }
 
     [JsonPropertyName("assignee_id")]
-    public long AssigneeId { get; set; }
+    public long? AssigneeId { get; set; }
 
     [JsonPropertyName("labels")]
     public List<Label>? Labels { get; set; }
