@@ -45,8 +45,8 @@ public class GitLabWebhookService
             ProjectName = request.Project?.Name,
             Url = request.ObjectAttributes.Url,
             Tags = tags != null ? string.Join(";", tags) : "",
-            Action = action
+            Action = action,
+            UserName = request.Assignees?.FirstOrDefault()!.Name ?? ""
         };
     }
-
 }

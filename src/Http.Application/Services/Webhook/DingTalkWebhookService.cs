@@ -68,8 +68,10 @@ namespace Http.Application.Services.Webhook
                 };
                 var title = action + issueInfo.Title;
                 var content = $"## {title}" + Environment.NewLine;
+                AppendListItem(ref content, "### 分配给", issueInfo.UserName);
                 content += "概要: " + Environment.NewLine
-                    + issueInfo.Content + Environment.NewLine;
+                    + issueInfo.Content
+                    + Environment.NewLine + Environment.NewLine;
                 content += "标签: **" + issueInfo.Tags + "**" + Environment.NewLine;
                 content += $@"## [查看详情]({issueInfo.Url})" + Environment.NewLine;
                 var msg = new MarkdownMessage
