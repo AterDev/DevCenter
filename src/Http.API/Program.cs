@@ -1,13 +1,19 @@
 using Http.Application.Services.Webhook;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.IdentityModel.Tokens;
+
+using Share.Options;
+
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var services = builder.Services;
 var configuration = builder.Configuration;
+
+services.Configure<WebhookOptions>(configuration.GetSection("Webhook"));
 services.AddHttpContextAccessor();
 // database sql
 var connectionString = configuration.GetConnectionString("Default");

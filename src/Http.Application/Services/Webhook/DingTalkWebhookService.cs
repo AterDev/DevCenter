@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 using Share.Models.Webhook;
 using Share.Models.Webhook.DingTalk;
 using Share.Models.Webhook.GitLab;
+using Share.Options;
 
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http.Json;
@@ -11,31 +13,57 @@ using Environment = System.Environment;
 
 namespace Http.Application.Services.Webhook
 {
+
+
     public class DingTalkWebhookService
     {
         private readonly IConfiguration _config;
         private static HttpClient HttpClient = new();
+        private readonly List<DingTalkOptions> dingTalkOptions;
 
         public string Secret { get; set; }
         public string Url { get; set; }
         public DingTalkWebhookService(
-            IConfiguration configuration)
+            IConfiguration configuration,
+            IOptions<WebhookOptions> options)
         {
             _config = configuration;
-            Url = _config.GetSection("Webhook")["DingTalk:NotifyUrl"];
-            Secret = _config.GetSection("Webhook")["DingTalk:Secret"];
+            dingTalkOptions = options.Value.DingTalk;
+
+            Url = GetOption("GeneRoom")?.NotifyUrl ?? "";
+            Secret = GetOption("GeneRoom")?.Secret ?? "";
             HttpClient.Timeout = TimeSpan.FromSeconds(5);
         }
 
+        private DingTalkOptions? GetOption(string name)
+        {
+            return dingTalkOptions.Where(o => o.Name.Equals(name)).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// 手动设置消息链接
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="secret"></param>
         public void SetSecretAndUrl(string url, string secret)
         {
             Url = url;
             Secret = secret;
         }
+
+        /// <summary>
+        /// 从配置中设置不同的消息链接
+        /// </summary>
+        public void SetConfig(string name)
+        {
+            Url = GetOption(name)?.NotifyUrl ?? "";
+            Secret = GetOption(name)?.Secret ?? "";
+        }
+
         public void SetDefault()
         {
-            Url = _config.GetSection("Webhook")["DingTalk:NotifyUrl"];
-            Secret = _config.GetSection("Webhook")["DingTalk:Secret"];
+            Url = GetOption("GeneRoom")?.NotifyUrl ?? "";
+            Secret = GetOption("GeneRoom")?.Secret ?? "";
         }
 
         public async Task SendPipelineNotifyAsync(PipelineInfo? pipelineInfo)

@@ -32,9 +32,10 @@ public class WebHookNotifyController : ControllerBase
     /// gitlab webhook 通知
     /// </summary>
     /// <param name="request"></param>
+    /// <param name="subscriber"></param>
     /// <returns></returns>
-    [HttpPost("gitlab")]
-    public async Task<ActionResult> GitLabNotifyAsync([FromBody] JsonElement request)
+    [HttpPost("gitlab/{subscriber}")]
+    public async Task<ActionResult> GitLabNotifyAsync([FromRoute] string subscriber, [FromBody] JsonElement request)
     {
         if (Request.Headers.TryGetValue(GitLabHeader.Token, out StringValues secret))
         {
@@ -44,7 +45,7 @@ public class WebHookNotifyController : ControllerBase
                 if (Request.Headers.TryGetValue(GitLabHeader.Event, out StringValues events))
                 {
                     var eventType = events.FirstOrDefault();
-                    _webhookService.SetDefault();
+                    _webhookService.SetConfig(subscriber.Trim());
                     await HookHandlerAsync(eventType!, request);
                     return Ok();
                 }
@@ -87,10 +88,7 @@ public class WebHookNotifyController : ControllerBase
     [HttpPost("exception")]
     public async Task<ActionResult> ErrorNotifyAsync([FromBody] ErrorLoggingRequest request)
     {
-        var secret = "SEC0a23c111ecd82915286c674ae4d392d1d58564caf81fc7dcf4ac58c3744ff4c1";
-        var url = "https://oapi.dingtalk.com/robot/send?access_token=ec387e595b12ad632050bc56f672f79f34f626523d51ed812e2be18bb045717b";
-        _webhookService.SetSecretAndUrl(url, secret);
-
+        _webhookService.SetConfig("Error");
         await _webhookService.SendExceptionNotifyAsync(request);
         return Ok();
     }
