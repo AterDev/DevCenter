@@ -193,7 +193,7 @@ public partial class ObjectAttributes
     [JsonPropertyName("severity")]
     public string? Severity { get; set; }
 
-    [JsonPropertyName("action")]
+    [JsonPropertyName(name: "action")]
     public string? Action { get; set; }
 }
 

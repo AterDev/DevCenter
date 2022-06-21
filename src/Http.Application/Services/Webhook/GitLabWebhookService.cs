@@ -31,7 +31,7 @@ public class GitLabWebhookService
     public static IssueInfo? GetIssueInfo(IssueRequest request)
     {
         // close,update,open
-        var action = request.ObjectAttributes.Action!;
+        var action = request.ObjectAttributes.Action ?? "";
         if (action.Equals("update")) return default;
 
         var content = request.ObjectAttributes.Description;
