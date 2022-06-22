@@ -91,7 +91,7 @@ namespace Http.Application.Services.Webhook
                 var action = issueInfo.Action switch
                 {
                     "open" => "👀新任务: ",
-                    "close" => "👍完成任务: ",
+                    "close" => "👍关闭任务: ",
                     _ => "任务:"
                 };
                 var title = action + issueInfo.Title;
