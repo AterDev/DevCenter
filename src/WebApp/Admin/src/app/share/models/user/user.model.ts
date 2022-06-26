@@ -4,7 +4,7 @@ export interface User extends EntityBase {
   userName: string;
   realName?: string | null;
   position?: string | null;
-  email?: string | null;
+  email: string;
   emailConfirmed: boolean;
   passwordHash: string;
   passwordSalt: string;

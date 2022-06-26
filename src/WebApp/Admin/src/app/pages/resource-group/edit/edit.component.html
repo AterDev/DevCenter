@@ -1,0 +1,39 @@
+<mat-toolbar fxLayoutGap="4px">
+  <button color="basic" mat-icon-button matTooltip="返回" (click)="back()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+    编辑
+</mat-toolbar>
+<form class="d-flex" *ngIf="!isLoading" [formGroup]="formGroup" (ngSubmit)="edit()">
+  <div class="d-flex flex-column w-100">
+  <mat-form-field>
+    <mat-label>Name</mat-label>
+    <input matInput placeholder="Name" formControlName="name"  minlength="" maxlength="100">
+    <mat-error *ngIf="name?.invalid">
+    {{getValidatorMessage('name')}}
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Descriptioin</mat-label>
+    <textarea matInput placeholder="Descriptioin" formControlName="descriptioin"  minlength="" maxlength="400"
+      cols="5"></textarea>
+    <mat-error *ngIf="descriptioin?.invalid">
+    {{getValidatorMessage('descriptioin')}}
+    </mat-error>
+  </mat-form-field>
+<mat-form-field>
+  <mat-label>Status</mat-label>
+  <mat-select formControlName="status">
+    <mat-option *ngFor="let item of Status | toKeyValue" [value]="item.value">
+      {{item.key}}
+    </mat-option>
+  </mat-select>
+  <mat-error *ngIf="status?.invalid">
+    {{getValidatorMessage('status')}}
+  </mat-error>
+</mat-form-field>
+    <div class="d-flex">
+      <button class="d-flex flex-column" mat-flat-button color="primary" type="submit">保存</button>
+    </div>
+  </div>
+</form>
