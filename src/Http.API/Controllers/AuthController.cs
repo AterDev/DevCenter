@@ -14,7 +14,7 @@ public class AuthController : ControllerBase
     //private readonly RedisService _redis;
     public AuthController(UserDataStore userDataStore,
                           IConfiguration config
-                          //RedisService redis
+        //RedisService redis
         )
     {
         _store = userDataStore;
@@ -81,7 +81,7 @@ public class AuthController : ControllerBase
         //if (user == null) return NotFound();
         // 清除redis登录状态
         //await _redis.Cache.RemoveAsync(id.ToString());
-        return true;
+        return await Task.FromResult(true);
     }
 
 
