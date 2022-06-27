@@ -5,6 +5,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ToKeyValuePipe } from './pipe/to-key-value.pipe';
 import { ComponentsModule } from '../components/components.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [EnumPipe, ToKeyValuePipe],
@@ -13,6 +14,7 @@ import { ComponentsModule } from '../components/components.module';
     RouterModule,
     ReactiveFormsModule,
     FormsModule,
+    HttpClientModule,
     ComponentsModule
   ],
   exports: [
@@ -20,6 +22,7 @@ import { ComponentsModule } from '../components/components.module';
     RouterModule,
     ReactiveFormsModule,
     FormsModule,
+    HttpClientModule,
     ComponentsModule,
     EnumPipe,
     ToKeyValuePipe

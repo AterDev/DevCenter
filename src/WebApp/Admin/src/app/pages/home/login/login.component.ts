@@ -57,6 +57,8 @@ export class LoginComponent implements OnInit {
     let data = this.loginForm.value as LoginDto;
     this.authService.login(data)
       .subscribe(res => {
+        this.loginService.isLogin = true;
+        this.loginService.saveLoginState(res);
         this.router.navigate(['/']);
       });
   }

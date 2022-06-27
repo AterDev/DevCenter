@@ -24,7 +24,6 @@ import { UserModule } from './pages/user/user.module';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    HttpClientModule,
     AppRoutingModule,
     ComponentsModule,
     HomeModule,
