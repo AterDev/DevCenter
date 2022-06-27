@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ConfigOptionService } from 'src/app/share/services/config-option.service';
 import { ConfigOption } from 'src/app/share/models/config-option/config-option.model';
-import { ConfigOptionUpdateDto } from 'src/app/share/models/config-option/config-option-update-dto.model';
+import { ConfigOptionAddDto } from 'src/app/share/models/config-option/config-option-add-dto.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -18,7 +18,7 @@ export class AddComponent implements OnInit {
     Status = Status;
 
     formGroup!: FormGroup;
-    data = {} as ConfigOptionUpdateDto;
+    data = {} as ConfigOptionAddDto;
     isLoading = true;
     constructor(
         
@@ -93,9 +93,9 @@ export class AddComponent implements OnInit {
 
   add(): void {
     if(this.formGroup.valid) {
-    const data = this.formGroup.value as ConfigOptionUpdateDto;
+    const data = this.formGroup.value as ConfigOptionAddDto;
     this.data = { ...data, ...this.data };
-    this.service.add(this.data as ConfigOption)
+    this.service.add(this.data)
         .subscribe(res => {
             this.snb.open('添加成功');
             // this.dialogRef.close(res);

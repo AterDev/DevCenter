@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ResourceAttributeService } from 'src/app/share/services/resource-attribute.service';
 import { ResourceAttribute } from 'src/app/share/models/resource-attribute/resource-attribute.model';
-import { ResourceAttributeUpdateDto } from 'src/app/share/models/resource-attribute/resource-attribute-update-dto.model';
+import { ResourceAttributeAddDto } from 'src/app/share/models/resource-attribute/resource-attribute-add-dto.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -10,42 +10,40 @@ import { Location } from '@angular/common';
 import * as ClassicEditor from 'ng-ckeditor5-classic';
 import { environment } from 'src/environments/environment';
 import { CKEditor5 } from '@ckeditor/ckeditor5-angular';
-import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { Status } from 'src/app/share/models/enum/status.model';
 
 @Component({
-    selector: 'app-add',
-    templateUrl: './add.component.html',
-    styleUrls: ['./add.component.css']
+  selector: 'app-add',
+  templateUrl: './add.component.html',
+  styleUrls: ['./add.component.css']
 })
 export class AddComponent implements OnInit {
-    public editorConfig!: CKEditor5.Config;
+  public editorConfig!: CKEditor5.Config;
   public editor: CKEditor5.EditorConstructor = ClassicEditor;
   Status = Status;
 
-    formGroup!: FormGroup;
-    data = {} as ResourceAttributeUpdateDto;
-    isLoading = true;
-    constructor(
-        
-    private authService: OidcSecurityService,
-        private service: ResourceAttributeService,
-        public snb: MatSnackBar,
-        private router: Router,
-        private route: ActivatedRoute,
-        private location: Location
-        // public dialogRef: MatDialogRef<AddComponent>,
-        // @Inject(MAT_DIALOG_DATA) public dlgData: { id: '' }
-    ) {
+  formGroup!: FormGroup;
+  data = {} as ResourceAttributeAddDto;
+  isLoading = true;
+  constructor(
 
-    }
+    private service: ResourceAttributeService,
+    public snb: MatSnackBar,
+    private router: Router,
+    private route: ActivatedRoute,
+    private location: Location
+    // public dialogRef: MatDialogRef<AddComponent>,
+    // @Inject(MAT_DIALOG_DATA) public dlgData: { id: '' }
+  ) {
 
-    get displayName() { return this.formGroup.get('displayName'); }
-    get name() { return this.formGroup.get('name'); }
-    get isEnable() { return this.formGroup.get('isEnable'); }
-    get value() { return this.formGroup.get('value'); }
-    get sort() { return this.formGroup.get('sort'); }
-    get status() { return this.formGroup.get('status'); }
+  }
+
+  get displayName() { return this.formGroup.get('displayName'); }
+  get name() { return this.formGroup.get('name'); }
+  get isEnable() { return this.formGroup.get('isEnable'); }
+  get value() { return this.formGroup.get('value'); }
+  get sort() { return this.formGroup.get('sort'); }
+  get status() { return this.formGroup.get('status'); }
 
 
   ngOnInit(): void {
@@ -54,13 +52,13 @@ export class AddComponent implements OnInit {
     // TODO:获取其他相关数据后设置加载状态
     // this.isLoading = false;
   }
-    initEditor(): void {
+  initEditor(): void {
     this.editorConfig = {
       // placeholder: '请添加图文信息提供证据，也可以直接从Word文档中复制',
       simpleUpload: {
         uploadUrl: environment.uploadEditorFileUrl,
         headers: {
-          Authorization: 'Bearer ' + this.authService.getAccessToken()
+          // Authorization: 'Bearer ' + this.authService.getAccessToken()
         }
       },
       language: 'zh-cn'
@@ -111,36 +109,36 @@ export class AddComponent implements OnInit {
             this.status?.errors?.['maxlength'] ? 'Status长度最多位' : '';
 
       default:
-    return '';
+        return '';
     }
   }
 
   add(): void {
-    if(this.formGroup.valid) {
-    const data = this.formGroup.value as ResourceAttributeUpdateDto;
-    this.data = { ...data, ...this.data };
-    this.service.add(this.data as ResourceAttribute)
+    if (this.formGroup.valid) {
+      const data = this.formGroup.value as ResourceAttributeAddDto;
+      this.data = { ...data, ...this.data };
+      this.service.add(this.data)
         .subscribe(res => {
-            this.snb.open('添加成功');
-            // this.dialogRef.close(res);
-            // this.router.navigate(['../index'],{relativeTo: this.route});
+          this.snb.open('添加成功');
+          // this.dialogRef.close(res);
+          // this.router.navigate(['../index'],{relativeTo: this.route});
         });
     }
   }
   back(): void {
     this.location.back();
   }
-  upload(event: any, type ?: string): void {
+  upload(event: any, type?: string): void {
     const files = event.target.files;
-    if(files[0]) {
+    if (files[0]) {
       const formdata = new FormData();
       formdata.append('file', files[0]);
-    /*    this.service.uploadFile('agent-info' + type, formdata)
-          .subscribe(res => {
-            this.data.logoUrl = res.url;
-          }, error => {
-            this.snb.open(error?.detail);
-          }); */
+      /*    this.service.uploadFile('agent-info' + type, formdata)
+            .subscribe(res => {
+              this.data.logoUrl = res.url;
+            }, error => {
+              this.snb.open(error?.detail);
+            }); */
     } else {
 
     }

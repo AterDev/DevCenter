@@ -3,7 +3,7 @@ import { ResourceTagsService } from 'src/app/share/services/resource-tags.servic
 import { Router } from '@angular/router';
 import { ConfirmDialogComponent } from 'src/app/components/confirm-dialog/confirm-dialog.component';
 import { ResourceTagsItemDto } from 'src/app/share/models/resource-tags/resource-tags-item-dto.model';
-import { ResourceTagsFilter } from 'src/app/share/models/resource-tags/resource-tags-filter.model';
+import { ResourceTagsFilterDto } from 'src/app/share/models/resource-tags/resource-tags-filter-dto.model';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';

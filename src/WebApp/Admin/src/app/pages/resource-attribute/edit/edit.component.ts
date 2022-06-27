@@ -10,7 +10,6 @@ import { Location } from '@angular/common';
 import * as ClassicEditor from 'ng-ckeditor5-classic';
 import { environment } from 'src/environments/environment';
 import { CKEditor5 } from '@ckeditor/ckeditor5-angular';
-import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { Status } from 'src/app/share/models/enum/status.model';
 
 @Component({
@@ -28,9 +27,8 @@ export class EditComponent implements OnInit {
   data = {} as ResourceAttribute;
   updateData = {} as ResourceAttributeUpdateDto;
   formGroup!: FormGroup;
-    constructor(
-    
-    private authService: OidcSecurityService,
+  constructor(
+
     private service: ResourceAttributeService,
     private snb: MatSnackBar,
     private router: Router,
@@ -47,12 +45,12 @@ export class EditComponent implements OnInit {
     }
   }
 
-    get displayName() { return this.formGroup.get('displayName'); }
-    get name() { return this.formGroup.get('name'); }
-    get isEnable() { return this.formGroup.get('isEnable'); }
-    get value() { return this.formGroup.get('value'); }
-    get sort() { return this.formGroup.get('sort'); }
-    get status() { return this.formGroup.get('status'); }
+  get displayName() { return this.formGroup.get('displayName'); }
+  get name() { return this.formGroup.get('name'); }
+  get isEnable() { return this.formGroup.get('isEnable'); }
+  get value() { return this.formGroup.get('value'); }
+  get sort() { return this.formGroup.get('sort'); }
+  get status() { return this.formGroup.get('status'); }
 
 
   ngOnInit(): void {
@@ -61,13 +59,13 @@ export class EditComponent implements OnInit {
     // TODO:获取其他相关数据后设置加载状态
     // this.isLoading = false;
   }
-    initEditor(): void {
+  initEditor(): void {
     this.editorConfig = {
       // placeholder: '请添加图文信息提供证据，也可以直接从Word文档中复制',
       simpleUpload: {
         uploadUrl: environment.uploadEditorFileUrl,
         headers: {
-          Authorization: 'Bearer ' + this.authService.getAccessToken()
+          // Authorization: 'Bearer ' + this.authService.getAccessToken()
         }
       },
       language: 'zh-cn'
@@ -133,12 +131,12 @@ export class EditComponent implements OnInit {
     }
   }
   edit(): void {
-    if(this.formGroup.valid) {
+    if (this.formGroup.valid) {
       this.updateData = this.formGroup.value as ResourceAttributeUpdateDto;
       this.service.update(this.id, this.updateData)
         .subscribe(res => {
           this.snb.open('修改成功');
-           // this.dialogRef.close(res);
+          // this.dialogRef.close(res);
           // this.router.navigate(['../index'],{relativeTo: this.route});
         });
     }
@@ -148,17 +146,17 @@ export class EditComponent implements OnInit {
     this.location.back();
   }
 
-  upload(event: any, type ?: string): void {
+  upload(event: any, type?: string): void {
     const files = event.target.files;
-    if(files[0]) {
-    const formdata = new FormData();
-    formdata.append('file', files[0]);
-    /*    this.service.uploadFile('agent-info' + type, formdata)
-          .subscribe(res => {
-            this.updateData.logoUrl = res.url;
-          }, error => {
-            this.snb.open(error?.detail);
-          }); */
+    if (files[0]) {
+      const formdata = new FormData();
+      formdata.append('file', files[0]);
+      /*    this.service.uploadFile('agent-info' + type, formdata)
+            .subscribe(res => {
+              this.updateData.logoUrl = res.url;
+            }, error => {
+              this.snb.open(error?.detail);
+            }); */
     } else {
 
     }

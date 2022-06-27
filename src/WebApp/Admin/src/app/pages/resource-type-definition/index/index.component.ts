@@ -3,7 +3,7 @@ import { ResourceTypeDefinitionService } from 'src/app/share/services/resource-t
 import { Router } from '@angular/router';
 import { ConfirmDialogComponent } from 'src/app/components/confirm-dialog/confirm-dialog.component';
 import { ResourceTypeDefinitionItemDto } from 'src/app/share/models/resource-type-definition/resource-type-definition-item-dto.model';
-import { ResourceTypeDefinitionFilter } from 'src/app/share/models/resource-type-definition/resource-type-definition-filter.model';
+import { ResourceTypeDefinitionFilterDto } from 'src/app/share/models/resource-type-definition/resource-type-definition-filter-dto.model';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';

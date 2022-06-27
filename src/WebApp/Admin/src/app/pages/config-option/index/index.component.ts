@@ -3,7 +3,7 @@ import { ConfigOptionService } from 'src/app/share/services/config-option.servic
 import { Router } from '@angular/router';
 import { ConfirmDialogComponent } from 'src/app/components/confirm-dialog/confirm-dialog.component';
 import { ConfigOptionItemDto } from 'src/app/share/models/config-option/config-option-item-dto.model';
-import { ConfigOptionFilter } from 'src/app/share/models/config-option/config-option-filter.model';
+import { ConfigOptionFilterDto } from 'src/app/share/models/config-option/config-option-filter-dto.model';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -19,9 +19,9 @@ export class IndexComponent implements OnInit {
   isLoading = true;
   total = 0;
   data: ConfigOptionItemDto[] = [];
-  columns: string[] = ['name',　'displayValue',　'value',　'actions'];
+  columns: string[] = ['name', 'displayValue', 'value', 'actions'];
   dataSource!: MatTableDataSource<ConfigOptionItemDto>;
-  filter: ConfigOptionFilter;
+  filter: ConfigOptionFilterDto;
   pageSizeOption = [12, 20, 50];
   constructor(
     private service: ConfigOptionService,
@@ -41,7 +41,7 @@ export class IndexComponent implements OnInit {
   }
 
   getList(event?: PageEvent): void {
-    if(event) {
+    if (event) {
       this.filter.pageIndex = event.pageIndex + 1;
       this.filter.pageSize = event.pageSize;
     }
@@ -83,47 +83,47 @@ export class IndexComponent implements OnInit {
           this.snb.open('删除失败');
         }
       });
-}
+  }
 
-/*
-openAddDialog(): void {
-  const ref = this.dialog.open(AddComponent, {
-    hasBackdrop: true,
-    disableClose: false,
-    data: {
-    }
-  });
-  ref.afterClosed().subscribe(res => {
-    if (res) {
-      this.snb.open('添加成功');
-      this.getList();
-    }
-  });
-}
-openDetailDialog(id: string): void {
-  const ref = this.dialog.open(DetailComponent, {
-    hasBackdrop: true,
-    disableClose: false,
-    data: { id }
-  });
-  ref.afterClosed().subscribe(res => {
-    if (res) { }
-  });
-}
-
-openEditDialog(id: string): void {
-  const ref = this.dialog.open(EditComponent, {
-    hasBackdrop: true,
-    disableClose: false,
-    data: { id }
-  });
-  ref.afterClosed().subscribe(res => {
-    if (res) {
-      this.snb.open('修改成功');
-      this.getList();
-    }
-  });
-}*/
+  /*
+  openAddDialog(): void {
+    const ref = this.dialog.open(AddComponent, {
+      hasBackdrop: true,
+      disableClose: false,
+      data: {
+      }
+    });
+    ref.afterClosed().subscribe(res => {
+      if (res) {
+        this.snb.open('添加成功');
+        this.getList();
+      }
+    });
+  }
+  openDetailDialog(id: string): void {
+    const ref = this.dialog.open(DetailComponent, {
+      hasBackdrop: true,
+      disableClose: false,
+      data: { id }
+    });
+    ref.afterClosed().subscribe(res => {
+      if (res) { }
+    });
+  }
+  
+  openEditDialog(id: string): void {
+    const ref = this.dialog.open(EditComponent, {
+      hasBackdrop: true,
+      disableClose: false,
+      data: { id }
+    });
+    ref.afterClosed().subscribe(res => {
+      if (res) {
+        this.snb.open('修改成功');
+        this.getList();
+      }
+    });
+  }*/
 
   /**
    * 编辑

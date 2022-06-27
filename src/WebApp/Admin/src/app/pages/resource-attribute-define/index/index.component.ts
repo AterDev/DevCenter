@@ -3,7 +3,7 @@ import { ResourceAttributeDefineService } from 'src/app/share/services/resource-
 import { Router } from '@angular/router';
 import { ConfirmDialogComponent } from 'src/app/components/confirm-dialog/confirm-dialog.component';
 import { ResourceAttributeDefineItemDto } from 'src/app/share/models/resource-attribute-define/resource-attribute-define-item-dto.model';
-import { ResourceAttributeDefineFilter } from 'src/app/share/models/resource-attribute-define/resource-attribute-define-filter.model';
+import { ResourceAttributeDefineFilterDto } from 'src/app/share/models/resource-attribute-define/resource-attribute-define-filter-dto.model';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -21,7 +21,7 @@ export class IndexComponent implements OnInit {
   data: ResourceAttributeDefineItemDto[] = [];
   columns: string[] = ['displayName',　'name',　'isEnable',　'actions'];
   dataSource!: MatTableDataSource<ResourceAttributeDefineItemDto>;
-  filter: ResourceAttributeDefineFilter;
+  filter: ResourceAttributeDefineFilterDto;
   pageSizeOption = [12, 20, 50];
   constructor(
     private service: ResourceAttributeDefineService,

@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from 'src/app/share/services/user.service';
 import { User } from 'src/app/share/models/user/user.model';
-import { UserUpdateDto } from 'src/app/share/models/user/user-update-dto.model';
+import { UserAddDto } from 'src/app/share/models/user/user-add-dto.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -18,7 +18,7 @@ export class AddComponent implements OnInit {
     Status = Status;
 
     formGroup!: FormGroup;
-    data = {} as UserUpdateDto;
+    data = {} as UserAddDto;
     isLoading = true;
     constructor(
         
@@ -153,9 +153,9 @@ export class AddComponent implements OnInit {
 
   add(): void {
     if(this.formGroup.valid) {
-    const data = this.formGroup.value as UserUpdateDto;
+    const data = this.formGroup.value as UserAddDto;
     this.data = { ...data, ...this.data };
-    this.service.add(this.data as User)
+    this.service.add(this.data)
         .subscribe(res => {
             this.snb.open('添加成功');
             // this.dialogRef.close(res);

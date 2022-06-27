@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  uploadEditorFileUrl: '',
   api_daemon: 'https://localhost:15002',
 };
 

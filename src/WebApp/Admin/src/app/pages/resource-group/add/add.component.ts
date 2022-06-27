@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ResourceGroupService } from 'src/app/share/services/resource-group.service';
 import { ResourceGroup } from 'src/app/share/models/resource-group/resource-group.model';
-import { ResourceGroupUpdateDto } from 'src/app/share/models/resource-group/resource-group-update-dto.model';
+import { ResourceGroupAddDto } from 'src/app/share/models/resource-group/resource-group-add-dto.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -18,7 +18,7 @@ export class AddComponent implements OnInit {
     Status = Status;
 
     formGroup!: FormGroup;
-    data = {} as ResourceGroupUpdateDto;
+    data = {} as ResourceGroupAddDto;
     isLoading = true;
     constructor(
         
@@ -75,9 +75,9 @@ export class AddComponent implements OnInit {
 
   add(): void {
     if(this.formGroup.valid) {
-    const data = this.formGroup.value as ResourceGroupUpdateDto;
+    const data = this.formGroup.value as ResourceGroupAddDto;
     this.data = { ...data, ...this.data };
-    this.service.add(this.data as ResourceGroup)
+    this.service.add(this.data)
         .subscribe(res => {
             this.snb.open('添加成功');
             // this.dialogRef.close(res);

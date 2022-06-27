@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { EnvironmentService } from 'src/app/share/services/environment.service';
 import { Environment } from 'src/app/share/models/environment/environment.model';
-import { EnvironmentUpdateDto } from 'src/app/share/models/environment/environment-update-dto.model';
+import { EnvironmentAddDto } from 'src/app/share/models/environment/environment-add-dto.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -18,7 +18,7 @@ export class AddComponent implements OnInit {
     Status = Status;
 
     formGroup!: FormGroup;
-    data = {} as EnvironmentUpdateDto;
+    data = {} as EnvironmentAddDto;
     isLoading = true;
     constructor(
         
@@ -75,9 +75,9 @@ export class AddComponent implements OnInit {
 
   add(): void {
     if(this.formGroup.valid) {
-    const data = this.formGroup.value as EnvironmentUpdateDto;
+    const data = this.formGroup.value as EnvironmentAddDto;
     this.data = { ...data, ...this.data };
-    this.service.add(this.data as Environment)
+    this.service.add(this.data)
         .subscribe(res => {
             this.snb.open('添加成功');
             // this.dialogRef.close(res);

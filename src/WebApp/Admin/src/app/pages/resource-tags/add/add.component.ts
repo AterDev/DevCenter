@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ResourceTagsService } from 'src/app/share/services/resource-tags.service';
 import { ResourceTags } from 'src/app/share/models/resource-tags/resource-tags.model';
-import { ResourceTagsUpdateDto } from 'src/app/share/models/resource-tags/resource-tags-update-dto.model';
+import { ResourceTagsAddDto } from 'src/app/share/models/resource-tags/resource-tags-add-dto.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -18,7 +18,7 @@ export class AddComponent implements OnInit {
     Status = Status;
 
     formGroup!: FormGroup;
-    data = {} as ResourceTagsUpdateDto;
+    data = {} as ResourceTagsAddDto;
     isLoading = true;
     constructor(
         
@@ -75,9 +75,9 @@ export class AddComponent implements OnInit {
 
   add(): void {
     if(this.formGroup.valid) {
-    const data = this.formGroup.value as ResourceTagsUpdateDto;
+    const data = this.formGroup.value as ResourceTagsAddDto;
     this.data = { ...data, ...this.data };
-    this.service.add(this.data as ResourceTags)
+    this.service.add(this.data)
         .subscribe(res => {
             this.snb.open('添加成功');
             // this.dialogRef.close(res);

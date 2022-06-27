@@ -3,7 +3,7 @@ import { UserService } from 'src/app/share/services/user.service';
 import { Router } from '@angular/router';
 import { ConfirmDialogComponent } from 'src/app/components/confirm-dialog/confirm-dialog.component';
 import { UserItemDto } from 'src/app/share/models/user/user-item-dto.model';
-import { UserFilter } from 'src/app/share/models/user/user-filter.model';
+import { UserFilterDto } from 'src/app/share/models/user/user-filter-dto.model';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -21,7 +21,7 @@ export class IndexComponent implements OnInit {
   data: UserItemDto[] = [];
   columns: string[] = ['userName',　'realName',　'position',　'actions'];
   dataSource!: MatTableDataSource<UserItemDto>;
-  filter: UserFilter;
+  filter: UserFilterDto;
   pageSizeOption = [12, 20, 50];
   constructor(
     private service: UserService,
