@@ -86,7 +86,8 @@ const MaterialModules = [
     ...MaterialModules,
     LayoutComponent,
     NavigationComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    AdminLayoutComponent
   ]
 })
 export class ComponentsModule { }
