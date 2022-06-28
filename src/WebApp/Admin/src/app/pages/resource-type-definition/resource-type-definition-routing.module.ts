@@ -9,7 +9,7 @@ import { EditComponent } from './edit/edit.component';
 const routes: Routes = [
   {
     path: 'resource-type-definition',
-    // component: LayoutComponent,
+    component: AdminLayoutComponent,
     canActivate: [AuthGuard],
     children:
       [

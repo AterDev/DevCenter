@@ -16,6 +16,7 @@ import { ResourceAttributeDefineModule } from './pages/resource-attribute-define
 import { ResourceGroupModule } from './pages/resource-group/resource-group.module';
 import { RoleModule } from './pages/role/role.module';
 import { UserModule } from './pages/user/user.module';
+import { AdminModule } from './pages/admin/admin.module';
 
 @NgModule({
   declarations: [
@@ -27,14 +28,7 @@ import { UserModule } from './pages/user/user.module';
     AppRoutingModule,
     ComponentsModule,
     HomeModule,
-    EnvironmentModule,
-    ConfigOptionModule,
-    ResourceModule,
-    ResourceAttributeModule,
-    ResourceAttributeDefineModule,
-    ResourceGroupModule,
-    RoleModule,
-    UserModule
+    AdminModule
   ],
   providers: [
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
