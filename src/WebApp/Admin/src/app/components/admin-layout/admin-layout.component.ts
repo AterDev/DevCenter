@@ -7,9 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminLayoutComponent implements OnInit {
 
-  constructor() { }
+  constructor() { 
+    console.log('layout constructor');
+    
+  }
 
   ngOnInit(): void {
+    console.log('layout ngOninit');
   }
 
 }

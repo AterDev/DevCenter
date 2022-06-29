@@ -1,4 +1,5 @@
 using Http.API.Interface;
+
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 namespace Http.API.Controllers;
 
@@ -44,7 +45,11 @@ public class RestApiBase<TDataStore, TEntity, TAdd, TUpdate, TFilter, TItem>
     [HttpDelete("{id}")]
     public virtual async Task<ActionResult<bool>> DeleteAsync([FromRoute] Guid id)
     {
-        return _store.Any(d => d.Id == id) ? (ActionResult<bool>)await _store.DeleteAsync(id) : (ActionResult<bool>)NotFound();
+        if (_store.Any(d => d.Id == id))
+        {
+            return await _store.DeleteAsync(id);
+        }
+        return NotFound();
     }
 
     /// <summary>
@@ -54,9 +59,7 @@ public class RestApiBase<TDataStore, TEntity, TAdd, TUpdate, TFilter, TItem>
     /// <returns></returns>
     [HttpPost("filter")]
     public virtual async Task<ActionResult<PageResult<TItem>>> FilterAsync(TFilter filter)
-    {
-        return await _store.FindWithPageAsync(filter);
-    }
+        => await _store.FindWithPageAsync(filter);
 
     /// <summary>
     /// 详情
@@ -67,7 +70,8 @@ public class RestApiBase<TDataStore, TEntity, TAdd, TUpdate, TFilter, TItem>
     public virtual async Task<ActionResult<TEntity?>> GetDetailAsync([FromRoute] Guid id)
     {
         var data = await _store.FindAsync(id);
-        return data == null ? (ActionResult<TEntity?>)NotFound() : (ActionResult<TEntity?>)data;
+        if (data == null) return NotFound();
+        return data;
     }
 
     /// <summary>
@@ -79,7 +83,11 @@ public class RestApiBase<TDataStore, TEntity, TAdd, TUpdate, TFilter, TItem>
     [HttpPut("{id}")]
     public virtual async Task<ActionResult<TEntity?>> UpdateAsync([FromRoute] Guid id, TUpdate form)
     {
-        return _store.Any(d => d.Id == id) ? (ActionResult<TEntity?>)await _store.UpdateAsync(id, form) : (ActionResult<TEntity?>)NotFound();
+        if (_store.Any(d => d.Id == id))
+        {
+            return await _store.UpdateAsync(id, form);
+        }
+        return NotFound();
     }
 
     /// <summary>
@@ -90,9 +98,7 @@ public class RestApiBase<TDataStore, TEntity, TAdd, TUpdate, TFilter, TItem>
     [HttpDelete]
     [ApiExplorerSettings(IgnoreApi = true)]
     public virtual async Task<ActionResult<int>> BatchDeleteAsync(List<Guid> ids)
-    {
-        return await _store.BatchDeleteAsync(ids);
-    }
+        => await _store.BatchDeleteAsync(ids);
 
     /// <summary>
     /// 批量更新
@@ -102,9 +108,7 @@ public class RestApiBase<TDataStore, TEntity, TAdd, TUpdate, TFilter, TItem>
     [HttpPut]
     [ApiExplorerSettings(IgnoreApi = true)]
     public virtual async Task<int> BatchUpdateAsync([FromBody] BatchUpdate<TUpdate> data)
-    {
-        return await _store.BatchUpdateAsync(data.Ids, data.UpdateDto);
-    }
+        => await _store.BatchUpdateAsync(data.Ids, data.UpdateDto);
 
     /// <summary>
     /// 404返回格式处理

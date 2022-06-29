@@ -30,7 +30,6 @@
     </span>
   </mat-toolbar>
   <div class="content">
-    <app-admin-layout *ngIf="isAdmin"></app-admin-layout>
-    <router-outlet *ngIf="!isAdmin"></router-outlet>
+    <router-outlet></router-outlet>
   </div>
 </div>

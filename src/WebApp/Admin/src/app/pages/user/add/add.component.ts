@@ -55,7 +55,7 @@ export class AddComponent implements OnInit {
     this.initForm();
     
     // TODO:获取其他相关数据后设置加载状态
-    // this.isLoading = false;
+    this.isLoading = false;
   }
   
   initForm(): void {

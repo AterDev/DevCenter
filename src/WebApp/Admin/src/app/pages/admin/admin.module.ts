@@ -23,16 +23,17 @@ import { ResourceTypeDefinitionModule } from '../resource-type-definition/resour
     ComponentsModule,
     ShareModule,
     AdminRoutingModule,
-    EnvironmentModule,
-    ConfigOptionModule,
-    ResourceModule,
     ResourceAttributeModule,
     ResourceAttributeDefineModule,
-    ResourceGroupModule,
-    ResourceTagsModule,
-    ResourceTypeDefinitionModule,
-    RoleModule,
-    UserModule
+    // EnvironmentModule,
+    // ConfigOptionModule,
+    // ResourceModule,
+    
+    // ResourceGroupModule,
+    // ResourceTagsModule,
+    // ResourceTypeDefinitionModule,
+    // RoleModule,
+    // UserModule
   ]
 })
 export class AdminModule { }
