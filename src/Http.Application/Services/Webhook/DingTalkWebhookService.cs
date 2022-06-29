@@ -36,7 +36,7 @@ namespace Http.Application.Services.Webhook
 
         private DingTalkOptions? GetOption(string name)
         {
-            return dingTalkOptions.Where(o => o.Name.Equals(name)).FirstOrDefault();
+            return dingTalkOptions.Where(o => o.Name.ToLower().Equals(name.ToLower())).FirstOrDefault();
         }
 
         /// <summary>
@@ -156,18 +156,13 @@ namespace Http.Application.Services.Webhook
         /// </summary>
         /// <param name="fromUser"></param>
         /// <param name="toUser"></param>
-        public async Task SendNoteAsync(NoteInfo note)
+        public async Task SendNoteAsync(NoteInfo? note)
         {
+            if (note == null) return;
+
             var toUser = note.ToUser;
             if (toUser != null && toUser.Any())
             {
-                var title = $"来自{note.FromUser}的评论";
-                var mdcontent = $"## 新评论提醒：{Environment.NewLine}";
-                AppendListItem(ref mdcontent, "来自", note.FromUser);
-                AppendListItem(ref mdcontent, "项目", note.Project);
-                AppendListItem(ref mdcontent, "内容", note.Content);
-                mdcontent += $@"## [查看详情]({note.Url})" + Environment.NewLine;
-
                 var atMobiles = new List<string>();
                 var userMap = Gitlab2DingTalkUserMap.GetUsersMap();
                 if (toUser.Any())
@@ -175,10 +170,23 @@ namespace Http.Application.Services.Webhook
                     toUser.ForEach(u =>
                     {
                         var mobile = userMap.GetValueOrDefault(u);
+                        // 替换原内容@
+                        note.Content = note.Content.Replace(u, mobile);
+
+                        // 构造提醒列表
                         if (mobile != null)
                             atMobiles.Add(mobile);
                     });
                 }
+
+                var title = $"来自{note.FromUser}的评论";
+                var mdcontent = $"## 新评论提醒：{Environment.NewLine}";
+                AppendListItem(ref mdcontent, "来自", note.FromUser);
+                AppendListItem(ref mdcontent, "项目", note.Project);
+                AppendListItem(ref mdcontent, "内容", note.Content);
+                mdcontent += $@"## [查看详情]({note.Url})" + Environment.NewLine;
+
+
                 var msg = new MarkdownMessage
                 {
                     MarkdownText = new MarkdownText(title, mdcontent),
@@ -187,11 +195,10 @@ namespace Http.Application.Services.Webhook
                         AtMobiles = atMobiles
                     }
                 };
+
                 await PostNotifyAsync(msg);
             }
         }
-
-
         /// <summary>
         /// 格式化异常stacktrace内容
         /// </summary>

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Share.Options
+﻿namespace Share.Options
 {
 
     //public record DingTalkOptions(string Name, string NotifyUrl, string Secret);
@@ -15,7 +9,7 @@ namespace Share.Options
 
     public class DingTalkOptions
     {
-        public string? Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public string? NotifyUrl { get; set; }
         public string? Secret { get; set; }
     }
