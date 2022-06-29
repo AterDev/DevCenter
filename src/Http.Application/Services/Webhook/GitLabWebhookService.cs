@@ -8,7 +8,6 @@ public class GitLabWebhookService
     {
     }
 
-
     public static PipelineInfo? GetPipeLineInfo(PipelineRequest request)
     {
         var status = request.ObjectAttributes?.Status;
@@ -47,6 +46,29 @@ public class GitLabWebhookService
             Tags = tags != null ? string.Join(";", tags) : "",
             Action = action,
             UserName = request.Assignees?.FirstOrDefault()!.Name ?? ""
+        };
+    }
+
+    public static NoteInfo? GetNoteInfo(NoteRequest request)
+    {
+        var noteableId = request.ObjectAttributes!.NoteableId;
+        if (noteableId == null) return default;
+        var content = request.ObjectAttributes.Note!;
+
+        var noteUsers = content.Split(" ")
+            .Where(s => s.StartsWith("@"))
+            .Select(s => s.Replace("@", "")).ToList();
+
+
+        if (content.Length > 100)
+        {
+            content = content[..100];
+        }
+
+        return new NoteInfo(request.User!.Username!, request.Project!.Name!, content)
+        {
+            Url = request.ObjectAttributes.Url,
+            ToUser = noteUsers,
         };
     }
 }

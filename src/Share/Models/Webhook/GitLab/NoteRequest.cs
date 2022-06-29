@@ -48,19 +48,19 @@ public partial class Issue
     public string? DiscussionLocked { get; set; }
 
     [JsonPropertyName("due_date")]
-    public DateTimeOffset DueDate { get; set; }
+    public DateTimeOffset? DueDate { get; set; }
 
     [JsonPropertyName("id")]
-    public long Id { get; set; }
+    public long? Id { get; set; }
 
     [JsonPropertyName("iid")]
-    public long Iid { get; set; }
+    public long? Iid { get; set; }
 
     [JsonPropertyName("last_edited_at")]
     public string? LastEditedAt { get; set; }
 
     [JsonPropertyName("last_edited_by_id")]
-    public long LastEditedById { get; set; }
+    public long? LastEditedById { get; set; }
 
     [JsonPropertyName("milestone_id")]
     public string? MilestoneId { get; set; }
@@ -78,10 +78,10 @@ public partial class Issue
     public long RelativePosition { get; set; }
 
     [JsonPropertyName("state_id")]
-    public long StateId { get; set; }
+    public long? StateId { get; set; }
 
     [JsonPropertyName("time_estimate")]
-    public long TimeEstimate { get; set; }
+    public long? TimeEstimate { get; set; }
 
     [JsonPropertyName("title")]
     public string? Title { get; set; }
@@ -147,7 +147,7 @@ public partial class ObjectAttributes
     public string? Note { get; set; }
 
     [JsonPropertyName("noteable_id")]
-    public long NoteableId { get; set; }
+    public long? NoteableId { get; set; }
 
     [JsonPropertyName("noteable_type")]
     public string? NoteableType { get; set; }

@@ -1,13 +1,12 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System.Net.Http.Json;
+
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
 using Share.Models.Webhook;
 using Share.Models.Webhook.DingTalk;
 using Share.Models.Webhook.GitLab;
 using Share.Options;
-
-using System.Diagnostics.CodeAnalysis;
-using System.Net.Http.Json;
 
 using Environment = System.Environment;
 
@@ -18,7 +17,7 @@ namespace Http.Application.Services.Webhook
     public class DingTalkWebhookService
     {
         private readonly IConfiguration _config;
-        private static HttpClient HttpClient = new();
+        private static readonly HttpClient HttpClient = new();
         private readonly List<DingTalkOptions> dingTalkOptions;
 
         public string Secret { get; set; }
@@ -28,7 +27,7 @@ namespace Http.Application.Services.Webhook
             IOptions<WebhookOptions> options)
         {
             _config = configuration;
-            dingTalkOptions = options.Value.DingTalk;
+            dingTalkOptions = options.Value.DingTalk!;
 
             Url = GetOption("GeneRoom")?.NotifyUrl ?? "";
             Secret = GetOption("GeneRoom")?.Secret ?? "";
@@ -65,7 +64,11 @@ namespace Http.Application.Services.Webhook
             Url = GetOption("GeneRoom")?.NotifyUrl ?? "";
             Secret = GetOption("GeneRoom")?.Secret ?? "";
         }
-
+        /// <summary>
+        /// 流水线管道通知
+        /// </summary>
+        /// <param name="pipelineInfo"></param>
+        /// <returns></returns>
         public async Task SendPipelineNotifyAsync(PipelineInfo? pipelineInfo)
         {
             if (pipelineInfo != null)
@@ -84,6 +87,11 @@ namespace Http.Application.Services.Webhook
                 await PostNotifyAsync(msg);
             }
         }
+        /// <summary>
+        /// Issue通知
+        /// </summary>
+        /// <param name="issueInfo"></param>
+        /// <returns></returns>
         public async Task SendIssueNotifyAsync(IssueInfo? issueInfo)
         {
             if (issueInfo != null)
@@ -109,6 +117,12 @@ namespace Http.Application.Services.Webhook
                 await PostNotifyAsync(msg);
             }
         }
+
+        /// <summary>
+        /// 异常错误通知
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public async Task SendExceptionNotifyAsync(ErrorLoggingRequest request)
         {
             // 本地开发环境不发通知
@@ -137,6 +151,52 @@ namespace Http.Application.Services.Webhook
             await PostNotifyAsync(msg);
         }
 
+        /// <summary>
+        /// 发送提醒
+        /// </summary>
+        /// <param name="fromUser"></param>
+        /// <param name="toUser"></param>
+        public async Task SendNoteAsync(NoteInfo note)
+        {
+            var toUser = note.ToUser;
+            if (toUser != null && toUser.Any())
+            {
+                var title = $"来自{note.FromUser}的评论";
+                var mdcontent = $"## 新评论提醒：{Environment.NewLine}";
+                AppendListItem(ref mdcontent, "来自", note.FromUser);
+                AppendListItem(ref mdcontent, "项目", note.Project);
+                AppendListItem(ref mdcontent, "内容", note.Content);
+                mdcontent += $@"## [查看详情]({note.Url})" + Environment.NewLine;
+
+                var atMobiles = new List<string>();
+                var userMap = Gitlab2DingTalkUserMap.GetUsersMap();
+                if (toUser.Any())
+                {
+                    toUser.ForEach(u =>
+                    {
+                        var mobile = userMap.GetValueOrDefault(u);
+                        if (mobile != null)
+                            atMobiles.Add(mobile);
+                    });
+                }
+                var msg = new MarkdownMessage
+                {
+                    MarkdownText = new MarkdownText(title, mdcontent),
+                    At = new MessageAt
+                    {
+                        AtMobiles = atMobiles
+                    }
+                };
+                await PostNotifyAsync(msg);
+            }
+        }
+
+
+        /// <summary>
+        /// 格式化异常stacktrace内容
+        /// </summary>
+        /// <param name="content"></param>
+        /// <returns></returns>
         public string FormatStackTrace(string content)
         {
             var lines = content.Split("\n");
