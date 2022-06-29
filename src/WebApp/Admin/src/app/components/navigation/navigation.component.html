@@ -8,44 +8,82 @@
         <mat-icon>keyboard_double_arrow_right</mat-icon>
       </button>
     </div>
-    <mat-nav-list>
-      <a mat-list-item routerLink="/admin/index" routerLinkActive="active">
-        <mat-icon>home</mat-icon>
-        <span *ngIf="opened">后台首页</span>
-      </a>
-      <a mat-list-item routerLink="/admin/resource-group" routerLinkActive="active">
-        <mat-icon>group_work</mat-icon>
-        <span *ngIf="opened">资源组管理</span>
-      </a>
-      <a mat-list-item routerLink="/admin/resource" routerLinkActive="active">
-        <mat-icon>format_align_right</mat-icon>
-        <span *ngIf="opened">资源管理</span>
-      </a>
-      <a mat-list-item routerLink="/admin/resource-attribute-define" routerLinkActive="active">
-        <mat-icon>category</mat-icon>
-        <span *ngIf="opened">资源属性定义</span>
-      </a>
-      <a mat-list-item routerLink="/admin/resource-attribute" routerLinkActive="active">
-        <mat-icon>edit_attributes</mat-icon>
-        <span *ngIf="opened">资源属性</span>
-      </a>
-      <a mat-list-item routerLink="/admin/resource-tags" routerLinkActive="active">
-        <mat-icon>style</mat-icon>
-        <span *ngIf="opened">标签管理</span>
-      </a>
-      <a mat-list-item routerLink="/admin/resource-type-definition" routerLinkActive="active">
-        <mat-icon>category</mat-icon>
-        <span *ngIf="opened">资源类型定义</span>
-      </a>
-      <a mat-list-item routerLink="/admin/user" routerLinkActive="active">
-        <mat-icon>person</mat-icon>
-        <span *ngIf="opened">用户管理</span>
-      </a>
-      <a mat-list-item routerLink="/admin/role" routerLinkActive="active">
-        <mat-icon>badge</mat-icon>
-        <span *ngIf="opened">角色管理</span>
-      </a>
-    </mat-nav-list>
+    <mat-accordion class="example-headers-align" multi>
+      <mat-expansion-panel hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <mat-icon>widgets</mat-icon>
+            <span *ngIf="opened">基础配置</span>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-nav-list>
+          <a mat-list-item routerLink="/admin/resource-attribute-define" routerLinkActive="active">
+            <mat-icon>category</mat-icon>
+            <span *ngIf="opened">资源属性定义</span>
+          </a>
+          <a mat-list-item routerLink="/admin/resource-attribute" routerLinkActive="active">
+            <mat-icon>edit_attributes</mat-icon>
+            <span *ngIf="opened">资源属性</span>
+          </a>
+          <a mat-list-item routerLink="/admin/resource-tags" routerLinkActive="active">
+            <mat-icon>style</mat-icon>
+            <span *ngIf="opened">标签管理</span>
+          </a>
+          <a mat-list-item routerLink="/admin/resource-type-definition" routerLinkActive="active">
+            <mat-icon>category</mat-icon>
+            <span *ngIf="opened">资源类型定义</span>
+          </a>
+        </mat-nav-list>
+      </mat-expansion-panel>
+      <mat-expansion-panel hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <mat-icon>group_work</mat-icon>
+            <span *ngIf="opened">资源组</span>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-nav-list>
+          <a mat-list-item routerLink="/admin/resource-group" routerLinkActive="active">
+            <mat-icon>group_work</mat-icon>
+            <span *ngIf="opened">资源组管理</span>
+          </a>
+        </mat-nav-list>
+      </mat-expansion-panel>
+      <!-- 资源管理 -->
+      <mat-expansion-panel hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <mat-icon>list_alt</mat-icon>
+            <span *ngIf="opened">资源</span>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-nav-list>
+          <a mat-list-item routerLink="/admin/resource" routerLinkActive="active">
+            <mat-icon>format_align_right</mat-icon>
+            <span *ngIf="opened">资源管理</span>
+          </a>
+        </mat-nav-list>
+      </mat-expansion-panel>
+      <!-- 系统配置 -->
+      <mat-expansion-panel hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <mat-icon>settings_suggest</mat-icon>
+            <span *ngIf="opened">系统配置</span>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-nav-list>
+          <a mat-list-item routerLink="/admin/user" routerLinkActive="active">
+            <mat-icon>person</mat-icon>
+            <span *ngIf="opened">用户管理</span>
+          </a>
+          <a mat-list-item routerLink="/admin/role" routerLinkActive="active">
+            <mat-icon>badge</mat-icon>
+            <span *ngIf="opened">角色管理</span>
+          </a>
+        </mat-nav-list>
+      </mat-expansion-panel>
+    </mat-accordion>
   </mat-sidenav>
   <mat-sidenav-content class="px-2">
     <router-outlet></router-outlet>

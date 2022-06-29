@@ -21,7 +21,7 @@ export class IndexComponent implements OnInit {
   data: ResourceTagsItemDto[] = [];
   columns: string[] = ['name',　'color',　'id',　'actions'];
   dataSource!: MatTableDataSource<ResourceTagsItemDto>;
-  filter: ResourceTagsFilter;
+  filter: ResourceTagsFilterDto;
   pageSizeOption = [12, 20, 50];
   constructor(
     private service: ResourceTagsService,

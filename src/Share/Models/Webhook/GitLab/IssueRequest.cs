@@ -61,10 +61,10 @@ public class Description
 public class TedById
 {
     [JsonPropertyName("previous")]
-    public string? Previous { get; set; }
+    public long? Previous { get; set; }
 
     [JsonPropertyName("current")]
-    public long Current { get; set; }
+    public long? Current { get; set; }
 }
 
 public partial class Label

@@ -11,6 +11,8 @@ import { ResourceGroupModule } from '../resource-group/resource-group.module';
 import { ResourceModule } from '../resource/resource.module';
 import { RoleModule } from '../role/role.module';
 import { UserModule } from '../user/user.module';
+import { ResourceTagsModule } from '../resource-tags/resource-tags.module';
+import { ResourceTypeDefinitionModule } from '../resource-type-definition/resource-type-definition.module';
 
 
 @NgModule({
@@ -27,6 +29,8 @@ import { UserModule } from '../user/user.module';
     ResourceAttributeModule,
     ResourceAttributeDefineModule,
     ResourceGroupModule,
+    ResourceTagsModule,
+    ResourceTypeDefinitionModule,
     RoleModule,
     UserModule
   ]
