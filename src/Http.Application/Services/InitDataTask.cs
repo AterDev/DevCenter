@@ -52,4 +52,21 @@ public class InitDataTask
         context.Users.Add(user);
         await context.SaveChangesAsync();
     }
+
+    /// <summary>
+    /// 初始化资源
+    /// </summary>
+    /// <param name="context"></param>
+    /// <returns></returns>
+    public static async Task InitResourceAsync(ContextBase context)
+    {
+        // 定义资源属性
+        var attributes = Config.AttributeDefines;
+        await context.AddRangeAsync(attributes);
+
+        // 资源类型
+        var resourceTypes = Config.typeDefinitions;
+        await context.AddRangeAsync(resourceTypes);
+        await context.SaveChangesAsync();
+    }
 }

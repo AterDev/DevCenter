@@ -5,8 +5,16 @@
     /// </summary>
     public class ResourceTypeDefinition : EntityBase
     {
+        public ResourceTypeDefinition(string name)
+        {
+            Name = name;
+        }
+
+        private ResourceTypeDefinition() { }
+
         [MaxLength(100)]
         public string Name { get; set; }
+
         [MaxLength(400)]
         public string? Description { get; set; }
         /// <summary>
@@ -26,6 +34,6 @@
         /// </summary>
         public List<ResourceAttributeDefine>? AttributeDefines { get; set; }
 
-        public List<Resource> Resources { get; set; }
+        public List<Resource>? Resources { get; set; }
     }
 }

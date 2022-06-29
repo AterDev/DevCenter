@@ -8,7 +8,7 @@ const routes: Routes = [
   {
     path: 'admin',
     component: AdminLayoutComponent,
-    data: { reuse: true },
+    // data: { reuse: true },
     canActivate: [AuthGuard],
     children:
       [

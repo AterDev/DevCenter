@@ -11,12 +11,10 @@ export class AdminLayoutComponent implements OnInit {
   constructor(
     private router: Router
   ) {
-    console.log('layout constructor');
 
   }
 
   ngOnInit(): void {
-    console.log('layout ngOninit');
   }
 
 }
