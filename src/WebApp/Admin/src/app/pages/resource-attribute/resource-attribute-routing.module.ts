@@ -11,6 +11,7 @@ const routes: Routes = [
   {
     path: 'admin',
     component: AdminLayoutComponent,
+    data: {reuse: true},
     canActivate: [AuthGuard],
     children:
       [

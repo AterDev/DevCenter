@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { MatAccordion } from '@angular/material/expansion';
 
 @Component({
@@ -6,20 +6,16 @@ import { MatAccordion } from '@angular/material/expansion';
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.css']
 })
-export class NavigationComponent implements OnInit {
+export class NavigationComponent implements OnInit, AfterViewInit {
   events: string[] = [];
   opened = true;
   expanded = true;
-  @ViewChild(MatAccordion) accordion?: MatAccordion;
+  @ViewChild(MatAccordion, { static: true }) accordion!: MatAccordion;
   constructor() {
-    if (this.expanded) {
-      this.accordion?.openAll();
-    } else {
-      this.accordion?.closeAll();
-    }
   }
 
   ngOnInit(): void {
+    console.log(this.accordion);
     if (this.expanded) {
       this.accordion?.openAll();
     } else {
@@ -27,6 +23,10 @@ export class NavigationComponent implements OnInit {
     }
   }
 
+  ngAfterViewInit(): void {
+
+
+  }
   toggle(): void {
     this.opened = !this.opened;
   }

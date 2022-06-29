@@ -2,13 +2,13 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from 'src/app/auth/auth.guard';
 import { AdminLayoutComponent } from 'src/app/components/admin-layout/admin-layout.component';
-import { ResourceAttributeRoutingModule } from '../resource-attribute/resource-attribute-routing.module';
 import { IndexComponent } from './index/index.component';
 
 const routes: Routes = [
   {
     path: 'admin',
     component: AdminLayoutComponent,
+    data: { reuse: true },
     canActivate: [AuthGuard],
     children:
       [
@@ -19,7 +19,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 export class AdminRoutingModule { }

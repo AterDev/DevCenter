@@ -9,13 +9,14 @@ import { AdminLayoutComponent } from 'src/app/components/admin-layout/admin-layo
 
 const routes: Routes = [
   {
-    path: 'admin/user',
+    path: 'admin',
     component: AdminLayoutComponent,
+    data: { reuse: true },
     canActivate: [AuthGuard],
     children:
       [
         {
-          path: '',
+          path: 'user',
           canActivateChild: [AuthGuard],
           children: [
             { path: '', pathMatch: 'full', redirectTo: 'index' },

@@ -13,6 +13,8 @@ import { RoleModule } from '../role/role.module';
 import { UserModule } from '../user/user.module';
 import { ResourceTagsModule } from '../resource-tags/resource-tags.module';
 import { ResourceTypeDefinitionModule } from '../resource-type-definition/resource-type-definition.module';
+import { RouteReuseStrategy } from '@angular/router';
+import { CustomRouteReuseStrategy } from 'src/app/custom-route-strategy';
 
 
 @NgModule({
@@ -25,15 +27,18 @@ import { ResourceTypeDefinitionModule } from '../resource-type-definition/resour
     AdminRoutingModule,
     ResourceAttributeModule,
     ResourceAttributeDefineModule,
-    // EnvironmentModule,
-    // ConfigOptionModule,
-    // ResourceModule,
-    
-    // ResourceGroupModule,
-    // ResourceTagsModule,
-    // ResourceTypeDefinitionModule,
-    // RoleModule,
-    // UserModule
-  ]
+    EnvironmentModule,
+    ConfigOptionModule,
+    ResourceModule,
+    ResourceGroupModule,
+    ResourceTagsModule,
+    ResourceTypeDefinitionModule,
+    RoleModule,
+    UserModule
+  ],
+  providers: [{
+    provide: RouteReuseStrategy,
+    useClass: CustomRouteReuseStrategy
+  }]
 })
 export class AdminModule { }

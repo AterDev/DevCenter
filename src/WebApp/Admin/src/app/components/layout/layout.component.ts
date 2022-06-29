@@ -24,7 +24,6 @@ export class LayoutComponent implements OnInit {
         this.username = this.auth.userName;
       }
     });
-
   }
   ngOnInit(): void {
     this.isLogin = this.auth.isLogin;

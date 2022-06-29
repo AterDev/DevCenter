@@ -5,15 +5,18 @@ import { IndexComponent } from './index/index.component';
 import { AddComponent } from './add/add.component';
 import { DetailComponent } from './detail/detail.component';
 import { EditComponent } from './edit/edit.component';
+import { AdminLayoutComponent } from 'src/app/components/admin-layout/admin-layout.component';
 
 const routes: Routes = [
   {
-    path: 'admin/resource-group',
+    path: 'admin',
+    component: AdminLayoutComponent,
+    data: { reuse: true },
     canActivate: [AuthGuard],
     children:
       [
         {
-          path: '',
+          path: 'resource-group',
           canActivateChild: [AuthGuard],
           children: [
             { path: '', pathMatch: 'full', redirectTo: 'index' },
