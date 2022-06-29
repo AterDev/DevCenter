@@ -13,6 +13,38 @@
         <mat-icon>home</mat-icon>
         <span *ngIf="opened">后台首页</span>
       </a>
+      <a mat-list-item routerLink="/admin/resource-group" routerLinkActive="active">
+        <mat-icon>group_work</mat-icon>
+        <span *ngIf="opened">资源组管理</span>
+      </a>
+      <a mat-list-item routerLink="/admin/resource" routerLinkActive="active">
+        <mat-icon>format_align_right</mat-icon>
+        <span *ngIf="opened">资源管理</span>
+      </a>
+      <a mat-list-item routerLink="/admin/resource-attribute-define" routerLinkActive="active">
+        <mat-icon>category</mat-icon>
+        <span *ngIf="opened">资源属性定义</span>
+      </a>
+      <a mat-list-item routerLink="/admin/resource-attribute" routerLinkActive="active">
+        <mat-icon>edit_attributes</mat-icon>
+        <span *ngIf="opened">资源属性</span>
+      </a>
+      <a mat-list-item routerLink="/admin/resource-tags" routerLinkActive="active">
+        <mat-icon>style</mat-icon>
+        <span *ngIf="opened">标签管理</span>
+      </a>
+      <a mat-list-item routerLink="/admin/resource-type-definition" routerLinkActive="active">
+        <mat-icon>category</mat-icon>
+        <span *ngIf="opened">资源类型定义</span>
+      </a>
+      <a mat-list-item routerLink="/admin/user" routerLinkActive="active">
+        <mat-icon>person</mat-icon>
+        <span *ngIf="opened">用户管理</span>
+      </a>
+      <a mat-list-item routerLink="/admin/role" routerLinkActive="active">
+        <mat-icon>badge</mat-icon>
+        <span *ngIf="opened">角色管理</span>
+      </a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content class="px-2">
