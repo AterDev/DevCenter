@@ -58,12 +58,7 @@ public class ResourceTypeDefinitionController : RestApiBase<ResourceTypeDefiniti
     {
         var typeDefine = await _store.FindAsync(id);
         if (typeDefine == null) return NotFound("未知type define id");
-        typeDefine.AttributeDefines = null;
-        if (form.AttributeDefineIds != null)
-        {
-            var attributeDefines = await attributeDataStore.Db.Where(a => form.AttributeDefineIds.Contains(a.Id)).ToListAsync();
-            typeDefine.AttributeDefines = attributeDefines;
-        }
+ 
         return await base.UpdateAsync(id, form);
     }
 
