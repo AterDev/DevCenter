@@ -23,5 +23,9 @@ public class ResourceTypeDefinitionUpdateDto
     /// 状态
     /// </summary>
     public Status? Status { get; set; }
+    /// <summary>
+    /// 包含的属性定义
+    /// </summary>
+    public List<Guid>? AttributeDefineIds { get; set; }
 
 }

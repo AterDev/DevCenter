@@ -37,7 +37,7 @@
     </mat-form-field>
     <mat-form-field>
       <mat-label>选择属性</mat-label>
-      <mat-select formControlName="attributeDefineIds" multiple (selectionChange)="choseDefine($event)">
+      <mat-select formControlName="attributeDefineIds" multiple >
         <mat-option *ngFor="let define of attributeDefines" [value]="define.id">
           {{define.displayName}}
         </mat-option>

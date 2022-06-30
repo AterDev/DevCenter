@@ -21,11 +21,25 @@ public class ResourceTypeDefinitionDataStore : DataStoreBase<ContextBase, Resour
 
     public override async Task<ResourceTypeDefinition?> UpdateAsync(Guid id, ResourceTypeDefinitionUpdateDto dto)
     {
-        return await base.UpdateAsync(id, dto);
+        var typeDefine = await _db.FindAsync(id);
+        typeDefine!.AttributeDefines = null;
+        if (dto.AttributeDefineIds != null)
+        {
+            var attributeDefines = await _context.ResourceAttributeDefines.Where(a => dto.AttributeDefineIds.Contains(a.Id)).ToListAsync();
+            typeDefine.AttributeDefines = attributeDefines;
+        }
+        await _context.SaveChangesAsync();
+        return typeDefine;
     }
 
     public override async Task<bool> DeleteAsync(Guid id)
     {
         return await base.DeleteAsync(id);
+    }
+
+    public override async Task<ResourceTypeDefinition?> FindAsync(Guid id, bool noTracking = false)
+    {
+        return await _db.Include(d => d.AttributeDefines)
+            .SingleOrDefaultAsync(d => d.Id == id);
     }
 }

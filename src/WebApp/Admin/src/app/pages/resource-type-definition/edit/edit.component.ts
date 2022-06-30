@@ -8,6 +8,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Location } from '@angular/common';
 import { Status } from 'src/app/share/models/enum/status.model';
+import { ResourceAttributeDefineItemDto } from 'src/app/share/models/resource-attribute-define/resource-attribute-define-item-dto.model';
+import { ResourceAttributeDefineService } from 'src/app/share/services/resource-attribute-define.service';
 
 @Component({
   selector: 'app-edit',
@@ -16,15 +18,17 @@ import { Status } from 'src/app/share/models/enum/status.model';
 })
 export class EditComponent implements OnInit {
   Status = Status;
-
   id!: string;
   isLoading = true;
   data = {} as ResourceTypeDefinition;
   updateData = {} as ResourceTypeDefinitionUpdateDto;
+
+  attributeDefines: ResourceAttributeDefineItemDto[] = [];
   formGroup!: FormGroup;
-    constructor(
-    
+  constructor(
+
     private service: ResourceTypeDefinitionService,
+    private attributeDefineSrv: ResourceAttributeDefineService,
     private snb: MatSnackBar,
     private router: Router,
     private route: ActivatedRoute,
@@ -40,37 +44,41 @@ export class EditComponent implements OnInit {
     }
   }
 
-    get name() { return this.formGroup.get('name'); }
-    get description() { return this.formGroup.get('description'); }
-    get icon() { return this.formGroup.get('icon'); }
-    get color() { return this.formGroup.get('color'); }
-    get status() { return this.formGroup.get('status'); }
+  get name() { return this.formGroup.get('name'); }
+  get description() { return this.formGroup.get('description'); }
+  get icon() { return this.formGroup.get('icon'); }
+  get color() { return this.formGroup.get('color'); }
+  get attributeDefineIds() { return this.formGroup.get('attributeDefineIds'); }
+  get status() { return this.formGroup.get('status'); }
 
 
   ngOnInit(): void {
     this.getDetail();
-    
-    // TODO:获取其他相关数据后设置加载状态
-    this.isLoading = false;
   }
-  
+
   getDetail(): void {
-    this.service.getDetail(this.id)
+    this.attributeDefineSrv.filter({ pageIndex: 1, pageSize: 30 })
       .subscribe(res => {
-        this.data = res;
-        this.initForm();
-        this.isLoading = false;
-      }, error => {
-        this.snb.open(error);
+        if (res) {
+          this.attributeDefines = res.data!;
+          this.service.getDetail(this.id)
+            .subscribe(res => {
+              this.data = res;
+              this.initForm();
+              this.isLoading = false;
+            });
+        }
       })
   }
 
   initForm(): void {
+    var attributeDefineIds = this.data.attributeDefines?.map(d => d.id);
     this.formGroup = new FormGroup({
       name: new FormControl(this.data.name, [Validators.maxLength(100)]),
       description: new FormControl(this.data.description, [Validators.maxLength(400)]),
       icon: new FormControl(this.data.icon, [Validators.maxLength(300)]),
       color: new FormControl(this.data.color, [Validators.maxLength(12)]),
+      attributeDefineIds: new FormControl(attributeDefineIds, [Validators.required]),
       status: new FormControl(this.data.status, []),
 
     });
@@ -97,19 +105,20 @@ export class EditComponent implements OnInit {
         return this.status?.errors?.['required'] ? 'Status必填' :
           this.status?.errors?.['minlength'] ? 'Status长度最少位' :
             this.status?.errors?.['maxlength'] ? 'Status长度最多位' : '';
-
+      case 'attributeDefineIds':
+        return this.color?.errors?.['required'] ? '请选择包含的属性' : '';
       default:
         return '';
     }
   }
   edit(): void {
-    if(this.formGroup.valid) {
+    if (this.formGroup.valid) {
       this.updateData = this.formGroup.value as ResourceTypeDefinitionUpdateDto;
       this.service.update(this.id, this.updateData)
         .subscribe(res => {
           this.snb.open('修改成功');
-           // this.dialogRef.close(res);
-          // this.router.navigate(['../index'],{relativeTo: this.route});
+          // this.dialogRef.close(res);
+          this.router.navigate(['../index'],{relativeTo: this.route});
         });
     }
   }
@@ -117,21 +126,4 @@ export class EditComponent implements OnInit {
   back(): void {
     this.location.back();
   }
-
-  upload(event: any, type ?: string): void {
-    const files = event.target.files;
-    if(files[0]) {
-    const formdata = new FormData();
-    formdata.append('file', files[0]);
-    /*    this.service.uploadFile('agent-info' + type, formdata)
-          .subscribe(res => {
-            this.updateData.logoUrl = res.url;
-          }, error => {
-            this.snb.open(error?.detail);
-          }); */
-    } else {
-
-    }
-  }
-
 }

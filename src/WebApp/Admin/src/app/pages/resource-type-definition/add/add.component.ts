@@ -92,9 +92,6 @@ export class AddComponent implements OnInit {
     }
   }
 
-  choseDefine(event: any): void {
-    console.log(event);
-  }
   add(): void {
     if (this.formGroup.valid) {
       const data = this.formGroup.value as ResourceTypeDefinitionAddDto;
