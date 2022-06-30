@@ -110,7 +110,7 @@ export class IndexComponent implements OnInit {
       if (res) { }
     });
   }
-  
+
   openEditDialog(id: string): void {
     const ref = this.dialog.open(EditComponent, {
       hasBackdrop: true,
@@ -130,7 +130,7 @@ export class IndexComponent implements OnInit {
    */
   edit(id: string): void {
     console.log(id);
-    this.router.navigateByUrl('/resource-type-definition/edit/' + id);
+    this.router.navigateByUrl('/admin/resource-type-definition/edit/' + id);
   }
 
 }

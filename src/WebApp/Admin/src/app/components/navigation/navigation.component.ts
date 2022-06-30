@@ -15,7 +15,6 @@ export class NavigationComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    console.log(this.accordion);
     if (this.expanded) {
       this.accordion?.openAll();
     } else {

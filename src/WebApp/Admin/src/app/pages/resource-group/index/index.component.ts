@@ -19,7 +19,7 @@ export class IndexComponent implements OnInit {
   isLoading = true;
   total = 0;
   data: ResourceGroupItemDto[] = [];
-  columns: string[] = ['name', 'descriptioin', 'id', 'actions'];
+  columns: string[] = ['name', 'descriptioin', 'actions'];
   dataSource!: MatTableDataSource<ResourceGroupItemDto>;
   filter: ResourceGroupFilterDto;
   pageSizeOption = [12, 20, 50];
@@ -110,7 +110,7 @@ export class IndexComponent implements OnInit {
       if (res) { }
     });
   }
-  
+
   openEditDialog(id: string): void {
     const ref = this.dialog.open(EditComponent, {
       hasBackdrop: true,
@@ -130,7 +130,7 @@ export class IndexComponent implements OnInit {
    */
   edit(id: string): void {
     console.log(id);
-    this.router.navigateByUrl('/resource-group/edit/' + id);
+    this.router.navigateByUrl('/admin/resource-group/edit/' + id);
   }
 
 }

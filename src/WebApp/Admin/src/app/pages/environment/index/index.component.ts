@@ -19,7 +19,7 @@ export class IndexComponent implements OnInit {
   isLoading = true;
   total = 0;
   data: EnvironmentItemDto[] = [];
-  columns: string[] = ['name', 'description', 'id', 'actions'];
+  columns: string[] = ['name', 'description', 'actions'];
   dataSource!: MatTableDataSource<EnvironmentItemDto>;
   filter: EnvironmentFilterDto;
   pageSizeOption = [12, 20, 50];
@@ -110,7 +110,7 @@ export class IndexComponent implements OnInit {
       if (res) { }
     });
   }
-  
+
   openEditDialog(id: string): void {
     const ref = this.dialog.open(EditComponent, {
       hasBackdrop: true,

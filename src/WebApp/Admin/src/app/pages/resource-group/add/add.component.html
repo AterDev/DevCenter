@@ -22,10 +22,10 @@
       </mat-error>
     </mat-form-field>
     <mat-form-field>
-      <mat-label>Status</mat-label>
-      <mat-select formControlName="status">
-        <mat-option *ngFor="let item of Status | toKeyValue" [value]="item.value">
-          {{item.key}}
+      <mat-label>环境</mat-label>
+      <mat-select formControlName="environmentId">
+        <mat-option *ngFor="let item of environments" [value]="item.id">
+          {{item.name}}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="environmentId?.invalid">

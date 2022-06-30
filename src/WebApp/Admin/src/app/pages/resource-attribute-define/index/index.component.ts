@@ -19,7 +19,7 @@ export class IndexComponent implements OnInit {
   isLoading = true;
   total = 0;
   data: ResourceAttributeDefineItemDto[] = [];
-  columns: string[] = ['displayName',　'name',　'isEnable',　'actions'];
+  columns: string[] = ['displayName', 'name', 'isEnable', 'actions'];
   dataSource!: MatTableDataSource<ResourceAttributeDefineItemDto>;
   filter: ResourceAttributeDefineFilterDto;
   pageSizeOption = [12, 20, 50];
@@ -41,7 +41,7 @@ export class IndexComponent implements OnInit {
   }
 
   getList(event?: PageEvent): void {
-    if(event) {
+    if (event) {
       this.filter.pageIndex = event.pageIndex + 1;
       this.filter.pageSize = event.pageSize;
     }
@@ -83,54 +83,54 @@ export class IndexComponent implements OnInit {
           this.snb.open('删除失败');
         }
       });
-}
+  }
 
-/*
-openAddDialog(): void {
-  const ref = this.dialog.open(AddComponent, {
-    hasBackdrop: true,
-    disableClose: false,
-    data: {
-    }
-  });
-  ref.afterClosed().subscribe(res => {
-    if (res) {
-      this.snb.open('添加成功');
-      this.getList();
-    }
-  });
-}
-openDetailDialog(id: string): void {
-  const ref = this.dialog.open(DetailComponent, {
-    hasBackdrop: true,
-    disableClose: false,
-    data: { id }
-  });
-  ref.afterClosed().subscribe(res => {
-    if (res) { }
-  });
-}
+  /*
+  openAddDialog(): void {
+    const ref = this.dialog.open(AddComponent, {
+      hasBackdrop: true,
+      disableClose: false,
+      data: {
+      }
+    });
+    ref.afterClosed().subscribe(res => {
+      if (res) {
+        this.snb.open('添加成功');
+        this.getList();
+      }
+    });
+  }
+  openDetailDialog(id: string): void {
+    const ref = this.dialog.open(DetailComponent, {
+      hasBackdrop: true,
+      disableClose: false,
+      data: { id }
+    });
+    ref.afterClosed().subscribe(res => {
+      if (res) { }
+    });
+  }
 
-openEditDialog(id: string): void {
-  const ref = this.dialog.open(EditComponent, {
-    hasBackdrop: true,
-    disableClose: false,
-    data: { id }
-  });
-  ref.afterClosed().subscribe(res => {
-    if (res) {
-      this.snb.open('修改成功');
-      this.getList();
-    }
-  });
-}*/
+  openEditDialog(id: string): void {
+    const ref = this.dialog.open(EditComponent, {
+      hasBackdrop: true,
+      disableClose: false,
+      data: { id }
+    });
+    ref.afterClosed().subscribe(res => {
+      if (res) {
+        this.snb.open('修改成功');
+        this.getList();
+      }
+    });
+  }*/
 
   /**
    * 编辑
    */
   edit(id: string): void {
     console.log(id);
-    this.router.navigateByUrl('/resource-attribute-define/edit/' + id);
+    this.router.navigateByUrl('/admin/resource-attribute-define/edit/' + id);
   }
 
 }

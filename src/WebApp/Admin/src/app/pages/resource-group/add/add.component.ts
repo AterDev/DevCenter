@@ -21,7 +21,6 @@ export class AddComponent implements OnInit {
 
   formGroup!: FormGroup;
   data = {} as ResourceGroupAddDto;
-
   environments: EnvironmentItemDto[] = [];
   isLoading = true;
   constructor(
@@ -45,6 +44,7 @@ export class AddComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
+    this.getEnvionments();
   }
   getEnvionments(): void {
     this.envSrv.filter({ pageIndex: 1, pageSize: 100 })
@@ -89,7 +89,7 @@ export class AddComponent implements OnInit {
         .subscribe(res => {
           this.snb.open('添加成功');
           // this.dialogRef.close(res);
-          // this.router.navigate(['../index'],{relativeTo: this.route});
+          this.router.navigate(['../index'], { relativeTo: this.route });
         });
     }
   }
