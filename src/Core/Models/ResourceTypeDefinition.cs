@@ -5,15 +5,9 @@
     /// </summary>
     public class ResourceTypeDefinition : EntityBase
     {
-        public ResourceTypeDefinition(string name)
-        {
-            Name = name;
-        }
-
-        private ResourceTypeDefinition() { }
 
         [MaxLength(100)]
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
 
         [MaxLength(400)]
         public string? Description { get; set; }

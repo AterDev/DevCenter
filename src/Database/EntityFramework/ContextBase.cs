@@ -33,6 +33,7 @@ public class ContextBase : DbContext
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        builder.UseHiLo();
         builder.Entity<Resource>(e =>
         {
             e.HasIndex(a => a.Name);
@@ -65,7 +66,6 @@ public class ContextBase : DbContext
             e.HasIndex(a => a.Status);
 
         });
-
         builder.Entity<Role>(e =>
         {
             e.HasIndex(m => m.Name);

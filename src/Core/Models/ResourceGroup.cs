@@ -6,7 +6,7 @@
     public class ResourceGroup : EntityBase
     {
         [MaxLength(100)]
-        public string Name { get; set; }
+        public string Name { get; set; } = default;
         /// <summary>
         /// 描述
         /// </summary>
@@ -18,13 +18,6 @@
         [MaxLength(50)]
         public Environment Environment { get; set; } = default!;
         public List<Resource>? Resources { get; set; }
-        public ResourceGroup(string name)
-        {
-            Name = name;
-        }
-        private ResourceGroup()
-        {
 
-        }
     }
 }

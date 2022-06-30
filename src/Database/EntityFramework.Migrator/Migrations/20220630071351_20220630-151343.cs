@@ -1,13 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace EntityFramework.Migrator.Migrations
 {
-    public partial class _20220526215137 : Migration
+    public partial class _20220630151343 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateSequence(
+                name: "EntityFrameworkHiLoSequence",
+                incrementBy: 10);
+
             migrationBuilder.CreateTable(
                 name: "CodeFolders",
                 columns: table => new
@@ -166,7 +171,7 @@ namespace EntityFramework.Migrator.Migrations
                     UserName = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
                     RealName = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: true),
                     Position = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: true),
-                    Email = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    Email = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     EmailConfirmed = table.Column<bool>(type: "boolean", nullable: false),
                     PasswordHash = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     PasswordSalt = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
@@ -642,6 +647,9 @@ namespace EntityFramework.Migrator.Migrations
 
             migrationBuilder.DropTable(
                 name: "Environments");
+
+            migrationBuilder.DropSequence(
+                name: "EntityFrameworkHiLoSequence");
         }
     }
 }

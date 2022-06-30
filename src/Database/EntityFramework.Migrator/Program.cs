@@ -4,14 +4,18 @@ using Microsoft.Extensions.Hosting;
 
 var configBuilder = new ConfigurationBuilder()
     .AddJsonFile($"appsettings.json", true, true)
-    .AddUserSecrets(typeof(Program).Assembly)
     .AddEnvironmentVariables();
 
 var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 if (!string.IsNullOrEmpty(env))
 {
     configBuilder.AddJsonFile($"appsettings.{env}.json", true, true);
+    if (env.Equals("environment"))
+    {
+        configBuilder.AddUserSecrets(typeof(Program).Assembly);
+    }
 }
+
 var config = configBuilder.Build();
 
 var host = Host.CreateDefaultBuilder(args)

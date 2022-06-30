@@ -20,14 +20,5 @@
         /// </summary>
         public short Sort { get; set; } = 0;
 
-        public ResourceAttributeDefine(string displayName)
-        {
-            DisplayName = displayName ?? throw new ArgumentNullException(nameof(displayName));
-        }
-
-        private ResourceAttributeDefine()
-        {
-
-        }
     }
 }

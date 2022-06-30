@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Core.Models;
 
 /// <summary>
@@ -7,7 +9,8 @@ namespace Core.Models;
 public class EntityBase
 {
     [Key]
-    public Guid Id { get; set; } = Guid.NewGuid();
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public Guid Id { get; set; }
     /// <summary>
     /// 状态
     /// </summary>

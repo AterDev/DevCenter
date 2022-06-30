@@ -16,6 +16,11 @@ public class InitDataTask
                 Console.WriteLine("初始化数据");
                 await InitRoleAndUserAsync(context);
             }
+            var resourceAttributeDefines = await context.ResourceAttributeDefines.FirstOrDefaultAsync();
+            if (resourceAttributeDefines == null)
+            {
+                await InitResourceAsync(context);
+            }
             context.Database.SetCommandTimeout(timeout);
         }
         catch (Exception ex)
@@ -65,8 +70,16 @@ public class InitDataTask
         await context.AddRangeAsync(attributes);
 
         // 资源类型
-        var resourceTypes = Config.typeDefinitions;
+        var resourceTypes = Config.TypeDefinitions;
         await context.AddRangeAsync(resourceTypes);
+
+        // 标签
+        var resourceTags = Config.ResourceTags;
+        await context.AddRangeAsync(resourceTags);
+        // 环境
+        var environments = Config.Environments;
+        await context.AddRangeAsync(environments);
         await context.SaveChangesAsync();
+
     }
 }
