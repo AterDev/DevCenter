@@ -6,8 +6,15 @@ namespace Http.API.Controllers;
 /// </summary>
 public class ResourceGroupController : RestApiBase<ResourceGroupDataStore, ResourceGroup, ResourceGroupAddDto, ResourceGroupUpdateDto, ResourceGroupFilterDto, ResourceGroupItemDto>
 {
-    public ResourceGroupController(IUserContext user, ILogger<ResourceGroupController> logger, ResourceGroupDataStore store) : base(user, logger, store)
+
+    private readonly EnvironmentDataStore environmentStore;
+    public ResourceGroupController(
+        IUserContext user,
+        ILogger<ResourceGroupController> logger,
+        ResourceGroupDataStore store,
+        EnvironmentDataStore environmentDataStore) : base(user, logger, store)
     {
+        environmentStore = environmentDataStore;
     }
 
     /// <summary>
@@ -27,7 +34,12 @@ public class ResourceGroupController : RestApiBase<ResourceGroupDataStore, Resou
     /// <returns></returns>
     public override async Task<ActionResult<ResourceGroup>> AddAsync(ResourceGroupAddDto form)
     {
-        return await base.AddAsync(form);
+        var environment = await environmentStore.FindAsync(form.EnvironmentId);
+        if (environment == null) return BadRequest("未找到关联的环境");
+        var group = new ResourceGroup();
+        group = group.Merge(form);
+        group.Environment = environment;
+        return await _store.AddAsync(group);
     }
 
     /// <summary>

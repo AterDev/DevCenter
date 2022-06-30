@@ -11,10 +11,6 @@ public class ResourceGroupAddDto
     /// </summary>
     [MaxLength(400)]
     public string? Descriptioin { get; set; }
-    /// <summary>
-    /// 状态
-    /// </summary>
-    public Status Status { get; set; } = default!;
     public Guid EnvironmentId { get; set; } = default!;
 
 }

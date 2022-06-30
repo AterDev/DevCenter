@@ -130,7 +130,7 @@ export class IndexComponent implements OnInit {
    */
   edit(id: string): void {
     console.log(id);
-    this.router.navigateByUrl('/environment/edit/' + id);
+    this.router.navigateByUrl('/admin/environment/edit/' + id);
   }
 
 }
