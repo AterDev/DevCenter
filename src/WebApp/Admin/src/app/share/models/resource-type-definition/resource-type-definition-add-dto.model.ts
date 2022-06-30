@@ -1,4 +1,3 @@
-import { Status } from '../enum/status.model';
 /**
  * 资源类型的定义
  */
@@ -14,8 +13,8 @@ export interface ResourceTypeDefinitionAddDto {
    */
   color?: string | null;
   /**
-   * 状态
+   * 包含的属性定义
    */
-  status?: Status;
+  attributeDefineIds?: string[] | null;
 
 }

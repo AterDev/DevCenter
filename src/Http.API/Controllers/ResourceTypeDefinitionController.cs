@@ -1,3 +1,5 @@
+using Http.Application.DataStore;
+
 using Share.Models.ResourceTypeDefinitionDtos;
 namespace Http.API.Controllers;
 
@@ -6,8 +8,16 @@ namespace Http.API.Controllers;
 /// </summary>
 public class ResourceTypeDefinitionController : RestApiBase<ResourceTypeDefinitionDataStore, ResourceTypeDefinition, ResourceTypeDefinitionAddDto, ResourceTypeDefinitionUpdateDto, ResourceTypeDefinitionFilterDto, ResourceTypeDefinitionItemDto>
 {
-    public ResourceTypeDefinitionController(IUserContext user, ILogger<ResourceTypeDefinitionController> logger, ResourceTypeDefinitionDataStore store) : base(user, logger, store)
+    private readonly ResourceAttributeDefineDataStore attributeDataStore;
+
+    public ResourceTypeDefinitionController(
+        IUserContext user,
+        ILogger<ResourceTypeDefinitionController> logger,
+        ResourceTypeDefinitionDataStore store,
+        ResourceAttributeDefineDataStore attributeDefineDataStore
+        ) : base(user, logger, store)
     {
+        this.attributeDataStore = attributeDefineDataStore;
     }
 
     /// <summary>
@@ -27,7 +37,15 @@ public class ResourceTypeDefinitionController : RestApiBase<ResourceTypeDefiniti
     /// <returns></returns>
     public override async Task<ActionResult<ResourceTypeDefinition>> AddAsync(ResourceTypeDefinitionAddDto form)
     {
-        return await base.AddAsync(form);
+        var typeDefine = new ResourceTypeDefinition();
+        typeDefine = typeDefine.Merge(form);
+
+        if (form.AttributeDefineIds != null)
+        {
+            var attributeDefines = await attributeDataStore.Db.Where(a => form.AttributeDefineIds.Contains(a.Id)).ToListAsync();
+            typeDefine.AttributeDefines = attributeDefines;
+        }
+        return await _store.AddAsync(typeDefine);
     }
 
     /// <summary>

@@ -20,8 +20,7 @@ public class ResourceTypeDefinitionAddDto
     [MaxLength(12)]
     public string? Color { get; set; }
     /// <summary>
-    /// 状态
+    /// 包含的属性定义
     /// </summary>
-    public Status Status { get; set; } = default!;
-
+    public List<Guid>? AttributeDefineIds { get; set; }
 }

@@ -7,6 +7,6 @@ export interface ResourceTypeDefinition extends EntityBase {
   icon?: string | null;
   color?: string | null;
   attributeDefines?: ResourceAttributeDefine[] | null;
-  resources?: Resource[];
+  resources?: Resource[] | null;
 
 }

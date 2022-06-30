@@ -19,6 +19,5 @@
         public short Sort { get; set; } = 0;
 
         public Resource Resource { get; set; } = default!;
-        private ResourceAttribute() { }
     }
 }

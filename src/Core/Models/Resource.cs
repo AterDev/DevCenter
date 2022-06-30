@@ -6,7 +6,7 @@
     public class Resource : EntityBase
     {
         [MaxLength(100)]
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
         [MaxLength(400)]
         public string? Description { get; set; }
 
@@ -24,12 +24,5 @@
         public ResourceGroup Group { get; set; } = default!;
 
         public List<ResourceTags>? Tags { get; set; }
-
-        public Resource(string name)
-        {
-            Name = name;
-        }
-
-        private Resource() { }
     }
 }

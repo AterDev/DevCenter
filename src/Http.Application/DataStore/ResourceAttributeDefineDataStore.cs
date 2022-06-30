@@ -12,6 +12,7 @@ public class ResourceAttributeDefineDataStore : DataStoreBase<ContextBase, Resou
 
     public override async Task<PageResult<ResourceAttributeDefineItemDto>> FindWithPageAsync(ResourceAttributeDefineFilterDto filter)
     {
+        _query = _query.OrderBy(q => q.Sort);
         return await base.FindWithPageAsync(filter);
     }
     public override async Task<ResourceAttributeDefine> AddAsync(ResourceAttributeDefine data)
