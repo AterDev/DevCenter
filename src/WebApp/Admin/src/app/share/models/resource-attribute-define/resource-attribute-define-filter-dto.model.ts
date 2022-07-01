@@ -7,10 +7,6 @@ export interface ResourceAttributeDefineFilterDto extends FilterBase {
    * 是否必须
    */
   required?: boolean | null;
-  /**
-   * 排序 
-   */
-  sort?: number | null;
   typeId?: string | null;
 
 }

@@ -1,15 +1,16 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ResourceService } from 'src/app/share/services/resource.service';
-import { Resource } from 'src/app/share/models/resource/resource.model';
 import { ResourceAddDto } from 'src/app/share/models/resource/resource-add-dto.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Location } from '@angular/common';
 import { Status } from 'src/app/share/models/enum/status.model';
 import { lastValueFrom } from 'rxjs';
 import { Selection } from 'src/app/share/models/selection.model';
+import { ResourceAttributeDefineItemDto } from 'src/app/share/models/resource-attribute-define/resource-attribute-define-item-dto.model';
+import { MatSelectChange } from '@angular/material/select';
+import { ResourceAttributeDefineService } from 'src/app/share/services/resource-attribute-define.service';
 
 @Component({
   selector: 'app-add',
@@ -24,9 +25,11 @@ export class AddComponent implements OnInit {
   isLoading = true;
   groupSelections = [] as Selection[];
   tagSelections = [] as Selection[];
+  attributeDefines = [] as ResourceAttributeDefineItemDto[];
   typeDefineSelections = [] as Selection[];
   constructor(
     private service: ResourceService,
+    private attributeDefineSrv: ResourceAttributeDefineService,
     public snb: MatSnackBar,
     private router: Router,
     private route: ActivatedRoute,
@@ -87,9 +90,15 @@ export class AddComponent implements OnInit {
     }
   }
 
-  typeSwitch(event: any) {
-    console.log(event);
+  typeSwitch(event: MatSelectChange) {
 
+    this.attributeDefineSrv.filter({
+      pageIndex: 1, pageSize: 20, typeId: event.value
+    }).subscribe(res => {
+      if (res) {
+        this.attributeDefines = res.data!;
+      }
+    });
   }
   add(): void {
     if (this.formGroup.valid) {

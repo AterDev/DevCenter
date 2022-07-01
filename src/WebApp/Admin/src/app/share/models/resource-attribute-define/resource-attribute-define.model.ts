@@ -1,5 +1,6 @@
 import { EntityBase } from '../entity-base.model';
 import { ValueType } from '../enum/value-type.model';
+import { ResourceTypeDefinition } from '../resource-type-definition/resource-type-definition.model';
 export interface ResourceAttributeDefine extends EntityBase {
   displayName: string;
   name: string;
@@ -16,5 +17,6 @@ export interface ResourceAttributeDefine extends EntityBase {
   isEnable: boolean;
   required: boolean;
   sort: number;
+  typeDefinitions?: ResourceTypeDefinition[] | null;
 
 }

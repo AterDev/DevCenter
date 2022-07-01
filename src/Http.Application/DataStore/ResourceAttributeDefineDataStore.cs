@@ -19,9 +19,14 @@ public class ResourceAttributeDefineDataStore : DataStoreBase<ContextBase, Resou
         }
         if (filter.TypeId != null)
         {
-            var type = await _context.ResourceTypeDefinitions.FindAsync(filter.TypeId);
-            if (type != null)
-                _query = _query.Where(q => q.TypeDefinitions != null && q.TypeDefinitions.Contains(type));
+            var ids = await _context.ResourceTypeDefinitions
+                .Where(r => r.Id == filter.TypeId && r.AttributeDefines != null)
+                .SelectMany(s => s.AttributeDefines)
+                .Select(d => d.Id)
+                .ToListAsync();
+
+            if (ids != null)
+                _query = _query.Where(q => ids.Contains(q.Id));
         }
         return await base.FindWithPageAsync(filter);
     }
