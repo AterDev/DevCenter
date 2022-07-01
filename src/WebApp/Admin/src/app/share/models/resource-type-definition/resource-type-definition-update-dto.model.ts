@@ -17,5 +17,9 @@ export interface ResourceTypeDefinitionUpdateDto {
    * 状态
    */
   status?: Status | null;
+  /**
+   * 包含的属性定义
+   */
+  attributeDefineIds?: string[] | null;
 
 }
