@@ -12,5 +12,4 @@ public class ResourceGroupAddDto
     [MaxLength(400)]
     public string? Descriptioin { get; set; }
     public Guid EnvironmentId { get; set; } = default!;
-
 }

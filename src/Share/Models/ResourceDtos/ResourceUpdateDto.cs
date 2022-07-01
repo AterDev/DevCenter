@@ -12,7 +12,14 @@ public class ResourceUpdateDto
     /// 状态
     /// </summary>
     public Status? Status { get; set; }
-    public Guid? ResourceTypeId { get; set; } = default!;
-    public Guid? GroupId { get; set; } = default!;
-
+    public Guid? ResourceTypeId { get; set; }
+    public Guid? GroupId { get; set; }
+    /// <summary>
+    /// 包含属性
+    /// </summary>
+    public List<ResourceAttribute>? Attributes { get; set; }
+    /// <summary>
+    /// 标签id
+    /// </summary>
+    public List<Guid>? TagIds { get; set; }
 }

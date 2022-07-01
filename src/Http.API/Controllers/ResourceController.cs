@@ -27,6 +27,24 @@ public class ResourceController : RestApiBase<ResourceDataStore, Resource, Resou
     /// <returns></returns>
     public override async Task<ActionResult<Resource>> AddAsync(ResourceAddDto form)
     {
+        var group = await _store.FindGroupAsync(form.GroupId);
+        if (group == null) return BadRequest("不存在的资源组");
+
+        var type = await _store.FindTypeAsync(form.ResourceTypeId);
+        if (type == null) return BadRequest("不存在的类型");
+
+        var resource = new Resource()
+        {
+            Group = group,
+            ResourceType = type,
+        };
+        resource = resource.Merge(form);
+        if (form.TagIds != null)
+        {
+            var tags = await _store.FindTagsAsync(form.TagIds);
+            resource.Tags = tags;
+        }
+
         return await base.AddAsync(form);
     }
 

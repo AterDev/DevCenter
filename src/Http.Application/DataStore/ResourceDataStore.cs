@@ -9,6 +9,10 @@ public class ResourceDataStore : DataStoreBase<ContextBase, Resource, ResourceUp
     {
         return await base.FindAsync(filter, noTracking);
     }
+    public override async Task<Resource?> FindAsync(Guid id, bool noTracking = false)
+    {
+        return await _db.Include(d => d.Attributes).SingleOrDefaultAsync(d => d.Id == id);
+    }
 
     public override async Task<PageResult<ResourceItemDto>> FindWithPageAsync(ResourceFilterDto filter)
     {
@@ -21,11 +25,60 @@ public class ResourceDataStore : DataStoreBase<ContextBase, Resource, ResourceUp
 
     public override async Task<Resource?> UpdateAsync(Guid id, ResourceUpdateDto dto)
     {
-        return await base.UpdateAsync(id, dto);
+        var resource = await FindAsync(id);
+        resource = resource.Merge(dto);
+        resource!.Attributes = null;
+        resource!.Tags = null;
+        if (dto.ResourceTypeId != null)
+        {
+            var resourceType = await _context.ResourceTypeDefinitions.FindAsync(dto.ResourceTypeId);
+            resource.ResourceType = resourceType!;
+        }
+        if (dto.GroupId != null)
+        {
+            var group = await _context.ResourceGroups.FindAsync(dto.GroupId);
+            resource.Group = group!;
+        }
+        if (dto.TagIds != null)
+        {
+            var tags = await _context.ResourceTags.Where(t => dto.TagIds.Contains(t.Id)).ToListAsync();
+            resource.Tags = tags;
+        }
+        await _context.SaveChangesAsync();
+        return resource;
     }
 
     public override async Task<bool> DeleteAsync(Guid id)
     {
         return await base.DeleteAsync(id);
+    }
+    /// <summary>
+    /// 获取关联的组
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public async Task<ResourceGroup?> FindGroupAsync(Guid id)
+    {
+        return await _context.ResourceGroups.FindAsync(id);
+    }
+    /// <summary>
+    /// 获取关联的类型
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public async Task<ResourceTypeDefinition?> FindTypeAsync(Guid id)
+    {
+        return await _context.ResourceTypeDefinitions.FindAsync(id);
+    }
+
+    /// <summary>
+    /// 获取标签
+    /// </summary>
+    /// <param name="ids"></param>
+    /// <returns></returns>
+    public async Task<List<ResourceTags>?> FindTagsAsync(List<Guid> ids)
+    {
+        return await _context.ResourceTags.Where(t => ids.Contains(t.Id))
+            .ToListAsync();
     }
 }

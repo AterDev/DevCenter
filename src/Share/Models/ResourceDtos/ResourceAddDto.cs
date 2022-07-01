@@ -8,11 +8,22 @@ public class ResourceAddDto
     public string Name { get; set; } = default!;
     [MaxLength(400)]
     public string? Description { get; set; }
+
     /// <summary>
-    /// 状态
+    /// 资源类型id
     /// </summary>
-    public Status Status { get; set; } = default!;
     public Guid ResourceTypeId { get; set; } = default!;
+    /// <summary>
+    /// 资源组
+    /// </summary>
     public Guid GroupId { get; set; } = default!;
+    /// <summary>
+    /// 包含属性
+    /// </summary>
+    public List<ResourceAttribute>? Attributes { get; set; }
+    /// <summary>
+    /// 标签id
+    /// </summary>
+    public List<Guid>? TagIds { get; set; }
 
 }
