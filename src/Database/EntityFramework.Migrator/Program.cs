@@ -10,7 +10,7 @@ var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 if (!string.IsNullOrEmpty(env))
 {
     configBuilder.AddJsonFile($"appsettings.{env}.json", true, true);
-    if (env.Equals("environment"))
+    if (env.Equals("Development"))
     {
         configBuilder.AddUserSecrets(typeof(Program).Assembly);
     }

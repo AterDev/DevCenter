@@ -5,6 +5,7 @@ import { ResourceFilterDto } from '../models/resource/resource-filter-dto.model'
 import { ResourceAddDto } from '../models/resource/resource-add-dto.model';
 import { ResourceUpdateDto } from '../models/resource/resource-update-dto.model';
 import { PageResultOfResourceItemDto } from '../models/resource/page-result-of-resource-item-dto.model';
+import { ResourceSelectDataDto } from '../models/resource/resource-select-data-dto.model';
 import { Resource } from '../models/resource/resource.model';
 
 /**
@@ -19,6 +20,14 @@ export class ResourceService extends BaseService {
   filter(data: ResourceFilterDto): Observable<PageResultOfResourceItemDto> {
     const url = `/api/Resource/filter`;
     return this.request<PageResultOfResourceItemDto>('post', url, data);
+  }
+
+  /**
+   * 获取关联的选项
+   */
+  getSelectionData(): Observable<ResourceSelectDataDto> {
+    const url = `/api/Resource/selection`;
+    return this.request<ResourceSelectDataDto>('get', url);
   }
 
   /**

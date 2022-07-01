@@ -13,10 +13,6 @@ public class ResourceAttributeDefineFilterDto : FilterBase
     /// 是否必须
     /// </summary>
     public bool? Required { get; set; }
-    /// <summary>
-    /// 排序 
-    /// </summary>
-    public short? Sort { get; set; }
     public Guid? TypeId { get; set; } = default!;
 
 }

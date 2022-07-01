@@ -1,4 +1,4 @@
-import { Status } from '../enum/status.model';
+import { ResourceAttribute } from '../resource-attribute/resource-attribute.model';
 /**
  * 资源
  */
@@ -6,10 +6,20 @@ export interface ResourceAddDto {
   name: string;
   description?: string | null;
   /**
-   * 状态
+   * 资源类型id
    */
-  status?: Status;
   resourceTypeId: string;
+  /**
+   * 资源组
+   */
   groupId: string;
+  /**
+   * 包含属性
+   */
+  attributes?: ResourceAttribute[] | null;
+  /**
+   * 标签id
+   */
+  tagIds?: string[] | null;
 
 }

@@ -19,6 +19,10 @@
         /// 排序 
         /// </summary>
         public short Sort { get; set; } = 0;
+        /// <summary>
+        /// 关联的类型定义
+        /// </summary>
+        public List<ResourceTypeDefinition>? TypeDefinitions { get; set; }
 
     }
 }
