@@ -20,7 +20,7 @@ public class ResourceAttributeDefineDataStore : DataStoreBase<ContextBase, Resou
         if (filter.TypeId != null)
         {
             var ids = await _context.ResourceTypeDefinitions
-                .Where(r => r.Id == filter.TypeId && r.AttributeDefines != null)
+                .Where(r => r.Id == filter.TypeId)
                 .SelectMany(s => s.AttributeDefines)
                 .Select(d => d.Id)
                 .ToListAsync();
