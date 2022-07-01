@@ -21,6 +21,15 @@ public class ResourceController : RestApiBase<ResourceDataStore, Resource, Resou
     }
 
     /// <summary>
+    /// 获取关联的选项
+    /// </summary>
+    /// <returns></returns>
+    public async Task<ActionResult<ResourceSelectDataDto>> GetSelectionDataAsync()
+    {
+        return await _store.GetRelationSelectDataAsync();
+    }
+
+    /// <summary>
     /// 添加
     /// </summary>
     /// <param name="form"></param>

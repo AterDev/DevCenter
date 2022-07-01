@@ -70,7 +70,6 @@ public class ResourceDataStore : DataStoreBase<ContextBase, Resource, ResourceUp
     {
         return await _context.ResourceTypeDefinitions.FindAsync(id);
     }
-
     /// <summary>
     /// 获取标签
     /// </summary>
@@ -80,5 +79,39 @@ public class ResourceDataStore : DataStoreBase<ContextBase, Resource, ResourceUp
     {
         return await _context.ResourceTags.Where(t => ids.Contains(t.Id))
             .ToListAsync();
+    }
+
+    /// <summary>
+    /// 获取关联可选择的内容
+    /// </summary>
+    public async Task<ResourceSelectDataDto> GetRelationSelectDataAsync()
+    {
+        var types = await _context.ResourceTypeDefinitions
+            .Select(s => new Selection
+            {
+                Id = s.Id,
+                Name = s.Name
+            }).ToListAsync();
+
+        var tags = await _context.ResourceTags
+            .Select(s => new Selection
+            {
+                Id = s.Id,
+                Name = s.Name
+            }).ToListAsync();
+
+        var group = await _context.ResourceGroups
+            .Select(s => new Selection
+            {
+                Id = s.Id,
+                Name = s.Name
+            }).ToListAsync();
+
+        return new ResourceSelectDataDto
+        {
+            TypeDefines = types,
+            Group = group,
+            Tags = tags
+        };
     }
 }
