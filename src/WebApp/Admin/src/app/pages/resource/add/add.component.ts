@@ -11,11 +11,13 @@ import { Selection } from 'src/app/share/models/selection.model';
 import { ResourceAttributeDefineItemDto } from 'src/app/share/models/resource-attribute-define/resource-attribute-define-item-dto.model';
 import { MatSelectChange } from '@angular/material/select';
 import { ResourceAttributeDefineService } from 'src/app/share/services/resource-attribute-define.service';
+import { AttributeControlService } from '../dynamic-form-attribute/attribute-control.service';
 
 @Component({
   selector: 'app-add',
   templateUrl: './add.component.html',
-  styleUrls: ['./add.component.css']
+  styleUrls: ['./add.component.css'],
+  providers: [AttributeControlService]
 })
 export class AddComponent implements OnInit {
   Status = Status;
@@ -30,6 +32,7 @@ export class AddComponent implements OnInit {
   constructor(
     private service: ResourceService,
     private attributeDefineSrv: ResourceAttributeDefineService,
+    private attributeControlSrv: AttributeControlService,
     public snb: MatSnackBar,
     private router: Router,
     private route: ActivatedRoute,
@@ -97,6 +100,7 @@ export class AddComponent implements OnInit {
     }).subscribe(res => {
       if (res) {
         this.attributeDefines = res.data!;
+        this.attributeControlSrv.addFormGroup(this.formGroup,this.attributeDefines);
       }
     });
   }

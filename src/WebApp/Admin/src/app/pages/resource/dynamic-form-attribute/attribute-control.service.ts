@@ -6,13 +6,11 @@ import { ResourceAttributeDefineItemDto } from 'src/app/share/models/resource-at
 export class AttributeControlService {
   constructor() { }
 
-  toFormGroup(attributes: ResourceAttributeDefineItemDto[]) {
-    const group: any = {};
-
+  addFormGroup(group: FormGroup, attributes: ResourceAttributeDefineItemDto[]) {
     attributes.forEach(attribute => {
-      group[attribute.name] = attribute.required ? new FormControl(attribute.value || null, Validators.required)
-        : new FormControl(attribute.value || null);
+      group.addControl(attribute.name, attribute.required ? new FormControl(attribute.value || null, Validators.required)
+        : new FormControl(attribute.value || null));
     });
-    return new FormGroup(group);
+    return group;
   }
 }

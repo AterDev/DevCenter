@@ -1,5 +1,9 @@
 <div [formGroup]="form">
-  <label [attr.for]="attribute.name">{{attribute.displayName}}</label>
-  <input [formControlName]="attribute.name" [id]="attribute.id" [type]="attribute.name">
-  <div class="errorMessage" *ngIf="!isValid">{{attribute.displayName} is required</div>
+  <mat-form-field>
+    <mat-label>{{attribute.displayName}}</mat-label>
+    <input matInput [formControlName]="attribute.name" [id]="attribute.id" [type]="attribute.name">
+    <mat-error *ngIf="!isValid">
+      {{attribute.displayName} is required
+    </mat-error>
+  </mat-form-field>
 </div>
