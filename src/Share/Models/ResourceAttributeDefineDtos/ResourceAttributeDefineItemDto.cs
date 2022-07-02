@@ -13,6 +13,7 @@ public class ResourceAttributeDefineItemDto
     /// 是否必须
     /// </summary>
     public bool Required { get; set; } = default!;
+    public string? Value { get; set; }
     /// <summary>
     /// 排序 
     /// </summary>

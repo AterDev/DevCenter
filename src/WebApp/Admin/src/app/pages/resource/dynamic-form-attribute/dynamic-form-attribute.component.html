@@ -1,0 +1,5 @@
+<div [formGroup]="form">
+  <label [attr.for]="attribute.name">{{attribute.displayName}}</label>
+  <input [formControlName]="attribute.name" [id]="attribute.id" [type]="attribute.name">
+  <div class="errorMessage" *ngIf="!isValid">{{attribute.displayName} is required</div>
+</div>

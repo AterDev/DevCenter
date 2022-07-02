@@ -9,11 +9,11 @@ export interface ResourceAttributeDefineItemDto {
    * 是否必须
    */
   required: boolean;
+  value: string | null;
   /**
-   * 排序 
+   * 排序
    */
   sort: number;
   id: string;
   createdTime: Date;
-
 }
