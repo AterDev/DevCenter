@@ -96,8 +96,7 @@ public class DataStoreBase<TContext, TEntity, TUpdate, TFilter, TItem> : IDataSt
             filter.PageSize = 0;
         }
 
-        var data = await _query.OrderByDescending(d => d.CreatedTime)
-            .AsNoTracking()
+        var data = await _query.AsNoTracking()
             .Skip((filter.PageIndex - 1) * filter.PageSize)
             .Take(filter.PageSize)
             .Select<TEntity, TItem>()
