@@ -1,21 +1,17 @@
-import { Status } from '../enum/status.model';
+import { ValueType } from '../enum/value-type.model';
 /**
  * 资源属性值 
  */
 export interface ResourceAttributeAddDto {
   displayName: string;
   name: string;
-  isEnable: boolean;
+  isEnable?: boolean | null;
   value: string;
   /**
    * 排序 
    */
-  sort: number;
-  /**
-   * 状态
-   */
-  status?: Status;
-  typeId: string;
-  resourceId: string;
+  sort?: number | null;
+  type?: ValueType | null;
+  resourceId?: string | null;
 
 }

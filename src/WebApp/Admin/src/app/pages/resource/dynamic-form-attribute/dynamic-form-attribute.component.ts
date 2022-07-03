@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ResourceAttributeDefineItemDto } from 'src/app/share/models/resource-attribute-define/resource-attribute-define-item-dto.model';
+import { AttributeControlService } from './attribute-control.service';
 
 @Component({
   selector: 'app-dynamic-form-attribute',
@@ -8,12 +9,15 @@ import { ResourceAttributeDefineItemDto } from 'src/app/share/models/resource-at
   styleUrls: ['./dynamic-form-attribute.component.css']
 })
 export class DynamicFormAttributeComponent implements OnInit {
-  @Input() attribute!: ResourceAttributeDefineItemDto;
-  @Input() form!: FormGroup;
-  constructor() { }
-
-  get isValid() { return this.form.controls[this.attribute.name].valid; }
-  ngOnInit(): void {
+  form: FormGroup;
+  @Input() defines!: ResourceAttributeDefineItemDto[];
+  constructor(
+    private attributeControlSrv: AttributeControlService,
+  ) {
+    this.form = this.attributeControlSrv.attributeFormGroup;
   }
-
+  isValid(name: string) { return this.form.controls[name].valid; }
+  ngOnInit(): void {
+    this.form = this.attributeControlSrv.attributeFormGroup;
+  }
 }

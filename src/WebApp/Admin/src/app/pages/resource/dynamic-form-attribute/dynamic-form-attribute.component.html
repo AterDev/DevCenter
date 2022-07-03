@@ -1,9 +1,12 @@
 <div [formGroup]="form">
-  <mat-form-field>
-    <mat-label>{{attribute.displayName}}</mat-label>
-    <input matInput [formControlName]="attribute.name" [id]="attribute.id" [type]="attribute.name">
-    <mat-error *ngIf="!isValid">
-      {{attribute.displayName} is required
-    </mat-error>
-  </mat-form-field>
+  <div *ngFor="let define of defines">
+    <mat-form-field>
+      <mat-label>{{define.displayName}}</mat-label>
+      <input matInput [formControlName]="define.name" [placeholder]="define.displayName" [required]="define.required">
+      <mat-error *ngIf="!isValid(define.name)">
+        {{define.name}} is required
+      </mat-error>
+    </mat-form-field>
+  </div>
+
 </div>

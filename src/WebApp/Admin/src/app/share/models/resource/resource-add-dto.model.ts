@@ -1,4 +1,4 @@
-import { ResourceAttribute } from '../resource-attribute/resource-attribute.model';
+import { ResourceAttributeAddDto } from '../resource-attribute/resource-attribute-add-dto.model';
 /**
  * 资源
  */
@@ -16,7 +16,7 @@ export interface ResourceAddDto {
   /**
    * 包含属性
    */
-  attributes?: ResourceAttribute[] | null;
+  attributeAddItem?: ResourceAttributeAddDto[] | null;
   /**
    * 标签id
    */

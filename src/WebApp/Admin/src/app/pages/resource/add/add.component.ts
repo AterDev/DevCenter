@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormArray, AbstractControl } from '@angular/forms';
 import { ResourceService } from 'src/app/share/services/resource.service';
 import { ResourceAddDto } from 'src/app/share/models/resource/resource-add-dto.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -17,7 +17,6 @@ import { AttributeControlService } from '../dynamic-form-attribute/attribute-con
   selector: 'app-add',
   templateUrl: './add.component.html',
   styleUrls: ['./add.component.css'],
-  providers: [AttributeControlService]
 })
 export class AddComponent implements OnInit {
   Status = Status;
@@ -32,7 +31,7 @@ export class AddComponent implements OnInit {
   constructor(
     private service: ResourceService,
     private attributeDefineSrv: ResourceAttributeDefineService,
-    private attributeControlSrv: AttributeControlService,
+    public attributeControlSrv: AttributeControlService,
     public snb: MatSnackBar,
     private router: Router,
     private route: ActivatedRoute,
@@ -48,7 +47,6 @@ export class AddComponent implements OnInit {
   get resourceTypeId() { return this.formGroup.get('resourceTypeId'); }
   get groupId() { return this.formGroup.get('groupId'); }
   get tagIds() { return this.formGroup.get('tagIds'); }
-
 
   ngOnInit(): void {
     this.getSelectionData();
@@ -94,13 +92,14 @@ export class AddComponent implements OnInit {
   }
 
   typeSwitch(event: MatSelectChange) {
-
     this.attributeDefineSrv.filter({
       pageIndex: 1, pageSize: 20, typeId: event.value
     }).subscribe(res => {
       if (res) {
+        // this.attributeControlSrv.buildAttributeForm(res.data!);
         this.attributeDefines = res.data!;
-        this.attributeControlSrv.addFormGroup(this.formGroup,this.attributeDefines);
+        this.attributeDefines.sort((a, b) => a.sort - b.sort);
+        this.attributeControlSrv.buildAttributeForm(this.attributeDefines);
       }
     });
   }
@@ -108,6 +107,8 @@ export class AddComponent implements OnInit {
     if (this.formGroup.valid) {
       const data = this.formGroup.value as ResourceAddDto;
       this.data = { ...data, ...this.data };
+      this.data.attributeAddItem = this.attributeControlSrv.getAttributes();
+
       this.service.add(this.data)
         .subscribe(res => {
           this.snb.open('添加成功');

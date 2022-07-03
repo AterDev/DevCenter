@@ -54,8 +54,20 @@ public class ResourceController : RestApiBase<ResourceDataStore, Resource, Resou
             var tags = await _store.FindTagsAsync(form.TagIds);
             resource.Tags = tags;
         }
+        if (form.AttributeAddItem != null)
+        {
+            var attributes = new List<ResourceAttribute>();
 
-        return await base.AddAsync(form);
+            form.AttributeAddItem.ForEach(a =>
+            {
+                var attribute = new ResourceAttribute();
+                attribute = attribute.Merge(a);
+                attributes.Add(attribute);
+            });
+            resource.Attributes = attributes;
+        }
+
+        return await _store.AddAsync(resource);
     }
 
     /// <summary>
