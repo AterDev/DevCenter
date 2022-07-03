@@ -11,7 +11,14 @@ public class ResourceDataStore : DataStoreBase<ContextBase, Resource, ResourceUp
     }
     public override async Task<Resource?> FindAsync(Guid id, bool noTracking = false)
     {
-        return await _db.Include(d => d.Attributes).SingleOrDefaultAsync(d => d.Id == id);
+        var _query = _db.Include(d => d.Attributes)
+            .Include(d => d.ResourceType)
+            .Include(d => d.Tags)
+            .Include(d => d.Group).AsQueryable();
+        return noTracking == true
+            ? await _query.AsNoTracking().SingleOrDefaultAsync(d => d.Id == id)
+            : await _query.SingleOrDefaultAsync(d => d.Id == id);
+
     }
 
     public override async Task<PageResult<ResourceItemDto>> FindWithPageAsync(ResourceFilterDto filter)
@@ -50,7 +57,11 @@ public class ResourceDataStore : DataStoreBase<ContextBase, Resource, ResourceUp
 
     public override async Task<bool> DeleteAsync(Guid id)
     {
-        return await base.DeleteAsync(id);
+        var resource = await FindAsync(id);
+        if (resource!.Attributes != null)
+            _context.RemoveRange(resource.Attributes);
+        _context.Remove(resource);
+        return await _context.SaveChangesAsync() > 0;
     }
     /// <summary>
     /// 获取关联的组

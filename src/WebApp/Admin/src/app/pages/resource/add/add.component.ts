@@ -61,7 +61,6 @@ export class AddComponent implements OnInit {
       this.initForm();
       this.isLoading = false;
     }
-
   }
   initForm(): void {
     this.formGroup = new FormGroup({

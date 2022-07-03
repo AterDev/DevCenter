@@ -2,36 +2,71 @@
   <button color="basic" mat-icon-button matTooltip="返回" (click)="back()">
     <mat-icon>arrow_back</mat-icon>
   </button>
-    编辑
+  编辑
 </mat-toolbar>
 <form class="d-flex" *ngIf="!isLoading" [formGroup]="formGroup" (ngSubmit)="edit()">
   <div class="d-flex flex-column w-100">
-  <mat-form-field>
-    <mat-label>Name</mat-label>
-    <input matInput placeholder="Name" formControlName="name"  minlength="" maxlength="100">
-    <mat-error *ngIf="name?.invalid">
-    {{getValidatorMessage('name')}}
-    </mat-error>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Description</mat-label>
-    <textarea matInput placeholder="Description" formControlName="description"  minlength="" maxlength="400"
-      cols="5"></textarea>
-    <mat-error *ngIf="description?.invalid">
-    {{getValidatorMessage('description')}}
-    </mat-error>
-  </mat-form-field>
-<mat-form-field>
-  <mat-label>Status</mat-label>
-  <mat-select formControlName="status">
-    <mat-option *ngFor="let item of Status | toKeyValue" [value]="item.value">
-      {{item.key}}
-    </mat-option>
-  </mat-select>
-  <mat-error *ngIf="status?.invalid">
-    {{getValidatorMessage('status')}}
-  </mat-error>
-</mat-form-field>
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput placeholder="Name" formControlName="name" minlength="" maxlength="100">
+      <mat-error *ngIf="name?.invalid">
+        {{getValidatorMessage('name')}}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Description</mat-label>
+      <textarea matInput placeholder="Description" formControlName="description" minlength="" maxlength="400"
+        cols="5"></textarea>
+      <mat-error *ngIf="description?.invalid">
+        {{getValidatorMessage('description')}}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>资源组</mat-label>
+      <mat-select formControlName="groupId">
+        <mat-option *ngFor="let item of groupSelections" [value]="item.id">
+          {{item.name}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="groupId?.invalid">
+        {{getValidatorMessage('groupId')}}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>资源类型</mat-label>
+      <mat-select formControlName="resourceTypeId" (selectionChange)="typeSwitch($event)">
+        <mat-option *ngFor="let item of typeDefineSelections" [value]="item.id">
+          {{item.name}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="resourceTypeId?.invalid">
+        {{getValidatorMessage('resourceTypeId')}}
+      </mat-error>
+    </mat-form-field>
+    <app-dynamic-form-attribute *ngIf="attributeDefines.length>0" [defines]="attributeDefines">
+    </app-dynamic-form-attribute>
+    <mat-form-field>
+      <mat-label>标签</mat-label>
+      <mat-select formControlName="tagIds" multiple>
+        <mat-option *ngFor="let item of tagSelections" [value]="item.id">
+          {{item.name}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="tagIds?.invalid">
+        {{getValidatorMessage('tagIds')}}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status">
+        <mat-option *ngFor="let item of Status | toKeyValue" [value]="item.value">
+          {{item.key}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="status?.invalid">
+        {{getValidatorMessage('status')}}
+      </mat-error>
+    </mat-form-field>
     <div class="d-flex">
       <button class="d-flex flex-column" mat-flat-button color="primary" type="submit">保存</button>
     </div>

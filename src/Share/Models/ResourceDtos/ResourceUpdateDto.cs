@@ -1,3 +1,5 @@
+using Share.Models.ResourceAttributeDtos;
+
 namespace Share.Models.ResourceDtos;
 /// <summary>
 /// 资源
@@ -17,7 +19,7 @@ public class ResourceUpdateDto
     /// <summary>
     /// 包含属性
     /// </summary>
-    public List<ResourceAttribute>? Attributes { get; set; }
+    public List<ResourceAttributeAddDto>? AttributeAddItem { get; set; }
     /// <summary>
     /// 标签id
     /// </summary>
