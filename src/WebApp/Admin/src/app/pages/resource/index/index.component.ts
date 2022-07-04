@@ -8,6 +8,10 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
+import { ResourceGroupService } from 'src/app/share/services/resource-group.service';
+import { lastValueFrom } from 'rxjs';
+import { ResourceGroup } from 'src/app/share/models/resource-group/resource-group.model';
+import { MatSelectChange } from '@angular/material/select';
 
 @Component({
   selector: 'app-index',
@@ -22,9 +26,11 @@ export class IndexComponent implements OnInit {
   columns: string[] = ['name', 'description', 'actions'];
   dataSource!: MatTableDataSource<ResourceItemDto>;
   filter: ResourceFilterDto;
+  groups: ResourceGroup[] = [];
   pageSizeOption = [12, 20, 50];
   constructor(
     private service: ResourceService,
+    private groupSrv: ResourceGroupService,
     private snb: MatSnackBar,
     private dialog: MatDialog,
     private router: Router,
@@ -32,14 +38,19 @@ export class IndexComponent implements OnInit {
 
     this.filter = {
       pageIndex: 1,
-      pageSize: 12
+      pageSize: 12,
+      groupId: null
     };
   }
 
   ngOnInit(): void {
+    this.getGroup();
     this.getList();
   }
 
+  filterList(event: MatSelectChange): void {
+    this.getList();
+  }
   getList(event?: PageEvent): void {
     if (event) {
       this.filter.pageIndex = event.pageIndex + 1;
@@ -54,6 +65,12 @@ export class IndexComponent implements OnInit {
         }
         this.isLoading = false;
       });
+  }
+  async getGroup() {
+    var res = await lastValueFrom(this.groupSrv.filter({ pageSize: 30, pageIndex: 1 }));
+    if (res.data) {
+      this.groups = res.data;
+    }
   }
 
   deleteConfirm(item: ResourceItemDto): void {
