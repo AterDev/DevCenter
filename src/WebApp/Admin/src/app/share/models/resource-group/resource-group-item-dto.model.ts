@@ -1,4 +1,4 @@
-import { Status } from '../enum/status.model';
+import { Resource } from '../resource/resource.model';
 /**
  * 资源组
  */
@@ -9,11 +9,6 @@ export interface ResourceGroupItemDto {
    */
   descriptioin?: string | null;
   id: string;
-  /**
-   * 状态
-   */
-  status?: Status;
-  createdTime: Date;
-  updatedTime: Date;
+  resource?: Resource[] | null;
 
 }

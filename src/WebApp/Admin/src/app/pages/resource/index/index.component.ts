@@ -12,6 +12,7 @@ import { ResourceGroupService } from 'src/app/share/services/resource-group.serv
 import { lastValueFrom } from 'rxjs';
 import { ResourceGroup } from 'src/app/share/models/resource-group/resource-group.model';
 import { MatSelectChange } from '@angular/material/select';
+import { ResourceGroupItemDto } from 'src/app/share/models/resource-group/resource-group-item-dto.model';
 
 @Component({
   selector: 'app-index',
@@ -26,7 +27,7 @@ export class IndexComponent implements OnInit {
   columns: string[] = ['name', 'description', 'actions'];
   dataSource!: MatTableDataSource<ResourceItemDto>;
   filter: ResourceFilterDto;
-  groups: ResourceGroup[] = [];
+  groups: ResourceGroupItemDto[] = [];
   pageSizeOption = [12, 20, 50];
   constructor(
     private service: ResourceService,

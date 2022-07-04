@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { lastValueFrom } from 'rxjs';
+import { lastValueFrom, map, Observable, startWith } from 'rxjs';
 import { LoginService } from 'src/app/auth/login.service';
 import { FilterBase } from 'src/app/share/models/filter-base.model';
 import { EnvironmentService } from 'src/app/share/services/environment.service';
 import { ResourceGroupService } from 'src/app/share/services/resource-group.service';
-import { Environment } from 'src/app/share/models/environment/environment.model'
-import { ResourceGroup } from 'src/app/share/models/resource-group/resource-group.model';
 import { EnvironmentItemDto } from 'src/app/share/models/environment/environment-item-dto.model';
 import { ResourceGroupItemDto } from 'src/app/share/models/resource-group/resource-group-item-dto.model';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-index',
@@ -19,7 +18,7 @@ export class IndexComponent implements OnInit {
   isLoading = true;
   filter = {} as FilterBase;
   environments: EnvironmentItemDto[] = [];
-  environmentId = '';
+  environmentId: string | null = null;
   groups: ResourceGroupItemDto[] = [];
   constructor(
     private loginService: LoginService,
@@ -32,7 +31,7 @@ export class IndexComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    Promise.all([this.getEnvironments, this.getResourceGroup])
+    Promise.all([this.getEnvironments(), this.getResourceGroup()])
       .then(data => {
         this.isLoading = false;
       });
@@ -51,4 +50,5 @@ export class IndexComponent implements OnInit {
       this.groups = res.data!;
     }
   }
+
 }

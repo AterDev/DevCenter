@@ -1,10 +1,48 @@
-<div *ngIf="!isLogin" class="row justify-content-center">
+<div class="container-fluid">
+  <div *ngIf="!isLogin" class="row justify-content-center">
     <div class="col-auto" style="text-align: center;">
-        <h3>Genars</h3>
-        <h1>开发中心</h1>
+      <h3>Genars</h3>
+      <h1>开发中心</h1>
     </div>
-</div>
+  </div>
 
-<div *ngIf="isLogin">
-    login
+  <div *ngIf="isLogin" class="mt-1">
+    <div class="row justify-content-center">
+      <mat-button-toggle-group [(ngModel)]="environmentId" aria-label="Environment" class="col-auto">
+        <mat-button-toggle value="null">全部</mat-button-toggle>
+        <mat-button-toggle *ngFor="let item of environments" [value]="item.id">
+          {{item.name}}
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+
+    </div>
+    <div class="row mt-2">
+      <div class="col col-md-6 col-xl-6 col-sm-12 col-12 mt-1" *ngFor="let group of groups">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>{{group.name}}</mat-card-title>
+            <mat-card-subtitle>{{group.descriptioin}}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <mat-expansion-panel *ngFor="let resource of group.resource">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  {{resource.name}}
+                </mat-panel-title>
+                <mat-panel-description>
+                  {{resource.description}}
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <mat-form-field appearance="fill" *ngFor="let attribute of resource.attributes" class="col col-auto">
+                <mat-label>{{attribute.displayName}}</mat-label>
+                <input matInput type="text" [value]="attribute.value" disabled>
+              </mat-form-field>
+
+            </mat-expansion-panel>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+    </div>
+  </div>
 </div>

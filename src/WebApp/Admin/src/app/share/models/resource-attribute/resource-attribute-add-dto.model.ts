@@ -6,7 +6,7 @@ export interface ResourceAttributeAddDto {
   displayName: string;
   name: string;
   isEnable?: boolean | null;
-  value: string;
+  value?: string | null;
   /**
    * 排序 
    */
