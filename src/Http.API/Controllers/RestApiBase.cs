@@ -5,7 +5,7 @@ namespace Http.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize]
+//[Authorize("User")]
 public class RestApiBase<TDataStore, TEntity, TAdd, TUpdate, TFilter, TItem>
     : ControllerBase, IRestApiBase<TEntity, TAdd, TUpdate, TFilter, TItem, Guid>
     where TDataStore : DataStoreBase<ContextBase, TEntity, TUpdate, TFilter, TItem>

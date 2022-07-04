@@ -18,6 +18,7 @@
         [MaxLength(50)]
         public Environment Environment { get; set; } = default!;
         public List<Resource>? Resources { get; set; }
+        public List<Role>? Roles { get; set; }
 
     }
 }

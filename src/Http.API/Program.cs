@@ -1,3 +1,5 @@
+using System.Text;
+
 using Http.Application.Services.Webhook;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -5,8 +7,6 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.IdentityModel.Tokens;
 
 using Share.Options;
-
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -78,10 +78,6 @@ services.AddAuthentication(options =>
 // ÑéÖ¤
 services.AddAuthorization(options =>
 {
-    options.AddPolicy("ApiScope", policy =>
-    {
-        policy.RequireClaim("scope", "openid profile email offline_access");
-    });
     options.AddPolicy("User", policy =>
         policy.RequireRole("Admin", "User"));
     options.AddPolicy("Admin", policy =>
@@ -109,7 +105,7 @@ services.AddOpenApiDocument(c =>
     c.UseControllerSummaryAsTagDescription = true;
     c.PostProcess = (document) =>
     {
-        document.Info.Title = "Dev Platform";
+        document.Info.Title = "DevCenter";
         document.Info.Description = "Api ÎÄµµ";
         document.Info.Version = "1.0";
     };

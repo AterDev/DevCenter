@@ -17,6 +17,7 @@ import { AttributeControlService } from '../dynamic-form-attribute/attribute-con
   selector: 'app-add',
   templateUrl: './add.component.html',
   styleUrls: ['./add.component.css'],
+  providers: [AttributeControlService]
 })
 export class AddComponent implements OnInit {
   Status = Status;

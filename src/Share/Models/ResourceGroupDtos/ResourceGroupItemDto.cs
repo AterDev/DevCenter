@@ -12,11 +12,7 @@ public class ResourceGroupItemDto
     [MaxLength(400)]
     public string? Descriptioin { get; set; }
     public Guid Id { get; set; } = default!;
-    /// <summary>
-    /// 状态
-    /// </summary>
-    public Status Status { get; set; } = default!;
-    public DateTimeOffset CreatedTime { get; set; } = default!;
-    public DateTimeOffset UpdatedTime { get; set; } = default!;
+
+    public List<Resource>? Resource { get; set; }
 
 }

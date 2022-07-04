@@ -17,6 +17,6 @@ public class Role : EntityBase
 
     public List<User>? Users { get; set; }
     public List<Permission>? Permissions { get; set; }
-    public List<RolePermission>? RolePermissions { get; set; }
+    public List<ResourceGroup>? ResourceGroups { get; set; }
 
 }

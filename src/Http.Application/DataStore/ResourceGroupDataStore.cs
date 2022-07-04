@@ -12,7 +12,41 @@ public class ResourceGroupDataStore : DataStoreBase<ContextBase, ResourceGroup, 
 
     public override async Task<PageResult<ResourceGroupItemDto>> FindWithPageAsync(ResourceGroupFilterDto filter)
     {
-        return await base.FindWithPageAsync(filter);
+        if (filter.EnvironmentId != null)
+        {
+            _query = _query.Where(q => q.Environment.Id == filter.EnvironmentId);
+        }
+
+        var count = _query.Count();
+        if (filter.PageIndex < 1)
+        {
+            filter.PageIndex = 1;
+        }
+
+        if (filter.PageSize < 0)
+        {
+            filter.PageSize = 0;
+        }
+
+        var data = await _query.AsNoTracking()
+            .Include(q => q.Resources)!
+                .ThenInclude(r => r.Attributes)
+            .Skip((filter.PageIndex - 1) * filter.PageSize)
+            .Take(filter.PageSize)
+            .Select(s => new ResourceGroupItemDto()
+            {
+                Descriptioin = s.Descriptioin,
+                Id = s.Id,
+                Name = s.Name,
+                Resource = s.Resources
+            })
+            .ToListAsync();
+        return new PageResult<ResourceGroupItemDto>
+        {
+            Count = count,
+            Data = data,
+            PageIndex = filter.PageIndex
+        };
     }
     public override async Task<ResourceGroup> AddAsync(ResourceGroup data)
     {
