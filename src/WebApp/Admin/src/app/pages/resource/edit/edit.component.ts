@@ -13,19 +13,20 @@ import { lastValueFrom } from 'rxjs';
 import { ResourceAttributeDefineItemDto } from 'src/app/share/models/resource-attribute-define/resource-attribute-define-item-dto.model';
 import { ResourceAttributeDefineService } from 'src/app/share/services/resource-attribute-define.service';
 import { AttributeControlService } from '../dynamic-form-attribute/attribute-control.service';
-import { ResourceGroupService } from 'src/app/share/services/resource-group.service';
 import { MatSelectChange } from '@angular/material/select';
 
 @Component({
   selector: 'app-edit',
   templateUrl: './edit.component.html',
-  styleUrls: ['./edit.component.css']
+  styleUrls: ['./edit.component.css'],
+  providers: [AttributeControlService]
 })
 export class EditComponent implements OnInit {
   Status = Status;
 
   id!: string;
   isLoading = true;
+  canLoadChildForm = false;
   data = {} as Resource;
   groupSelections = [] as Selection[];
   tagSelections = [] as Selection[];
@@ -77,9 +78,7 @@ export class EditComponent implements OnInit {
       this.data = detail;
     }
     this.initForm();
-    this.isLoading = false;
   }
-
 
   initForm(): void {
     var tagIds = this.data.tags?.map(t => t.id);
@@ -128,8 +127,12 @@ export class EditComponent implements OnInit {
           var attribute = this.data.attributes?.find((val) => val.name === define.name);
           define.value = attribute?.value;
         });
+        console.log(this.attributeDefines);
+
         this.attributeControlSrv.buildAttributeForm(this.attributeDefines);
+        this.canLoadChildForm = true;
       }
+      this.isLoading = false;
     });
   }
   typeSwitch(event: MatSelectChange) {

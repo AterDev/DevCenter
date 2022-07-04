@@ -51,6 +51,17 @@ public class ResourceDataStore : DataStoreBase<ContextBase, Resource, ResourceUp
             var tags = await _context.ResourceTags.Where(t => dto.TagIds.Contains(t.Id)).ToListAsync();
             resource.Tags = tags;
         }
+        if (dto.AttributeAddItem != null)
+        {
+            var attributes = new List<ResourceAttribute>();
+            dto.AttributeAddItem.ForEach(a =>
+            {
+                var attribute = new ResourceAttribute();
+                attribute = attribute.Merge(a);
+                attributes.Add(attribute);
+            });
+            resource.Attributes = attributes;
+        }
         await _context.SaveChangesAsync();
         return resource;
     }

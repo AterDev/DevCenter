@@ -43,7 +43,7 @@
         {{getValidatorMessage('resourceTypeId')}}
       </mat-error>
     </mat-form-field>
-    <app-dynamic-form-attribute *ngIf="attributeDefines.length>0" [defines]="attributeDefines">
+    <app-dynamic-form-attribute *ngIf="canLoadChildForm" [defines]="attributeDefines">
     </app-dynamic-form-attribute>
     <mat-form-field>
       <mat-label>标签</mat-label>

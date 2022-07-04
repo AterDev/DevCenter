@@ -10,7 +10,7 @@ public class ResourceAttributeAddDto
     public string Name { get; set; } = default!;
     public bool? IsEnable { get; set; } = true;
     [MaxLength(2000)]
-    public string Value { get; set; } = default!;
+    public string? Value { get; set; } 
     /// <summary>
     /// 排序 
     /// </summary>

@@ -7,7 +7,6 @@ import { DetailComponent } from './detail/detail.component';
 import { AddComponent } from './add/add.component';
 import { EditComponent } from './edit/edit.component';
 import { DynamicFormAttributeComponent } from './dynamic-form-attribute/dynamic-form-attribute.component';
-import { AttributeControlService } from './dynamic-form-attribute/attribute-control.service';
 
 @NgModule({
   declarations: [IndexComponent, DetailComponent, AddComponent, EditComponent, DynamicFormAttributeComponent],
@@ -16,6 +15,5 @@ import { AttributeControlService } from './dynamic-form-attribute/attribute-cont
     ShareModule,
     ResourceRoutingModule
   ],
-  providers: [AttributeControlService]
 })
 export class ResourceModule { }
