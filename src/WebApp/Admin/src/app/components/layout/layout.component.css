@@ -1,3 +1,4 @@
-.mat-toolbar-single-row{
-    height: 48px;
+.mat-toolbar-single-row {
+    height: 56px;
+    box-shadow: 0 2px 5px #0000004d;
 }
