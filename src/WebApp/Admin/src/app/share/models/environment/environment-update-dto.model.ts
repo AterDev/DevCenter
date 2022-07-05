@@ -5,6 +5,7 @@ import { Status } from '../enum/status.model';
 export interface EnvironmentUpdateDto {
   name?: string | null;
   description?: string | null;
+  color?: string | null;
   /**
    * 状态
    */

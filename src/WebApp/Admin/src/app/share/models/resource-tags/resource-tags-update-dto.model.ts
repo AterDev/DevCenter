@@ -5,6 +5,7 @@ import { Status } from '../enum/status.model';
 export interface ResourceTagsUpdateDto {
   name?: string | null;
   color?: string | null;
+  icon?: string | null;
   /**
    * 状态
    */

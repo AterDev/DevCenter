@@ -26,8 +26,15 @@
           <mat-icon matSuffix [style]="{color:color?.value}">circle</mat-icon>
         </mat-select-trigger>
       </mat-select>
-      <mat-error *ngIf="name?.invalid">
+      <mat-error *ngIf="color?.invalid">
         {{getValidatorMessage('color')}}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Icon</mat-label>
+      <input matInput placeholder="Icon" formControlName="icon">
+      <mat-error *ngIf="icon?.invalid">
+        {{getValidatorMessage('icon')}}
       </mat-error>
     </mat-form-field>
     <mat-form-field>

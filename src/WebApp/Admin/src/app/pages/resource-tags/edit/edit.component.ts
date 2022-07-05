@@ -44,6 +44,7 @@ export class EditComponent implements OnInit {
 
   get name() { return this.formGroup.get('name'); }
   get color() { return this.formGroup.get('color'); }
+  get icon() { return this.formGroup.get('icon'); }
   get status() { return this.formGroup.get('status'); }
 
 
@@ -69,6 +70,7 @@ export class EditComponent implements OnInit {
     this.formGroup = new FormGroup({
       name: new FormControl(this.data.name, [Validators.maxLength(100)]),
       color: new FormControl(this.data.color, []),
+      icon: new FormControl(this.data.icon, []),
       status: new FormControl(this.data.status, []),
 
     });
@@ -99,7 +101,7 @@ export class EditComponent implements OnInit {
         .subscribe(res => {
           this.snb.open('修改成功');
           // this.dialogRef.close(res);
-          this.router.navigate(['../../index'],{relativeTo: this.route});
+          this.router.navigate(['../../index'], { relativeTo: this.route });
         });
     }
   }
@@ -107,21 +109,4 @@ export class EditComponent implements OnInit {
   back(): void {
     this.location.back();
   }
-
-  upload(event: any, type?: string): void {
-    const files = event.target.files;
-    if (files[0]) {
-      const formdata = new FormData();
-      formdata.append('file', files[0]);
-      /*    this.service.uploadFile('agent-info' + type, formdata)
-            .subscribe(res => {
-              this.updateData.logoUrl = res.url;
-            }, error => {
-              this.snb.open(error?.detail);
-            }); */
-    } else {
-
-    }
-  }
-
 }

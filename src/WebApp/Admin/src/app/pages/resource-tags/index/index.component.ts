@@ -19,7 +19,7 @@ export class IndexComponent implements OnInit {
   isLoading = true;
   total = 0;
   data: ResourceTagsItemDto[] = [];
-  columns: string[] = ['name', 'color', 'actions'];
+  columns: string[] = ['name', 'color', 'icon', 'actions'];
   dataSource!: MatTableDataSource<ResourceTagsItemDto>;
   filter: ResourceTagsFilterDto;
   pageSizeOption = [12, 20, 50];
