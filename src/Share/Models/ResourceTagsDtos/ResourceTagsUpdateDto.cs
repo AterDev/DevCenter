@@ -7,6 +7,8 @@ public class ResourceTagsUpdateDto
     [MaxLength(100)]
     public string? Name { get; set; }
     public string? Color { get; set; }
+    [MaxLength(30)]
+    public string? Icon { get; set; }
     /// <summary>
     /// 状态
     /// </summary>

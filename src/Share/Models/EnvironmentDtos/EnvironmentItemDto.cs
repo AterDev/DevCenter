@@ -9,11 +9,6 @@ public class EnvironmentItemDto
     [MaxLength(200)]
     public string? Description { get; set; }
     public Guid Id { get; set; } = default!;
-    /// <summary>
-    /// 状态
-    /// </summary>
-    public Status Status { get; set; } = default!;
+    public string? Color { get; set; }
     public DateTimeOffset CreatedTime { get; set; } = default!;
-    public DateTimeOffset UpdatedTime { get; set; } = default!;
-
 }

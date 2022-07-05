@@ -8,7 +8,7 @@
         [MaxLength(100)]
         public string Name { get; set; } = default!;
         [MaxLength(20)]
-        public string? Color { get; set; } = Utils.Utils.GetRandColor();
+        public string? Color { get; set; } = Utils.Helper.GetRandColor();
         [MaxLength(30)]
         public string? Icon { get; set; }
 

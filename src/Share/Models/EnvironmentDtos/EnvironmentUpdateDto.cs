@@ -1,3 +1,5 @@
+using Core.Utils;
+
 namespace Share.Models.EnvironmentDtos;
 /// <summary>
 /// 环境
@@ -8,6 +10,7 @@ public class EnvironmentUpdateDto
     public string? Name { get; set; }
     [MaxLength(200)]
     public string? Description { get; set; }
+    public string? Color { get; set; } = Helper.GetRandColor();
     /// <summary>
     /// 状态
     /// </summary>

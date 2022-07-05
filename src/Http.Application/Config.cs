@@ -146,31 +146,31 @@ namespace Http.Application
                 {
                     Name = "网站",
                     Description = "网站链接",
-                    Color = Utils.GetRandColor()
+                    Color = Helper.GetRandColor()
                 },
                 new ResourceTypeDefinition()
                 {
                     Name = "服务器",
                     Description = "服务器登录连接",
-                    Color = Utils.GetRandColor()
+                    Color = Helper.GetRandColor()
                 },
                 new ResourceTypeDefinition()
                 {
                     Name = "数据库",
                     Description = "数据库连接",
-                    Color = Utils.GetRandColor()
+                    Color = Helper.GetRandColor()
                 },
                 new ResourceTypeDefinition()
                 {
                     Name = "服务账号",
                     Description = "网站、APP、服务等登录账号",
-                    Color = Utils.GetRandColor()
+                    Color = Helper.GetRandColor()
                 },
                 new ResourceTypeDefinition()
                 {
                     Name = "配置项",
                     Description = "配置项，如json/yml文件",
-                    Color = Utils.GetRandColor()
+                    Color = Helper.GetRandColor()
                 }
             };
 
@@ -179,17 +179,17 @@ namespace Http.Application
             new ResourceTags()
             {
                 Name = "服务器",
-                Color = Utils.GetRandColor()
+                Color = Helper.GetRandColor()
             },
             new ResourceTags()
             {
                 Name = "数据库",
-                Color = Utils.GetRandColor()
+                Color = Helper.GetRandColor()
             },
             new ResourceTags()
             {
                 Name = "网站",
-                Color = Utils.GetRandColor()
+                Color = Helper.GetRandColor()
             }
         };
 

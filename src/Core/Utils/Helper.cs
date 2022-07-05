@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 namespace Core.Utils;
-public static class Utils
+public static class Helper
 {
     public static string GetRandColor()
     {

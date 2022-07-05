@@ -1,4 +1,3 @@
-using Http.Application.DataStore;
 
 using Share.Models.ResourceTypeDefinitionDtos;
 namespace Http.API.Controllers;
@@ -58,7 +57,7 @@ public class ResourceTypeDefinitionController : RestApiBase<ResourceTypeDefiniti
     {
         var typeDefine = await _store.FindAsync(id);
         if (typeDefine == null) return NotFound("未知type define id");
- 
+
         return await base.UpdateAsync(id, form);
     }
 
