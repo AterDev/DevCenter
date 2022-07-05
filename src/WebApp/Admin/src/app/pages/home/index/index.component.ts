@@ -8,6 +8,7 @@ import { EnvironmentItemDto } from 'src/app/share/models/environment/environment
 import { ResourceGroupItemDto } from 'src/app/share/models/resource-group/resource-group-item-dto.model';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ResourceDialogComponent } from '../resource-dialog/resource-dialog.component';
+import { ResourceGroupFilterDto } from 'src/app/share/models/resource-group/resource-group-filter-dto.model';
 
 @Component({
   selector: 'app-index',
@@ -17,7 +18,7 @@ import { ResourceDialogComponent } from '../resource-dialog/resource-dialog.comp
 export class IndexComponent implements OnInit {
   isLogin = false;
   isLoading = true;
-  filter = {} as FilterBase;
+  filter = {} as ResourceGroupFilterDto;
   environments: EnvironmentItemDto[] = [];
   environmentId: string | null = null;
   selectedResourceIds: string[] = [];
@@ -31,7 +32,7 @@ export class IndexComponent implements OnInit {
 
   ) {
     this.isLogin = loginService.isLogin;
-    this.filter = { pageIndex: 1, pageSize: 30 };
+    this.filter = { pageIndex: 1, pageSize: 30, environmentId: null };
   }
 
   ngOnInit(): void {

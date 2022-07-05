@@ -6,8 +6,8 @@
 </div>
 <div *ngIf="isLogin" class="row mt-1 justify-content-center g-0">
   <div class="col col-auto">
-    <mat-button-toggle-group [(ngModel)]="environmentId" aria-label="Environment">
-      <mat-button-toggle value="null">全部</mat-button-toggle>
+    <mat-button-toggle-group [(ngModel)]="filter.environmentId" aria-label="Environment" (change)="getResourceGroup()">
+      <mat-button-toggle [value]="null">全部</mat-button-toggle>
       <mat-button-toggle *ngFor="let item of environments" [value]="item.id">
         {{item.name}}
       </mat-button-toggle>
@@ -16,7 +16,7 @@
   <div class="row mt-2 g-0 g-1">
     <div class="col col-md-6 col-xl-4 col-xxl-3 col-sm-12 col-12" *ngFor="let group of groups">
       <mat-card>
-        <mat-card-header>
+        <mat-card-header class="card-header">
           <mat-card-title>{{group.name}}</mat-card-title>
           <mat-card-subtitle>{{group.descriptioin}}</mat-card-subtitle>
         </mat-card-header>
