@@ -9,6 +9,8 @@
         public string Name { get; set; } = default!;
         [MaxLength(200)]
         public string? Description { get; set; }
+        [MaxLength(20)]
+        public string? Color { get; set; } = Utils.Utils.GetRandColor();
 
         public List<ResourceGroup>? ResourceGroups { get; set; }
     }

@@ -31,6 +31,11 @@ public class ResourceGroupDataStore : DataStoreBase<ContextBase, ResourceGroup, 
         var data = await _query.AsNoTracking()
             .Include(q => q.Resources)!
                 .ThenInclude(r => r.Attributes)
+            .Include(q => q.Resources)!
+                .ThenInclude(r => r.Tags)
+            .Include(q => q.Resources)!
+                .ThenInclude(r => r.ResourceType)
+
             .Skip((filter.PageIndex - 1) * filter.PageSize)
             .Take(filter.PageSize)
             .Select(s => new ResourceGroupItemDto()

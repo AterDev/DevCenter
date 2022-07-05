@@ -19,7 +19,7 @@ public class ContextBase : DbContext
     public DbSet<ResourceTags> ResourceTags { get; set; } = null!;
     public DbSet<ResourceTypeDefinition> ResourceTypeDefinitions { get; set; } = null!;
     public DbSet<Core.Models.Environment> Environments { get; set; } = null!;
-
+    public DbSet<ResourceView> ResourceViews { get; set; }
     public ContextBase(DbContextOptions<ContextBase> options) : base(options)
     {
     }
@@ -34,6 +34,9 @@ public class ContextBase : DbContext
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.UseHiLo();
+        builder.Entity<ResourceView>()
+            .ToView("ResrouceView")
+            .HasNoKey();
         builder.Entity<Resource>(e =>
         {
             e.HasIndex(a => a.Name);
