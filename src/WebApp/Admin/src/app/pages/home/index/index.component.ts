@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { lastValueFrom, map, Observable, startWith } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
 import { LoginService } from 'src/app/auth/login.service';
 import { FilterBase } from 'src/app/share/models/filter-base.model';
 import { EnvironmentService } from 'src/app/share/services/environment.service';
 import { ResourceGroupService } from 'src/app/share/services/resource-group.service';
 import { EnvironmentItemDto } from 'src/app/share/models/environment/environment-item-dto.model';
 import { ResourceGroupItemDto } from 'src/app/share/models/resource-group/resource-group-item-dto.model';
-import { FormControl } from '@angular/forms';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ResourceDialogComponent } from '../resource-dialog/resource-dialog.component';
 
 @Component({
   selector: 'app-index',
@@ -19,11 +20,14 @@ export class IndexComponent implements OnInit {
   filter = {} as FilterBase;
   environments: EnvironmentItemDto[] = [];
   environmentId: string | null = null;
+  selectedResourceIds: string[] = [];
   groups: ResourceGroupItemDto[] = [];
   constructor(
     private loginService: LoginService,
     private envSrv: EnvironmentService,
-    private groupSrv: ResourceGroupService
+    private groupSrv: ResourceGroupService,
+    public dialogRef: MatDialogRef<ResourceDialogComponent>,
+    public dialog: MatDialog
 
   ) {
     this.isLogin = loginService.isLogin;
@@ -51,4 +55,12 @@ export class IndexComponent implements OnInit {
     }
   }
 
+  showResource(): void {
+    let selectedId = this.selectedResourceIds[0];
+    let resource = this.groups.map(g => g.resource).reduce(r => r)
+      ?.find(val => val.id == selectedId);
+    this.dialog.open(ResourceDialogComponent, {
+      data: resource
+    });
+  }
 }
