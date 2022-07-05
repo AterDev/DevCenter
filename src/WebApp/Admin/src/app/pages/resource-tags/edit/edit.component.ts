@@ -8,6 +8,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Location } from '@angular/common';
 import { Status } from 'src/app/share/models/enum/status.model';
+import { CommonColors } from 'src/app/share/const';
 
 @Component({
   selector: 'app-edit',
@@ -22,8 +23,9 @@ export class EditComponent implements OnInit {
   data = {} as ResourceTags;
   updateData = {} as ResourceTagsUpdateDto;
   formGroup!: FormGroup;
-    constructor(
-    
+  colors = CommonColors;
+  constructor(
+
     private service: ResourceTagsService,
     private snb: MatSnackBar,
     private router: Router,
@@ -40,18 +42,18 @@ export class EditComponent implements OnInit {
     }
   }
 
-    get name() { return this.formGroup.get('name'); }
-    get color() { return this.formGroup.get('color'); }
-    get status() { return this.formGroup.get('status'); }
+  get name() { return this.formGroup.get('name'); }
+  get color() { return this.formGroup.get('color'); }
+  get status() { return this.formGroup.get('status'); }
 
 
   ngOnInit(): void {
     this.getDetail();
-    
+
     // TODO:获取其他相关数据后设置加载状态
     this.isLoading = false;
   }
-  
+
   getDetail(): void {
     this.service.getDetail(this.id)
       .subscribe(res => {
@@ -91,13 +93,13 @@ export class EditComponent implements OnInit {
     }
   }
   edit(): void {
-    if(this.formGroup.valid) {
+    if (this.formGroup.valid) {
       this.updateData = this.formGroup.value as ResourceTagsUpdateDto;
       this.service.update(this.id, this.updateData)
         .subscribe(res => {
           this.snb.open('修改成功');
-           // this.dialogRef.close(res);
-          // this.router.navigate(['../index'],{relativeTo: this.route});
+          // this.dialogRef.close(res);
+          this.router.navigate(['../../index'],{relativeTo: this.route});
         });
     }
   }
@@ -106,17 +108,17 @@ export class EditComponent implements OnInit {
     this.location.back();
   }
 
-  upload(event: any, type ?: string): void {
+  upload(event: any, type?: string): void {
     const files = event.target.files;
-    if(files[0]) {
-    const formdata = new FormData();
-    formdata.append('file', files[0]);
-    /*    this.service.uploadFile('agent-info' + type, formdata)
-          .subscribe(res => {
-            this.updateData.logoUrl = res.url;
-          }, error => {
-            this.snb.open(error?.detail);
-          }); */
+    if (files[0]) {
+      const formdata = new FormData();
+      formdata.append('file', files[0]);
+      /*    this.service.uploadFile('agent-info' + type, formdata)
+            .subscribe(res => {
+              this.updateData.logoUrl = res.url;
+            }, error => {
+              this.snb.open(error?.detail);
+            }); */
     } else {
 
     }
