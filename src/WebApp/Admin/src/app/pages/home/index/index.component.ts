@@ -57,8 +57,7 @@ export class IndexComponent implements OnInit {
 
   showResource(): void {
     let selectedId = this.selectedResourceIds[0];
-    let resource = this.groups.map(g => g.resource).reduce(r => r)
-      ?.find(val => val.id == selectedId);
+    let resource = this.groups.flatMap(g => g.resource).find(val => val!.id == selectedId);
     this.dialog.open(ResourceDialogComponent, {
       data: resource
     });

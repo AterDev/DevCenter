@@ -14,8 +14,6 @@ export class ResourceDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: Resource
   ) {
 
-    console.log('data', data);
-
   }
 
   ngOnInit(): void {
@@ -25,5 +23,13 @@ export class ResourceDialogComponent implements OnInit {
   }
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  isUrl(str: string): boolean {
+    if (str.startsWith('http://')
+      || str.startsWith('https://'))
+      return true;
+
+    return false;
   }
 }

@@ -1,12 +1,38 @@
-<h3 mat-dialog-title>title</h3>
+<div mat-dialog-title>
+  <div matLine>
+    {{data.name}}
+  </div>
+  <small style="font-size: 16px;color:#999">
+    {{data.description}}
+  </small>
+</div>
+<mat-divider>
+</mat-divider>
 <mat-dialog-content>
-    <span>
-        content
-    </span>
-</mat-dialog-content>
+  <mat-list>
+    <mat-list-item *ngFor="let attribute of data.attributes">
+      <span class="label"> {{attribute.displayName}} : </span>
+      <strong>
+        <ng-container *ngIf="isUrl(attribute.value); else elseTemplate">
+          <span class="value">
+            <a [href]="attribute.value" target="_blank">
+              {{attribute.value}}
+            </a>
+          </span>
+        </ng-container>
+        <ng-template #elseTemplate>
+          <span class="value"> {{attribute.value}} </span>
+        </ng-template>
 
-<mat-dialog-actions>
-    <button mat-button mat-dialog-close>取消</button>
-    <!-- The mat-dialog-close directive optionally accepts a value as a result for the dialog. -->
-    <button mat-button (click)="confirm()" color="primary">确认</button>
+
+      </strong>
+    </mat-list-item>
+  </mat-list>
+</mat-dialog-content>
+<mat-divider>
+</mat-divider>
+<mat-dialog-actions class="justify-content-end">
+  <!-- <button mat-button mat-dialog-close>取消</button> -->
+  <!-- The mat-dialog-close directive optionally accepts a value as a result for the dialog. -->
+  <button mat-button (click)="confirm()" color="primary">确认</button>
 </mat-dialog-actions>
