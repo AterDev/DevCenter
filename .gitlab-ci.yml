@@ -1,0 +1,55 @@
+stages:    
+  - build
+
+publish-marketData-api: 
+  variables:
+    PROJECT_PATH: "./src/Http.API/"
+    PUBLISH_PATH: "/var/publish/dev-center-api/"
+    RUN_PATH: "/var/webapi/dev-center/"
+  stage: build
+  rules: 
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "dev"'
+      changes:
+        - src/Http.API/**/*
+        - src/Core/**/*
+        - src/Http.Application/**/*
+        - src/Share/**/*
+      when: always
+  script:
+    - echo "Start build Http.API"
+    - mkdir $PUBLISH_PATH
+    - dotnet restore $PROJECT_PATH
+    - dotnet build $PROJECT_PATH
+    - dotnet publish $PROJECT_PATH -c Release -o $PUBLISH_PATH
+    - echo "Publish to dev from $PUBLISH_PATH to $RUN_PATH"
+    - cd $PUBLISH_PATH
+    - "scp -r  ./* root@36.138.195.139 :$RUN_PATH"
+    - echo "Restart service"
+    - "ssh root@36.138.195.139  sudo systemctl restart dev-center.service"
+
+
+publish-marketAdmin-web:
+  variables:
+    PROJECT_PATH: "./src/WebApp/Admin"
+    PUBLISH_PATH: "./src/WebApp/Admin/dist/admin"
+    RUN_PATH: '/var/www/dev-center/'
+  stage: build
+  cache:
+    key:
+      files:
+        - $PROJECT_PATH/yarn.lock
+    paths:
+      - .npm/
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "dev"'
+      changes:
+        - src/WebApp/Admin/**/*
+      when: always
+  script:
+    - echo "start restore "
+    - cd $PROJECT_PATH
+    - yarn 
+    - npm run build --aot
+    - echo "Publish to dev from $PUBLISH_PATH to $RUN_PATH"
+    - "scp -r  ./dist/admin/* root@36.138.195.139 :$RUN_PATH"
+    - echo "Publish complete!"
