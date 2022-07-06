@@ -20,7 +20,7 @@ public class UserAddDto
     [MaxLength(30)]
     public string? Position { get; set; }
     [MaxLength(100)]
-    public string? Email { get; set; }
+    public string Email { get; set; } = default!;
     [MaxLength(100)]
     public string? Password { get; set; }
     [MaxLength(20)]

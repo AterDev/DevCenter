@@ -27,7 +27,11 @@ public class UserController : RestApiBase<UserDataStore, User, UserAddDto, UserU
     /// <returns></returns>
     public override async Task<ActionResult<User>> AddAsync(UserAddDto form)
     {
-        return await base.AddAsync(form);
+        var user = new User();
+        user.Merge(form);
+        user.PasswordSalt = HashCrypto.BuildSalt();
+        user.PasswordHash = HashCrypto.GeneratePwd(form.Password ?? "123456", user.PasswordSalt);
+        return await _store.AddAsync(user);
     }
 
     /// <summary>

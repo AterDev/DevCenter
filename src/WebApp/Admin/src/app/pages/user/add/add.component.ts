@@ -9,50 +9,50 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Location } from '@angular/common';
 
 @Component({
-    selector: 'app-add',
-    templateUrl: './add.component.html',
-    styleUrls: ['./add.component.css']
+  selector: 'app-add',
+  templateUrl: './add.component.html',
+  styleUrls: ['./add.component.css']
 })
 export class AddComponent implements OnInit {
-    
-    formGroup!: FormGroup;
-    data = {} as UserAddDto;
-    isLoading = true;
-    constructor(
-        
-        private service: UserService,
-        public snb: MatSnackBar,
-        private router: Router,
-        private route: ActivatedRoute,
-        private location: Location
-        // public dialogRef: MatDialogRef<AddComponent>,
-        // @Inject(MAT_DIALOG_DATA) public dlgData: { id: '' }
-    ) {
 
-    }
+  formGroup!: FormGroup;
+  data = {} as UserAddDto;
+  isLoading = true;
+  constructor(
 
-    get userName() { return this.formGroup.get('userName'); }
-    get realName() { return this.formGroup.get('realName'); }
-    get position() { return this.formGroup.get('position'); }
-    get email() { return this.formGroup.get('email'); }
-    get password() { return this.formGroup.get('password'); }
-    get phoneNumber() { return this.formGroup.get('phoneNumber'); }
-    get avatar() { return this.formGroup.get('avatar'); }
+    private service: UserService,
+    public snb: MatSnackBar,
+    private router: Router,
+    private route: ActivatedRoute,
+    private location: Location
+    // public dialogRef: MatDialogRef<AddComponent>,
+    // @Inject(MAT_DIALOG_DATA) public dlgData: { id: '' }
+  ) {
+
+  }
+
+  get userName() { return this.formGroup.get('userName'); }
+  get realName() { return this.formGroup.get('realName'); }
+  get position() { return this.formGroup.get('position'); }
+  get email() { return this.formGroup.get('email'); }
+  get password() { return this.formGroup.get('password'); }
+  get phoneNumber() { return this.formGroup.get('phoneNumber'); }
+  get avatar() { return this.formGroup.get('avatar'); }
 
 
   ngOnInit(): void {
     this.initForm();
-    
+
     // TODO:获取其他相关数据后设置加载状态
     this.isLoading = false;
   }
-  
+
   initForm(): void {
     this.formGroup = new FormGroup({
-      userName: new FormControl(null, [Validators.maxLength(30)]),
+      userName: new FormControl(null, [Validators.required, Validators.maxLength(30)]),
       realName: new FormControl(null, [Validators.maxLength(30)]),
       position: new FormControl(null, [Validators.maxLength(30)]),
-      email: new FormControl(null, [Validators.maxLength(100)]),
+      email: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
       password: new FormControl(null, [Validators.maxLength(100)]),
       phoneNumber: new FormControl(null, [Validators.maxLength(20)]),
       avatar: new FormControl(null, [Validators.maxLength(200)]),
@@ -91,36 +91,36 @@ export class AddComponent implements OnInit {
             this.avatar?.errors?.['maxlength'] ? 'Avatar长度最多200位' : '';
 
       default:
-    return '';
+        return '';
     }
   }
 
   add(): void {
-    if(this.formGroup.valid) {
-    const data = this.formGroup.value as UserAddDto;
-    this.data = { ...data, ...this.data };
-    this.service.add(this.data)
+    if (this.formGroup.valid) {
+      const data = this.formGroup.value as UserAddDto;
+      this.data = { ...data, ...this.data };
+      this.service.add(this.data)
         .subscribe(res => {
-            this.snb.open('添加成功');
-            // this.dialogRef.close(res);
-            this.router.navigate(['../index'],{relativeTo: this.route});
+          this.snb.open('添加成功');
+          // this.dialogRef.close(res);
+          this.router.navigate(['../index'], { relativeTo: this.route });
         });
     }
   }
   back(): void {
     this.location.back();
   }
-  upload(event: any, type ?: string): void {
+  upload(event: any, type?: string): void {
     const files = event.target.files;
-    if(files[0]) {
+    if (files[0]) {
       const formdata = new FormData();
       formdata.append('file', files[0]);
-    /*    this.service.uploadFile('agent-info' + type, formdata)
-          .subscribe(res => {
-            this.data.logoUrl = res.url;
-          }, error => {
-            this.snb.open(error?.detail);
-          }); */
+      /*    this.service.uploadFile('agent-info' + type, formdata)
+            .subscribe(res => {
+              this.data.logoUrl = res.url;
+            }, error => {
+              this.snb.open(error?.detail);
+            }); */
     } else {
 
     }

@@ -14,7 +14,7 @@ export interface UserAddDto {
    * 职位
    */
   position?: string | null;
-  email?: string | null;
+  email: string;
   password?: string | null;
   phoneNumber?: string | null;
   /**

@@ -1,3 +1,5 @@
+using System.Xml;
+
 using Share.Models.UserDtos;
 namespace Http.Application.DataStore;
 public class UserDataStore : DataStoreBase<ContextBase, User, UserUpdateDto, UserFilterDto, UserItemDto>
@@ -21,7 +23,15 @@ public class UserDataStore : DataStoreBase<ContextBase, User, UserUpdateDto, Use
 
     public override async Task<User?> UpdateAsync(Guid id, UserUpdateDto dto)
     {
-        return await base.UpdateAsync(id, dto);
+        var user = await _db.FindAsync(id);
+        user.Merge(dto);
+        if (dto.Password != null)
+        {
+            user!.PasswordSalt = HashCrypto.BuildSalt();
+            user.PasswordHash = HashCrypto.GeneratePwd(dto.Password, user.PasswordSalt);
+        }
+        await _context.SaveChangesAsync();
+        return user;
     }
 
     public override async Task<bool> DeleteAsync(Guid id)

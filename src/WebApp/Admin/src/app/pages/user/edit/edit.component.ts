@@ -23,7 +23,7 @@ export class EditComponent implements OnInit {
   updateData = {} as UserUpdateDto;
   formGroup!: FormGroup;
     constructor(
-    
+
     private service: UserService,
     private snb: MatSnackBar,
     private router: Router,
@@ -53,11 +53,11 @@ export class EditComponent implements OnInit {
 
   ngOnInit(): void {
     this.getDetail();
-    
+
     // TODO:等待数据加载完成
     // this.isLoading = false;
   }
-  
+
   getDetail(): void {
     this.service.getDetail(this.id)
       .subscribe(res => {
@@ -133,7 +133,7 @@ export class EditComponent implements OnInit {
         .subscribe(res => {
           this.snb.open('修改成功');
            // this.dialogRef.close(res);
-          // this.router.navigate(['../index'],{relativeTo: this.route});
+          this.router.navigate(['../../index'],{relativeTo: this.route});
         });
     }
   }
