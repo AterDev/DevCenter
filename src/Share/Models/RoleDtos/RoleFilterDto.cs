@@ -9,5 +9,7 @@ public class RoleFilterDto : FilterBase
     /// </summary>
     [MaxLength(30)]
     public string? Name { get; set; }
-
+    [MaxLength(30)]
+    public string? IdentifyName { get; set; }
+    
 }

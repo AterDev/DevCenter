@@ -7,6 +7,8 @@ export interface RoleUpdateDto {
    * 角色名称
    */
   name?: string | null;
+  identifyName?: string | null;
+  description?: string | null;
   /**
    * 图标
    */

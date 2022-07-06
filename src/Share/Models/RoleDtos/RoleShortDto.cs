@@ -9,6 +9,10 @@ public class RoleShortDto
     /// </summary>
     [MaxLength(30)]
     public string Name { get; set; } = default!;
+    [MaxLength(30)]
+    public string IdentifyName { get; set; } = default!;
+    [MaxLength(200)]
+    public string? Description { get; set; }
     /// <summary>
     /// 图标
     /// </summary>
@@ -21,5 +25,5 @@ public class RoleShortDto
     public Status Status { get; set; } = default!;
     public DateTimeOffset CreatedTime { get; set; } = default!;
     public DateTimeOffset UpdatedTime { get; set; } = default!;
-
+    
 }

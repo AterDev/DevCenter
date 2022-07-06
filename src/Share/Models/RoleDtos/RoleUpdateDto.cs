@@ -9,6 +9,10 @@ public class RoleUpdateDto
     /// </summary>
     [MaxLength(30)]
     public string? Name { get; set; }
+    [MaxLength(30)]
+    public string? IdentifyName { get; set; }
+    [MaxLength(200)]
+    public string? Description { get; set; }
     /// <summary>
     /// 图标
     /// </summary>
@@ -18,5 +22,5 @@ public class RoleUpdateDto
     /// 状态
     /// </summary>
     public Status? Status { get; set; }
-
+    
 }

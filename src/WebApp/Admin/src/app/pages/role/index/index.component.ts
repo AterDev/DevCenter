@@ -19,7 +19,7 @@ export class IndexComponent implements OnInit {
   isLoading = true;
   total = 0;
   data: RoleItemDto[] = [];
-  columns: string[] = ['name', 'icon', 'id', 'actions'];
+  columns: string[] = ['name', 'identifyName', 'description', 'actions'];
   dataSource!: MatTableDataSource<RoleItemDto>;
   filter: RoleFilterDto;
   pageSizeOption = [12, 20, 50];

@@ -2,38 +2,33 @@
   <button color="basic" mat-icon-button matTooltip="返回" (click)="back()">
     <mat-icon>arrow_back</mat-icon>
   </button>
-    添加
+  添加
 </mat-toolbar>
 <form class="d-flex" *ngIf="!isLoading" [formGroup]="formGroup" (ngSubmit)="add()">
   <div class="d-flex flex-column w-100">
-  <mat-form-field>
-    <mat-label>Name</mat-label>
-    <input matInput placeholder="Name" formControlName="name"  minlength="" maxlength="30">
-    <mat-error *ngIf="name?.invalid">
-    {{getValidatorMessage('name')}}
-    </mat-error>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Icon</mat-label>
-    <input matInput placeholder="Icon" formControlName="icon"  minlength="" maxlength="30">
-    <mat-error *ngIf="icon?.invalid">
-    {{getValidatorMessage('icon')}}
-    </mat-error>
-  </mat-form-field>
-<mat-form-field>
-  <mat-label>Status</mat-label>
-  <mat-select formControlName="status">
-    <mat-option *ngFor="let item of Status | toKeyValue" [value]="item.value">
-      {{item.key}}
-    </mat-option>
-  </mat-select>
-  <mat-error *ngIf="status?.invalid">
-    {{getValidatorMessage('status')}}
-  </mat-error>
-</mat-form-field>
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput placeholder="Name" formControlName="name" minlength="" maxlength="30">
+      <mat-error *ngIf="name?.invalid">
+        {{getValidatorMessage('name')}}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>IdentifyName</mat-label>
+      <input matInput placeholder="IdentifyName" formControlName="identifyName" minlength="" maxlength="30">
+      <mat-error *ngIf="identifyName?.invalid">
+        {{getValidatorMessage('identifyName')}}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Description</mat-label>
+      <input matInput placeholder="Description" formControlName="description" minlength="" maxlength="30">
+      <mat-error *ngIf="description?.invalid">
+        {{getValidatorMessage('status')}}
+      </mat-error>
+    </mat-form-field>
     <div class="d-flex">
       <button class="d-flex flex-column" mat-flat-button color="primary" type="submit">保存</button>
     </div>
   </div>
 </form>
-
