@@ -26,6 +26,10 @@ public class UserAddDto
     [MaxLength(20)]
     public string? PhoneNumber { get; set; }
     /// <summary>
+    /// 角色id
+    /// </summary>
+    public List<Guid>? RoleIds { get; set; }
+    /// <summary>
     /// 头像url
     /// </summary>
     [MaxLength(200)]

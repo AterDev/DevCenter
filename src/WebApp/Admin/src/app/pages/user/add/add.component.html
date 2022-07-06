@@ -14,6 +14,13 @@
       </mat-error>
     </mat-form-field>
     <mat-form-field>
+      <mat-label>Email</mat-label>
+      <input matInput placeholder="Email" formControlName="email" required minlength="" maxlength="100">
+      <mat-error *ngIf="email?.invalid">
+        {{getValidatorMessage('email')}}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
       <mat-label>RealName</mat-label>
       <input matInput placeholder="RealName" formControlName="realName" minlength="" maxlength="30">
       <mat-error *ngIf="realName?.invalid">
@@ -21,17 +28,18 @@
       </mat-error>
     </mat-form-field>
     <mat-form-field>
+      <mat-label>角色</mat-label>
+      <mat-select placeholder="角色" formControlName="roleIds" multiple>
+        <mat-option *ngFor="let role of roles" [value]="role.id">
+          {{role.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
       <mat-label>Position</mat-label>
       <input matInput placeholder="Position" formControlName="position" minlength="" maxlength="30">
       <mat-error *ngIf="position?.invalid">
         {{getValidatorMessage('position')}}
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Email</mat-label>
-      <input matInput placeholder="Email" formControlName="email" required minlength="" maxlength="100">
-      <mat-error *ngIf="email?.invalid">
-        {{getValidatorMessage('email')}}
       </mat-error>
     </mat-form-field>
     <mat-form-field>

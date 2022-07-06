@@ -5,9 +5,11 @@ import { UserService } from 'src/app/share/services/user.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserUpdateDto } from 'src/app/share/models/user/user-update-dto.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Location } from '@angular/common';
 import { Status } from 'src/app/share/models/enum/status.model';
+import { RoleItemDto } from 'src/app/share/models/role/role-item-dto.model';
+import { RoleService } from 'src/app/share/services/role.service';
+import { catchError, lastValueFrom, retry } from 'rxjs';
 
 @Component({
   selector: 'app-edit',
@@ -20,11 +22,14 @@ export class EditComponent implements OnInit {
   id!: string;
   isLoading = true;
   data = {} as User;
+  roles = [] as RoleItemDto[];
   updateData = {} as UserUpdateDto;
   formGroup!: FormGroup;
-    constructor(
+  constructor(
 
     private service: UserService,
+
+    private roleSrv: RoleService,
     private snb: MatSnackBar,
     private router: Router,
     private route: ActivatedRoute,
@@ -40,38 +45,42 @@ export class EditComponent implements OnInit {
     }
   }
 
-    get userName() { return this.formGroup.get('userName'); }
-    get realName() { return this.formGroup.get('realName'); }
-    get position() { return this.formGroup.get('position'); }
-    get email() { return this.formGroup.get('email'); }
-    get emailConfirmed() { return this.formGroup.get('emailConfirmed'); }
-    get phoneNumber() { return this.formGroup.get('phoneNumber'); }
-    get phoneNumberConfirmed() { return this.formGroup.get('phoneNumberConfirmed'); }
-    get avatar() { return this.formGroup.get('avatar'); }
-    get status() { return this.formGroup.get('status'); }
-
+  get userName() { return this.formGroup.get('userName'); }
+  get realName() { return this.formGroup.get('realName'); }
+  get position() { return this.formGroup.get('position'); }
+  get email() { return this.formGroup.get('email'); }
+  get emailConfirmed() { return this.formGroup.get('emailConfirmed'); }
+  get phoneNumber() { return this.formGroup.get('phoneNumber'); }
+  get phoneNumberConfirmed() { return this.formGroup.get('phoneNumberConfirmed'); }
+  get avatar() { return this.formGroup.get('avatar'); }
+  get status() { return this.formGroup.get('status'); }
+  get roleIds() { return this.formGroup.get('roleIds'); }
 
   ngOnInit(): void {
     this.getDetail();
-
-    // TODO:等待数据加载完成
-    // this.isLoading = false;
   }
 
   getDetail(): void {
     this.service.getDetail(this.id)
       .subscribe(res => {
         this.data = res;
-        this.initForm();
-        this.isLoading = false;
-      }, error => {
-        this.snb.open(error);
-      })
+        this.getRoles();
+      });
+  }
+  async getRoles() {
+    let res = await lastValueFrom(this.roleSrv.filter({ pageIndex: 1, pageSize: 20 }));
+    if (res) {
+      this.roles = res.data!;
+      this.initForm();
+      this.isLoading = false;
+    }
   }
 
   initForm(): void {
+    var roleIds = this.data.roles?.map(r => r.id);
     this.formGroup = new FormGroup({
       userName: new FormControl(this.data.userName, [Validators.maxLength(30)]),
+      roleIds: new FormControl(roleIds, [Validators.required]),
       realName: new FormControl(this.data.realName, [Validators.maxLength(30)]),
       position: new FormControl(this.data.position, [Validators.maxLength(30)]),
       email: new FormControl(this.data.email, [Validators.maxLength(100)]),
@@ -89,6 +98,8 @@ export class EditComponent implements OnInit {
         return this.userName?.errors?.['required'] ? 'UserName必填' :
           this.userName?.errors?.['minlength'] ? 'UserName长度最少位' :
             this.userName?.errors?.['maxlength'] ? 'UserName长度最多30位' : '';
+      case 'roleIds':
+        return this.userName?.errors?.['required'] ? '必须选择角色' : '';
       case 'realName':
         return this.realName?.errors?.['required'] ? 'RealName必填' :
           this.realName?.errors?.['minlength'] ? 'RealName长度最少位' :
@@ -127,13 +138,13 @@ export class EditComponent implements OnInit {
     }
   }
   edit(): void {
-    if(this.formGroup.valid) {
+    if (this.formGroup.valid) {
       this.updateData = this.formGroup.value as UserUpdateDto;
       this.service.update(this.id, this.updateData)
         .subscribe(res => {
           this.snb.open('修改成功');
-           // this.dialogRef.close(res);
-          this.router.navigate(['../../index'],{relativeTo: this.route});
+          // this.dialogRef.close(res);
+          this.router.navigate(['../../index'], { relativeTo: this.route });
         });
     }
   }
@@ -141,21 +152,4 @@ export class EditComponent implements OnInit {
   back(): void {
     this.location.back();
   }
-
-  upload(event: any, type ?: string): void {
-    const files = event.target.files;
-    if(files[0]) {
-    const formdata = new FormData();
-    formdata.append('file', files[0]);
-    /*    this.service.uploadFile('agent-info' + type, formdata)
-          .subscribe(res => {
-            this.updateData.logoUrl = res.url;
-          }, error => {
-            this.snb.open(error?.detail);
-          }); */
-    } else {
-
-    }
-  }
-
 }

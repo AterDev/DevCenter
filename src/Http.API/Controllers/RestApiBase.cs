@@ -83,7 +83,7 @@ public class RestApiBase<TDataStore, TEntity, TAdd, TUpdate, TFilter, TItem>
     [HttpPut("{id}")]
     public virtual async Task<ActionResult<TEntity?>> UpdateAsync([FromRoute] Guid id, TUpdate form)
     {
-        if (_store.Any(d => d.Id == id))
+        if (_store.Exist(id).Result)
         {
             return await _store.UpdateAsync(id, form);
         }

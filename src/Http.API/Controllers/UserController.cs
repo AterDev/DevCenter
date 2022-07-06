@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 using Share.Models.UserDtos;
 namespace Http.API.Controllers;
 
@@ -31,6 +33,11 @@ public class UserController : RestApiBase<UserDataStore, User, UserAddDto, UserU
         user.Merge(form);
         user.PasswordSalt = HashCrypto.BuildSalt();
         user.PasswordHash = HashCrypto.GeneratePwd(form.Password ?? "123456", user.PasswordSalt);
+        if (form.RoleIds != null)
+        {
+            var roles = await _store._context.Roles.Where(r => form.RoleIds.Contains(r.Id)).ToListAsync();
+            user.Roles = roles;
+        }
         return await _store.AddAsync(user);
     }
 

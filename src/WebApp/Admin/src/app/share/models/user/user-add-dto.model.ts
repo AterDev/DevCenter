@@ -18,6 +18,10 @@ export interface UserAddDto {
   password?: string | null;
   phoneNumber?: string | null;
   /**
+   * 角色id
+   */
+  roleIds?: string[] | null;
+  /**
    * 头像url
    */
   avatar?: string | null;

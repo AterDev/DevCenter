@@ -28,6 +28,10 @@ public class UserUpdateDto
     public string? PhoneNumber { get; set; }
     public bool? PhoneNumberConfirmed { get; set; }
     /// <summary>
+    /// 角色id
+    /// </summary>
+    public List<Guid>? RoleIds { get; set; }
+    /// <summary>
     /// 头像url
     /// </summary>
     [MaxLength(200)]
@@ -36,5 +40,5 @@ public class UserUpdateDto
     /// 状态
     /// </summary>
     public Status? Status { get; set; }
-    
+
 }

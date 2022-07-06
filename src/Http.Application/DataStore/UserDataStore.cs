@@ -7,6 +7,11 @@ public class UserDataStore : DataStoreBase<ContextBase, User, UserUpdateDto, Use
     public UserDataStore(ContextBase context, IUserContext userContext, ILogger<UserDataStore> logger) : base(context, userContext, logger)
     {
     }
+
+    public override async Task<User?> FindAsync(Guid id, bool noTracking = false)
+    {
+        return await _db.Include(u => u.Roles).FirstOrDefaultAsync(u => u.Id == id);
+    }
     public override async Task<List<UserItemDto>> FindAsync(UserFilterDto filter, bool noTracking = true)
     {
         return await base.FindAsync(filter, noTracking);
@@ -23,12 +28,18 @@ public class UserDataStore : DataStoreBase<ContextBase, User, UserUpdateDto, Use
 
     public override async Task<User?> UpdateAsync(Guid id, UserUpdateDto dto)
     {
-        var user = await _db.FindAsync(id);
+        var user = await _db.Include(u => u.Roles)
+            .FirstOrDefaultAsync(u => u.Id == id);
         user.Merge(dto);
         if (dto.Password != null)
         {
             user!.PasswordSalt = HashCrypto.BuildSalt();
             user.PasswordHash = HashCrypto.GeneratePwd(dto.Password, user.PasswordSalt);
+        }
+        if (dto.RoleIds != null)
+        {
+            var roles = await _context.Roles.Where(r => dto.RoleIds.Contains(r.Id)).ToListAsync();
+            user!.Roles = roles;
         }
         await _context.SaveChangesAsync();
         return user;

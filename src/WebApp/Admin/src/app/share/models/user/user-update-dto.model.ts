@@ -17,21 +17,13 @@ export interface UserUpdateDto {
   position?: string | null;
   email?: string | null;
   emailConfirmed?: boolean | null;
+  password?: string | null;
   phoneNumber?: string | null;
   phoneNumberConfirmed?: boolean | null;
-  twoFactorEnabled?: boolean | null;
-  lockoutEnd?: Date | null;
-  lockoutEnabled?: boolean | null;
-  accessFailedCount?: number | null;
   /**
-   * 最后登录时间
+   * 角色id
    */
-  lastLoginTime?: Date | null;
-  /**
-   * 密码重试次数
-   */
-  retryCount?: number | null;
-  isDeleted?: boolean | null;
+  roleIds?: string[] | null;
   /**
    * 头像url
    */
