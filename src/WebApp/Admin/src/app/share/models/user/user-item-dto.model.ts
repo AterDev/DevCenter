@@ -19,19 +19,10 @@ export interface UserItemDto {
   emailConfirmed: boolean;
   phoneNumber?: string | null;
   phoneNumberConfirmed: boolean;
-  twoFactorEnabled: boolean;
-  lockoutEnd?: Date | null;
-  lockoutEnabled: boolean;
-  accessFailedCount: number;
   /**
    * 最后登录时间
    */
   lastLoginTime?: Date | null;
-  /**
-   * 密码重试次数
-   */
-  retryCount: number;
-  isDeleted: boolean;
   /**
    * 头像url
    */
@@ -42,6 +33,5 @@ export interface UserItemDto {
    */
   status?: Status;
   createdTime: Date;
-  updatedTime: Date;
 
 }

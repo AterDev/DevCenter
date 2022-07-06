@@ -4,6 +4,7 @@ export interface UserFilterDto extends FilterBase {
    * 用户名
    */
   userName?: string | null;
+  email?: string | null;
   emailConfirmed?: boolean | null;
   phoneNumberConfirmed?: boolean | null;
   twoFactorEnabled?: boolean | null;

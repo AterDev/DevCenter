@@ -9,6 +9,8 @@ public class UserFilterDto : FilterBase
     /// </summary>
     [MaxLength(30)]
     public string? UserName { get; set; }
+    [MaxLength(100)]
+    public string? Email { get; set; }
     public bool? EmailConfirmed { get; set; }
     // [MaxLength(100)]
     // public string? PasswordHash { get; set; }
@@ -22,5 +24,5 @@ public class UserFilterDto : FilterBase
     /// 密码重试次数
     /// </summary>
     public int? RetryCount { get; set; }
-
+    
 }

@@ -20,7 +20,7 @@ public class UserShortDto
     [MaxLength(30)]
     public string? Position { get; set; }
     [MaxLength(100)]
-    public string? Email { get; set; }
+    public string Email { get; set; } = default!;
     public bool EmailConfirmed { get; set; } = default!;
     // [MaxLength(100)]
     // public string PasswordHash { get; set; }
@@ -54,5 +54,5 @@ public class UserShortDto
     public Status Status { get; set; } = default!;
     public DateTimeOffset CreatedTime { get; set; } = default!;
     public DateTimeOffset UpdatedTime { get; set; } = default!;
-
+    
 }
