@@ -47,13 +47,6 @@ export class EditComponent implements OnInit {
     get emailConfirmed() { return this.formGroup.get('emailConfirmed'); }
     get phoneNumber() { return this.formGroup.get('phoneNumber'); }
     get phoneNumberConfirmed() { return this.formGroup.get('phoneNumberConfirmed'); }
-    get twoFactorEnabled() { return this.formGroup.get('twoFactorEnabled'); }
-    get lockoutEnd() { return this.formGroup.get('lockoutEnd'); }
-    get lockoutEnabled() { return this.formGroup.get('lockoutEnabled'); }
-    get accessFailedCount() { return this.formGroup.get('accessFailedCount'); }
-    get lastLoginTime() { return this.formGroup.get('lastLoginTime'); }
-    get retryCount() { return this.formGroup.get('retryCount'); }
-    get isDeleted() { return this.formGroup.get('isDeleted'); }
     get avatar() { return this.formGroup.get('avatar'); }
     get status() { return this.formGroup.get('status'); }
 
@@ -85,13 +78,6 @@ export class EditComponent implements OnInit {
       emailConfirmed: new FormControl(this.data.emailConfirmed, []),
       phoneNumber: new FormControl(this.data.phoneNumber, [Validators.maxLength(20)]),
       phoneNumberConfirmed: new FormControl(this.data.phoneNumberConfirmed, []),
-      twoFactorEnabled: new FormControl(this.data.twoFactorEnabled, []),
-      lockoutEnd: new FormControl(this.data.lockoutEnd, []),
-      lockoutEnabled: new FormControl(this.data.lockoutEnabled, []),
-      accessFailedCount: new FormControl(this.data.accessFailedCount, []),
-      lastLoginTime: new FormControl(this.data.lastLoginTime, []),
-      retryCount: new FormControl(this.data.retryCount, []),
-      isDeleted: new FormControl(this.data.isDeleted, []),
       avatar: new FormControl(this.data.avatar, [Validators.maxLength(200)]),
       status: new FormControl(this.data.status, []),
 
@@ -127,34 +113,6 @@ export class EditComponent implements OnInit {
         return this.phoneNumberConfirmed?.errors?.['required'] ? 'PhoneNumberConfirmed必填' :
           this.phoneNumberConfirmed?.errors?.['minlength'] ? 'PhoneNumberConfirmed长度最少位' :
             this.phoneNumberConfirmed?.errors?.['maxlength'] ? 'PhoneNumberConfirmed长度最多位' : '';
-      case 'twoFactorEnabled':
-        return this.twoFactorEnabled?.errors?.['required'] ? 'TwoFactorEnabled必填' :
-          this.twoFactorEnabled?.errors?.['minlength'] ? 'TwoFactorEnabled长度最少位' :
-            this.twoFactorEnabled?.errors?.['maxlength'] ? 'TwoFactorEnabled长度最多位' : '';
-      case 'lockoutEnd':
-        return this.lockoutEnd?.errors?.['required'] ? 'LockoutEnd必填' :
-          this.lockoutEnd?.errors?.['minlength'] ? 'LockoutEnd长度最少位' :
-            this.lockoutEnd?.errors?.['maxlength'] ? 'LockoutEnd长度最多位' : '';
-      case 'lockoutEnabled':
-        return this.lockoutEnabled?.errors?.['required'] ? 'LockoutEnabled必填' :
-          this.lockoutEnabled?.errors?.['minlength'] ? 'LockoutEnabled长度最少位' :
-            this.lockoutEnabled?.errors?.['maxlength'] ? 'LockoutEnabled长度最多位' : '';
-      case 'accessFailedCount':
-        return this.accessFailedCount?.errors?.['required'] ? 'AccessFailedCount必填' :
-          this.accessFailedCount?.errors?.['minlength'] ? 'AccessFailedCount长度最少位' :
-            this.accessFailedCount?.errors?.['maxlength'] ? 'AccessFailedCount长度最多位' : '';
-      case 'lastLoginTime':
-        return this.lastLoginTime?.errors?.['required'] ? 'LastLoginTime必填' :
-          this.lastLoginTime?.errors?.['minlength'] ? 'LastLoginTime长度最少位' :
-            this.lastLoginTime?.errors?.['maxlength'] ? 'LastLoginTime长度最多位' : '';
-      case 'retryCount':
-        return this.retryCount?.errors?.['required'] ? 'RetryCount必填' :
-          this.retryCount?.errors?.['minlength'] ? 'RetryCount长度最少位' :
-            this.retryCount?.errors?.['maxlength'] ? 'RetryCount长度最多位' : '';
-      case 'isDeleted':
-        return this.isDeleted?.errors?.['required'] ? 'IsDeleted必填' :
-          this.isDeleted?.errors?.['minlength'] ? 'IsDeleted长度最少位' :
-            this.isDeleted?.errors?.['maxlength'] ? 'IsDeleted长度最多位' : '';
       case 'avatar':
         return this.avatar?.errors?.['required'] ? 'Avatar必填' :
           this.avatar?.errors?.['minlength'] ? 'Avatar长度最少位' :

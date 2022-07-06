@@ -8,6 +8,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
+import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-index',
@@ -19,8 +20,9 @@ export class IndexComponent implements OnInit {
   isLoading = true;
   total = 0;
   data: UserItemDto[] = [];
-  columns: string[] = ['userName', 'realName', 'position', 'email', 'emailConfirmed', 'actions'];
+  columns: string[] = ['select', 'userName', 'realName', 'position', 'email', 'actions'];
   dataSource!: MatTableDataSource<UserItemDto>;
+  selection = new SelectionModel<UserItemDto>(true, []);
   filter: UserFilterDto;
   pageSizeOption = [12, 20, 50];
   constructor(
@@ -41,7 +43,7 @@ export class IndexComponent implements OnInit {
   }
 
   getList(event?: PageEvent): void {
-    if(event) {
+    if (event) {
       this.filter.pageIndex = event.pageIndex + 1;
       this.filter.pageSize = event.pageSize;
     }
@@ -83,47 +85,69 @@ export class IndexComponent implements OnInit {
           this.snb.open('删除失败');
         }
       });
-}
+  }
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
 
-/*
-openAddDialog(): void {
-  const ref = this.dialog.open(AddComponent, {
-    hasBackdrop: true,
-    disableClose: false,
-    data: {
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  toggleAllRows() {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+      return;
     }
-  });
-  ref.afterClosed().subscribe(res => {
-    if (res) {
-      this.snb.open('添加成功');
-      this.getList();
-    }
-  });
-}
-openDetailDialog(id: string): void {
-  const ref = this.dialog.open(DetailComponent, {
-    hasBackdrop: true,
-    disableClose: false,
-    data: { id }
-  });
-  ref.afterClosed().subscribe(res => {
-    if (res) { }
-  });
-}
 
-openEditDialog(id: string): void {
-  const ref = this.dialog.open(EditComponent, {
-    hasBackdrop: true,
-    disableClose: false,
-    data: { id }
-  });
-  ref.afterClosed().subscribe(res => {
-    if (res) {
-      this.snb.open('修改成功');
-      this.getList();
+    this.selection.select(...this.dataSource.data);
+  }
+
+  /** The label for the checkbox on the passed row */
+  checkboxLabel(row?: UserItemDto): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
-  });
-}*/
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id}`;
+  }
+  /*
+  openAddDialog(): void {
+    const ref = this.dialog.open(AddComponent, {
+      hasBackdrop: true,
+      disableClose: false,
+      data: {
+      }
+    });
+    ref.afterClosed().subscribe(res => {
+      if (res) {
+        this.snb.open('添加成功');
+        this.getList();
+      }
+    });
+  }
+  openDetailDialog(id: string): void {
+    const ref = this.dialog.open(DetailComponent, {
+      hasBackdrop: true,
+      disableClose: false,
+      data: { id }
+    });
+    ref.afterClosed().subscribe(res => {
+      if (res) { }
+    });
+  }
+
+  openEditDialog(id: string): void {
+    const ref = this.dialog.open(EditComponent, {
+      hasBackdrop: true,
+      disableClose: false,
+      data: { id }
+    });
+    ref.afterClosed().subscribe(res => {
+      if (res) {
+        this.snb.open('修改成功');
+        this.getList();
+      }
+    });
+  }*/
 
   /**
    * 编辑

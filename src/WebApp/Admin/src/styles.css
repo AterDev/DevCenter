@@ -34,3 +34,6 @@ img {
 .ck-editor__editable_inline {
     min-height: 500px;
 }
+.bg-white{
+  background-color: white;
+}
