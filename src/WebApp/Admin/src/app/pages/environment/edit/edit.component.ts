@@ -22,8 +22,8 @@ export class EditComponent implements OnInit {
   data = {} as Environment;
   updateData = {} as EnvironmentUpdateDto;
   formGroup!: FormGroup;
-    constructor(
-    
+  constructor(
+
     private service: EnvironmentService,
     private snb: MatSnackBar,
     private router: Router,
@@ -40,15 +40,16 @@ export class EditComponent implements OnInit {
     }
   }
 
-    get name() { return this.formGroup.get('name'); }
-    get description() { return this.formGroup.get('description'); }
-    get status() { return this.formGroup.get('status'); }
+  get name() { return this.formGroup.get('name'); }
+  get description() { return this.formGroup.get('description'); }
+  get color() { return this.formGroup.get('color'); }
+  get status() { return this.formGroup.get('status'); }
 
 
   ngOnInit(): void {
     this.getDetail();
   }
-  
+
   getDetail(): void {
     this.service.getDetail(this.id)
       .subscribe(res => {
@@ -64,6 +65,7 @@ export class EditComponent implements OnInit {
     this.formGroup = new FormGroup({
       name: new FormControl(this.data.name, [Validators.maxLength(50)]),
       description: new FormControl(this.data.description, [Validators.maxLength(200)]),
+      color: new FormControl(this.data.color, []),
       status: new FormControl(this.data.status, []),
 
     });
@@ -88,13 +90,13 @@ export class EditComponent implements OnInit {
     }
   }
   edit(): void {
-    if(this.formGroup.valid) {
+    if (this.formGroup.valid) {
       this.updateData = this.formGroup.value as EnvironmentUpdateDto;
       this.service.update(this.id, this.updateData)
         .subscribe(res => {
           this.snb.open('修改成功');
-           // this.dialogRef.close(res);
-          // this.router.navigate(['../index'],{relativeTo: this.route});
+          // this.dialogRef.close(res);
+          this.router.navigate(['../../index'], { relativeTo: this.route });
         });
     }
   }
@@ -102,21 +104,4 @@ export class EditComponent implements OnInit {
   back(): void {
     this.location.back();
   }
-
-  upload(event: any, type ?: string): void {
-    const files = event.target.files;
-    if(files[0]) {
-    const formdata = new FormData();
-    formdata.append('file', files[0]);
-    /*    this.service.uploadFile('agent-info' + type, formdata)
-          .subscribe(res => {
-            this.updateData.logoUrl = res.url;
-          }, error => {
-            this.snb.open(error?.detail);
-          }); */
-    } else {
-
-    }
-  }
-
 }
