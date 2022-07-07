@@ -20,7 +20,7 @@ export class IndexComponent implements OnInit {
   isLoading = true;
   total = 0;
   data: UserItemDto[] = [];
-  columns: string[] = ['select', 'userName', 'realName', 'position', 'email', 'actions'];
+  columns: string[] = ['userName', 'realName', 'position', 'email', 'actions'];
   dataSource!: MatTableDataSource<UserItemDto>;
   selection = new SelectionModel<UserItemDto>(true, []);
   filter: UserFilterDto;

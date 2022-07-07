@@ -12,7 +12,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     children:
       [
-        { path: '', pathMatch: 'full', redirectTo: 'index' },
+        { path: '', pathMatch: 'full', redirectTo: 'resource/index' },
         { path: 'index', component: IndexComponent },
       ]
   }

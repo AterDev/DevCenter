@@ -6,9 +6,10 @@ import { IndexComponent } from './index/index.component';
 import { DetailComponent } from './detail/detail.component';
 import { AddComponent } from './add/add.component';
 import { EditComponent } from './edit/edit.component';
+import { ResourceComponent } from './resource/resource.component';
 
 @NgModule({
-  declarations: [IndexComponent, DetailComponent, AddComponent, EditComponent],
+  declarations: [IndexComponent, DetailComponent, AddComponent, EditComponent, ResourceComponent],
   imports: [
     ComponentsModule,
     ShareModule,

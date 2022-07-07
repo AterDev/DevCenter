@@ -6,6 +6,7 @@ import { AddComponent } from './add/add.component';
 import { DetailComponent } from './detail/detail.component';
 import { EditComponent } from './edit/edit.component';
 import { AdminLayoutComponent } from 'src/app/components/admin-layout/admin-layout.component';
+import { ResourceComponent } from './resource/resource.component';
 
 const routes: Routes = [
   {
@@ -22,6 +23,7 @@ const routes: Routes = [
             { path: '', pathMatch: 'full', redirectTo: 'index' },
             { path: 'index', component: IndexComponent },
             { path: 'add', component: AddComponent },
+            { path: 'resource/:id', component: ResourceComponent },
             { path: 'detail/:id', component: DetailComponent },
             { path: 'edit/:id', component: EditComponent },
           ]

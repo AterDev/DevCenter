@@ -41,7 +41,6 @@ export class EditComponent implements OnInit {
   }
 
   get name() { return this.formGroup.get('name'); }
-
   get identifyName() { return this.formGroup.get('identifyName'); }
   get description() { return this.formGroup.get('description'); }
   get status() { return this.formGroup.get('status'); }
