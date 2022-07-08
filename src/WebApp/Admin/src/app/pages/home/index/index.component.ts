@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { LoginService } from 'src/app/auth/login.service';
-import { FilterBase } from 'src/app/share/models/filter-base.model';
 import { EnvironmentService } from 'src/app/share/services/environment.service';
 import { ResourceGroupService } from 'src/app/share/services/resource-group.service';
 import { EnvironmentItemDto } from 'src/app/share/models/environment/environment-item-dto.model';

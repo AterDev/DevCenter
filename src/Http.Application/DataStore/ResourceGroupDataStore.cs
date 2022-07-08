@@ -29,6 +29,7 @@ public class ResourceGroupDataStore : DataStoreBase<ContextBase, ResourceGroup, 
         }
 
         var data = await _query.AsNoTracking()
+            .Include(q => q.Environment)
             .Include(q => q.Resources)!
                 .ThenInclude(r => r.Attributes)
             .Include(q => q.Resources)!
@@ -43,7 +44,8 @@ public class ResourceGroupDataStore : DataStoreBase<ContextBase, ResourceGroup, 
                 Descriptioin = s.Descriptioin,
                 Id = s.Id,
                 Name = s.Name,
-                Resource = s.Resources
+                Resource = s.Resources,
+                Environment = s.Environment
             })
             .ToListAsync();
         return new PageResult<ResourceGroupItemDto>

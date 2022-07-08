@@ -1,3 +1,5 @@
+using Environment = Core.Models.Environment;
+
 namespace Share.Models.ResourceGroupDtos;
 /// <summary>
 /// 资源组
@@ -11,7 +13,10 @@ public class ResourceGroupItemDto
     /// </summary>
     [MaxLength(400)]
     public string? Descriptioin { get; set; }
+
     public Guid Id { get; set; } = default!;
+
+    public Environment? Environment { get; set; } 
 
     public List<Resource>? Resource { get; set; }
 
