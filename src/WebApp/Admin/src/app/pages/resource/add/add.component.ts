@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { Status } from 'src/app/share/models/enum/status.model';
 import { lastValueFrom } from 'rxjs';
-import { Selection } from 'src/app/share/models/selection.model';
+import { Selection } from 'src/app/share/models/resource/selection.model';
 import { ResourceAttributeDefineItemDto } from 'src/app/share/models/resource-attribute-define/resource-attribute-define-item-dto.model';
 import { MatSelectChange } from '@angular/material/select';
 import { ResourceAttributeDefineService } from 'src/app/share/services/resource-attribute-define.service';

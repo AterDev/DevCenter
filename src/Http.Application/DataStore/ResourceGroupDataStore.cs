@@ -1,3 +1,4 @@
+using Share.Models.ResourceDtos;
 using Share.Models.ResourceGroupDtos;
 namespace Http.Application.DataStore;
 public class ResourceGroupDataStore : DataStoreBase<ContextBase, ResourceGroup, ResourceGroupUpdateDto, ResourceGroupFilterDto, ResourceGroupItemDto>
@@ -54,6 +55,23 @@ public class ResourceGroupDataStore : DataStoreBase<ContextBase, ResourceGroup, 
             Data = data,
             PageIndex = filter.PageIndex
         };
+    }
+
+    /// <summary>
+    /// 获取角色的资源组
+    /// </summary>
+    /// <param name="roleId"></param>
+    /// <returns></returns>
+    public async Task<List<ResourceGroupRoleDto>> GetRoleResourceGroupsAsync(Guid? roleId)
+    {
+        var query = _db.AsQueryable();
+        if (roleId != null)
+        {
+            var role = await _context.Roles.FindAsync(roleId);
+            query = query.Where(d => d.Roles != null && d.Roles.Contains(role!));
+        }
+        return await query.Select<ResourceGroup, ResourceGroupRoleDto>()
+            .ToListAsync();
     }
     public override async Task<ResourceGroup> AddAsync(ResourceGroup data)
     {

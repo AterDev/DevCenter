@@ -5,6 +5,7 @@ import { ResourceGroupFilterDto } from '../models/resource-group/resource-group-
 import { ResourceGroupAddDto } from '../models/resource-group/resource-group-add-dto.model';
 import { ResourceGroupUpdateDto } from '../models/resource-group/resource-group-update-dto.model';
 import { PageResultOfResourceGroupItemDto } from '../models/resource-group/page-result-of-resource-group-item-dto.model';
+import { ResourceGroupRoleDto } from '../models/resource-group/resource-group-role-dto.model';
 import { ResourceGroup } from '../models/resource-group/resource-group.model';
 
 /**
@@ -19,6 +20,15 @@ export class ResourceGroupService extends BaseService {
   filter(data: ResourceGroupFilterDto): Observable<PageResultOfResourceGroupItemDto> {
     const url = `/api/ResourceGroup/filter`;
     return this.request<PageResultOfResourceGroupItemDto>('post', url, data);
+  }
+
+  /**
+   * 获取某角色分配的资源组
+   * @param roleId string
+   */
+  getRoleResourceGroups(roleId: string): Observable<ResourceGroupRoleDto[]> {
+    const url = `/api/ResourceGroup/role?roleId=${roleId}`;
+    return this.request<ResourceGroupRoleDto[]>('get', url);
   }
 
   /**

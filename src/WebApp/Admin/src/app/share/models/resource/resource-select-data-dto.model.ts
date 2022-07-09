@@ -1,4 +1,4 @@
-import { Selection } from '../selection.model';
+import { Selection } from '../resource/selection.model';
 export interface ResourceSelectDataDto {
   typeDefines?: Selection[] | null;
   tags?: Selection[] | null;

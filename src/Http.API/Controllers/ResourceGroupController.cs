@@ -28,6 +28,17 @@ public class ResourceGroupController : RestApiBase<ResourceGroupDataStore, Resou
     }
 
     /// <summary>
+    /// 获取某角色分配的资源组
+    /// </summary>
+    /// <param name="roleId"></param>
+    /// <returns></returns>
+    [HttpGet("role")]
+    public async Task<List<ResourceGroupRoleDto>> GetRoleResourceGroupsAsync(Guid? roleId)
+    {
+        return await _store.GetRoleResourceGroupsAsync(roleId);
+    }
+
+    /// <summary>
     /// 添加
     /// </summary>
     /// <param name="form"></param>

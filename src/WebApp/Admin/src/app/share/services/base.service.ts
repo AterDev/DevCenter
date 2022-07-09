@@ -41,7 +41,6 @@ export class BaseService {
     return new HttpHeaders({
       Accept: 'application/json',
       // Authorization: 'Bearer ' + this.oidcSecurityService.getAccessToken(),
-      Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
     });
   }
   isMoblie(): boolean {

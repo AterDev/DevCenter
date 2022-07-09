@@ -6,7 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ResourceUpdateDto } from 'src/app/share/models/resource/resource-update-dto.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Selection } from 'src/app/share/models/selection.model';
+import { Selection } from 'src/app/share/models/resource/selection.model';
 import { Location } from '@angular/common';
 import { Status } from 'src/app/share/models/enum/status.model';
 import { lastValueFrom } from 'rxjs';

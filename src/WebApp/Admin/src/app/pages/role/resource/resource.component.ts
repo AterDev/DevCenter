@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-import { Role } from 'src/app/share/models/role/role.model';
+import { ResourceGroupService } from 'src/app/share/services/resource-group.service';
+import { ResourceGroupRoleDto } from 'src/app/share/models/resource-group/resource-group-role-dto.model';
 @Component({
   selector: 'app-resource',
   templateUrl: './resource.component.html',
@@ -10,9 +11,11 @@ import { Role } from 'src/app/share/models/role/role.model';
 export class ResourceComponent implements OnInit {
   id!: string;
   isLoading = true;
-  data = {} as Role;
+  groups = [] as ResourceGroupRoleDto[];
+
   constructor(
     private route: ActivatedRoute,
+    private groupSrv: ResourceGroupService,
     private location: Location
   ) {
     const id = this.route.snapshot.paramMap.get('id');
@@ -24,6 +27,7 @@ export class ResourceComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
   }
   back(): void {
     this.location.back();
