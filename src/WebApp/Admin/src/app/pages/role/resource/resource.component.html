@@ -4,3 +4,8 @@
   </button>
   分配权限
 </mat-toolbar>
+<mat-selection-list (selectionChange)="selectChange($event)">
+  <mat-list-option *ngFor="let group of groups" [selected]="inRole(group.id)" [value]="group.id">
+    {{group.name}}
+  </mat-list-option>
+</mat-selection-list>
