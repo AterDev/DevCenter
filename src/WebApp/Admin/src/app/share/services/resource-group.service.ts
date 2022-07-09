@@ -26,7 +26,7 @@ export class ResourceGroupService extends BaseService {
    * 获取某角色分配的资源组
    * @param roleId string
    */
-  getRoleResourceGroups(roleId: string): Observable<ResourceGroupRoleDto[]> {
+  getRoleResourceGroups(roleId?: string): Observable<ResourceGroupRoleDto[]> {
     const url = `/api/ResourceGroup/role?roleId=${roleId}`;
     return this.request<ResourceGroupRoleDto[]>('get', url);
   }

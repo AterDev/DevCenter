@@ -68,7 +68,7 @@ public class ResourceGroupDataStore : DataStoreBase<ContextBase, ResourceGroup, 
         if (roleId != null)
         {
             var role = await _context.Roles.FindAsync(roleId);
-            query = query.Where(d => d.Roles != null && d.Roles.Contains(role!));
+            query = query.Where(d => d.Roles!.Contains(role!));
         }
         return await query.Select<ResourceGroup, ResourceGroupRoleDto>()
             .ToListAsync();

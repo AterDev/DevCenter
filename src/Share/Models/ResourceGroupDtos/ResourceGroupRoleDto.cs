@@ -1,4 +1,6 @@
-﻿namespace Share.Models.ResourceGroupDtos;
+﻿using Environment = Core.Models.Environment;
+
+namespace Share.Models.ResourceGroupDtos;
 
 /// <summary>
 /// 角色对应的资源组
@@ -13,4 +15,5 @@ public class ResourceGroupRoleDto
     /// </summary>
     [MaxLength(400)]
     public string? Descriptioin { get; set; }
+    public Environment Environment { get; set; } = default!;
 }
