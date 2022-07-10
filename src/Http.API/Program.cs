@@ -36,7 +36,7 @@ services.AddDataStore();
 
 //services.AddScoped(typeof(FileService));
 
-#region ½Ó¿ÚÏà¹ØÄÚÈİ:jwt/ÊÚÈ¨/cors
+#region æ¥å£ç›¸å…³å†…å®¹:jwt/æˆæƒ/cors
 // use jwt
 services.AddAuthentication(options =>
 {
@@ -75,16 +75,16 @@ services.AddAuthentication(options =>
 //        options.UseAspNetCore();
 //    });
 
-// ÑéÖ¤
+// éªŒè¯
 services.AddAuthorization(options =>
 {
     options.AddPolicy("User", policy =>
-        policy.RequireRole("Admin", "User"));
+        policy.RequireRole("Admin", "User", "Developer", "DevOps"));
     options.AddPolicy("Admin", policy =>
         policy.RequireRole("Admin"));
 });
 
-// corsÅäÖÃ 
+// corsé…ç½® 
 services.AddCors(options =>
 {
     options.AddPolicy("default", builder =>
@@ -97,7 +97,7 @@ services.AddCors(options =>
 #endregion
 
 services.AddHealthChecks();
-// api ½Ó¿ÚÎÄµµÉèÖÃ
+// api æ¥å£æ–‡æ¡£è®¾ç½®
 services.AddOpenApiDocument(c =>
 {
     c.GenerateXmlObjects = true;
@@ -106,7 +106,7 @@ services.AddOpenApiDocument(c =>
     c.PostProcess = (document) =>
     {
         document.Info.Title = "DevCenter";
-        document.Info.Description = "Api ÎÄµµ";
+        document.Info.Description = "Api æ–‡æ¡£";
         document.Info.Version = "1.0";
     };
 });
@@ -118,7 +118,7 @@ services.AddControllers()
 
 var app = builder.Build();
 
-// ³õÊ¼»¯¹¤×÷
+// åˆå§‹åŒ–å·¥ä½œ
 await using (var scope = app.Services.CreateAsyncScope())
 {
     var provider = scope.ServiceProvider;
@@ -131,18 +131,18 @@ if (app.Environment.IsDevelopment())
     app.UseCors("default");
     app.UseDeveloperExceptionPage();
     app.UseOpenApi();
-    app.UseSwaggerUi3(c => { c.DocumentTitle = "ÎÄµµ"; });
+    app.UseSwaggerUi3(c => { c.DocumentTitle = "æ–‡æ¡£"; });
     app.UseStaticFiles();
 }
 else
 {
-    // Éú²ú»·¾³ĞèÒªĞÂµÄÅäÖÃ
+    // ç”Ÿäº§ç¯å¢ƒéœ€è¦æ–°çš„é…ç½®
     app.UseCors("default");
     app.UseStaticFiles();
     //app.UseHsts();
     //app.UseHttpsRedirection();
 }
-// Òì³£Í³Ò»´¦Àí
+// å¼‚å¸¸ç»Ÿä¸€å¤„ç†
 app.UseExceptionHandler(handler =>
 {
     handler.Run(async context =>
@@ -151,7 +151,7 @@ app.UseExceptionHandler(handler =>
         var exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
         var result = new
         {
-            Title = "³ÌĞòÄÚ²¿´íÎó:" + exception?.Message,
+            Title = "ç¨‹åºå†…éƒ¨é”™è¯¯:" + exception?.Message,
             Detail = exception?.Source,
             Status = 500,
             TraceId = context.TraceIdentifier

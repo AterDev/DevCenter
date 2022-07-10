@@ -31,6 +31,14 @@ export class ResourceService extends BaseService {
   }
 
   /**
+   * getAllResources
+   */
+  getAllResources(): Observable<Resource[]> {
+    const url = `/api/Resource`;
+    return this.request<Resource[]>('get', url);
+  }
+
+  /**
    * 添加
    * @param data ResourceAddDto
    */

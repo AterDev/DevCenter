@@ -5,6 +5,8 @@ import { UntypedFormGroup, UntypedFormControl, Validators, FormGroup, FormContro
 import { AuthService } from 'src/app/share/services/auth.service';
 import { LoginService } from 'src/app/auth/login.service';
 import { LoginDto } from 'src/app/share/models/auth/login-dto.model';
+import { ResourceService } from 'src/app/share/services/resource.service';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -17,6 +19,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private loginService: LoginService,
+    private resourceSrv: ResourceService,
     private router: Router
   ) {
     this.loginDto = {
@@ -59,10 +62,17 @@ export class LoginComponent implements OnInit {
       .subscribe(res => {
         this.loginService.isLogin = true;
         this.loginService.saveLoginState(res);
-        this.router.navigate(['/']);
+        this.getResources().then(() => {
+          this.router.navigate(['/'])
+        });
+
       });
   }
 
+  async getResources(): Promise<void> {
+    let res = await lastValueFrom(this.resourceSrv.getAllResources());
+    localStorage.setItem('searchResources', JSON.stringify(res));
+  }
   logout(): void {
     this.loginService.logout();
   }

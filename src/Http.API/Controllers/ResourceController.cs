@@ -24,10 +24,16 @@ public class ResourceController : RestApiBase<ResourceDataStore, Resource, Resou
     /// 获取关联的选项
     /// </summary>
     /// <returns></returns>
-    [Route("selection")]
+    [HttpGet("selection")]
     public async Task<ActionResult<ResourceSelectDataDto>> GetSelectionDataAsync()
     {
         return await _store.GetRelationSelectDataAsync();
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<List<Resource>>> GetAllResourcesAsync()
+    {
+        return await _store.GetAllResourcesAsync(_user.UserId!.Value);
     }
 
     /// <summary>

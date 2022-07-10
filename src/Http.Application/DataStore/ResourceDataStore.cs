@@ -20,7 +20,6 @@ public class ResourceDataStore : DataStoreBase<ContextBase, Resource, ResourceUp
             : await _query.SingleOrDefaultAsync(d => d.Id == id);
 
     }
-
     public override async Task<PageResult<ResourceItemDto>> FindWithPageAsync(ResourceFilterDto filter)
     {
         if (filter.GroupId != null)
@@ -68,6 +67,29 @@ public class ResourceDataStore : DataStoreBase<ContextBase, Resource, ResourceUp
         }
         await _context.SaveChangesAsync();
         return resource;
+    }
+
+    /// <summary>
+    /// 获取当前用户可查询的所有资源
+    /// </summary>
+    /// <param name="UserId"></param>
+    /// <returns></returns>
+    public async Task<List<Resource>> GetAllResourcesAsync(Guid UserId)
+    {
+        var roles = await _context.Users.Where(u => u.Id == UserId)
+            .SelectMany(s => s.Roles!)
+            .ToListAsync();
+
+        var groupIds = await _context.Roles.Where(r => roles.Contains(r))
+            .AsNoTracking()
+            .SelectMany(r => r.ResourceGroups!)
+            .Select(s => s.Id)
+            .ToListAsync();
+
+        var resources = await _context.Resources.Where(r => groupIds.Contains(r.Group.Id))
+            .Include(r => r.Attributes)
+            .ToListAsync();
+        return resources;
     }
 
     public override async Task<bool> DeleteAsync(Guid id)

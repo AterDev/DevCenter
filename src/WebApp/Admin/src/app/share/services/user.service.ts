@@ -14,15 +14,6 @@ import { User } from '../models/user/user.model';
 @Injectable({ providedIn: 'root' })
 export class UserService extends BaseService {
   /**
-   * changePassword
-   * @param newPassword string
-   */
-  changePassword(newPassword?: string): Observable<boolean> {
-    const url = `/api/User/changePassword?newPassword=${newPassword}`;
-    return this.request<boolean>('put', url);
-  }
-
-  /**
    * 分页筛选
    * @param data UserFilterDto
    */
@@ -74,6 +65,15 @@ export class UserService extends BaseService {
   getDetail(id: string): Observable<User> {
     const url = `/api/User/${id}`;
     return this.request<User>('get', url);
+  }
+
+  /**
+   * 修改密码
+   * @param newPassword string
+   */
+  changePassword(newPassword?: string): Observable<boolean> {
+    const url = `/api/User/changePassword?newPassword=${newPassword}`;
+    return this.request<boolean>('put', url);
   }
 
 }

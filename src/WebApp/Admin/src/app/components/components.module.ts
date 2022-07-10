@@ -37,6 +37,7 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { AdminLayoutComponent } from './admin-layout/admin-layout.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 const MaterialModules = [
   MatToolbarModule,
@@ -77,6 +78,7 @@ const MaterialModules = [
   declarations: [LayoutComponent, NavigationComponent, ConfirmDialogComponent, AdminLayoutComponent],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     RouterModule,
     ...MaterialModules,
   ],
