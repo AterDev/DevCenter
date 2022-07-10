@@ -26,7 +26,6 @@ export class IndexComponent implements OnInit {
     private loginService: LoginService,
     private envSrv: EnvironmentService,
     private groupSrv: ResourceGroupService,
-    public dialogRef: MatDialogRef<ResourceDialogComponent>,
     public dialog: MatDialog
 
   ) {
