@@ -10,6 +10,7 @@ const routes: Routes = [
     component: AdminLayoutComponent,
     // data: { reuse: true },
     canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
     children:
       [
         { path: '', pathMatch: 'full', redirectTo: 'resource/index' },
