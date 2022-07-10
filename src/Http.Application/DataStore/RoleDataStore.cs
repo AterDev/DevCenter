@@ -28,4 +28,16 @@ public class RoleDataStore : DataStoreBase<ContextBase, Role, RoleUpdateDto, Rol
     {
         return await base.DeleteAsync(id);
     }
+
+    public async Task<bool> SetResourceGorupsAsync(RoleResourceDto dto)
+    {
+        var role = await _db.Include(r => r.ResourceGroups)
+            .FirstOrDefaultAsync(r => r.Id == dto.RoleId);
+        role!.ResourceGroups = null;
+        var groups = await _context.ResourceGroups.Where(g => dto.GroupIds.Contains(g.Id))
+            .ToListAsync();
+
+        role.ResourceGroups = groups;
+        return await _context.SaveChangesAsync() > 0;
+    }
 }

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { RoleFilterDto } from '../models/role/role-filter-dto.model';
 import { RoleAddDto } from '../models/role/role-add-dto.model';
 import { RoleUpdateDto } from '../models/role/role-update-dto.model';
+import { RoleResourceDto } from '../models/role/role-resource-dto.model';
 import { PageResultOfRoleItemDto } from '../models/role/page-result-of-role-item-dto.model';
 import { Role } from '../models/role/role.model';
 
@@ -56,6 +57,15 @@ export class RoleService extends BaseService {
   getDetail(id: string): Observable<Role> {
     const url = `/api/Role/${id}`;
     return this.request<Role>('get', url);
+  }
+
+  /**
+   * 分配资源组
+   * @param data RoleResourceDto
+   */
+  setResourceGroups(data: RoleResourceDto): Observable<boolean> {
+    const url = `/api/Role/resourceGroup`;
+    return this.request<boolean>('put', url, data);
   }
 
 }

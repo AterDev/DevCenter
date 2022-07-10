@@ -14,7 +14,7 @@ export class LoginService {
   saveLoginState(data: AuthResult): void {
     this.isLogin = true;
     this.userName = data.username;
-    if (data.role.toLowerCase() == "admin") {
+    if (data.role.toLowerCase() === "admin") {
       this.isAdmin = true;
     }
     localStorage.setItem("id", data.id);
