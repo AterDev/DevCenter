@@ -13,6 +13,29 @@ public class ResourceGroupDataStore : DataStoreBase<ContextBase, ResourceGroup, 
 
     public override async Task<PageResult<ResourceGroupItemDto>> FindWithPageAsync(ResourceGroupFilterDto filter)
     {
+        // 如果不是授权用户的请求，返回空
+        if (filter.UserId == null)
+        {
+            return new PageResult<ResourceGroupItemDto>();
+        }
+        // 查询用户对应的角色
+        var roles = await _context.Users.Where(u => u.Id == filter.UserId)
+            .SelectMany(u => u.Roles).ToListAsync();
+        if (roles.Any())
+        {
+            // 查询角色包含的资源组
+            var roleIds = roles.Select(r => r.Id).ToList();
+            var groups = await _context.Roles.Where(r => roleIds.Contains(r.Id))
+                .SelectMany(r => r.ResourceGroups)
+                .ToListAsync();
+
+            if (groups.Any())
+            {
+                var groupIds = groups.Select(g => g.Id).ToList();
+                _query = _query.Where(q => groupIds.Contains(q.Id));
+            }
+        }
+
         if (filter.EnvironmentId != null)
         {
             _query = _query.Where(q => q.Environment.Id == filter.EnvironmentId);

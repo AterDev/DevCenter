@@ -24,6 +24,7 @@ public class ResourceGroupController : RestApiBase<ResourceGroupDataStore, Resou
     /// <returns></returns>
     public override async Task<ActionResult<PageResult<ResourceGroupItemDto>>> FilterAsync(ResourceGroupFilterDto filter)
     {
+        filter.UserId = _user.UserId;
         return await base.FilterAsync(filter);
     }
 

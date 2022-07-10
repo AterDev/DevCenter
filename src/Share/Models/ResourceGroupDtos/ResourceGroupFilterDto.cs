@@ -7,5 +7,5 @@ public class ResourceGroupFilterDto : FilterBase
     [MaxLength(100)]
     public string? Name { get; set; }
     public Guid? EnvironmentId { get; set; }
-    public Guid? RoleId { get; set; }
+    public Guid? UserId { get; set; }
 }
