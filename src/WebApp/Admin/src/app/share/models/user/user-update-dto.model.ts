@@ -4,10 +4,6 @@ import { Status } from '../enum/status.model';
  */
 export interface UserUpdateDto {
   /**
-   * 用户名
-   */
-  userName?: string | null;
-  /**
    * 真实姓名
    */
   realName?: string | null;
@@ -16,10 +12,8 @@ export interface UserUpdateDto {
    */
   position?: string | null;
   email?: string | null;
-  emailConfirmed?: boolean | null;
   password?: string | null;
   phoneNumber?: string | null;
-  phoneNumberConfirmed?: boolean | null;
   /**
    * 角色id
    */

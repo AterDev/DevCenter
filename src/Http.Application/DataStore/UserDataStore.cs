@@ -49,4 +49,17 @@ public class UserDataStore : DataStoreBase<ContextBase, User, UserUpdateDto, Use
     {
         return await base.DeleteAsync(id);
     }
+
+    /// <summary>
+    /// ĞŞ¸ÄÃÜÂë
+    /// </summary>
+    /// <param name="newPassword"></param>
+    /// <returns></returns>
+    public async Task<bool> ChangePasswordAsync(Guid id, string newPassword)
+    {
+        var user = await _db.FindAsync(id);
+        user!.PasswordSalt = HashCrypto.BuildSalt();
+        user.PasswordHash = HashCrypto.GeneratePwd(newPassword, user.PasswordSalt);
+        return await _context.SaveChangesAsync() > 0;
+    }
 }

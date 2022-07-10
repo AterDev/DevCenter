@@ -9,6 +9,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { CustomerHttpInterceptor } from './share/customer-http.interceptor';
 import { AdminModule } from './pages/admin/admin.module';
+import { AccountModule } from './account/account.module';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { AdminModule } from './pages/admin/admin.module';
     AppRoutingModule,
     ComponentsModule,
     HomeModule,
+    AccountModule,
     AdminModule
   ],
   providers: [

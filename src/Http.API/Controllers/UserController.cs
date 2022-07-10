@@ -23,6 +23,18 @@ public class UserController : RestApiBase<UserDataStore, User, UserAddDto, UserU
     }
 
     /// <summary>
+    /// 获取当前用户信息
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet]
+    public async Task<ActionResult<UserShortDto?>> GetMyInfo()
+    {
+        return await _store.Db.Where(u => u.Id == _user.UserId)
+            .Select<User, UserShortDto>()
+            .FirstOrDefaultAsync();
+    }
+
+    /// <summary>
     /// 添加
     /// </summary>
     /// <param name="form"></param>
@@ -49,7 +61,30 @@ public class UserController : RestApiBase<UserDataStore, User, UserAddDto, UserU
     /// <returns></returns>
     public override async Task<ActionResult<User?>> UpdateAsync([FromRoute] Guid id, UserUpdateDto form)
     {
-        return await base.UpdateAsync(id, form);
+        if (_user.IsAdmin || _user.UserId == id)
+        {
+            return await base.UpdateAsync(id, form);
+        }
+        return Forbid();
+    }
+
+    /// <summary>
+    /// 修改密码
+    /// </summary>
+    /// <param name="newPassword"></param>
+    /// <returns></returns>
+    [HttpPut("changePassword")]
+    public async Task<ActionResult<bool>> ChangePasswordAsync(string newPassword)
+    {
+        if (_user.UserId != null)
+        {
+            if (await _store.Exist(_user.UserId.Value))
+            {
+                return await _store.ChangePasswordAsync(_user.UserId.Value, newPassword);
+            }
+            return NotFound("非法用户");
+        }
+        return Forbid();
     }
 
     /// <summary>

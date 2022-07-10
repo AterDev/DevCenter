@@ -20,13 +20,13 @@ public class ResourceGroupDataStore : DataStoreBase<ContextBase, ResourceGroup, 
         }
         // 查询用户对应的角色
         var roles = await _context.Users.Where(u => u.Id == filter.UserId)
-            .SelectMany(u => u.Roles).ToListAsync();
+            .SelectMany(u => u.Roles!).ToListAsync();
         if (roles.Any())
         {
             // 查询角色包含的资源组
             var roleIds = roles.Select(r => r.Id).ToList();
             var groups = await _context.Roles.Where(r => roleIds.Contains(r.Id))
-                .SelectMany(r => r.ResourceGroups)
+                .SelectMany(r => r.ResourceGroups!)
                 .ToListAsync();
 
             if (groups.Any())

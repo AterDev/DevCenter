@@ -1,0 +1,33 @@
+<div class="row g-0">
+  <div class="col-auto">
+    <mat-action-list>
+      <button mat-list-item> 修改密码 </button>
+    </mat-action-list>
+  </div>
+  <div class="col px-2">
+    <!-- 修改密码 -->
+    <section>
+      <form [formGroup]="form" (ngSubmit)="changePassword()">
+        <div>
+          <mat-form-field appearance="outline">
+            <mat-label>新密码</mat-label>
+            <input matInput type="password" placeholder="密码长度6位(含6位)以上" formControlName="password" required>
+            <mat-error *ngIf="password?.invalid">{{getValidatorMessage('password')}}</mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="outline">
+            <mat-label>确认密码</mat-label>
+            <input type="password" matInput placeholder="确认密码" formControlName="rePassword" required [errorStateMatcher]="matcher">
+            <mat-error *ngIf="rePassword?.invalid">{{getValidatorMessage('rePassword')}}
+            </mat-error>
+            <mat-error *ngIf="rePassword?.valid && form.hasError('notSame')">
+              密码输入不一致
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid">保存</button>
+      </form>
+    </section>
+  </div>
+</div>

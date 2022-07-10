@@ -9,7 +9,8 @@ const routes: Routes = [
   },
   { path: 'index', redirectTo: 'index', pathMatch: 'full' },
   { path: 'login', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'admin', redirectTo: 'admin', pathMatch: 'full' },
+  { path: 'admin', redirectTo: 'admin/index', pathMatch: 'full' },
+  { path: 'account', redirectTo: 'account/index', pathMatch: 'full' },
   { path: '*', redirectTo: '', pathMatch: 'full' },
 ];
 

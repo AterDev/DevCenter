@@ -79,7 +79,7 @@ export class EditComponent implements OnInit {
   initForm(): void {
     var roleIds = this.data.roles?.map(r => r.id);
     this.formGroup = new FormGroup({
-      userName: new FormControl(this.data.userName, [Validators.maxLength(30)]),
+      userName: new FormControl({ value: this.data.userName, disabled: true }),
       roleIds: new FormControl(roleIds, [Validators.required]),
       realName: new FormControl(this.data.realName, [Validators.maxLength(30)]),
       position: new FormControl(this.data.position, [Validators.maxLength(30)]),
