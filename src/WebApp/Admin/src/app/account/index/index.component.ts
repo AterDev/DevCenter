@@ -59,10 +59,6 @@ export class IndexComponent implements OnInit {
   }
   changePassword(): void {
     if (this.form.valid) {
-      // if (this.password?.value != this.rePassword?.value) {
-      //   this.snb.open('两次密码输入不一致');
-      //   return;
-      // }
       this.service.changePassword(this.password?.value)
         .subscribe(res => {
           if (res) {
