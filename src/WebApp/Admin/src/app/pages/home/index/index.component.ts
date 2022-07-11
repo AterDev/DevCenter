@@ -43,7 +43,7 @@ export class IndexComponent implements OnInit {
   async getEnvironments() {
     let res = await lastValueFrom(this.envSrv.filter(this.filter));
     if (res) {
-      this.environments = res.data!;
+      this.environments = res.data?.reverse()!;
     }
   }
 

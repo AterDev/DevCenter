@@ -2,3 +2,7 @@
     height: 56px;
     box-shadow: 0 2px 5px #0000004d;
 }
+
+input::placeholder {
+    color: #dae2e2;
+}

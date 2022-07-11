@@ -13,6 +13,7 @@ import { lastValueFrom } from 'rxjs';
 import { ResourceGroup } from 'src/app/share/models/resource-group/resource-group.model';
 import { MatSelectChange } from '@angular/material/select';
 import { ResourceGroupItemDto } from 'src/app/share/models/resource-group/resource-group-item-dto.model';
+import { FilterState, ListStateService } from 'src/app/share/services/list-state.service';
 
 @Component({
   selector: 'app-index',
@@ -31,6 +32,7 @@ export class IndexComponent implements OnInit {
   pageSizeOption = [12, 20, 50];
   constructor(
     private service: ResourceService,
+    private listSrv: ListStateService,
     private groupSrv: ResourceGroupService,
     private snb: MatSnackBar,
     private dialog: MatDialog,
@@ -50,9 +52,14 @@ export class IndexComponent implements OnInit {
   }
 
   filterList(event: MatSelectChange): void {
+    this.listSrv.filter = { query: null, filter: this.filter };
     this.getList();
   }
   getList(event?: PageEvent): void {
+
+    if (this.listSrv.filter?.filter)
+      this.filter = this.listSrv.filter?.filter;
+
     if (event) {
       this.filter.pageIndex = event.pageIndex + 1;
       this.filter.pageSize = event.pageSize;
@@ -147,7 +154,6 @@ export class IndexComponent implements OnInit {
    * 编辑
    */
   edit(id: string): void {
-    console.log(id);
     this.router.navigateByUrl('/admin/resource/edit/' + id);
   }
 

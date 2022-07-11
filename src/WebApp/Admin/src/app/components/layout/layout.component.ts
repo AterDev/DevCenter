@@ -31,10 +31,11 @@ export class LayoutComponent implements OnInit {
         this.isLogin = this.auth.isLogin;
         this.isAdmin = this.auth.isAdmin;
         this.username = this.auth.userName;
-        const searchResources = localStorage.getItem('searchResources');
-        if (searchResources) {
-          this.resources = JSON.parse(searchResources);
-          console.log(this.resources);
+        if (this.resources.length <= 0) {
+          const searchResources = localStorage.getItem('searchResources');
+          if (searchResources) {
+            this.resources = JSON.parse(searchResources);
+          }
         }
       }
     });

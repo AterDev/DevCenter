@@ -7,9 +7,6 @@
           <input type="search" matInput placeholder="资源、端口、IP" [matAutocomplete]="auto" [formControl]="searchControl">
           <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectSearch($event)">
             <mat-option *ngFor="let resource of filteredResource |async" [value]="resource.name" [id]="resource.id">
-              <!-- <img class="example-option-img" aria-hidden [src]="state.flag" height="25">
-              <span>{{state.name}}</span> |
-              <small>Population: {{state.population}}</small> -->
               <span>{{resource.name}}</span> |
               <small>{{resource.description}}</small>
             </mat-option>

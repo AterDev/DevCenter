@@ -152,7 +152,7 @@ export class EditComponent implements OnInit {
   }
 
   back(): void {
-    this.location.back();
+    this.router.navigate(['../../index'], { relativeTo: this.route });
   }
 
   upload(event: any, type?: string): void {
