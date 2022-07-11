@@ -34,11 +34,14 @@ public class ResourceGroupDataStore : DataStoreBase<ContextBase, ResourceGroup, 
             }
         }
 
+        if (filter.Navigation != null)
+        {
+            _query = _query.Where(q => q.Navigation == filter.Navigation);
+        }
         if (filter.EnvironmentId != null)
         {
             _query = _query.Where(q => q.Environment.Id == filter.EnvironmentId);
         }
-
         var count = _query.Count();
         if (filter.PageIndex < 1)
         {

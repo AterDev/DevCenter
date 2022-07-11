@@ -2,6 +2,9 @@
     height: 56px;
     box-shadow: 0 2px 5px #0000004d;
 }
+.active{
+  background-color: #2b338b;
+}
 
 input::placeholder {
     color: #dae2e2;

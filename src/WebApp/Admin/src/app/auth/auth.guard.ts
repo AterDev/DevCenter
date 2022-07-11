@@ -16,16 +16,8 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean | UrlTree {
     const url = state.url;
-
-    console.log(url);
-
-    if (url.startsWith('/index')) {
-      return true;
-    }
     // admin路由
     if (url.startsWith('/admin')) {
-      console.log(this.auth.isAdmin);
-
       if (this.auth.isAdmin) {
         return true;
       }
@@ -33,8 +25,11 @@ export class AuthGuard implements CanActivate {
     }
     if (this.auth.isLogin) {
       return true;
+    } else {
+      this.router.navigateByUrl('/login');
+      return false;
     }
-    return this.router.parseUrl('/index');
+    // return this.router.parseUrl('/index');
 
   }
   canActivateChild(

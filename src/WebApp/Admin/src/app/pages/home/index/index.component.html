@@ -6,15 +6,15 @@
 </div>
 <div *ngIf="isLogin" class="row mt-1 justify-content-center g-0">
   <div class="col col-auto">
-    <mat-button-toggle-group [(ngModel)]="filter.environmentId" aria-label="Environment" (change)="getResourceGroup()">
+    <!-- <mat-button-toggle-group [(ngModel)]="filter.environmentId" aria-label="Environment" (change)="getResourceGroup()">
       <mat-button-toggle [value]="null">全部</mat-button-toggle>
       <mat-button-toggle *ngFor="let item of environments" [value]="item.id" [ngStyle]="{color:item.color}">
         {{item.name}}
       </mat-button-toggle>
-    </mat-button-toggle-group>
+    </mat-button-toggle-group> -->
   </div>
   <div class="row mt-2 g-0 g-2">
-    <div class="col col-md-6 col-xl-4 col-xxl-3 col-sm-12 col-12" *ngFor="let group of groups">
+    <div class="col col-md-6 col-xl-4 col-xxl-3 col-sm-12 col-12" *ngFor="let group of groups" style="display: none;">
       <mat-card>
         <mat-card-header class="card-header">
           <mat-card-title class="d-flex align-items-center">
@@ -46,6 +46,32 @@
           </mat-selection-list>
         </mat-card-content>
       </mat-card>
+    </div>
+
+    <div *ngFor="let group of groups" class="col-12">
+      <!-- group标题 -->
+      <div class="d-flex align-items-center">
+        <h3 [style]="{color:group.environment?.color}">
+          {{group.name}}
+        </h3>
+      </div>
+      <div class="row justify-content-center g-4">
+        <div *ngFor="let resource of group.resource" class="col-auto text-center clickable">
+          <ng-container *ngIf="getResourceUrl(resource.attributes!)!=null; else elseTemplate">
+            <img [src]="getResourceUrl(resource.attributes!)" alt="" width="36" height="36">
+          </ng-container>
+          <ng-template #elseTemplate>
+            <div class="d-block icon m-auto">
+              {{resource.name.slice(0,1) }}
+            </div>
+          </ng-template>
+          <div class="mt-1">
+            <span>
+              {{showName(resource.name)}}
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

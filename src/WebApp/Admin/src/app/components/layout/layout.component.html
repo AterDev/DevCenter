@@ -1,6 +1,11 @@
 <div class="row g-0">
   <mat-toolbar color="primary" class="col-12">
     <a mat-button [routerLink]="['/index']" routerLinkActive="active">首页</a>
+    <span *ngIf="isLogin">
+      <a mat-button [routerLink]="['/resource']" routerLinkActive="active">资源</a>
+      <a mat-button [routerLink]="['/server']" routerLinkActive="active">服务器</a>
+    </span>
+    <!-- 搜索 -->
     <span style="display:flex;flex:1 1 auto; justify-content: center;">
       <form class="example-form" *ngIf="isLogin">
         <mat-form-field appearance="standard" style="font-size: 14px;min-width: 320px;">

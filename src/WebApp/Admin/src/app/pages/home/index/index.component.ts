@@ -8,6 +8,8 @@ import { ResourceGroupItemDto } from 'src/app/share/models/resource-group/resour
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ResourceDialogComponent } from '../resource-dialog/resource-dialog.component';
 import { ResourceGroupFilterDto } from 'src/app/share/models/resource-group/resource-group-filter-dto.model';
+import { NavigationType } from 'src/app/share/models/enum/navigation-type.model';
+import { ResourceAttribute } from 'src/app/share/models/resource-attribute/resource-attribute.model';
 
 @Component({
   selector: 'app-index',
@@ -30,7 +32,12 @@ export class IndexComponent implements OnInit {
 
   ) {
     this.isLogin = loginService.isLogin;
-    this.filter = { pageIndex: 1, pageSize: 30, environmentId: null };
+    this.filter = {
+      pageIndex: 1,
+      pageSize: 30,
+      navigation: NavigationType.WebSite,
+      environmentId: null
+    };
   }
 
   ngOnInit(): void {
@@ -52,6 +59,21 @@ export class IndexComponent implements OnInit {
     if (res) {
       this.groups = res.data!;
     }
+  }
+  getResourceUrl(attributes: ResourceAttribute[]): string | null {
+    var attr = attributes.find(a => a.name == 'url');
+    if (attr) {
+      var url = new URL(attr.value);
+      return url.origin + '/favicon.ico';
+    }
+    return null;
+  }
+
+  showName(name: string): string {
+    if (name.length > 10) {
+      return name.slice(0, 10) + '...';
+    }
+    return name;
   }
 
   showResource(): void {
