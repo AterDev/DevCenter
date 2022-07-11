@@ -78,6 +78,7 @@ namespace Http.Application.Services.Webhook
                 content += "- 提交人: " + pipelineInfo.CommitUserName + Environment.NewLine;
                 content += "- 提交内容: " + pipelineInfo.CommitContent + Environment.NewLine;
                 content += "- 提交时间: " + pipelineInfo.FinishTime?.ToString("yyyy-MM-dd HH:mm:ss") + Environment.NewLine;
+                content += "- 流水线:`" + pipelineInfo.Job + "`" + Environment.NewLine;
                 content += "- 耗时: **" + pipelineInfo.Duration + "**秒" + Environment.NewLine;
                 content += $@"## [查看详情]({pipelineInfo.Url})" + Environment.NewLine;
                 var msg = new MarkdownMessage

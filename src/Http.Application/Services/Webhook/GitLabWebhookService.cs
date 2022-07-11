@@ -1,4 +1,5 @@
-﻿using Share.Models.Webhook.GitLab;
+﻿
+using Share.Models.Webhook.GitLab;
 
 namespace Http.Application.Services.Webhook;
 
@@ -11,6 +12,7 @@ public class GitLabWebhookService
     public static PipelineInfo? GetPipeLineInfo(PipelineRequest request)
     {
         var status = request.ObjectAttributes?.Status;
+        var job = string.Join(",", request.Builds!.Select(b => b.Name).ToList());
         return string.IsNullOrWhiteSpace(status)
             || status.Equals("pending")
             || status.Equals("running")
@@ -22,6 +24,7 @@ public class GitLabWebhookService
                 Duration = request.ObjectAttributes?.Duration,
                 FinishTime = request.Commit?.Timestamp,
                 ProjectName = request.Project?.Name,
+                Job = job,
                 Url = request.Project?.WebUrl + "/-/pipelines/" + request.ObjectAttributes?.Id,
                 Status = status
             };
