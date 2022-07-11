@@ -22,6 +22,7 @@ public class ResourceTypeDefinitionDataStore : DataStoreBase<ContextBase, Resour
     public override async Task<ResourceTypeDefinition?> UpdateAsync(Guid id, ResourceTypeDefinitionUpdateDto dto)
     {
         var typeDefine = await _db.FindAsync(id);
+        typeDefine.Merge(dto);
         typeDefine!.AttributeDefines = null;
         if (dto.AttributeDefineIds != null)
         {

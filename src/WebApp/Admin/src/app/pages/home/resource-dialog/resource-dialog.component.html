@@ -1,6 +1,11 @@
 <div mat-dialog-title>
-  <div matLine>
+  <div class="d-flex ">
     {{data.name}}
+    <mat-chip-list class="ms-1">
+      <mat-chip *ngFor="let tag of data.tags" selected [style]="{backgroundColor:tag.color,color:'white'}">
+        {{tag.name}}
+      </mat-chip>
+    </mat-chip-list>
   </div>
   <small style="font-size: 16px;color:#999">
     {{data.description}}
@@ -23,8 +28,6 @@
         <ng-template #elseTemplate>
           <span class="value"> {{attribute.value}} </span>
         </ng-template>
-
-
       </strong>
     </mat-list-item>
   </mat-list>

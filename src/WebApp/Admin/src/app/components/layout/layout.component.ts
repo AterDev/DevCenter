@@ -31,6 +31,11 @@ export class LayoutComponent implements OnInit {
         this.isLogin = this.auth.isLogin;
         this.isAdmin = this.auth.isAdmin;
         this.username = this.auth.userName;
+        const searchResources = localStorage.getItem('searchResources');
+        if (searchResources) {
+          this.resources = JSON.parse(searchResources);
+          console.log(this.resources);
+        }
       }
     });
 
@@ -57,11 +62,6 @@ export class LayoutComponent implements OnInit {
     this.isAdmin = this.auth.isAdmin;
     if (this.isLogin) {
       this.username = this.auth.userName!;
-    }
-    const searchResources = localStorage.getItem('searchResources');
-    if (searchResources) {
-      this.resources = JSON.parse(searchResources);
-      console.log(this.resources);
     }
   }
   selectSearch(event: MatAutocompleteSelectedEvent) {

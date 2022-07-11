@@ -17,11 +17,11 @@
     <div class="col col-md-6 col-xl-4 col-xxl-3 col-sm-12 col-12" *ngFor="let group of groups">
       <mat-card>
         <mat-card-header class="card-header">
-          <mat-card-title>
+          <mat-card-title class="d-flex align-items-center">
             <span [style]="{color:group.environment?.color}">
               {{group.name}}
             </span>
-            <mat-chip-list class="d-inline-block">
+            <mat-chip-list class="ms-1">
               <mat-chip [style]="{backgroundColor:group.environment?.color,color:'white'}">
                 {{group.environment?.name}}
               </mat-chip>
@@ -31,9 +31,17 @@
         </mat-card-header>
         <mat-card-content>
           <mat-selection-list [multiple]="false" [(ngModel)]="selectedResourceIds" (ngModelChange)="showResource()">
-            <mat-list-option *ngFor="let resource of group.resource" [value]="resource.id">
-              <div mat-line>{{resource.name}}</div>
-              <div mat-line style="color: #999;">{{resource.description}}</div>
+            <mat-list-option *ngFor="let resource of group.resource" [value]="resource.id"
+              [matTooltip]="resource.resourceType!.name||''" class="p-1 mb-1">
+              <div class="d-flex align-items-center">
+                <span>
+                  {{resource.name}}
+                </span>
+                <span [style]="{color:resource.resourceType?.color}">
+                  <mat-icon>{{resource.resourceType?.icon}}</mat-icon>
+                </span>
+              </div>
+              <div mat-line style="color: #888888;">{{resource.description}}</div>
             </mat-list-option>
           </mat-selection-list>
         </mat-card-content>

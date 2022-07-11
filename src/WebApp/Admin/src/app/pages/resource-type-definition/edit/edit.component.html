@@ -23,7 +23,7 @@
     </mat-form-field>
     <mat-form-field>
       <mat-label>Icon</mat-label>
-      <textarea matInput placeholder="Icon" formControlName="icon" minlength="" maxlength="300" cols="5"></textarea>
+      <input matInput placeholder="Icon" formControlName="icon" minlength="3" maxlength="30"/>
       <mat-error *ngIf="icon?.invalid">
         {{getValidatorMessage('icon')}}
       </mat-error>
