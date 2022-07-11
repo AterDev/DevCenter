@@ -1,15 +1,14 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ResourceGroupService } from 'src/app/share/services/resource-group.service';
-import { ResourceGroup } from 'src/app/share/models/resource-group/resource-group.model';
 import { ResourceGroupAddDto } from 'src/app/share/models/resource-group/resource-group-add-dto.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Location } from '@angular/common';
 import { Status } from 'src/app/share/models/enum/status.model';
 import { EnvironmentService } from 'src/app/share/services/environment.service';
 import { EnvironmentItemDto } from 'src/app/share/models/environment/environment-item-dto.model';
+import { NavigationType } from 'src/app/share/models/enum/navigation-type.model';
 
 @Component({
   selector: 'app-add',
@@ -18,7 +17,7 @@ import { EnvironmentItemDto } from 'src/app/share/models/environment/environment
 })
 export class AddComponent implements OnInit {
   Status = Status;
-
+  NavigationType = NavigationType;
   formGroup!: FormGroup;
   data = {} as ResourceGroupAddDto;
   environments: EnvironmentItemDto[] = [];
@@ -31,16 +30,14 @@ export class AddComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private location: Location
-    // public dialogRef: MatDialogRef<AddComponent>,
-    // @Inject(MAT_DIALOG_DATA) public dlgData: { id: '' }
   ) {
 
   }
 
   get name() { return this.formGroup.get('name'); }
   get descriptioin() { return this.formGroup.get('descriptioin'); }
+  get navigationType() { return this.formGroup.get('navigation'); }
   get environmentId() { return this.formGroup.get('environmentId'); }
-
 
   ngOnInit(): void {
     this.initForm();
@@ -60,6 +57,7 @@ export class AddComponent implements OnInit {
     this.formGroup = new FormGroup({
       name: new FormControl(null, [Validators.maxLength(100)]),
       descriptioin: new FormControl(null, [Validators.maxLength(400)]),
+      navigation: new FormControl(NavigationType.WebSite, [Validators.required]),
       environmentId: new FormControl(null, [Validators.required]),
     });
   }
@@ -95,20 +93,5 @@ export class AddComponent implements OnInit {
   }
   back(): void {
     this.location.back();
-  }
-  upload(event: any, type?: string): void {
-    const files = event.target.files;
-    if (files[0]) {
-      const formdata = new FormData();
-      formdata.append('file', files[0]);
-      /*    this.service.uploadFile('agent-info' + type, formdata)
-            .subscribe(res => {
-              this.data.logoUrl = res.url;
-            }, error => {
-              this.snb.open(error?.detail);
-            }); */
-    } else {
-
-    }
   }
 }

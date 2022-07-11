@@ -19,9 +19,11 @@ public class ResourceGroup : EntityBase
     /// <summary>
     /// 展示类型
     /// </summary>
-    public LayoutType LayoutType { get; set; }
-
-    public NavigationType Navigation { get; set; }
+    public LayoutType LayoutType { get; set; } = LayoutType.Default;
+    /// <summary>
+    /// 所属导航类型
+    /// </summary>
+    public NavigationType Navigation { get; set; } = NavigationType.Default;
     /// <summary>
     /// 所属环境
     /// </summary>

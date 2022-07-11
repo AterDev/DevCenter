@@ -19,9 +19,8 @@
       <p>Descriptioin: <span class="text-primary">{{data.descriptioin}}</span></p>
       <p>Id: <span class="text-primary">{{data.id}}</span></p>
       <p>Status: <span class="text-primary">{{data.status}}</span></p>
-      <p>CreatedTime: <span class="text-primary">{{data.createdTime}}</span></p>
-      <p>UpdatedTime: <span class="text-primary">{{data.updatedTime}}</span></p>
-
+      <p>CreatedTime: <span class="text-primary">{{data.createdTime | date:'short':'+08'}}</span></p>
+      <p>UpdatedTime: <span class="text-primary">{{data.updatedTime | date:'short':'+08'}}</span></p>
     </mat-card-content>
     <mat-card-actions>
       <!-- <button mat-button></button>

@@ -22,6 +22,17 @@
       </mat-error>
     </mat-form-field>
     <mat-form-field>
+      <mat-label>导航类别</mat-label>
+      <mat-select formControlName="navigation">
+        <mat-option *ngFor="let item of NavigationType | toKeyValue" [value]="item.value">
+          {{item.key}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="environmentId?.invalid">
+        {{getValidatorMessage('environmentId')}}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
       <mat-label>环境</mat-label>
       <mat-select formControlName="environmentId">
         <mat-option *ngFor="let item of environments" [value]="item.id">

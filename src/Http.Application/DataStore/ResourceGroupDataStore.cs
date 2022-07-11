@@ -63,11 +63,12 @@ public class ResourceGroupDataStore : DataStoreBase<ContextBase, ResourceGroup, 
             .Take(filter.PageSize)
             .Select(s => new ResourceGroupItemDto()
             {
-                Descriptioin = s.Descriptioin,
                 Id = s.Id,
                 Name = s.Name,
                 Resource = s.Resources,
-                Environment = s.Environment
+                Environment = s.Environment,
+                Descriptioin = s.Descriptioin,
+                Navigation = s.Navigation,
             })
             .ToListAsync();
         return new PageResult<ResourceGroupItemDto>
@@ -118,7 +119,6 @@ public class ResourceGroupDataStore : DataStoreBase<ContextBase, ResourceGroup, 
             if (environment != null)
                 data.Environment = environment;
         }
-
         data.UpdatedTime = DateTimeOffset.UtcNow;
         await _context.SaveChangesAsync();
         return data;

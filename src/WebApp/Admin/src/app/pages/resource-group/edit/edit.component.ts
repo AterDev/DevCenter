@@ -5,11 +5,11 @@ import { ResourceGroupService } from 'src/app/share/services/resource-group.serv
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ResourceGroupUpdateDto } from 'src/app/share/models/resource-group/resource-group-update-dto.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Location } from '@angular/common';
 import { Status } from 'src/app/share/models/enum/status.model';
 import { EnvironmentItemDto } from 'src/app/share/models/environment/environment-item-dto.model';
 import { EnvironmentService } from 'src/app/share/services/environment.service';
+import { NavigationType } from 'src/app/share/models/enum/navigation-type.model';
 
 @Component({
   selector: 'app-edit',
@@ -18,7 +18,7 @@ import { EnvironmentService } from 'src/app/share/services/environment.service';
 })
 export class EditComponent implements OnInit {
   Status = Status;
-
+  NavigationType = NavigationType;
   id!: string;
   isLoading = true;
   data = {} as ResourceGroup;
@@ -46,6 +46,7 @@ export class EditComponent implements OnInit {
 
   get name() { return this.formGroup.get('name'); }
   get descriptioin() { return this.formGroup.get('descriptioin'); }
+  get navigationType() { return this.formGroup.get('navigation'); }
   get status() { return this.formGroup.get('status'); }
   get environmentId() { return this.formGroup.get('environmentId'); }
 
@@ -79,6 +80,7 @@ export class EditComponent implements OnInit {
     this.formGroup = new FormGroup({
       name: new FormControl(this.data.name, [Validators.maxLength(100)]),
       descriptioin: new FormControl(this.data.descriptioin, [Validators.maxLength(400)]),
+      navigation: new FormControl(this.data.navigation, [Validators.required]),
       environmentId: new FormControl(this.data.environment?.id, [Validators.required]),
       status: new FormControl(this.data.status, []),
     });
@@ -110,7 +112,7 @@ export class EditComponent implements OnInit {
         .subscribe(res => {
           this.snb.open('修改成功');
           // this.dialogRef.close(res);
-          this.router.navigate(['../../index'],{relativeTo: this.route});
+          this.router.navigate(['../../index'], { relativeTo: this.route });
         });
     }
   }
