@@ -16,7 +16,7 @@
         <div>
           <mat-form-field appearance="outline">
             <mat-label>密码</mat-label>
-            <input type="password" matInput placeholder="密码长度6位(含6位)以上" formControlName="password" required>
+            <input type="password" matInput placeholder="密码长度4位(含4位)以上" formControlName="password" required>
             <mat-error *ngIf="password?.invalid">{{getValidatorMessage('password')}}
             </mat-error>
           </mat-form-field>

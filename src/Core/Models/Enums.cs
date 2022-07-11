@@ -16,7 +16,30 @@ public enum SexType
 public enum NavigationType
 {
     Default = 0,
-    Inner
+    /// <summary>
+    /// 站点
+    /// </summary>
+    WebSite,
+    /// <summary>
+    /// 工具
+    /// </summary>
+    Tools,
+    /// <summary>
+    /// 服务器
+    /// </summary>
+    Server,
+    /// <summary>
+    /// 代码片段
+    /// </summary>
+    CodeSnippets
+}
+public enum LayoutType
+{
+    Default,
+    Card,
+    Grid,
+    List,
+    Table
 }
 
 public enum ValueType

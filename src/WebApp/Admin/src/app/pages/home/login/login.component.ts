@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.loginForm = new FormGroup({
       username: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(20)]),
-      password: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(50)])
+      password: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(50)])
     });
   }
 
@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
             || this.username?.errors?.['maxlength'] ? '用户名长度4-20位' : '';
       case 'password':
         return this.password?.errors?.['required'] ? '密码必填' :
-          this.password?.errors?.['minlength'] ? '密码长度不可低于6位' :
+          this.password?.errors?.['minlength'] ? '密码长度不可低于4位' :
             this.password?.errors?.['maxlength'] ? '密码长度不可超过50' : '';
       default:
         break;

@@ -24,14 +24,14 @@
         <span mat-menu-item>
           你好,{{username}}
         </span>
-        <button mat-menu-item routerLink="/account">
+        <a mat-menu-item routerLink="/account">
           <mat-icon>assignment_ind</mat-icon>
           <span>账号设置</span>
-        </button>
-        <button *ngIf="isAdmin" mat-menu-item routerLink="/admin">
+        </a>
+        <a *ngIf="isAdmin" mat-menu-item routerLink="/admin">
           <mat-icon>admin_panel_settings</mat-icon>
           <span>管理后台</span>
-        </button>
+        </a>
         <button mat-menu-item (click)="logout()">
           <mat-icon>exit_to_app</mat-icon>
           <span>登出</span>
