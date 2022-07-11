@@ -1,4 +1,3 @@
-using Share.Models.ResourceDtos;
 using Share.Models.ResourceGroupDtos;
 namespace Http.Application.DataStore;
 public class ResourceGroupDataStore : DataStoreBase<ContextBase, ResourceGroup, ResourceGroupUpdateDto, ResourceGroupFilterDto, ResourceGroupItemDto>
@@ -13,26 +12,25 @@ public class ResourceGroupDataStore : DataStoreBase<ContextBase, ResourceGroup, 
 
     public override async Task<PageResult<ResourceGroupItemDto>> FindWithPageAsync(ResourceGroupFilterDto filter)
     {
-        // 如果不是授权用户的请求，返回空
-        if (filter.UserId == null)
+        // 根据当前用户筛选
+        if (filter.UserId != null)
         {
-            return new PageResult<ResourceGroupItemDto>();
-        }
-        // 查询用户对应的角色
-        var roles = await _context.Users.Where(u => u.Id == filter.UserId)
-            .SelectMany(u => u.Roles!).ToListAsync();
-        if (roles.Any())
-        {
-            // 查询角色包含的资源组
-            var roleIds = roles.Select(r => r.Id).ToList();
-            var groups = await _context.Roles.Where(r => roleIds.Contains(r.Id))
-                .SelectMany(r => r.ResourceGroups!)
-                .ToListAsync();
-
-            if (groups.Any())
+            // 查询用户对应的角色
+            var roles = await _context.Users.Where(u => u.Id == filter.UserId)
+                .SelectMany(u => u.Roles!).ToListAsync();
+            if (roles.Any())
             {
-                var groupIds = groups.Select(g => g.Id).ToList();
-                _query = _query.Where(q => groupIds.Contains(q.Id));
+                // 查询角色包含的资源组
+                var roleIds = roles.Select(r => r.Id).ToList();
+                var groups = await _context.Roles.Where(r => roleIds.Contains(r.Id))
+                    .SelectMany(r => r.ResourceGroups!)
+                    .ToListAsync();
+
+                if (groups.Any())
+                {
+                    var groupIds = groups.Select(g => g.Id).ToList();
+                    _query = _query.Where(q => groupIds.Contains(q.Id));
+                }
             }
         }
 
@@ -80,6 +78,13 @@ public class ResourceGroupDataStore : DataStoreBase<ContextBase, ResourceGroup, 
         };
     }
 
+    public override async Task<ResourceGroup?> FindAsync(Guid id, bool noTracking = false)
+    {
+        return await _db.Include(g => g.Environment)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(g => g.Id == id);
+    }
+
     /// <summary>
     /// 获取角色的资源组
     /// </summary>
@@ -103,7 +108,20 @@ public class ResourceGroupDataStore : DataStoreBase<ContextBase, ResourceGroup, 
 
     public override async Task<ResourceGroup?> UpdateAsync(Guid id, ResourceGroupUpdateDto dto)
     {
-        return await base.UpdateAsync(id, dto);
+        var data = await _db.FindAsync(id);
+        if (data == null) { return null; }
+        // merge data and save 
+        data.Merge(dto);
+        if (dto.EnvironmentId != null)
+        {
+            var environment = await _context.Environments.FindAsync(dto.EnvironmentId);
+            if (environment != null)
+                data.Environment = environment;
+        }
+
+        data.UpdatedTime = DateTimeOffset.UtcNow;
+        await _context.SaveChangesAsync();
+        return data;
     }
 
     public override async Task<bool> DeleteAsync(Guid id)

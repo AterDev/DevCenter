@@ -29,6 +29,7 @@ export class AddComponent implements OnInit {
   tagSelections = [] as Selection[];
   attributeDefines = [] as ResourceAttributeDefineItemDto[];
   typeDefineSelections = [] as Selection[];
+  defaultGroupId: string | null;
   constructor(
     private service: ResourceService,
     private attributeDefineSrv: ResourceAttributeDefineService,
@@ -40,7 +41,7 @@ export class AddComponent implements OnInit {
     // public dialogRef: MatDialogRef<AddComponent>,
     // @Inject(MAT_DIALOG_DATA) public dlgData: { id: '' }
   ) {
-
+    this.defaultGroupId = this.route.snapshot.paramMap.get('groupId');
   }
 
   get name() { return this.formGroup.get('name'); }
@@ -67,7 +68,7 @@ export class AddComponent implements OnInit {
     this.formGroup = new FormGroup({
       name: new FormControl(null, [Validators.maxLength(100)]),
       description: new FormControl(null, [Validators.maxLength(400)]),
-      groupId: new FormControl(null, [Validators.required]),
+      groupId: new FormControl(this.defaultGroupId, [Validators.required]),
       resourceTypeId: new FormControl(null, [Validators.required]),
       tagIds: new FormControl(null, []),
     });

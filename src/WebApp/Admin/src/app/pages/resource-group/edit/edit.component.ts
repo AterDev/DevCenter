@@ -8,6 +8,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Location } from '@angular/common';
 import { Status } from 'src/app/share/models/enum/status.model';
+import { EnvironmentItemDto } from 'src/app/share/models/environment/environment-item-dto.model';
+import { EnvironmentService } from 'src/app/share/services/environment.service';
 
 @Component({
   selector: 'app-edit',
@@ -20,13 +22,15 @@ export class EditComponent implements OnInit {
   id!: string;
   isLoading = true;
   data = {} as ResourceGroup;
+  environments: EnvironmentItemDto[] = [];
   updateData = {} as ResourceGroupUpdateDto;
   formGroup!: FormGroup;
-    constructor(
-    
+  constructor(
+
     private service: ResourceGroupService,
     private snb: MatSnackBar,
     private router: Router,
+    private envSrv: EnvironmentService,
     private route: ActivatedRoute,
     private location: Location
     // public dialogRef: MatDialogRef<EditComponent>,
@@ -40,35 +44,43 @@ export class EditComponent implements OnInit {
     }
   }
 
-    get name() { return this.formGroup.get('name'); }
-    get descriptioin() { return this.formGroup.get('descriptioin'); }
-    get status() { return this.formGroup.get('status'); }
-
+  get name() { return this.formGroup.get('name'); }
+  get descriptioin() { return this.formGroup.get('descriptioin'); }
+  get status() { return this.formGroup.get('status'); }
+  get environmentId() { return this.formGroup.get('environmentId'); }
 
   ngOnInit(): void {
     this.getDetail();
-    
+    this.getEnvionments();
+
     // TODO:获取其他相关数据后设置加载状态
-    this.isLoading = false;
+
   }
-  
+
   getDetail(): void {
     this.service.getDetail(this.id)
       .subscribe(res => {
         this.data = res;
         this.initForm();
-        this.isLoading = false;
-      }, error => {
-        this.snb.open(error);
       })
+  }
+  getEnvionments(): void {
+    this.envSrv.filter({ pageIndex: 1, pageSize: 100 })
+      .subscribe(res => {
+        if (res.data) {
+          this.environments = res.data
+          this.initForm();
+          this.isLoading = false;
+        }
+      });
   }
 
   initForm(): void {
     this.formGroup = new FormGroup({
       name: new FormControl(this.data.name, [Validators.maxLength(100)]),
       descriptioin: new FormControl(this.data.descriptioin, [Validators.maxLength(400)]),
+      environmentId: new FormControl(this.data.environment?.id, [Validators.required]),
       status: new FormControl(this.data.status, []),
-
     });
   }
   getValidatorMessage(type: string): string {
@@ -85,41 +97,26 @@ export class EditComponent implements OnInit {
         return this.status?.errors?.['required'] ? 'Status必填' :
           this.status?.errors?.['minlength'] ? 'Status长度最少位' :
             this.status?.errors?.['maxlength'] ? 'Status长度最多位' : '';
-
+      case 'environmentId':
+        return this.environmentId?.errors?.['required'] ? 'environmentId必填' : '';
       default:
         return '';
     }
   }
   edit(): void {
-    if(this.formGroup.valid) {
+    if (this.formGroup.valid) {
       this.updateData = this.formGroup.value as ResourceGroupUpdateDto;
       this.service.update(this.id, this.updateData)
         .subscribe(res => {
           this.snb.open('修改成功');
-           // this.dialogRef.close(res);
-          // this.router.navigate(['../index'],{relativeTo: this.route});
+          // this.dialogRef.close(res);
+          this.router.navigate(['../../index'],{relativeTo: this.route});
         });
     }
   }
 
   back(): void {
     this.location.back();
-  }
-
-  upload(event: any, type ?: string): void {
-    const files = event.target.files;
-    if(files[0]) {
-    const formdata = new FormData();
-    formdata.append('file', files[0]);
-    /*    this.service.uploadFile('agent-info' + type, formdata)
-          .subscribe(res => {
-            this.updateData.logoUrl = res.url;
-          }, error => {
-            this.snb.open(error?.detail);
-          }); */
-    } else {
-
-    }
   }
 
 }

@@ -50,7 +50,6 @@ export class EditComponent implements OnInit {
     if (id) {
       this.id = id;
     } else {
-      // TODO: id为空
     }
   }
 

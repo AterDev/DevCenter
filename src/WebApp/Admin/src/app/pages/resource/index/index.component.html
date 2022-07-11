@@ -10,7 +10,8 @@
         </mat-select>
       </div>
       <div class="d-flex flex-grow-1"></div>
-      <button mat-flat-button color="primary" matTooltipPosition="right" [routerLink]="['../add']">
+      <button mat-flat-button color="primary" matTooltipPosition="right"
+        [routerLink]="['../add',{groupId:filter.groupId}]">
         <mat-icon>add</mat-icon>
         添加
       </button>
