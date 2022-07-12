@@ -47,6 +47,7 @@ export class EditComponent implements OnInit {
 
   get userName() { return this.formGroup.get('userName'); }
   get realName() { return this.formGroup.get('realName'); }
+  get password() { return this.formGroup.get('password'); }
   get position() { return this.formGroup.get('position'); }
   get email() { return this.formGroup.get('email'); }
   get emailConfirmed() { return this.formGroup.get('emailConfirmed'); }
@@ -79,9 +80,10 @@ export class EditComponent implements OnInit {
   initForm(): void {
     var roleIds = this.data.roles?.map(r => r.id);
     this.formGroup = new FormGroup({
-      userName: new FormControl({ value: this.data.userName, disabled: true }),
+      userName: new FormControl(this.data.userName, [Validators.required]),
       roleIds: new FormControl(roleIds, [Validators.required]),
       realName: new FormControl(this.data.realName, [Validators.maxLength(30)]),
+      password: new FormControl(null, [Validators.maxLength(100)]),
       position: new FormControl(this.data.position, [Validators.maxLength(30)]),
       email: new FormControl(this.data.email, [Validators.maxLength(100)]),
       emailConfirmed: new FormControl(this.data.emailConfirmed, []),
@@ -124,6 +126,10 @@ export class EditComponent implements OnInit {
         return this.phoneNumberConfirmed?.errors?.['required'] ? 'PhoneNumberConfirmed必填' :
           this.phoneNumberConfirmed?.errors?.['minlength'] ? 'PhoneNumberConfirmed长度最少位' :
             this.phoneNumberConfirmed?.errors?.['maxlength'] ? 'PhoneNumberConfirmed长度最多位' : '';
+      case 'password':
+        return this.password?.errors?.['required'] ? 'Password必填' :
+          this.password?.errors?.['minlength'] ? 'Password长度最少位' :
+            this.password?.errors?.['maxlength'] ? 'Password长度最多100位' : '';
       case 'avatar':
         return this.avatar?.errors?.['required'] ? 'Avatar必填' :
           this.avatar?.errors?.['minlength'] ? 'Avatar长度最少位' :

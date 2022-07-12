@@ -1,3 +1,31 @@
-<h3>
-    暂无内容
-</h3>
+<div class="container justify-content-center g-0">
+  <div *ngFor="let group of groups" class="col-12">
+    <!-- group标题 -->
+    <div class="row align-items-center mt-4">
+      <mat-chip-list>
+        <mat-chip [style]="{backgroundColor:group.environment?.color,color:'white'}">
+          {{group.name}}
+        </mat-chip>
+      </mat-chip-list>
+    </div>
+    <div class="row justify-content-start m-0 mt-2">
+      <div *ngFor="let resource of group.resource" class="col-auto text-center website-block p-1"
+        (click)="openWebsite(resource)" [matTooltip]="resource.description!">
+        <ng-container *ngIf="getResourceUrl(resource.attributes!)!=null; else elseTemplate">
+          <img [src]="getResourceUrl(resource.attributes!)" alt="" width="36" height="36"
+            onerror="javascript:this.src='http://www.genars.net/favicon.ico';">
+        </ng-container>
+        <ng-template #elseTemplate>
+          <div class="d-block icon m-auto">
+            {{resource.name.slice(0,1) }}
+          </div>
+        </ng-template>
+        <div class="mt-1">
+          <span>
+            {{showName(resource.name)}}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -5,7 +5,15 @@
   </div>
 </div>
 <div *ngIf="isLogin" class="container justify-content-center g-0">
-  <div *ngFor="let group of groups" class="col-12">
+  <div class="d-flex justify-content-center mt-1">
+    <mat-button-toggle-group [(ngModel)]="filter.environmentId" aria-label="Environment" (change)="getResourceGroup()">
+      <mat-button-toggle [value]="null">全部</mat-button-toggle>
+      <mat-button-toggle *ngFor="let item of environments" [value]="item.id" [ngStyle]="{color:item.color}">
+        {{item.name}}
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+  <div *ngFor=" let group of groups" class="col-12">
     <!-- group标题 -->
     <div class="row align-items-center mt-4">
       <mat-chip-list>

@@ -29,6 +29,13 @@
       </mat-select>
     </mat-form-field>
     <mat-form-field>
+      <mat-label>密码</mat-label>
+      <input matInput placeholder="Password" formControlName="password" minlength="" maxlength="30">
+      <mat-error *ngIf="password?.invalid">
+        {{getValidatorMessage('password')}}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
       <mat-label>Position</mat-label>
       <input matInput placeholder="Position" formControlName="position" minlength="" maxlength="30">
       <mat-error *ngIf="position?.invalid">

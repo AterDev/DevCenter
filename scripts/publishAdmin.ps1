@@ -1,3 +1,5 @@
-
-scp  -r ../src/WebApp/Admin/dist/admin/*  dev:/var/webapi/dev-center/
-ssh dev sudo systemctl restart dev-center.service
+$location = Get-Location
+cd  ../src/WebApp/Admin;
+ng build -c production
+scp  -r ./dist/admin/*  dev:/var/www/dev-center/
+cd $location

@@ -8,12 +8,15 @@ import { ServerComponent } from './server/server.component';
 
 const routes: Routes = [
   {
-    path: 'index',
-    canActivate: [AuthGuard]
-    , component: IndexComponent
+    path: '',
+    canActivate: [AuthGuard],
+    children: [
+      { path: 'index', component: IndexComponent },
+      { path: 'server', component: ServerComponent },
+      { path: 'resource', component: ResourceComponent },
+    ]
   },
-  { path: 'server', component: ServerComponent },
-  { path: 'resource', component: ResourceComponent },
+
   { path: 'login', component: LoginComponent }
 ];
 

@@ -31,8 +31,8 @@ export class LoginComponent implements OnInit {
   get password() { return this.loginForm.get('password'); }
   ngOnInit(): void {
     this.loginForm = new FormGroup({
-      username: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(20)]),
-      password: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(50)])
+      username: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]),
+      password: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)])
     });
   }
 
@@ -46,10 +46,10 @@ export class LoginComponent implements OnInit {
       case 'username':
         return this.username?.errors?.['required'] ? '用户名必填' :
           this.username?.errors?.['minlength']
-            || this.username?.errors?.['maxlength'] ? '用户名长度4-20位' : '';
+            || this.username?.errors?.['maxlength'] ? '用户名长度3-20位' : '';
       case 'password':
         return this.password?.errors?.['required'] ? '密码必填' :
-          this.password?.errors?.['minlength'] ? '密码长度不可低于4位' :
+          this.password?.errors?.['minlength'] ? '密码长度不可低于3位' :
             this.password?.errors?.['maxlength'] ? '密码长度不可超过50' : '';
       default:
         break;

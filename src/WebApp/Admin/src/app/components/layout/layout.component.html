@@ -9,7 +9,7 @@
     <span style="display:flex;flex:1 1 auto; justify-content: center;">
       <form class="example-form" *ngIf="isLogin">
         <mat-form-field appearance="standard" style="font-size: 14px;min-width: 320px;">
-          <input type="search" matInput placeholder="资源、端口、IP" [matAutocomplete]="auto" [formControl]="searchControl">
+          <input type="search" matInput placeholder="资源名称、描述" [matAutocomplete]="auto" [formControl]="searchControl">
           <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectSearch($event)">
             <mat-option *ngFor="let resource of filteredResource |async" [value]="resource.name" [id]="resource.id">
               <span>{{resource.name}}</span> |

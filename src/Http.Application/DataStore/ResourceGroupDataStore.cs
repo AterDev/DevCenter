@@ -55,6 +55,7 @@ public class ResourceGroupDataStore : DataStoreBase<ContextBase, ResourceGroup, 
 
         var data = await _query.AsNoTracking()
             .OrderBy(q => q.Sort)
+            .OrderBy(q => q.Environment.Name)
             .Include(q => q.Environment)
             .Include(q => q.Resources)!
                 .ThenInclude(r => r.Attributes)

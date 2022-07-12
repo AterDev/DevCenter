@@ -9,14 +9,14 @@
         <div>
           <mat-form-field appearance="outline">
             <mat-label>用户名</mat-label>
-            <input matInput type="text" placeholder="用户名4位以上" formControlName="username" required>
+            <input matInput type="text" placeholder="用户名3位以上" formControlName="username" required>
             <mat-error *ngIf="username?.invalid">{{getValidatorMessage('username')}}</mat-error>
           </mat-form-field>
         </div>
         <div>
           <mat-form-field appearance="outline">
             <mat-label>密码</mat-label>
-            <input type="password" matInput placeholder="密码长度4位(含4位)以上" formControlName="password" required>
+            <input type="password" matInput placeholder="密码长度3位(含3位)以上" formControlName="password" required>
             <mat-error *ngIf="password?.invalid">{{getValidatorMessage('password')}}
             </mat-error>
           </mat-form-field>

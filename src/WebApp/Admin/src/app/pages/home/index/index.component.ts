@@ -42,7 +42,7 @@ export class IndexComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    Promise.all([this.getResourceGroup()])
+    Promise.all([this.getResourceGroup(), this.getEnvironments()])
       .then(data => {
         this.isLoading = false;
       });
