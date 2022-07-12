@@ -16,7 +16,7 @@
     </div>
     <div class="row justify-content-start m-0 mt-2">
       <div *ngFor="let resource of group.resource" class="col-auto text-center website-block p-1"
-        (click)="openWebsite(resource)">
+        (click)="openWebsite(resource)" [matTooltip]="resource.description!">
         <ng-container *ngIf="getResourceUrl(resource.attributes!)!=null; else elseTemplate">
           <img [src]="getResourceUrl(resource.attributes!)" alt="" width="36" height="36"
             onerror="javascript:this.src='http://www.genars.net/favicon.ico';">
