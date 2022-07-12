@@ -4,9 +4,11 @@ import { MatTableDataSource } from '@angular/material/table';
 import { lastValueFrom } from 'rxjs';
 import { NavigationType } from 'src/app/share/models/enum/navigation-type.model';
 import { EnvironmentItemDto } from 'src/app/share/models/environment/environment-item-dto.model';
+import { Environment } from 'src/app/share/models/environment/environment.model';
 import { ResourceAttribute } from 'src/app/share/models/resource-attribute/resource-attribute.model';
 import { ResourceGroupFilterDto } from 'src/app/share/models/resource-group/resource-group-filter-dto.model';
 import { ResourceGroupItemDto } from 'src/app/share/models/resource-group/resource-group-item-dto.model';
+import { ResourceGroup } from 'src/app/share/models/resource-group/resource-group.model';
 import { Resource } from 'src/app/share/models/resource/resource.model';
 import { EnvironmentService } from 'src/app/share/services/environment.service';
 import { ResourceGroupService } from 'src/app/share/services/resource-group.service';
@@ -30,7 +32,7 @@ export class ServerComponent implements OnInit {
   environmentId: string | null = null;
   groups: ResourceGroupItemDto[] = [];
   dataSource!: MatTableDataSource<Resource>;
-  columnsToDisplay = ['name', 'ipAddress', 'port', 'description'];
+  columnsToDisplay = ['name', 'ipAddress', 'port', 'tags'];
   expandedElement: ResourceGroupItemDto | null = null;
   columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
   constructor(
@@ -53,15 +55,16 @@ export class ServerComponent implements OnInit {
     if (res) {
       this.groups = res.data!;
       const resources = res.data?.flatMap(g => g.resource!);
-      console.log(resources);
-
       this.dataSource = new MatTableDataSource<Resource>(resources);
     }
+    this.isLoading = false;
+  }
+  getEnvironment(resource: Resource): Environment | null {
+    const group = this.groups.find(g => g.resource!.includes(resource));
+    return group!.environment || null;
   }
   getAttributeValue(resource: Resource, name: string) {
     const item = resource.attributes?.find(val => val.name == name);
-    console.log(resource, name);
-
     return item?.value;
   }
   applyFilter(event: Event) {

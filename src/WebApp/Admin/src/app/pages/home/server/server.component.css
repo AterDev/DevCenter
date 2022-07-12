@@ -17,4 +17,5 @@ tr.resource-element-row:not(.resource-expanded-row):active {
 .resource-detail {
     overflow: hidden;
     display: flex;
+    flex-direction: column;
 }
