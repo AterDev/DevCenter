@@ -6,9 +6,10 @@ import { RouterModule } from '@angular/router';
 import { ToKeyValuePipe } from './pipe/to-key-value.pipe';
 import { ComponentsModule } from '../components/components.module';
 import { HttpClientModule } from '@angular/common/http';
+import { CutStringPipe } from './pipe/cut-string.pipe';
 
 @NgModule({
-  declarations: [EnumPipe, ToKeyValuePipe],
+  declarations: [EnumPipe, ToKeyValuePipe, CutStringPipe],
   imports: [
     CommonModule,
     RouterModule,
@@ -25,7 +26,8 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule,
     ComponentsModule,
     EnumPipe,
-    ToKeyValuePipe
+    ToKeyValuePipe,
+    CutStringPipe
   ]
 })
 export class ShareModule { }

@@ -82,6 +82,7 @@ export class EditComponent implements OnInit {
       descriptioin: new FormControl(this.data.descriptioin, [Validators.maxLength(400)]),
       navigation: new FormControl(this.data.navigation, [Validators.required]),
       environmentId: new FormControl(this.data.environment?.id, [Validators.required]),
+      sort: new FormControl(this.data.sort, [Validators.min(0)]),
       status: new FormControl(this.data.status, []),
     });
   }

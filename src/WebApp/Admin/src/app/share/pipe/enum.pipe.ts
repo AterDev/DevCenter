@@ -5,7 +5,7 @@ import { NavigationType } from '../models/enum/navigation-type.model';
   name: 'enum'
 })
 export class EnumPipe implements PipeTransform {
-  transform(value: unknown, type: string): unknown {
+  transform(value: unknown, type: string): string {
     let result = '';
     switch (type) {
       case 'sex':

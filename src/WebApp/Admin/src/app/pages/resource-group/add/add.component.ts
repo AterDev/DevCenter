@@ -57,6 +57,7 @@ export class AddComponent implements OnInit {
     this.formGroup = new FormGroup({
       name: new FormControl(null, [Validators.maxLength(100)]),
       descriptioin: new FormControl(null, [Validators.maxLength(400)]),
+      sort: new FormControl(0, [Validators.min(0)]),
       navigation: new FormControl(NavigationType.WebSite, [Validators.required]),
       environmentId: new FormControl(null, [Validators.required]),
     });

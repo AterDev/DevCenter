@@ -8,11 +8,11 @@
   <div *ngFor="let group of groups" class="col-12">
     <!-- group标题 -->
     <div class="row align-items-center mt-4">
-      <h3 class="m-0" [style]="{color:group.environment?.color}">
-        <strong>
+      <mat-chip-list>
+        <mat-chip [style]="{backgroundColor:group.environment?.color,color:'white'}">
           {{group.name}}
-        </strong>
-      </h3>
+        </mat-chip>
+      </mat-chip-list>
     </div>
     <div class="row justify-content-start m-0 mt-2">
       <div *ngFor="let resource of group.resource" class="col-auto text-center website-block p-1"

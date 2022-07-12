@@ -1,1 +1,61 @@
-<p>server works!</p>
+<div class="p-2">
+  <mat-form-field appearance="standard" class="w-100">
+    <mat-label>搜索服务器</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="search name,ip" #input>
+  </mat-form-field>
+
+  <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8 w-100">
+    <!-- 行显示内容 -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>名称</th>
+      <td mat-cell *matCellDef="let element">{{element.name}}</td>
+    </ng-container>
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef>描述</th>
+      <td mat-cell *matCellDef="let element">{{element.description|cutString:20}}</td>
+    </ng-container>
+    <ng-container matColumnDef="ipAddress">
+      <th mat-header-cell *matHeaderCellDef>IP</th>
+      <td mat-cell *matCellDef="let element">{{getAttributeValue(element,'ipAddress')}}</td>
+    </ng-container>
+    <ng-container matColumnDef="port">
+      <th mat-header-cell *matHeaderCellDef>Port</th>
+      <td mat-cell *matCellDef="let element">{{getAttributeValue(element,'port')}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="expand">
+      <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button aria-label="expand row"
+          (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+          <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
+          <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <!-- 展开显示内容-->
+    <ng-container matColumnDef="expandedDetail">
+      <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
+        <div class="resource-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+          <div class="row m-0 mt-2">
+            <div *ngFor="let attr of sortAttributes(element.attributes)" class="col col-auto">
+              <mat-form-field appearance="outline">
+                <mat-label>{{attr.displayName}}</mat-label>
+                <input matInput [placeholder]="attr.displayName" [value]="attr.value">
+              </mat-form-field>
+            </div>
+          </div>
+
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+    <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;" class="resource-element-row"
+      [class.resource-expanded-row]="expandedElement === element"
+      (click)="expandedElement = expandedElement === element ? null : element">
+    </tr>
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="resource-detail-row"></tr>
+  </table>
+</div>

@@ -32,7 +32,7 @@ export class IndexComponent implements OnInit {
     public dialog: MatDialog
 
   ) {
-    this.isLogin = loginService.isLogin;
+    this.isLogin = this.loginService.isLogin;
     this.filter = {
       pageIndex: 1,
       pageSize: 30,
