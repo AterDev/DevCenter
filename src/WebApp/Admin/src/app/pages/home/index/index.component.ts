@@ -10,6 +10,7 @@ import { ResourceDialogComponent } from '../resource-dialog/resource-dialog.comp
 import { ResourceGroupFilterDto } from 'src/app/share/models/resource-group/resource-group-filter-dto.model';
 import { NavigationType } from 'src/app/share/models/enum/navigation-type.model';
 import { ResourceAttribute } from 'src/app/share/models/resource-attribute/resource-attribute.model';
+import { Resource } from 'src/app/share/models/resource/resource.model';
 
 @Component({
   selector: 'app-index',
@@ -41,7 +42,7 @@ export class IndexComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    Promise.all([this.getEnvironments(), this.getResourceGroup()])
+    Promise.all([this.getResourceGroup()])
       .then(data => {
         this.isLoading = false;
       });
@@ -74,6 +75,13 @@ export class IndexComponent implements OnInit {
       return name.slice(0, 10) + '...';
     }
     return name;
+  }
+
+  openWebsite(resource: Resource) {
+    var attr = resource.attributes!.find(a => a.name == 'url');
+    if (attr?.value) {
+      window.open(attr?.value);
+    }
   }
 
   showResource(): void {

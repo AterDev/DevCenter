@@ -1,3 +1,13 @@
 .card-header {
     border-bottom: 1px solid #ccc;
 }
+
+.website-block {
+    cursor: pointer;
+    width: 100px
+}
+
+.website-block:hover {
+    border-radius: 5px;
+    background-color: #cccccc90;
+}
