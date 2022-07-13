@@ -5,6 +5,7 @@ public static class DataStoreExtensions
     public static void AddDataStore(this IServiceCollection services)
     {
         services.AddTransient<IUserContext, UserContext>();
+        services.AddScoped(typeof(DataStoreContext));
         services.AddScoped(typeof(CodeFolderDataStore));
         services.AddScoped(typeof(CodeSnippetDataStore));
         services.AddScoped(typeof(ConfigOptionDataStore));
@@ -21,6 +22,5 @@ public static class DataStoreExtensions
         services.AddScoped(typeof(RoleDataStore));
         services.AddScoped(typeof(RolePermissionDataStore));
         services.AddScoped(typeof(UserDataStore));
-
     }
 }
