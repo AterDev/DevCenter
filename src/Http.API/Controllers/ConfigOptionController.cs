@@ -6,7 +6,7 @@ namespace Http.API.Controllers;
 /// </summary>
 public class ConfigOptionController : RestApiBase<ConfigOptionDataStore, ConfigOption, ConfigOptionAddDto, ConfigOptionUpdateDto, ConfigOptionFilterDto, ConfigOptionItemDto>
 {
-    public ConfigOptionController(IUserContext user, ILogger<ConfigOptionController> logger, ConfigOptionDataStore store) : base(user, logger, store)
+    public ConfigOptionController(IUserContext user, ILogger<ConfigOptionController> logger, ConfigOptionDataStore store, DataStoreContext storeContext) : base(user, logger, store)
     {
     }
 

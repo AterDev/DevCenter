@@ -6,7 +6,7 @@ namespace Http.API.Controllers;
 /// </summary>
 public class DocumentController : RestApiBase<DocumentDataStore, Document, DocumentAddDto, DocumentUpdateDto, DocumentFilterDto, DocumentItemDto>
 {
-    public DocumentController(IUserContext user, ILogger<DocumentController> logger, DocumentDataStore store) : base(user, logger, store)
+    public DocumentController(IUserContext user, ILogger<DocumentController> logger, DocumentDataStore store, DataStoreContext storeContext) : base(user, logger, store)
     {
     }
 

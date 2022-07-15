@@ -3,10 +3,11 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { NavigationStart, Router } from '@angular/router';
-import { filter, map, Observable, startWith } from 'rxjs';
+import { filter, lastValueFrom, map, Observable, startWith } from 'rxjs';
 import { LoginService } from 'src/app/auth/login.service';
 import { ResourceDialogComponent } from 'src/app/pages/home/resource-dialog/resource-dialog.component';
 import { Resource } from 'src/app/share/models/resource/resource.model';
+import { ResourceService } from 'src/app/share/services/resource.service';
 
 @Component({
   selector: 'app-layout',
@@ -23,6 +24,7 @@ export class LayoutComponent implements OnInit {
   constructor(
     private auth: LoginService,
     private router: Router,
+    private resourceSrv: ResourceService,
     public dialog: MatDialog
   ) {
     // this layout is out of router-outlet, so we need to listen router event and change isLogin status
@@ -31,12 +33,7 @@ export class LayoutComponent implements OnInit {
         this.isLogin = this.auth.isLogin;
         this.isAdmin = this.auth.isAdmin;
         this.username = this.auth.userName;
-        if (this.resources.length <= 0) {
-          const searchResources = localStorage.getItem('searchResources');
-          if (searchResources) {
-            this.resources = JSON.parse(searchResources);
-          }
-        }
+        this.getResources()
       }
     });
 
@@ -48,6 +45,12 @@ export class LayoutComponent implements OnInit {
           this.resources.slice()
       }),
     );
+  }
+  async getResources(): Promise<void> {
+    let res = await lastValueFrom(this.resourceSrv.getAllResources());
+    if (res) {
+      this.resources = res;
+    }
   }
   private _filterStates(value: string): Resource[] {
     const filterValue = value.toLowerCase();
