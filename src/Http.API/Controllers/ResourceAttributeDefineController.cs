@@ -15,7 +15,7 @@ public class ResourceAttributeDefineController : RestApiBase<ResourceAttributeDe
     /// </summary>
     /// <param name="filter"></param>
     /// <returns></returns>
-    public override async Task<ActionResult<PageResult<ResourceAttributeDefineItemDto>>> FilterAsync(ResourceAttributeDefineFilterDto filter)
+    public override async Task<ActionResult<PageList<ResourceAttributeDefineItemDto>>> FilterAsync(ResourceAttributeDefineFilterDto filter)
     {
         return await base.FilterAsync(filter);
     }

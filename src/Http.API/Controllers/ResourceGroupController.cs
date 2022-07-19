@@ -22,7 +22,7 @@ public class ResourceGroupController : RestApiBase<ResourceGroupDataStore, Resou
     /// </summary>
     /// <param name="filter"></param>
     /// <returns></returns>
-    public override async Task<ActionResult<PageResult<ResourceGroupItemDto>>> FilterAsync(ResourceGroupFilterDto filter)
+    public override async Task<ActionResult<PageList<ResourceGroupItemDto>>> FilterAsync(ResourceGroupFilterDto filter)
     {
         if (!_user.IsAdmin)
         {

@@ -10,7 +10,7 @@ public class RoleDataStore : DataStoreBase<ContextBase, Role, RoleUpdateDto, Rol
         return await base.FindAsync(filter, noTracking);
     }
 
-    public override async Task<PageResult<RoleItemDto>> FindWithPageAsync(RoleFilterDto filter)
+    public override async Task<PageList<RoleItemDto>> FindWithPageAsync(RoleFilterDto filter)
     {
         return await base.FindWithPageAsync(filter);
     }

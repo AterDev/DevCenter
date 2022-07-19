@@ -17,7 +17,7 @@ public class UserController : RestApiBase<UserDataStore, User, UserAddDto, UserU
     /// </summary>
     /// <param name="filter"></param>
     /// <returns></returns>
-    public override async Task<ActionResult<PageResult<UserItemDto>>> FilterAsync(UserFilterDto filter)
+    public override async Task<ActionResult<PageList<UserItemDto>>> FilterAsync(UserFilterDto filter)
     {
         return await base.FilterAsync(filter);
     }

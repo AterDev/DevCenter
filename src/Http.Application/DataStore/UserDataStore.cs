@@ -17,7 +17,7 @@ public class UserDataStore : DataStoreBase<ContextBase, User, UserUpdateDto, Use
         return await base.FindAsync(filter, noTracking);
     }
 
-    public override async Task<PageResult<UserItemDto>> FindWithPageAsync(UserFilterDto filter)
+    public override async Task<PageList<UserItemDto>> FindWithPageAsync(UserFilterDto filter)
     {
         return await base.FindWithPageAsync(filter);
     }

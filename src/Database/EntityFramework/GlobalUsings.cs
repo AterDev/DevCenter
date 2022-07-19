@@ -1,3 +1,3 @@
-﻿global using Core.Models;
+﻿global using Core.Entities;
 
 global using Microsoft.EntityFrameworkCore;

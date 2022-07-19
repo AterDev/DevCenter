@@ -20,7 +20,7 @@ public class ResourceDataStore : DataStoreBase<ContextBase, Resource, ResourceUp
             : await _query.SingleOrDefaultAsync(d => d.Id == id);
 
     }
-    public override async Task<PageResult<ResourceItemDto>> FindWithPageAsync(ResourceFilterDto filter)
+    public override async Task<PageList<ResourceItemDto>> FindWithPageAsync(ResourceFilterDto filter)
     {
         if (filter.GroupId != null)
         {

@@ -61,7 +61,7 @@ public class RestApiBase<TDataStore, TEntity, TAdd, TUpdate, TFilter, TItem>
     /// <param name="filter"></param>
     /// <returns></returns>
     [HttpPost("filter")]
-    public virtual async Task<ActionResult<PageResult<TItem>>> FilterAsync(TFilter filter)
+    public virtual async Task<ActionResult<PageList<TItem>>> FilterAsync(TFilter filter)
         => await _store.FindWithPageAsync(filter);
 
     /// <summary>

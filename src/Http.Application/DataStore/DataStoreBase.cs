@@ -1,5 +1,3 @@
-using System.Linq.Expressions;
-
 namespace Http.Application.DataStore;
 
 public class DataStoreBase<TContext, TEntity, TUpdate, TFilter, TItem> : IDataStore<TEntity, TUpdate, TFilter, TItem, Guid>
@@ -73,8 +71,8 @@ public class DataStoreBase<TContext, TEntity, TUpdate, TFilter, TItem> : IDataSt
         }
 
         return await query.Select<TEntity, TItem>()
-            .Skip((filter.PageIndex - 1) * filter.PageSize)
-            .Take(filter.PageSize)
+            .Skip((filter.PageIndex!.Value - 1) * filter.PageSize!.Value)
+            .Take(filter.PageSize.Value)
             .ToListAsync();
     }
 
@@ -83,7 +81,7 @@ public class DataStoreBase<TContext, TEntity, TUpdate, TFilter, TItem> : IDataSt
     /// </summary>
     /// <param name="filter"></param>
     /// <returns></returns>
-    public virtual async Task<PageResult<TItem>> FindWithPageAsync(TFilter filter)
+    public virtual async Task<PageList<TItem>> FindWithPageAsync(TFilter filter)
     {
         var count = _query.Count();
         if (filter.PageIndex < 1)
@@ -97,15 +95,15 @@ public class DataStoreBase<TContext, TEntity, TUpdate, TFilter, TItem> : IDataSt
         }
 
         var data = await _query.AsNoTracking()
-            .Skip((filter.PageIndex - 1) * filter.PageSize)
-            .Take(filter.PageSize)
+            .Skip((filter.PageIndex!.Value - 1) * filter.PageSize!.Value)
+            .Take(filter.PageSize!.Value)
             .Select<TEntity, TItem>()
             .ToListAsync();
-        return new PageResult<TItem>
+        return new PageList<TItem>
         {
             Count = count,
             Data = data,
-            PageIndex = filter.PageIndex
+            PageIndex = filter.PageIndex!.Value
         };
     }
 

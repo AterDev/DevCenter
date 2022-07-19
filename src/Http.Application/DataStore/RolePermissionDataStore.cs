@@ -10,7 +10,7 @@ public class RolePermissionDataStore : DataStoreBase<ContextBase, RolePermission
         return await base.FindAsync(filter, noTracking);
     }
 
-    public override async Task<PageResult<RolePermissionItemDto>> FindWithPageAsync(RolePermissionFilterDto filter)
+    public override async Task<PageList<RolePermissionItemDto>> FindWithPageAsync(RolePermissionFilterDto filter)
     {
         return await base.FindWithPageAsync(filter);
     }

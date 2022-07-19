@@ -10,7 +10,7 @@ public class ConfigOptionDataStore : DataStoreBase<ContextBase, ConfigOption, Co
         return await base.FindAsync(filter, noTracking);
     }
 
-    public override async Task<PageResult<ConfigOptionItemDto>> FindWithPageAsync(ConfigOptionFilterDto filter)
+    public override async Task<PageList<ConfigOptionItemDto>> FindWithPageAsync(ConfigOptionFilterDto filter)
     {
         return await base.FindWithPageAsync(filter);
     }

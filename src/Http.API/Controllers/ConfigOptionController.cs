@@ -15,7 +15,7 @@ public class ConfigOptionController : RestApiBase<ConfigOptionDataStore, ConfigO
     /// </summary>
     /// <param name="filter"></param>
     /// <returns></returns>
-    public override async Task<ActionResult<PageResult<ConfigOptionItemDto>>> FilterAsync(ConfigOptionFilterDto filter)
+    public override async Task<ActionResult<PageList<ConfigOptionItemDto>>> FilterAsync(ConfigOptionFilterDto filter)
     {
         return await base.FilterAsync(filter);
     }

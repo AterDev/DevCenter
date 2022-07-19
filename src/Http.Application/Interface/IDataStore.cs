@@ -19,7 +19,7 @@ public interface IDataStore<TEntity, TUpdate, TFilter, TItem, Tkey>
     /// </summary>
     /// <param name="filter"></param>
     /// <returns></returns>
-    Task<PageResult<TItem>> FindWithPageAsync(TFilter filter);
+    Task<PageList<TItem>> FindWithPageAsync(TFilter filter);
     /// <summary>
     /// 删除
     /// </summary>

@@ -10,7 +10,7 @@ public class PermissionDataStore : DataStoreBase<ContextBase, Permission, Permis
         return await base.FindAsync(filter, noTracking);
     }
 
-    public override async Task<PageResult<PermissionItemDto>> FindWithPageAsync(PermissionFilterDto filter)
+    public override async Task<PageList<PermissionItemDto>> FindWithPageAsync(PermissionFilterDto filter)
     {
         return await base.FindWithPageAsync(filter);
     }

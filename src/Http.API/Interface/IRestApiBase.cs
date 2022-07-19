@@ -19,7 +19,7 @@ public interface IRestApiBase<TEntity, TAdd, TUpdate, TFilter, TItem, Tkey>
     /// </summary>
     /// <param name="filter"></param>
     /// <returns></returns>
-    Task<ActionResult<PageResult<TItem>>> FilterAsync(TFilter filter);
+    Task<ActionResult<PageList<TItem>>> FilterAsync(TFilter filter);
     /// <summary>
     /// 详情
     /// </summary>

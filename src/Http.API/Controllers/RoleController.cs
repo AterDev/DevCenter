@@ -15,7 +15,7 @@ public class RoleController : RestApiBase<RoleDataStore, Role, RoleAddDto, RoleU
     /// </summary>
     /// <param name="filter"></param>
     /// <returns></returns>
-    public override async Task<ActionResult<PageResult<RoleItemDto>>> FilterAsync(RoleFilterDto filter)
+    public override async Task<ActionResult<PageList<RoleItemDto>>> FilterAsync(RoleFilterDto filter)
     {
         return await base.FilterAsync(filter);
     }

@@ -15,7 +15,7 @@ public class DocumentController : RestApiBase<DocumentDataStore, Document, Docum
     /// </summary>
     /// <param name="filter"></param>
     /// <returns></returns>
-    public override async Task<ActionResult<PageResult<DocumentItemDto>>> FilterAsync(DocumentFilterDto filter)
+    public override async Task<ActionResult<PageList<DocumentItemDto>>> FilterAsync(DocumentFilterDto filter)
     {
         return await base.FilterAsync(filter);
     }

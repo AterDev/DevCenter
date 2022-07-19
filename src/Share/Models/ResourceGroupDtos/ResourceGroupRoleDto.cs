@@ -1,4 +1,4 @@
-﻿using Environment = Core.Models.Environment;
+﻿using Environment = Core.Entities.Environment;
 
 namespace Share.Models.ResourceGroupDtos;
 

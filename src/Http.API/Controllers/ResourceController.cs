@@ -15,7 +15,7 @@ public class ResourceController : RestApiBase<ResourceDataStore, Resource, Resou
     /// </summary>
     /// <param name="filter"></param>
     /// <returns></returns>
-    public override async Task<ActionResult<PageResult<ResourceItemDto>>> FilterAsync(ResourceFilterDto filter)
+    public override async Task<ActionResult<PageList<ResourceItemDto>>> FilterAsync(ResourceFilterDto filter)
     {
         return await base.FilterAsync(filter);
     }

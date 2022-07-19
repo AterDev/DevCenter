@@ -10,7 +10,7 @@ public class ResourceAttributeDefineDataStore : DataStoreBase<ContextBase, Resou
         return await base.FindAsync(filter, noTracking);
     }
 
-    public override async Task<PageResult<ResourceAttributeDefineItemDto>> FindWithPageAsync(ResourceAttributeDefineFilterDto filter)
+    public override async Task<PageList<ResourceAttributeDefineItemDto>> FindWithPageAsync(ResourceAttributeDefineFilterDto filter)
     {
         _query = _query.OrderBy(q => q.Sort);
         if (filter.IsEnable != null)
@@ -21,7 +21,7 @@ public class ResourceAttributeDefineDataStore : DataStoreBase<ContextBase, Resou
         {
             var ids = await _context.ResourceTypeDefinitions
                 .Where(r => r.Id == filter.TypeId)
-                .SelectMany(s => s.AttributeDefines)
+                .SelectMany(s => s.AttributeDefines!)
                 .Select(d => d.Id)
                 .ToListAsync();
 

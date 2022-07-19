@@ -1,13 +1,17 @@
 using System.Security.Cryptography;
-
 namespace Core.Utils;
-
 /// <summary>
-/// hash加密
+/// 提供常用加解密方法
 /// </summary>
 public class HashCrypto
 {
     private static readonly RandomNumberGenerator Rng = RandomNumberGenerator.Create();
+    /// <summary>
+    /// SHA512 encrypt
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="salt"></param>
+    /// <returns></returns>
     public static string GeneratePwd(string value, string salt)
     {
         var encrpty = new Rfc2898DeriveBytes(value, Encoding.UTF8.GetBytes(salt), 100, HashAlgorithmName.SHA512);
@@ -15,18 +19,6 @@ public class HashCrypto
         return Convert.ToBase64String(valueBytes);
     }
 
-    /// <summary>
-    /// HMACSHA256 encrypt
-    /// </summary>
-    /// <param name="key"></param>
-    /// <param name="content"></param>
-    /// <returns></returns>
-    public static string HMACSHA256(string key, string content)
-    {
-        using HMACSHA256 hmac = new(Encoding.UTF8.GetBytes(key));
-        byte[] valueBytes = hmac.ComputeHash(Encoding.UTF8.GetBytes(content));
-        return Convert.ToBase64String(valueBytes);
-    }
 
     public static bool Validate(string value, string salt, string hash)
     {
@@ -40,6 +32,22 @@ public class HashCrypto
         generator.GetBytes(randomBytes);
         return Convert.ToBase64String(randomBytes);
     }
+
+
+    /// <summary>
+    /// HMACSHA256 encrypt
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="content"></param>
+    /// <returns></returns>
+    public static string HMACSHA256(string key, string content)
+    {
+        using HMACSHA256 hmac = new(Encoding.UTF8.GetBytes(key));
+        byte[] valueBytes = hmac.ComputeHash(Encoding.UTF8.GetBytes(content));
+        return Convert.ToBase64String(valueBytes);
+
+    }
+
     /// <summary>
     /// 字符串md5值
     /// </summary>
@@ -104,5 +112,57 @@ public class HashCrypto
             s += str.Substring(position, 1);
         }
         return s;
+    }
+
+
+    /// <summary>
+    /// 加密
+    /// </summary>
+    /// <param name="text">源文</param>
+    /// <param name="key"></param>
+    /// <returns></returns>
+    public static string AesEncrypt(string text, string key)
+    {
+        byte[] encrypted;
+        using (Aes aesAlg = Aes.Create())
+        {
+            aesAlg.Key = Encoding.ASCII.GetBytes(Md5Hash(key));
+            aesAlg.IV = aesAlg.Key[..16];
+            ICryptoTransform encryptor = aesAlg.CreateEncryptor();
+            using MemoryStream msEncrypt = new();
+            using CryptoStream csEncrypt = new(msEncrypt, encryptor, CryptoStreamMode.Write);
+            using (StreamWriter swEncrypt = new(csEncrypt))
+            {
+                swEncrypt.Write(text);
+            }
+            encrypted = msEncrypt.ToArray();
+        }
+        return Convert.ToBase64String(encrypted);
+    }
+
+    /// <summary>
+    /// 解密
+    /// </summary>
+    /// <param name="cipherText"></param>
+    /// <param name="key"></param>
+    /// <returns></returns>
+    public static string AesDescrypt(string cipherText, string key)
+    {
+        if (string.IsNullOrWhiteSpace(cipherText))
+        {
+            return string.Empty;
+        }
+        string? plaintext = null;
+        using (Aes aesAlg = Aes.Create())
+        {
+            aesAlg.Key = Encoding.ASCII.GetBytes(Md5Hash(key));
+            aesAlg.IV = aesAlg.Key[..16];
+            ICryptoTransform decryptor = aesAlg.CreateDecryptor();
+            using MemoryStream msDecrypt = new(Convert.FromBase64String(cipherText));
+            using CryptoStream csDecrypt = new(msDecrypt, decryptor, CryptoStreamMode.Read);
+            using StreamReader srDecrypt = new(csDecrypt);
+            plaintext = srDecrypt.ReadToEnd();
+        }
+        return plaintext;
     }
 }

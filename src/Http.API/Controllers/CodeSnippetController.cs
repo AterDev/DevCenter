@@ -15,7 +15,7 @@ public class CodeSnippetController : RestApiBase<CodeSnippetDataStore, CodeSnipp
     /// </summary>
     /// <param name="filter"></param>
     /// <returns></returns>
-    public override async Task<ActionResult<PageResult<CodeSnippetItemDto>>> FilterAsync(CodeSnippetFilterDto filter)
+    public override async Task<ActionResult<PageList<CodeSnippetItemDto>>> FilterAsync(CodeSnippetFilterDto filter)
     {
         return await base.FilterAsync(filter);
     }

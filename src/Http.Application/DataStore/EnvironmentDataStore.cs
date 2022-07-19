@@ -1,6 +1,6 @@
 using Share.Models.EnvironmentDtos;
 
-using Environment = Core.Models.Environment;
+using Environment = Core.Entities.Environment;
 
 namespace Http.Application.DataStore;
 public class EnvironmentDataStore : DataStoreBase<ContextBase, Environment, EnvironmentUpdateDto, EnvironmentFilterDto, EnvironmentItemDto>
@@ -13,7 +13,7 @@ public class EnvironmentDataStore : DataStoreBase<ContextBase, Environment, Envi
         return await base.FindAsync(filter, noTracking);
     }
 
-    public override async Task<PageResult<EnvironmentItemDto>> FindWithPageAsync(EnvironmentFilterDto filter)
+    public override async Task<PageList<EnvironmentItemDto>> FindWithPageAsync(EnvironmentFilterDto filter)
     {
         return await base.FindWithPageAsync(filter);
     }

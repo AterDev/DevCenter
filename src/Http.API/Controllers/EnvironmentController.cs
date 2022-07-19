@@ -1,6 +1,6 @@
 using Share.Models.EnvironmentDtos;
 
-using Environment = Core.Models.Environment;
+using Environment = Core.Entities.Environment;
 
 namespace Http.API.Controllers;
 
@@ -18,7 +18,7 @@ public class EnvironmentController : RestApiBase<EnvironmentDataStore, Environme
     /// </summary>
     /// <param name="filter"></param>
     /// <returns></returns>
-    public override async Task<ActionResult<PageResult<EnvironmentItemDto>>> FilterAsync(EnvironmentFilterDto filter)
+    public override async Task<ActionResult<PageList<EnvironmentItemDto>>> FilterAsync(EnvironmentFilterDto filter)
     {
         return await base.FilterAsync(filter);
     }

@@ -1,3 +1,4 @@
+using Core.Models;
 using Share.Models.CodeFolderDtos;
 namespace Http.API.Controllers;
 
@@ -15,7 +16,7 @@ public class CodeFolderController : RestApiBase<CodeFolderDataStore, CodeFolder,
     /// </summary>
     /// <param name="filter"></param>
     /// <returns></returns>
-    public override async Task<ActionResult<PageResult<CodeFolderItemDto>>> FilterAsync(CodeFolderFilterDto filter)
+    public override async Task<ActionResult<PageList<CodeFolderItemDto>>> FilterAsync(CodeFolderFilterDto filter)
     {
         return await base.FilterAsync(filter);
     }

@@ -10,7 +10,7 @@ public class DocFolderDataStore : DataStoreBase<ContextBase, DocFolder, DocFolde
         return await base.FindAsync(filter, noTracking);
     }
 
-    public override async Task<PageResult<DocFolderItemDto>> FindWithPageAsync(DocFolderFilterDto filter)
+    public override async Task<PageList<DocFolderItemDto>> FindWithPageAsync(DocFolderFilterDto filter)
     {
         return await base.FindWithPageAsync(filter);
     }

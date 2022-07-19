@@ -15,7 +15,7 @@ public class PermissionController : RestApiBase<PermissionDataStore, Permission,
     /// </summary>
     /// <param name="filter"></param>
     /// <returns></returns>
-    public override async Task<ActionResult<PageResult<PermissionItemDto>>> FilterAsync(PermissionFilterDto filter)
+    public override async Task<ActionResult<PageList<PermissionItemDto>>> FilterAsync(PermissionFilterDto filter)
     {
         return await base.FilterAsync(filter);
     }

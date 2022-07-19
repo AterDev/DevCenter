@@ -10,7 +10,7 @@ public class ResourceAttributeDataStore : DataStoreBase<ContextBase, ResourceAtt
         return await base.FindAsync(filter, noTracking);
     }
 
-    public override async Task<PageResult<ResourceAttributeItemDto>> FindWithPageAsync(ResourceAttributeFilterDto filter)
+    public override async Task<PageList<ResourceAttributeItemDto>> FindWithPageAsync(ResourceAttributeFilterDto filter)
     {
         return await base.FindWithPageAsync(filter);
     }

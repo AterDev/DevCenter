@@ -10,7 +10,7 @@ public class CodeSnippetDataStore : DataStoreBase<ContextBase, CodeSnippet, Code
         return await base.FindAsync(filter, noTracking);
     }
 
-    public override async Task<PageResult<CodeSnippetItemDto>> FindWithPageAsync(CodeSnippetFilterDto filter)
+    public override async Task<PageList<CodeSnippetItemDto>> FindWithPageAsync(CodeSnippetFilterDto filter)
     {
         return await base.FindWithPageAsync(filter);
     }

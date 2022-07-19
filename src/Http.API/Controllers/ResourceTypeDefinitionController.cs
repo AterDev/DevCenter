@@ -24,7 +24,7 @@ public class ResourceTypeDefinitionController : RestApiBase<ResourceTypeDefiniti
     /// </summary>
     /// <param name="filter"></param>
     /// <returns></returns>
-    public override async Task<ActionResult<PageResult<ResourceTypeDefinitionItemDto>>> FilterAsync(ResourceTypeDefinitionFilterDto filter)
+    public override async Task<ActionResult<PageList<ResourceTypeDefinitionItemDto>>> FilterAsync(ResourceTypeDefinitionFilterDto filter)
     {
         return await base.FilterAsync(filter);
     }

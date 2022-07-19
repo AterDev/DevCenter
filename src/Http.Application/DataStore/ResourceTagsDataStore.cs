@@ -10,7 +10,7 @@ public class ResourceTagsDataStore : DataStoreBase<ContextBase, ResourceTags, Re
         return await base.FindAsync(filter, noTracking);
     }
 
-    public override async Task<PageResult<ResourceTagsItemDto>> FindWithPageAsync(ResourceTagsFilterDto filter)
+    public override async Task<PageList<ResourceTagsItemDto>> FindWithPageAsync(ResourceTagsFilterDto filter)
     {
         return await base.FindWithPageAsync(filter);
     }

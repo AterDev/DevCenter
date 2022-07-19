@@ -15,7 +15,7 @@ public class DocFolderController : RestApiBase<DocFolderDataStore, DocFolder, Do
     /// </summary>
     /// <param name="filter"></param>
     /// <returns></returns>
-    public override async Task<ActionResult<PageResult<DocFolderItemDto>>> FilterAsync(DocFolderFilterDto filter)
+    public override async Task<ActionResult<PageList<DocFolderItemDto>>> FilterAsync(DocFolderFilterDto filter)
     {
         return await base.FilterAsync(filter);
     }

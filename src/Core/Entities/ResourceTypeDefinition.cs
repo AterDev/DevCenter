@@ -1,4 +1,4 @@
-﻿namespace Core.Models;
+﻿namespace Core.Entities;
 
 /// <summary>
 /// 资源类型的定义

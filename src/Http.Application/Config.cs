@@ -1,4 +1,4 @@
-﻿using Environment = Core.Models.Environment;
+﻿using Environment = Core.Entities.Environment;
 
 namespace Http.Application
 {
@@ -14,126 +14,126 @@ namespace Http.Application
                 DisplayName = "名称",
                 Required = true,
                 Name ="name",
-                Type = Core.Models.ValueType.String
+                Type = Core.Entities.ValueType.String
             },
             new ResourceAttributeDefine()
             {
                 DisplayName = "描述",
                 Name ="description",
                 Sort =1,
-                Type = Core.Models.ValueType.String
+                Type = Core.Entities.ValueType.String
             },
             new ResourceAttributeDefine()
             {
                 DisplayName = "Url",
                 Name ="rul",
                 Sort =2,
-                Type = Core.Models.ValueType.String
+                Type = Core.Entities.ValueType.String
             },
             new ResourceAttributeDefine()
             {
                 DisplayName = "公网IP",
                 Name ="ipAddress",
                 Sort =3,
-                Type = Core.Models.ValueType.String
+                Type = Core.Entities.ValueType.String
             },
             new ResourceAttributeDefine()
             {
                 DisplayName = "公网端口",
                 Name ="port",
                 Sort =4,
-                Type = Core.Models.ValueType.String
+                Type = Core.Entities.ValueType.String
             },
             new ResourceAttributeDefine()
             {
                 DisplayName = "连接字符串",
                 Name ="connectionString",
                 Sort =5,
-                Type = Core.Models.ValueType.String
+                Type = Core.Entities.ValueType.String
             },
             new ResourceAttributeDefine()
             {
                 DisplayName = "登录用户",
                 Name ="loginUser",
                 Sort =6,
-                Type = Core.Models.ValueType.String
+                Type = Core.Entities.ValueType.String
             },
             new ResourceAttributeDefine()
             {
                 DisplayName = "密码",
                 Name ="password",
                 Sort =7,
-                Type = Core.Models.ValueType.String
+                Type = Core.Entities.ValueType.String
             },
             new ResourceAttributeDefine()
             {
                 DisplayName = "密钥",
                 Name ="secretKey",
                 Sort =8,
-                Type = Core.Models.ValueType.String
+                Type = Core.Entities.ValueType.String
             },
             new ResourceAttributeDefine()
             {
                 DisplayName = "AppId",
                 Name ="appId",
                 Sort =9,
-                Type = Core.Models.ValueType.String
+                Type = Core.Entities.ValueType.String
             },
             new ResourceAttributeDefine()
             {
                 DisplayName = "AccessKey",
                 Name ="accessKey",
                 Sort =9,
-                Type = Core.Models.ValueType.String
+                Type = Core.Entities.ValueType.String
             },
             new ResourceAttributeDefine()
             {
                 DisplayName = "AccessSecret",
                 Name ="accessSecret",
                 Sort =10,
-                Type = Core.Models.ValueType.String
+                Type = Core.Entities.ValueType.String
             },
             new ResourceAttributeDefine()
             {
                 DisplayName = "Endpoint",
                 Name ="endpoint",
                 Sort =10,
-                Type = Core.Models.ValueType.String
+                Type = Core.Entities.ValueType.String
             },
             new ResourceAttributeDefine()
             {
                 DisplayName = "内网IP",
                 Name ="internalIpAddress",
                 Sort =11,
-                Type = Core.Models.ValueType.String
+                Type = Core.Entities.ValueType.String
             },
             new ResourceAttributeDefine()
             {
                 DisplayName = "内网端口",
                 Name ="internalPort",
                 Sort =12,
-                Type = Core.Models.ValueType.String
+                Type = Core.Entities.ValueType.String
             },
             new ResourceAttributeDefine()
             {
                 DisplayName = "Webhook",
                 Name ="webhook",
                 Sort =13,
-                Type = Core.Models.ValueType.String
+                Type = Core.Entities.ValueType.String
             },
             new ResourceAttributeDefine()
             {
                 DisplayName = "Token",
                 Name ="token",
                 Sort =14,
-                Type = Core.Models.ValueType.String
+                Type = Core.Entities.ValueType.String
             },
             new ResourceAttributeDefine()
             {
                 DisplayName = "配置值",
                 Name ="config",
                 Sort =15,
-                Type = Core.Models.ValueType.String
+                Type = Core.Entities.ValueType.String
             }
         };
 

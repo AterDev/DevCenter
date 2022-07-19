@@ -15,7 +15,7 @@ public class RolePermissionController : RestApiBase<RolePermissionDataStore, Rol
     /// </summary>
     /// <param name="filter"></param>
     /// <returns></returns>
-    public override async Task<ActionResult<PageResult<RolePermissionItemDto>>> FilterAsync(RolePermissionFilterDto filter)
+    public override async Task<ActionResult<PageList<RolePermissionItemDto>>> FilterAsync(RolePermissionFilterDto filter)
     {
         return await base.FilterAsync(filter);
     }

@@ -1,4 +1,4 @@
-using ValueType = Core.Models.ValueType;
+using ValueType = Core.Entities.ValueType;
 
 namespace Share.Models.ResourceAttributeDefineDtos;
 /// <summary>

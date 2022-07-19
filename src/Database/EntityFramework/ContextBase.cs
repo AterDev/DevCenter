@@ -18,7 +18,7 @@ public class ContextBase : DbContext
     public DbSet<ResourceGroup> ResourceGroups { get; set; } = null!;
     public DbSet<ResourceTags> ResourceTags { get; set; } = null!;
     public DbSet<ResourceTypeDefinition> ResourceTypeDefinitions { get; set; } = null!;
-    public DbSet<Core.Models.Environment> Environments { get; set; } = null!;
+    public DbSet<Core.Entities.Environment> Environments { get; set; } = null!;
     public DbSet<ResourceView> ResourceViews { get; set; }
     public ContextBase(DbContextOptions<ContextBase> options) : base(options)
     {
@@ -54,7 +54,7 @@ public class ContextBase : DbContext
         {
             e.HasIndex(a => a.Name);
         });
-        builder.Entity<Core.Models.Environment>(e =>
+        builder.Entity<Core.Entities.Environment>(e =>
         {
             e.HasIndex(a => a.Name);
         });

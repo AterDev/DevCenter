@@ -10,7 +10,7 @@ public class ResourceGroupDataStore : DataStoreBase<ContextBase, ResourceGroup, 
         return await base.FindAsync(filter, noTracking);
     }
 
-    public override async Task<PageResult<ResourceGroupItemDto>> FindWithPageAsync(ResourceGroupFilterDto filter)
+    public override async Task<PageList<ResourceGroupItemDto>> FindWithPageAsync(ResourceGroupFilterDto filter)
     {
         // 根据当前用户筛选
         if (filter.UserId != null)
@@ -64,8 +64,8 @@ public class ResourceGroupDataStore : DataStoreBase<ContextBase, ResourceGroup, 
             .Include(q => q.Resources)!
                 .ThenInclude(r => r.ResourceType)
 
-            .Skip((filter.PageIndex - 1) * filter.PageSize)
-            .Take(filter.PageSize)
+            .Skip((filter.PageIndex!.Value - 1) * filter.PageSize!.Value)
+            .Take(filter.PageSize!.Value)
             .Select(s => new ResourceGroupItemDto()
             {
                 Id = s.Id,
@@ -77,11 +77,11 @@ public class ResourceGroupDataStore : DataStoreBase<ContextBase, ResourceGroup, 
                 Sort = s.Sort
             })
             .ToListAsync();
-        return new PageResult<ResourceGroupItemDto>
+        return new PageList<ResourceGroupItemDto>
         {
             Count = count,
             Data = data,
-            PageIndex = filter.PageIndex
+            PageIndex = filter.PageIndex!.Value
         };
     }
 
