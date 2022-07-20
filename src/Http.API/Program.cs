@@ -1,5 +1,5 @@
 using System.Text;
-
+using Http.Application.Implement;
 using Http.Application.Services.Webhook;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -18,6 +18,14 @@ services.AddHttpContextAccessor();
 // database sql
 var connectionString = configuration.GetConnectionString("Default");
 services.AddDbContextPool<ContextBase>(option =>
+{
+    option.UseNpgsql(connectionString, sql => { sql.MigrationsAssembly("EntityFramework.Migrator"); });
+});
+services.AddDbContextPool<QueryDbContext>(option =>
+{
+    option.UseNpgsql(connectionString, sql => { sql.MigrationsAssembly("EntityFramework.Migrator"); });
+});
+services.AddDbContextPool<CommandDbContext>(option =>
 {
     option.UseNpgsql(connectionString, sql => { sql.MigrationsAssembly("EntityFramework.Migrator"); });
 });

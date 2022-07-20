@@ -1,4 +1,4 @@
-namespace Http.Application.DataStore;
+namespace Http.Application.Implement;
 
 public class DataStoreBase<TContext, TEntity, TUpdate, TFilter, TItem> : IDataStore<TEntity, TUpdate, TFilter, TItem, Guid>
     where TEntity : EntityBase

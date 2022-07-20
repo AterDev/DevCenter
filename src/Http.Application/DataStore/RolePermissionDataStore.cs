@@ -1,3 +1,4 @@
+using Http.Application.Implement;
 using Share.Models.RolePermissionDtos;
 namespace Http.Application.DataStore;
 public class RolePermissionDataStore : DataStoreBase<ContextBase, RolePermission, RolePermissionUpdateDto, RolePermissionFilterDto, RolePermissionItemDto>

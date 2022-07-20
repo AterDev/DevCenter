@@ -1,11 +1,16 @@
-namespace Http.Application.DataStore;
+using Http.Application.DataStore;
+
+namespace Http.Application.Implement;
 
 public static class DataStoreExtensions
 {
     public static void AddDataStore(this IServiceCollection services)
     {
         services.AddTransient<IUserContext, UserContext>();
+        services.AddScoped(typeof(UserQueryDataStore));
+        services.AddScoped(typeof(UserCommandDataStore));
         services.AddScoped(typeof(DataStoreContext));
+
         services.AddScoped(typeof(CodeFolderDataStore));
         services.AddScoped(typeof(CodeSnippetDataStore));
         services.AddScoped(typeof(ConfigOptionDataStore));

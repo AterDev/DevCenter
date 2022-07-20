@@ -11,7 +11,6 @@ public class ContextBase : DbContext
     public DbSet<Document> Documents { get; set; } = null!;
     public DbSet<Permission> Permissions { get; set; } = null!;
     public DbSet<RolePermission> RolePermissions { get; set; } = null!;
-
     public DbSet<Resource> Resources { get; set; } = null!;
     public DbSet<ResourceAttribute> ResourceAttributes { get; set; } = null!;
     public DbSet<ResourceAttributeDefine> ResourceAttributeDefines { get; set; } = null!;
@@ -19,8 +18,8 @@ public class ContextBase : DbContext
     public DbSet<ResourceTags> ResourceTags { get; set; } = null!;
     public DbSet<ResourceTypeDefinition> ResourceTypeDefinitions { get; set; } = null!;
     public DbSet<Core.Entities.Environment> Environments { get; set; } = null!;
-    public DbSet<ResourceView> ResourceViews { get; set; }
-    public ContextBase(DbContextOptions<ContextBase> options) : base(options)
+    public DbSet<ResourceView> ResourceViews { get; set; } = null!;
+    public ContextBase(DbContextOptions options) : base(options)
     {
     }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -66,13 +65,11 @@ public class ContextBase : DbContext
             e.HasIndex(a => a.UserName);
             e.HasIndex(a => a.IsDeleted);
             e.HasIndex(a => a.CreatedTime);
-            e.HasIndex(a => a.Status);
 
         });
         builder.Entity<Role>(e =>
         {
             e.HasIndex(m => m.Name);
-            e.HasIndex(m => m.Status);
         });
 
         base.OnModelCreating(builder);

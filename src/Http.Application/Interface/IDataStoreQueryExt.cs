@@ -2,16 +2,8 @@
 /// <summary>
 /// 高级查询接口
 /// </summary>
-public interface IDataStoreQueryExt<TEntity, TFilter>
+public interface IDataStoreQueryExt<TEntity>
 {
-    /// <summary>
-    /// 筛选排序 
-    /// </summary>
-    /// <typeparam name="TItem"></typeparam>
-    /// <param name="filter"></param>
-    /// <param name="order"></param>
-    /// <returns></returns>
-    Task<PageList<TItem>> Filter<TItem>(TFilter filter, Dictionary<string, bool>? order);
 
     /// <summary>
     /// 条件查询

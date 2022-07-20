@@ -1,5 +1,3 @@
-using System.Xml;
-
 using Share.Models.UserDtos;
 namespace Http.Application.DataStore;
 public class UserDataStore : DataStoreBase<ContextBase, User, UserUpdateDto, UserFilterDto, UserItemDto>

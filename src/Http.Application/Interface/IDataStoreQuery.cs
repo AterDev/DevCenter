@@ -2,8 +2,7 @@
 /// <summary>
 /// 基础查询接口
 /// </summary>
-public interface IDataStoreQuery<TId, TEntity, TFilter>
-    where TFilter : FilterBase
+public interface IDataStoreQuery<TId, TEntity>
     where TEntity : EntityBase
 {
     /// <summary>
@@ -14,6 +13,7 @@ public interface IDataStoreQuery<TId, TEntity, TFilter>
     /// <returns></returns>
     Task<TDto?> FindAsync<TDto>(TId id);
     Task<TDto?> FindAsync<TDto>(Expression<Func<TEntity, bool>>? whereExp);
+
     /// <summary>
     /// 列表条件查询
     /// </summary>
@@ -27,10 +27,9 @@ public interface IDataStoreQuery<TId, TEntity, TFilter>
     /// <typeparam name="TItem"></typeparam>
     /// <param name="filter"></param>
     /// <returns></returns>
-    Task<PageList<TItem>> PageListAsync<TItem>(TFilter filter);
+    Task<PageList<TItem>> PageListAsync<TItem>(Expression<Func<TEntity, bool>>? whereExp, int pageIndex = 1, int pageSize = 12);
 }
 
-public interface IDataStoreQuery<TEntity, TFilter> : IDataStoreQuery<Guid, TEntity, TFilter>
-    where TFilter : FilterBase
+public interface IDataStoreQuery<TEntity> : IDataStoreQuery<Guid, TEntity>
     where TEntity : EntityBase
 { }

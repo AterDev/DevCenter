@@ -1,6 +1,6 @@
 ﻿using EFCore.BulkExtensions;
 
-namespace Http.Application.DataStore;
+namespace Http.Application.Implement;
 public class DataStoreCommandBase<TContext, TEntity> : IDataStoreCommand<TEntity>, IDataStoreCommandExt<TEntity>
     where TContext : DbContext
     where TEntity : EntityBase
@@ -52,11 +52,11 @@ public class DataStoreCommandBase<TContext, TEntity> : IDataStoreCommand<TEntity
     /// <summary>
     /// 编辑实体
     /// </summary>
-    /// <typeparam name="TEdit"></typeparam>
+    /// <typeparam name="TUpdate"></typeparam>
     /// <param name="id"></param>
     /// <param name="dto"></param>
     /// <returns></returns>
-    public virtual async Task<TEntity> EditAsync<TEdit>(Guid id, TEdit dto)
+    public virtual async Task<TEntity> EditAsync<TUpdate>(Guid id, TUpdate dto)
     {
         var current = await _db.FindAsync(id);
         if (current == null) throw new ArgumentNullException(nameof(current));

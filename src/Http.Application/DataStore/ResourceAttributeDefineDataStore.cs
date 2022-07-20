@@ -1,3 +1,4 @@
+using Http.Application.Implement;
 using Share.Models.ResourceAttributeDefineDtos;
 namespace Http.Application.DataStore;
 public class ResourceAttributeDefineDataStore : DataStoreBase<ContextBase, ResourceAttributeDefine, ResourceAttributeDefineUpdateDto, ResourceAttributeDefineFilterDto, ResourceAttributeDefineItemDto>

@@ -1,3 +1,4 @@
+using Http.Application.Implement;
 using Share.Models.DocumentDtos;
 namespace Http.Application.DataStore;
 public class DocumentDataStore : DataStoreBase<ContextBase, Document, DocumentUpdateDto, DocumentFilterDto, DocumentItemDto>

@@ -1,3 +1,4 @@
+using Http.Application.Implement;
 using Share.Models.PermissionDtos;
 namespace Http.Application.DataStore;
 public class PermissionDataStore : DataStoreBase<ContextBase, Permission, PermissionUpdateDto, PermissionFilterDto, PermissionItemDto>

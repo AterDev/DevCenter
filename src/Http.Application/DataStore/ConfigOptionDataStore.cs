@@ -1,3 +1,4 @@
+using Http.Application.Implement;
 using Share.Models.ConfigOptionDtos;
 namespace Http.Application.DataStore;
 public class ConfigOptionDataStore : DataStoreBase<ContextBase, ConfigOption, ConfigOptionUpdateDto, ConfigOptionFilterDto, ConfigOptionItemDto>

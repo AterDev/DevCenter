@@ -8,6 +8,7 @@ global using Core.Entities;
 global using Core.Models;
 global using Core.Utils;
 global using EntityFramework;
+global using Http.Application.Implement;
 global using Http.Application.Interface;
 // global using EntityFramework;
 global using Microsoft.EntityFrameworkCore;
