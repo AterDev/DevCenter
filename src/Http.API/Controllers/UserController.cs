@@ -1,5 +1,5 @@
-using Microsoft.EntityFrameworkCore;
-
+using Http.Application.Manager;
+using Microsoft.AspNetCore.Authorization;
 using Share.Models.UserDtos;
 namespace Http.API.Controllers;
 
@@ -8,8 +8,15 @@ namespace Http.API.Controllers;
 /// </summary>
 public class UserController : RestApiBase<UserDataStore, User, UserAddDto, UserUpdateDto, UserFilterDto, UserItemDto>
 {
-    public UserController(IUserContext user, ILogger<UserController> logger, UserDataStore store) : base(user, logger, store)
+    readonly UserManager userManager;
+
+    public UserController(
+        IUserContext user,
+        ILogger<UserController> logger,
+        UserDataStore store,
+        UserManager userManager) : base(user, logger, store)
     {
+        this.userManager = userManager;
     }
 
     /// <summary>
@@ -108,5 +115,13 @@ public class UserController : RestApiBase<UserDataStore, User, UserAddDto, UserU
         // 危险操作，请确保该方法的执行权限
         //return await base.BatchDeleteAsync(ids);
         return await Task.FromResult(0);
+    }
+
+
+    [HttpGet("test")]
+    [AllowAnonymous]
+    public async Task<ActionResult<User?>> TestAsync(Guid id)
+    {
+        return await userManager.FindAsync<User>(id);
     }
 }

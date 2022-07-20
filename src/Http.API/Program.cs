@@ -41,7 +41,7 @@ services.AddDbContextPool<CommandDbContext>(option =>
 services.AddSingleton(typeof(GitLabWebhookService));
 services.AddSingleton(typeof(DingTalkWebhookService));
 services.AddDataStore();
-
+services.AddManager();
 //services.AddScoped(typeof(FileService));
 
 #region 接口相关内容:jwt/授权/cors
@@ -132,7 +132,6 @@ await using (var scope = app.Services.CreateAsyncScope())
     var provider = scope.ServiceProvider;
     await InitDataTask.InitDataAsync(provider);
 }
-
 
 if (app.Environment.IsDevelopment())
 {

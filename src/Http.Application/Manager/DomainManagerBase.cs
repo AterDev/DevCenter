@@ -1,20 +1,17 @@
-﻿using Http.Application.Implement;
-
-namespace Http.Application.Manager
+﻿namespace Http.Application.Manager
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public class DomainManagerBase<TEntity> : IDomainManager<TEntity>
         where TEntity : EntityBase
     {
-        private readonly DataStoreContext storeContext;
-        private readonly DataStoreQueryBase<QueryDbContext, TEntity> query;
-        private readonly DataStoreCommandBase<CommandDbContext, TEntity> command;
+        private readonly DataStoreContext _context;
+        private readonly QuerySet<TEntity> query;
+        private readonly CommandSet<TEntity> command;
 
         public DomainManagerBase(DataStoreContext storeContext)
         {
-            this.storeContext = storeContext;
+            _context = storeContext;
+            query = _context.QuerySet<TEntity>();
+            command = _context.CommandSet<TEntity>();
         }
         public Task<TEntity> AddAsync(TEntity entity)
         {
@@ -26,14 +23,14 @@ namespace Http.Application.Manager
             throw new NotImplementedException();
         }
 
-        public Task<TEntity> DeleteAsync(Guid id)
+        public Task<TEntity?> DeleteAsync(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<TDto> FindAsync<TDto>(Guid id)
+        public async Task<TDto?> FindAsync<TDto>(Guid id)
         {
-            throw new NotImplementedException();
+            return await query.FindAsync<TDto>(id);
         }
 
         public Task<PageList<TItem>> Filter<TItem>(Expression<Func<TEntity, bool>> whereExp, Dictionary<string, bool>? order, int pageIndex = 1, int pageSize = 12)

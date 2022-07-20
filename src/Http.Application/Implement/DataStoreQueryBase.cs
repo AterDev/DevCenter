@@ -126,10 +126,10 @@ public class DataStoreQueryBase<TContext, TEntity> :
 }
 
 
-public class StoreSet<TEntity> : DataStoreQueryBase<QueryDbContext, TEntity>
+public class QuerySet<TEntity> : DataStoreQueryBase<QueryDbContext, TEntity>
     where TEntity : EntityBase
 {
-    public StoreSet(QueryDbContext context, ILogger logger) : base(context, logger)
+    public QuerySet(QueryDbContext context, ILogger logger) : base(context, logger)
     {
     }
 }

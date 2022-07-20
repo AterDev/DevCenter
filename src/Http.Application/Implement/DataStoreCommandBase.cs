@@ -149,3 +149,10 @@ public class DataStoreCommandBase<TContext, TEntity> : IDataStoreCommand<TEntity
         return await _db.Where(whereExp).BatchDeleteAsync();
     }
 }
+public class CommandSet<TEntity> : DataStoreCommandBase<CommandDbContext, TEntity>
+    where TEntity : EntityBase
+{
+    public CommandSet(CommandDbContext context, ILogger logger) : base(context, logger)
+    {
+    }
+}

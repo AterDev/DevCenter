@@ -1,8 +1,9 @@
 using Http.Application.DataStore;
+using Http.Application.Manager;
 
 namespace Http.Application.Implement;
 
-public static class DataStoreExtensions
+public static class StoreServicesExtensions
 {
     public static void AddDataStore(this IServiceCollection services)
     {
@@ -27,5 +28,10 @@ public static class DataStoreExtensions
         services.AddScoped(typeof(RoleDataStore));
         services.AddScoped(typeof(RolePermissionDataStore));
         services.AddScoped(typeof(UserDataStore));
+    }
+
+    public static void AddManager(this IServiceCollection services)
+    {
+        services.AddScoped(typeof(UserManager));
     }
 }

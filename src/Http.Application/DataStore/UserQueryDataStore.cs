@@ -1,7 +1,7 @@
 ﻿namespace Http.Application.DataStore;
-public class UserQueryDataStore : DataStoreQueryBase<QueryDbContext, User>
+public class UserQueryDataStore : QuerySet<User>
 {
-    public UserQueryDataStore(QueryDbContext context, ILogger logger) : base(context, logger)
+    public UserQueryDataStore(QueryDbContext context, ILogger<UserQueryDataStore> logger) : base(context, logger)
     {
     }
 }
