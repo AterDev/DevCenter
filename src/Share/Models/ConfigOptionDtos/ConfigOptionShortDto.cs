@@ -1,4 +1,4 @@
-using ValueType = Core.Entities.ValueType;
+using ValueType = Core.Models.ValueType;
 
 namespace Share.Models.ConfigOptionDtos;
 /// <summary>

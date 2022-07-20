@@ -1,4 +1,6 @@
-﻿namespace Core.Entities;
+﻿using Core.Models;
+
+namespace Core.Entities;
 
 /// <summary>
 /// 资源组

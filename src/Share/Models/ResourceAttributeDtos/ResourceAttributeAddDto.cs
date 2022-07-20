@@ -15,7 +15,7 @@ public class ResourceAttributeAddDto
     /// 排序 
     /// </summary>
     public short? Sort { get; set; } = 0;
-    public Core.Entities.ValueType? Type { get; set; } = Core.Entities.ValueType.String;
+    public Core.Models.ValueType? Type { get; set; } = Core.Models.ValueType.String;
     public Guid? ResourceId { get; set; } = default!;
 
 }

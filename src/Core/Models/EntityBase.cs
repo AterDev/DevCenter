@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Core.Entities;
+namespace Core.Models;
 
 /// <summary>
 /// 数据加基础字段模型
@@ -11,10 +11,6 @@ public class EntityBase
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
-    /// <summary>
-    /// 状态
-    /// </summary>
-    public virtual Status Status { get; set; } = Status.Default;
     public DateTimeOffset CreatedTime { get; set; } = DateTimeOffset.UtcNow;
     public DateTimeOffset UpdatedTime { get; set; } = DateTimeOffset.UtcNow;
 }
