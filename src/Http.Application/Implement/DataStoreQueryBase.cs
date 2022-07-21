@@ -28,12 +28,20 @@ public class DataStoreQueryBase<TContext, TEntity> :
         _query = _db.AsQueryable();
     }
 
-    public virtual async Task<TDto?> FindAsync<TDto>(Guid id)
+    private void ResetQuery()
     {
-        return await _db.Where(d => d.Id == id)
+        _query = _db.AsQueryable();
+    }
+
+    public virtual async Task<TDto?> FindAsync<TDto>(Guid id)
+        where TDto : class
+    {
+        var res = await _query.Where(d => d.Id == id)
             .AsNoTracking()
             .ProjectTo<TDto>()
             .FirstOrDefaultAsync();
+        ResetQuery();
+        return res;
     }
 
     /// <summary>
@@ -43,12 +51,15 @@ public class DataStoreQueryBase<TContext, TEntity> :
     /// <param name="whereExp"></param>
     /// <returns></returns>
     public virtual async Task<TDto?> FindAsync<TDto>(Expression<Func<TEntity, bool>>? whereExp)
+        where TDto : class
     {
         Expression<Func<TEntity, bool>> exp = e => true;
         whereExp ??= exp;
-        return await _db.Where(whereExp)
+        var res = await _query.Where(whereExp)
             .ProjectTo<TDto>()
             .FirstOrDefaultAsync();
+        ResetQuery();
+        return res;
     }
 
     /// <summary>
@@ -61,9 +72,11 @@ public class DataStoreQueryBase<TContext, TEntity> :
     {
         Expression<Func<TEntity, bool>> exp = e => true;
         whereExp ??= exp;
-        return await _db.Where(whereExp)
+        var res = await _query.Where(whereExp)
             .ProjectTo<TItem>()
             .ToListAsync();
+        ResetQuery();
+        return res;
     }
 
     /// <summary>
@@ -83,7 +96,7 @@ public class DataStoreQueryBase<TContext, TEntity> :
             .Skip((pageIndex - 1) * pageSize)
             .ProjectTo<TItem>()
             .ToListAsync();
-
+        ResetQuery();
         return new PageList<TItem>
         {
             Count = count,
@@ -115,7 +128,7 @@ public class DataStoreQueryBase<TContext, TEntity> :
             .Skip((pageIndex - 1) * pageSize)
             .ProjectTo<TItem>()
             .ToListAsync();
-
+        ResetQuery();
         return new PageList<TItem>
         {
             Count = count,

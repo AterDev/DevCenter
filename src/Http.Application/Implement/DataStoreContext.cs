@@ -30,6 +30,10 @@ public class DataStoreContext
         AddCache(UserCommand);
     }
 
+    public async Task<int> SaveChangesAsync()
+    {
+        return await CommandContext.SaveChangesAsync();
+    }
 
     public QuerySet<TEntity> QuerySet<TEntity>() where TEntity : EntityBase
     {

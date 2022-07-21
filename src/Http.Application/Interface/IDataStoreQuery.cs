@@ -11,8 +11,9 @@ public interface IDataStoreQuery<TId, TEntity>
     /// <typeparam name="TDto"></typeparam>
     /// <param name="id"></param>
     /// <returns></returns>
-    Task<TDto?> FindAsync<TDto>(TId id);
-    Task<TDto?> FindAsync<TDto>(Expression<Func<TEntity, bool>>? whereExp);
+    Task<TDto?> FindAsync<TDto>(TId id)
+        where TDto : class;
+    Task<TDto?> FindAsync<TDto>(Expression<Func<TEntity, bool>>? whereExp) where TDto : class;
 
     /// <summary>
     /// 列表条件查询

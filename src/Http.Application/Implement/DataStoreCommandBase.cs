@@ -12,6 +12,8 @@ public class DataStoreCommandBase<TContext, TEntity> : IDataStoreCommand<TEntity
     /// </summary>
     protected readonly DbSet<TEntity> _db;
 
+    //public TEntity CurrentEntity { get; }
+
     public DataStoreCommandBase(TContext context, ILogger logger)
     {
         _context = context;
@@ -23,6 +25,16 @@ public class DataStoreCommandBase<TContext, TEntity> : IDataStoreCommand<TEntity
     {
         return await _context.SaveChangesAsync();
     }
+
+    public virtual async Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>>? whereExp)
+    {
+
+        Expression<Func<TEntity, bool>> exp = e => true;
+        whereExp ??= exp;
+        return await _db.Where(whereExp)
+            .FirstOrDefaultAsync();
+    }
+
 
     /// <summary>
     /// 创建实体
@@ -43,24 +55,10 @@ public class DataStoreCommandBase<TContext, TEntity> : IDataStoreCommand<TEntity
     /// <returns></returns>
     public virtual async Task<TEntity> UpdateAsync(Guid id, TEntity entity)
     {
+        if (entity.Id != id) throw new Exception("entity id not match");
         var current = await _db.FindAsync(id);
         if (current == null) throw new ArgumentNullException(nameof(current));
         current = current.Merge(entity);
-        return current;
-    }
-
-    /// <summary>
-    /// 编辑实体
-    /// </summary>
-    /// <typeparam name="TUpdate"></typeparam>
-    /// <param name="id"></param>
-    /// <param name="dto"></param>
-    /// <returns></returns>
-    public virtual async Task<TEntity> UpdateAsync<TUpdate>(Guid id, TUpdate dto)
-    {
-        var current = await _db.FindAsync(id);
-        if (current == null) throw new ArgumentNullException(nameof(current));
-        current = current.Merge(dto);
         return current;
     }
 
