@@ -40,7 +40,7 @@ public class RestApiBase<TDataStore, TEntity, TAdd, TUpdate, TFilter, TItem>
     }
 
 
-    /// <summary>Z
+    /// <summary>
     /// 删除
     /// </summary>
     /// <param name="id"></param>

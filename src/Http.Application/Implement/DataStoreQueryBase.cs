@@ -4,7 +4,6 @@
 /// </summary>
 /// <typeparam name="TContext"></typeparam>
 /// <typeparam name="TEntity"></typeparam>
-/// <typeparam name="TFilter"></typeparam>
 public class DataStoreQueryBase<TContext, TEntity> :
     IDataStoreQuery<TEntity>, IDataStoreQueryExt<TEntity>
     where TContext : DbContext
