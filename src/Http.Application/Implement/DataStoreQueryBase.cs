@@ -101,7 +101,7 @@ public class DataStoreQueryBase<TContext, TEntity> :
     /// <param name="pageIndex"></param>
     /// <param name="pageSize"></param>
     /// <returns></returns>
-    public virtual async Task<PageList<TItem>> Filter<TItem>(Expression<Func<TEntity, bool>> whereExp, Dictionary<string, bool>? order, int pageIndex = 1, int pageSize = 12)
+    public virtual async Task<PageList<TItem>> FilterAsync<TItem>(Expression<Func<TEntity, bool>> whereExp, Dictionary<string, bool>? order, int pageIndex = 1, int pageSize = 12)
     {
         if (pageIndex < 1) pageIndex = 1;
         _query = _query.Where(whereExp);

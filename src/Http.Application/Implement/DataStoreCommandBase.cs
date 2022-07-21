@@ -56,7 +56,7 @@ public class DataStoreCommandBase<TContext, TEntity> : IDataStoreCommand<TEntity
     /// <param name="id"></param>
     /// <param name="dto"></param>
     /// <returns></returns>
-    public virtual async Task<TEntity> EditAsync<TUpdate>(Guid id, TUpdate dto)
+    public virtual async Task<TEntity> UpdateAsync<TUpdate>(Guid id, TUpdate dto)
     {
         var current = await _db.FindAsync(id);
         if (current == null) throw new ArgumentNullException(nameof(current));

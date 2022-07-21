@@ -3,24 +3,28 @@
 namespace Http.Application.Implement;
 public class DataStoreContext
 {
-    public QuerySet<User> UserQuery { get; set; }
-    public CommandSet<User> UserCommand { get; set; }
+    public QuerySet<User> UserQuery { get; init; }
+    public CommandSet<User> UserCommand { get; init; }
+
+    public QueryDbContext QueryContext { get; init; }
+    public CommandDbContext CommandContext { get; init; }
 
     /// <summary>
     /// 绑在对象
     /// </summary>
-    private Dictionary<string, object> SetCache = new();
-    IServiceProvider ServiceProvider { get; set; }
+    private readonly Dictionary<string, object> SetCache = new();
 
     public DataStoreContext(
-        IServiceProvider serviceProvider,
         UserQueryDataStore userQuery,
-        UserCommandDataStore userCommand
+        UserCommandDataStore userCommand,
+        QueryDbContext queryDbContext,
+        CommandDbContext commandDbContext
     )
     {
-        ServiceProvider = serviceProvider;
         UserQuery = userQuery;
         UserCommand = userCommand;
+        QueryContext = queryDbContext;
+        CommandContext = commandDbContext;
 
         AddCache(UserQuery);
         AddCache(UserCommand);
@@ -42,7 +46,7 @@ public class DataStoreContext
         return (CommandSet<TEntity>)set;
     }
 
-    public void AddCache(object set)
+    private void AddCache(object set)
     {
         var typeName = set.GetType().Name;
         if (!SetCache.ContainsKey(typeName))
@@ -51,7 +55,7 @@ public class DataStoreContext
         }
     }
 
-    public object GetSet(string type)
+    private object GetSet(string type)
     {
         return SetCache[type];
     }

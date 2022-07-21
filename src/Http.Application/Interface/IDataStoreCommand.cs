@@ -28,7 +28,7 @@ public interface IDataStoreCommand<TId, TEntity>
     /// <param name="id"></param>
     /// <param name="dto"></param>
     /// <returns></returns>
-    Task<TEntity> EditAsync<TEdit>(TId id, TEdit dto);
+    Task<TEntity> UpdateAsync<TEdit>(TId id, TEdit dto);
 
     /// <summary>
     /// 删除

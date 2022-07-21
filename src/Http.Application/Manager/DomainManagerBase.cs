@@ -3,39 +3,39 @@
     public class DomainManagerBase<TEntity> : IDomainManager<TEntity>
         where TEntity : EntityBase
     {
-        private readonly DataStoreContext _context;
-        private readonly QuerySet<TEntity> query;
-        private readonly CommandSet<TEntity> command;
+        public DataStoreContext Stores { get; init; }
+        public QuerySet<TEntity> Query { get; init; }
+        public CommandSet<TEntity> Command { get; init; }
 
         public DomainManagerBase(DataStoreContext storeContext)
         {
-            _context = storeContext;
-            query = _context.QuerySet<TEntity>();
-            command = _context.CommandSet<TEntity>();
+            Stores = storeContext;
+            Query = Stores.QuerySet<TEntity>();
+            Command = Stores.CommandSet<TEntity>();
         }
-        public Task<TEntity> AddAsync(TEntity entity)
+        public async Task<TEntity> AddAsync(TEntity entity)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<TEntity> UpdateAsync<TUpdate>(Guid id, TUpdate entity)
-        {
-            throw new NotImplementedException();
+            return await Command.CreateAsync(entity);
         }
 
-        public Task<TEntity?> DeleteAsync(Guid id)
+        public async Task<TEntity> UpdateAsync<TUpdate>(Guid id, TUpdate entity)
         {
-            throw new NotImplementedException();
+            return await Command.UpdateAsync(id, entity);
+        }
+
+        public async Task<TEntity?> DeleteAsync(Guid id)
+        {
+            return await Command.DeleteAsync(id);
         }
 
         public async Task<TDto?> FindAsync<TDto>(Guid id)
         {
-            return await query.FindAsync<TDto>(id);
+            return await Query.FindAsync<TDto>(id);
         }
 
-        public Task<PageList<TItem>> Filter<TItem>(Expression<Func<TEntity, bool>> whereExp, Dictionary<string, bool>? order, int pageIndex = 1, int pageSize = 12)
+        public async Task<PageList<TItem>> Filter<TItem>(Expression<Func<TEntity, bool>> whereExp, Dictionary<string, bool>? order, int pageIndex = 1, int pageSize = 12)
         {
-            throw new NotImplementedException();
+            return await Query.FilterAsync<TItem>(whereExp, order, pageIndex, pageSize);
         }
     }
 }
