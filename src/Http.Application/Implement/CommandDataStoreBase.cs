@@ -1,7 +1,7 @@
 ﻿using EFCore.BulkExtensions;
 
 namespace Http.Application.Implement;
-public class DataStoreCommandBase<TContext, TEntity> : IDataStoreCommand<TEntity>, IDataStoreCommandExt<TEntity>
+public class CommandDataStoreBase<TContext, TEntity> : IDataStoreCommand<TEntity>, IDataStoreCommandExt<TEntity>
     where TContext : DbContext
     where TEntity : EntityBase
 {
@@ -14,7 +14,7 @@ public class DataStoreCommandBase<TContext, TEntity> : IDataStoreCommand<TEntity
 
     //public TEntity CurrentEntity { get; }
 
-    public DataStoreCommandBase(TContext context, ILogger logger)
+    public CommandDataStoreBase(TContext context, ILogger logger)
     {
         _context = context;
         _logger = logger;
@@ -150,7 +150,7 @@ public class DataStoreCommandBase<TContext, TEntity> : IDataStoreCommand<TEntity
         return await _db.Where(whereExp).BatchDeleteAsync();
     }
 }
-public class CommandSet<TEntity> : DataStoreCommandBase<CommandDbContext, TEntity>
+public class CommandSet<TEntity> : CommandDataStoreBase<CommandDbContext, TEntity>
     where TEntity : EntityBase
 {
     public CommandSet(CommandDbContext context, ILogger logger) : base(context, logger)
