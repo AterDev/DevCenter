@@ -1,5 +1,4 @@
 using Http.API.Infrastructure;
-using Http.API.Interface;
 using Share.Models.UserDtos;
 using User = Core.Entities.User;
 
@@ -9,7 +8,7 @@ namespace Http.API.Controllers;
 /// 系统用户
 /// </summary>
 public class UserController :
-    RestControllerBase<UserManager, User>,
+    RestControllerBase<UserManager, User, UserUpdateDto>,
     IRestController<User, UserAddDto, UserUpdateDto, UserFilterDto, UserItemDto>
 {
     public UserController(
@@ -59,14 +58,15 @@ public class UserController :
     /// <param name="id"></param>
     /// <param name="form"></param>
     /// <returns></returns>
-    [HttpPut]
+    [HttpPut("{id}")]
     public async Task<ActionResult<User?>> UpdateAsync([FromRoute] Guid id, UserUpdateDto form)
     {
         if (_user.IsAdmin || _user.UserId == id)
         {
-            var user = await manager.FindAsync<User>(u => u.Id == id);
+            var user = await manager.GetCurrent(id, "Roles");
             if (user == null) return NotFound();
-            return await manager.UpdateAsync(id, user);
+
+            return await manager.UpdateAsync(user, form);
         }
         return Forbid();
     }
@@ -81,7 +81,7 @@ public class UserController :
     {
         if (_user.UserId != null)
         {
-            var user = await manager.FindAsync<User>(u => u.Id == _user.UserId);
+            var user = await manager.GetCurrent(_user.UserId.Value);
             if (user != null)
                 return await manager.ChangePasswordAsync(user, newPassword);
 
@@ -108,5 +108,4 @@ public class UserController :
     {
         return await manager.DeleteAsync(id);
     }
-
 }

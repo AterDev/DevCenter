@@ -91,9 +91,9 @@ public class DataStoreQueryBase<TContext, TEntity> :
         if (pageSize < 0) pageSize = 12;
 
         var count = _query.Count();
-        var data = await _query.Take(pageSize)
+        var data = await _query.ProjectTo<TItem>()
             .Skip((pageIndex - 1) * pageSize)
-            .ProjectTo<TItem>()
+            .Take(pageSize)
             .ToListAsync();
         ResetQuery();
         return new PageList<TItem>
@@ -123,10 +123,12 @@ public class DataStoreQueryBase<TContext, TEntity> :
             _query = _query.OrderBy(order);
         }
         var count = _query.Count();
-        var data = await _query.Take(pageSize)
-            .Skip((pageIndex - 1) * pageSize)
+        var data = await _query
             .ProjectTo<TItem>()
+            .Skip((pageIndex - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
+
         ResetQuery();
         return new PageList<TItem>
         {

@@ -19,7 +19,7 @@ public interface IDataStoreCommand<TId, TEntity>
     /// <param name="id"></param>
     /// <param name="entity"></param>
     /// <returns></returns>
-    Task<TEntity> UpdateAsync(TId id, TEntity entity);
+    TEntity Update(TEntity entity);
 
 
     /// <summary>

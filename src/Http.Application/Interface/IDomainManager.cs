@@ -3,7 +3,7 @@
     /// <summary>
     /// 仓储数据管理接口
     /// </summary>
-    public interface IDomainManager<TEntity>
+    public interface IDomainManager<TEntity, TUpdate>
         where TEntity : EntityBase
     {
         DataStoreContext Stores { get; init; }
@@ -15,9 +15,9 @@
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<TEntity?> GetCurrent(Guid id);
+        Task<TEntity?> GetCurrent(Guid id, string[]? navigations = null);
         Task<TEntity> AddAsync(TEntity entity);
-        Task<TEntity> UpdateAsync(Guid id, TEntity entity);
+        Task<TEntity> UpdateAsync(TEntity entity, TUpdate dto);
         Task<TEntity?> DeleteAsync(Guid id);
 
         /// <summary>
@@ -26,7 +26,7 @@
         /// <typeparam name="TDto"></typeparam>
         /// <param name="whereExp"></param>
         /// <returns></returns>
-        Task<TDto?> FindAsync<TDto>(Expression<Func<TEntity, bool>>? whereExp) where TDto : class; 
+        Task<TDto?> FindAsync<TDto>(Expression<Func<TEntity, bool>>? whereExp) where TDto : class;
 
         /// <summary>
         /// 分页查询
@@ -37,6 +37,6 @@
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        Task<PageList<TItem>> FilterAsync<TItem, TFilter>(TFilter filter, int? pageIndex = 1, int? pageSize = 12) where TFilter : FilterBase;
+        Task<PageList<TItem>> FilterAsync<TItem, TFilter>(TFilter filter) where TFilter : FilterBase;
     }
 }

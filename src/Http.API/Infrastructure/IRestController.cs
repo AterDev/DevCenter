@@ -1,4 +1,4 @@
-﻿namespace Http.API.Interface
+﻿namespace Http.API.Infrastructure
 {
     public interface IRestController<TEntity, TAdd, TUpdate, TFilter, TItem>
         where TEntity : EntityBase
