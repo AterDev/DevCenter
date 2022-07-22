@@ -1,32 +1,46 @@
-using Http.Application.Manager;
-using Microsoft.AspNetCore.Authorization;
+using Http.API.Infrastructure;
+using Http.API.Interface;
 using Share.Models.UserDtos;
+using User = Core.Entities.User;
+
 namespace Http.API.Controllers;
 
 /// <summary>
 /// 系统用户
 /// </summary>
-public class UserController : RestApiBase<UserDataStore, User, UserAddDto, UserUpdateDto, UserFilterDto, UserItemDto>
+public class UserController :
+    RestControllerBase<UserManager, User>,
+    IRestController<User, UserAddDto, UserUpdateDto, UserFilterDto, UserItemDto>
 {
-    readonly UserManager userManager;
-
     public UserController(
         IUserContext user,
         ILogger<UserController> logger,
-        UserDataStore store,
-        UserManager userManager) : base(user, logger, store)
+        UserManager userManager
+        ) : base(userManager, user, logger)
     {
-        this.userManager = userManager;
     }
 
     /// <summary>
-    /// 分页筛选
+    /// 筛选
     /// </summary>
     /// <param name="filter"></param>
     /// <returns></returns>
-    public override async Task<ActionResult<PageList<UserItemDto>>> FilterAsync(UserFilterDto filter)
+    [HttpPost("filter")]
+    public async Task<ActionResult<PageList<UserItemDto>>> FilterAsync(UserFilterDto filter)
     {
-        return await base.FilterAsync(filter);
+        return await manager.FilterAsync<UserItemDto, UserFilterDto>(filter);
+    }
+
+    /// <summary>
+    /// 新增
+    /// </summary>
+    /// <param name="form"></param>
+    /// <returns></returns>
+    [HttpPost]
+    public async Task<ActionResult<User>> AddAsync(UserAddDto form)
+    {
+        var entity = form.MapTo<UserAddDto, User>();
+        return await manager.AddAsync(entity);
     }
 
     /// <summary>
@@ -36,41 +50,23 @@ public class UserController : RestApiBase<UserDataStore, User, UserAddDto, UserU
     [HttpGet]
     public async Task<ActionResult<UserShortDto?>> GetMyInfo()
     {
-        return await _store.Db.Where(u => u.Id == _user.UserId)
-            .Select<User, UserShortDto>()
-            .FirstOrDefaultAsync();
+        return await manager.FindAsync<UserShortDto>(u => u.Id == _user.UserId);
     }
 
     /// <summary>
-    /// 添加
-    /// </summary>
-    /// <param name="form"></param>
-    /// <returns></returns>
-    public override async Task<ActionResult<User>> AddAsync(UserAddDto form)
-    {
-        var user = new User();
-        user.Merge(form);
-        user.PasswordSalt = HashCrypto.BuildSalt();
-        user.PasswordHash = HashCrypto.GeneratePwd(form.Password ?? "123456", user.PasswordSalt);
-        if (form.RoleIds != null)
-        {
-            var roles = await _store._context.Roles.Where(r => form.RoleIds.Contains(r.Id)).ToListAsync();
-            user.Roles = roles;
-        }
-        return await _store.AddAsync(user);
-    }
-
-    /// <summary>
-    /// ⚠更新
+    /// 更新
     /// </summary>
     /// <param name="id"></param>
     /// <param name="form"></param>
     /// <returns></returns>
-    public override async Task<ActionResult<User?>> UpdateAsync([FromRoute] Guid id, UserUpdateDto form)
+    [HttpPut]
+    public async Task<ActionResult<User?>> UpdateAsync([FromRoute] Guid id, UserUpdateDto form)
     {
         if (_user.IsAdmin || _user.UserId == id)
         {
-            return await base.UpdateAsync(id, form);
+            var user = await manager.FindAsync<User>(u => u.Id == id);
+            if (user == null) return NotFound();
+            return await manager.UpdateAsync(id, user);
         }
         return Forbid();
     }
@@ -85,13 +81,20 @@ public class UserController : RestApiBase<UserDataStore, User, UserAddDto, UserU
     {
         if (_user.UserId != null)
         {
-            if (await _store.Exist(_user.UserId.Value))
-            {
-                return await _store.ChangePasswordAsync(_user.UserId.Value, newPassword);
-            }
+            var user = await manager.FindAsync<User>(u => u.Id == _user.UserId);
+            if (user != null)
+                return await manager.ChangePasswordAsync(user, newPassword);
+
             return NotFound("非法用户");
         }
         return Forbid();
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<User?>> GetDetailAsync([FromRoute] Guid id)
+    {
+        var res = await manager.FindAsync<User>(u => u.Id == id);
+        return (res == null) ? NotFound() : res;
     }
 
     /// <summary>
@@ -100,28 +103,10 @@ public class UserController : RestApiBase<UserDataStore, User, UserAddDto, UserU
     /// <param name="id"></param>
     /// <returns></returns>
     // [ApiExplorerSettings(IgnoreApi = true)]
-    public override async Task<ActionResult<bool>> DeleteAsync([FromRoute] Guid id)
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<User?>> DeleteAsync([FromRoute] Guid id)
     {
-        return await base.DeleteAsync(id);
+        return await manager.DeleteAsync(id);
     }
 
-    /// <summary>
-    /// ⚠ 批量删除
-    /// </summary>
-    /// <param name="ids"></param>
-    /// <returns></returns>
-    public override async Task<ActionResult<int>> BatchDeleteAsync(List<Guid> ids)
-    {
-        // 危险操作，请确保该方法的执行权限
-        //return await base.BatchDeleteAsync(ids);
-        return await Task.FromResult(0);
-    }
-
-
-    [HttpGet("test")]
-    [AllowAnonymous]
-    public async Task<ActionResult<User?>> TestAsync(Guid id)
-    {
-        return await userManager.FindAsync<User>(id);
-    }
 }

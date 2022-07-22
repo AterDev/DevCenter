@@ -24,18 +24,19 @@
         /// 查询对象
         /// </summary>
         /// <typeparam name="TDto"></typeparam>
-        /// <param name="id"></param>
+        /// <param name="whereExp"></param>
         /// <returns></returns>
-        Task<TDto?> FindAsync<TDto>(Guid id) where TDto : class;
+        Task<TDto?> FindAsync<TDto>(Expression<Func<TEntity, bool>>? whereExp) where TDto : class; 
+
         /// <summary>
         /// 分页查询
         /// </summary>
         /// <typeparam name="TItem"></typeparam>
-        /// <param name="whereExp"></param>
-        /// <param name="order"></param>
+        /// <typeparam name="TFilter"></typeparam>
+        /// <param name="filter"></param>
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        Task<PageList<TItem>> Filter<TItem>(Expression<Func<TEntity, bool>> whereExp, Dictionary<string, bool>? order, int pageIndex = 1, int pageSize = 12);
+        Task<PageList<TItem>> FilterAsync<TItem, TFilter>(TFilter filter, int? pageIndex = 1, int? pageSize = 12) where TFilter : FilterBase;
     }
 }

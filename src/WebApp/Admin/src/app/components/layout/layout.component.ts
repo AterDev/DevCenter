@@ -33,7 +33,8 @@ export class LayoutComponent implements OnInit {
         this.isLogin = this.auth.isLogin;
         this.isAdmin = this.auth.isAdmin;
         this.username = this.auth.userName;
-        this.getResources()
+        if (this.isLogin)
+          this.getResources()
       }
     });
 
