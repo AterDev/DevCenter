@@ -1,8 +1,8 @@
-﻿using Share.Models.UserDtos;
+using Share.Models.UserDtos;
 
-namespace Http.Application.Manager;
+namespace Http.Application.IManager;
 /// <summary>
-/// 定义用户实体业务接口规范
+/// 定义实体业务接口规范
 /// </summary>
 public interface IUserManager : IDomainManager<User, UserUpdateDto>
 {

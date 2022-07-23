@@ -17,3 +17,7 @@ global using Microsoft.Extensions.Hosting;
 global using Microsoft.Extensions.Logging;
 // global using Core.Identity;
 global using Share.Models;
+global using Http.Application.Manager;
+global using Http.Application.IManager;
+global using Http.Application.QueryStore;
+global using Http.Application.CommandStore;

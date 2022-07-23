@@ -1,10 +1,10 @@
-﻿namespace Http.Application.Implement;
+namespace Http.Application.Implement;
 /// <summary>
 /// 只读仓储
 /// </summary>
 /// <typeparam name="TContext"></typeparam>
 /// <typeparam name="TEntity"></typeparam>
-public class QueryDataStoreBase<TContext, TEntity> :
+public class QueryStoreBase<TContext, TEntity> :
     IDataStoreQuery<TEntity>, IDataStoreQueryExt<TEntity>
     where TContext : DbContext
     where TEntity : EntityBase
@@ -19,7 +19,7 @@ public class QueryDataStoreBase<TContext, TEntity> :
     public IQueryable<TEntity> _query;
 
 
-    public QueryDataStoreBase(TContext context, ILogger logger)
+    public QueryStoreBase(TContext context, ILogger logger)
     {
         _context = context;
         _logger = logger;
@@ -79,21 +79,24 @@ public class QueryDataStoreBase<TContext, TEntity> :
     }
 
     /// <summary>
-    /// 分页查询
+    /// 
     /// </summary>
     /// <typeparam name="TItem"></typeparam>
-    /// <param name="filter"></param>
+    /// <param name="whereExp"></param>
+    /// <param name="pageIndex"></param>
+    /// <param name="pageSize"></param>
     /// <returns></returns>
-    /// <exception cref="NotImplementedException"></exception>
     public virtual async Task<PageList<TItem>> PageListAsync<TItem>(Expression<Func<TEntity, bool>>? whereExp, int pageIndex = 1, int pageSize = 12)
     {
         if (pageIndex < 1) pageIndex = 1;
         if (pageSize < 0) pageSize = 12;
+        Expression<Func<TEntity, bool>> exp = e => true;
+        whereExp ??= exp;
 
         var count = _query.Count();
-        var data = await _query.ProjectTo<TItem>()
+        var data = await _query.Take(pageSize)
             .Skip((pageIndex - 1) * pageSize)
-            .Take(pageSize)
+            .ProjectTo<TItem>()
             .ToListAsync();
         ResetQuery();
         return new PageList<TItem>
@@ -113,9 +116,11 @@ public class QueryDataStoreBase<TContext, TEntity> :
     /// <param name="pageIndex"></param>
     /// <param name="pageSize"></param>
     /// <returns></returns>
-    public virtual async Task<PageList<TItem>> FilterAsync<TItem>(Expression<Func<TEntity, bool>> whereExp, Dictionary<string, bool>? order, int pageIndex = 1, int pageSize = 12)
+    public virtual async Task<PageList<TItem>> FilterAsync<TItem>(Expression<Func<TEntity, bool>> whereExp, Dictionary<string, bool>? order = null, int pageIndex = 1, int pageSize = 12)
     {
         if (pageIndex < 1) pageIndex = 1;
+        Expression<Func<TEntity, bool>> exp = e => true;
+        whereExp ??= exp;
         _query = _query.Where(whereExp);
 
         if (order != null)
@@ -123,12 +128,10 @@ public class QueryDataStoreBase<TContext, TEntity> :
             _query = _query.OrderBy(order);
         }
         var count = _query.Count();
-        var data = await _query
-            .ProjectTo<TItem>()
+        var data = await _query.Take(pageSize)
             .Skip((pageIndex - 1) * pageSize)
-            .Take(pageSize)
+            .ProjectTo<TItem>()
             .ToListAsync();
-
         ResetQuery();
         return new PageList<TItem>
         {
@@ -140,7 +143,7 @@ public class QueryDataStoreBase<TContext, TEntity> :
 }
 
 
-public class QuerySet<TEntity> : QueryDataStoreBase<QueryDbContext, TEntity>
+public class QuerySet<TEntity> : QueryStoreBase<QueryDbContext, TEntity>
     where TEntity : EntityBase
 {
     public QuerySet(QueryDbContext context, ILogger logger) : base(context, logger)

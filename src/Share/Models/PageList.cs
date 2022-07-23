@@ -1,4 +1,4 @@
-﻿namespace Core.Models;
+namespace Share.Models;
 public class PageList<T>
 {
     public int Count { get; set; } = 0;

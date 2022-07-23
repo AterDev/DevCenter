@@ -1,7 +1,7 @@
-﻿using EFCore.BulkExtensions;
+using EFCore.BulkExtensions;
 
 namespace Http.Application.Implement;
-public class CommandDataStoreBase<TContext, TEntity> : IDataStoreCommand<TEntity>, IDataStoreCommandExt<TEntity>
+public class CommandStoreBase<TContext, TEntity> : IDataStoreCommand<TEntity>, IDataStoreCommandExt<TEntity>
     where TContext : DbContext
     where TEntity : EntityBase
 {
@@ -11,10 +11,11 @@ public class CommandDataStoreBase<TContext, TEntity> : IDataStoreCommand<TEntity
     /// 当前实体DbSet
     /// </summary>
     protected readonly DbSet<TEntity> _db;
+    public bool EnableSoftDelete { get; set; } = true;
 
     //public TEntity CurrentEntity { get; }
 
-    public CommandDataStoreBase(TContext context, ILogger logger)
+    public CommandStoreBase(TContext context, ILogger logger)
     {
         _context = context;
         _logger = logger;
@@ -56,7 +57,6 @@ public class CommandDataStoreBase<TContext, TEntity> : IDataStoreCommand<TEntity
     /// <summary>
     /// 更新实体
     /// </summary>
-    /// <param name="id"></param>
     /// <param name="entity"></param>
     /// <returns></returns>
     public virtual TEntity Update(TEntity entity)
@@ -75,7 +75,14 @@ public class CommandDataStoreBase<TContext, TEntity> : IDataStoreCommand<TEntity
         var entity = await _db.FindAsync(id);
         if (entity != null)
         {
-            _db.Remove(entity!);
+            if (EnableSoftDelete)
+            {
+                entity.IsDeleted = true;
+            }
+            else
+            {
+                _db.Remove(entity!);
+            }
         }
         return entity;
     }
@@ -150,7 +157,7 @@ public class CommandDataStoreBase<TContext, TEntity> : IDataStoreCommand<TEntity
         return await _db.Where(whereExp).BatchDeleteAsync();
     }
 }
-public class CommandSet<TEntity> : CommandDataStoreBase<CommandDbContext, TEntity>
+public class CommandSet<TEntity> : CommandStoreBase<CommandDbContext, TEntity>
     where TEntity : EntityBase
 {
     public CommandSet(CommandDbContext context, ILogger logger) : base(context, logger)

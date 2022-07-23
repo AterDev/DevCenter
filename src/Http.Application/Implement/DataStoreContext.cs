@@ -3,6 +3,7 @@
 namespace Http.Application.Implement;
 public class DataStoreContext
 {
+    // UserQueryStore
     public QuerySet<User> UserQuery { get; init; }
     public CommandSet<User> UserCommand { get; init; }
 
@@ -15,8 +16,8 @@ public class DataStoreContext
     private readonly Dictionary<string, object> SetCache = new();
 
     public DataStoreContext(
-        UserQueryDataStore userQuery,
-        UserCommandDataStore userCommand,
+        UserQueryStore userQuery,
+        UserCommandStore userCommand,
         QueryDbContext queryDbContext,
         CommandDbContext commandDbContext
     )

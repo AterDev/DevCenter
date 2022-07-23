@@ -1,8 +1,7 @@
 using System.Security.Claims;
-
 using Microsoft.AspNetCore.Http;
 
-namespace Http.Application;
+namespace Http.Application.Implement;
 
 public class UserContext : IUserContext
 {
@@ -30,11 +29,16 @@ public class UserContext : IUserContext
         Username = FindClaim(ClaimTypes.Name)?.Value;
         Email = FindClaim(ClaimTypes.Email)?.Value;
         CurrentRole = FindClaim(ClaimTypes.Role)?.Value;
-        IsAdmin = CurrentRole != null && CurrentRole.ToLower() == "admin";
+        if (CurrentRole != null && CurrentRole.ToLower() == "admin")
+        {
+            IsAdmin = true;
+        }
+        else
+        {
+            IsAdmin = false;
+        }
     }
 
-    public Claim? FindClaim(string claimType)
-    {
-        return _httpContextAccessor?.HttpContext?.User?.FindFirst(claimType);
-    }
+    public Claim? FindClaim(string claimType) => _httpContextAccessor?.HttpContext?.User?.FindFirst(claimType);
+
 }
