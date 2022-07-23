@@ -5,7 +5,7 @@ namespace Http.Application.Implement;
 /// <typeparam name="TContext"></typeparam>
 /// <typeparam name="TEntity"></typeparam>
 public class QueryStoreBase<TContext, TEntity> :
-    IDataStoreQuery<TEntity>, IDataStoreQueryExt<TEntity>
+    IQueryStore<TEntity>, IQueryStoreExt<TEntity>
     where TContext : DbContext
     where TEntity : EntityBase
 {
@@ -79,7 +79,7 @@ public class QueryStoreBase<TContext, TEntity> :
     }
 
     /// <summary>
-    /// 
+    /// 分页筛选
     /// </summary>
     /// <typeparam name="TItem"></typeparam>
     /// <param name="whereExp"></param>
@@ -94,9 +94,10 @@ public class QueryStoreBase<TContext, TEntity> :
         whereExp ??= exp;
 
         var count = _query.Count();
-        var data = await _query.Take(pageSize)
-            .Skip((pageIndex - 1) * pageSize)
+        var data = await _query
             .ProjectTo<TItem>()
+            .Skip((pageIndex - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
         ResetQuery();
         return new PageList<TItem>
@@ -128,9 +129,10 @@ public class QueryStoreBase<TContext, TEntity> :
             _query = _query.OrderBy(order);
         }
         var count = _query.Count();
-        var data = await _query.Take(pageSize)
-            .Skip((pageIndex - 1) * pageSize)
+        var data = await _query
             .ProjectTo<TItem>()
+            .Skip((pageIndex - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
         ResetQuery();
         return new PageList<TItem>

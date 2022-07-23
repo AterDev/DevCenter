@@ -25,6 +25,8 @@ public static class StoreServicesExtensions
         services.AddScoped(typeof(RoleDataStore));
         services.AddScoped(typeof(RolePermissionDataStore));
         services.AddScoped(typeof(UserDataStore));
+        services.AddScoped(typeof(UserQueryStore));
+        services.AddScoped(typeof(UserCommandStore));
 
     }
 
