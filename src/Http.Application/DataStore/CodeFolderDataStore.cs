@@ -1,7 +1,8 @@
-using Http.Application.Implement;
+
+using Http.Application.Interface;
 using Share.Models.CodeFolderDtos;
 namespace Http.Application.DataStore;
-public class CodeFolderDataStore : DataStoreBase<ContextBase, CodeFolder, CodeFolderUpdateDto, CodeFolderFilterDto, CodeFolderItemDto>
+public class CodeFolderDataStore : Implement.DataStoreBase<ContextBase, CodeFolder, CodeFolderUpdateDto, CodeFolderFilterDto, CodeFolderItemDto>
 {
     public CodeFolderDataStore(ContextBase context, IUserContext userContext, ILogger<CodeFolderDataStore> logger) : base(context, userContext, logger)
     {
