@@ -1,3 +1,5 @@
+using System.Security.Claims;
+
 namespace Http.Application.Interface;
 
 /// <summary>

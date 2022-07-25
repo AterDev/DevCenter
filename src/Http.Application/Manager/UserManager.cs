@@ -1,3 +1,5 @@
+using Share.Models.UserDtos;
+
 namespace Http.Application.Manager;
 
 public class UserManager : DomainManagerBase<User, UserUpdateDto>, IUserManager

@@ -1,4 +1,6 @@
-﻿namespace Http.Application.Services;
+﻿using Microsoft.Extensions.Hosting;
+
+namespace Http.Application.Services;
 
 /// <summary>
 /// 文件服务

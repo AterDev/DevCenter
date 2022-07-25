@@ -1,4 +1,6 @@
-﻿namespace Http.Application.Services;
+﻿using Microsoft.Extensions.DependencyInjection;
+
+namespace Http.Application.Services;
 
 public class InitDataTask
 {

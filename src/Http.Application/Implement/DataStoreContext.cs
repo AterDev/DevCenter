@@ -4,8 +4,6 @@ public class DataStoreContext
     public QueryDbContext QueryContext { get; init; }
     public CommandDbContext CommandContext { get; init; }
 
-    public QuerySet<User> UserQuery { get; init; }
-    public CommandSet<User> UserCommand { get; init; }
 
 
     /// <summary>
@@ -14,8 +12,6 @@ public class DataStoreContext
     private readonly Dictionary<string, object> SetCache = new();
 
     public DataStoreContext(
-        UserQueryStore userQuery,
-        UserCommandStore userCommand,
 
         QueryDbContext queryDbContext,
         CommandDbContext commandDbContext
@@ -23,10 +19,6 @@ public class DataStoreContext
     {
         QueryContext = queryDbContext;
         CommandContext = commandDbContext;
-        UserQuery = userQuery;
-        AddCache(UserQuery);
-        UserCommand = userCommand;
-        AddCache(UserCommand);
 
     }
 
