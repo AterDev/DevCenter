@@ -1,6 +1,4 @@
-﻿using Core.Models;
-
-namespace Core.Entities;
+﻿namespace Core.Entities;
 /// <summary>
 /// 系统用户
 /// </summary>
@@ -43,7 +41,6 @@ public class User : EntityBase
     /// 密码重试次数
     /// </summary>
     public int RetryCount { get; set; } = 0;
-    public bool IsDeleted { get; set; } = false;
     /// <summary>
     /// 头像url
     /// </summary>

@@ -9,9 +9,8 @@ namespace Http.API.Infrastructure;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize("User")]
-public class RestControllerBase<TManager, TEntity, TUpdate> : ControllerBase
-     where TEntity : EntityBase
-     where TManager : DomainManagerBase<TEntity, TUpdate>
+public class RestControllerBase<TManager> : ControllerBase
+     where TManager : class
 {
     protected readonly TManager manager;
     protected readonly ILogger _logger;

@@ -1,11 +1,11 @@
-﻿namespace Http.Application.Implement;
+namespace Http.Application.Implement;
 /// <summary>
 /// 只读仓储
 /// </summary>
 /// <typeparam name="TContext"></typeparam>
 /// <typeparam name="TEntity"></typeparam>
-public class QueryDataStoreBase<TContext, TEntity> :
-    IDataStoreQuery<TEntity>, IDataStoreQueryExt<TEntity>
+public class QueryStoreBase<TContext, TEntity> :
+    IQueryStore<TEntity>, IQueryStoreExt<TEntity>
     where TContext : DbContext
     where TEntity : EntityBase
 {
@@ -19,7 +19,7 @@ public class QueryDataStoreBase<TContext, TEntity> :
     public IQueryable<TEntity> _query;
 
 
-    public QueryDataStoreBase(TContext context, ILogger logger)
+    public QueryStoreBase(TContext context, ILogger logger)
     {
         _context = context;
         _logger = logger;
@@ -137,10 +137,11 @@ public class QueryDataStoreBase<TContext, TEntity> :
             PageIndex = pageIndex
         };
     }
+
 }
 
 
-public class QuerySet<TEntity> : QueryDataStoreBase<QueryDbContext, TEntity>
+public class QuerySet<TEntity> : QueryStoreBase<QueryDbContext, TEntity>
     where TEntity : EntityBase
 {
     public QuerySet(QueryDbContext context, ILogger logger) : base(context, logger)

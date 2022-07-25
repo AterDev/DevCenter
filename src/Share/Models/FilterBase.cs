@@ -1,5 +1,5 @@
-﻿namespace Core.Models;
-public class FilterBase
+namespace Share.Models;
+public partial class FilterBase
 {
     public int? PageIndex { get; set; } = 1;
     public int? PageSize { get; set; } = 12;

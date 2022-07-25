@@ -8,14 +8,14 @@ namespace Http.API.Controllers;
 /// 系统用户
 /// </summary>
 public class UserController :
-    RestControllerBase<UserManager, User, UserUpdateDto>,
+    RestControllerBase<UserManager>,
     IRestController<User, UserAddDto, UserUpdateDto, UserFilterDto, UserItemDto>
 {
     public UserController(
         IUserContext user,
         ILogger<UserController> logger,
-        UserManager userManager
-        ) : base(userManager, user, logger)
+        UserManager manager
+        ) : base(manager, user, logger)
     {
     }
 

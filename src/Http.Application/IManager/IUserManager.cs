@@ -1,8 +1,8 @@
-﻿using Share.Models.UserDtos;
+using Share.Models.UserDtos;
 
-namespace Http.Application.Manager;
+namespace Http.Application.IManager;
 /// <summary>
-/// 定义用户实体业务接口规范
+/// 定义实体业务接口规范
 /// </summary>
 public interface IUserManager : IDomainManager<User, UserUpdateDto>
 {
@@ -14,11 +14,4 @@ public interface IUserManager : IDomainManager<User, UserUpdateDto>
     /// <returns></returns>
     Task<bool> ChangePasswordAsync(User user, string newPassword);
 
-    /// <summary>
-    /// 获取角色
-    /// </summary>
-    /// <param name="user"></param>
-    /// <param name="roleIds"></param>
-    /// <returns></returns>
-    Task<List<Role>> GetRolesAsync(List<Guid> roleIds);
 }

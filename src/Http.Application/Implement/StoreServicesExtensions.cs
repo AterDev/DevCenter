@@ -8,10 +8,7 @@ public static class StoreServicesExtensions
     public static void AddDataStore(this IServiceCollection services)
     {
         services.AddTransient<IUserContext, UserContext>();
-        services.AddScoped(typeof(UserQueryDataStore));
-        services.AddScoped(typeof(UserCommandDataStore));
         services.AddScoped(typeof(DataStoreContext));
-
         services.AddScoped(typeof(CodeFolderDataStore));
         services.AddScoped(typeof(CodeSnippetDataStore));
         services.AddScoped(typeof(ConfigOptionDataStore));
@@ -28,10 +25,14 @@ public static class StoreServicesExtensions
         services.AddScoped(typeof(RoleDataStore));
         services.AddScoped(typeof(RolePermissionDataStore));
         services.AddScoped(typeof(UserDataStore));
+        services.AddScoped(typeof(UserQueryStore));
+        services.AddScoped(typeof(UserCommandStore));
+
     }
 
     public static void AddManager(this IServiceCollection services)
     {
         services.AddScoped(typeof(UserManager));
+
     }
 }
