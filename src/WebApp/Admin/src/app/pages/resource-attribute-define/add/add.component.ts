@@ -10,52 +10,51 @@ import { Location } from '@angular/common';
 import { Status } from 'src/app/share/models/enum/status.model';
 
 @Component({
-    selector: 'app-add',
-    templateUrl: './add.component.html',
-    styleUrls: ['./add.component.css']
+  selector: 'app-add',
+  templateUrl: './add.component.html',
+  styleUrls: ['./add.component.css']
 })
 export class AddComponent implements OnInit {
-    Status = Status;
+  Status = Status;
 
-    formGroup!: FormGroup;
-    data = {} as ResourceAttributeDefineAddDto;
-    isLoading = true;
-    constructor(
-        
-        private service: ResourceAttributeDefineService,
-        public snb: MatSnackBar,
-        private router: Router,
-        private route: ActivatedRoute,
-        private location: Location
-        // public dialogRef: MatDialogRef<AddComponent>,
-        // @Inject(MAT_DIALOG_DATA) public dlgData: { id: '' }
-    ) {
+  formGroup!: FormGroup;
+  data = {} as ResourceAttributeDefineAddDto;
+  isLoading = true;
+  constructor(
 
-    }
+    private service: ResourceAttributeDefineService,
+    public snb: MatSnackBar,
+    private router: Router,
+    private route: ActivatedRoute,
+    private location: Location
+    // public dialogRef: MatDialogRef<AddComponent>,
+    // @Inject(MAT_DIALOG_DATA) public dlgData: { id: '' }
+  ) {
 
-    get displayName() { return this.formGroup.get('displayName'); }
-    get name() { return this.formGroup.get('name'); }
-    get isEnable() { return this.formGroup.get('isEnable'); }
-    get required() { return this.formGroup.get('required'); }
-    get sort() { return this.formGroup.get('sort'); }
-    get status() { return this.formGroup.get('status'); }
+  }
+
+  get displayName() { return this.formGroup.get('displayName'); }
+  get name() { return this.formGroup.get('name'); }
+  get isEnable() { return this.formGroup.get('isEnable'); }
+  get required() { return this.formGroup.get('required'); }
+  get sort() { return this.formGroup.get('sort'); }
+  get status() { return this.formGroup.get('status'); }
 
 
   ngOnInit(): void {
     this.initForm();
-    
-    // TODO:获取其他相关数据后设置加载状态
+
     this.isLoading = false;
   }
-  
+
   initForm(): void {
     this.formGroup = new FormGroup({
       displayName: new FormControl(null, [Validators.maxLength(50)]),
       name: new FormControl(null, [Validators.maxLength(60)]),
-      isEnable: new FormControl(null, []),
-      required: new FormControl(null, []),
-      sort: new FormControl(null, []),
-      status: new FormControl(null, []),
+      isEnable: new FormControl(true, []),
+      required: new FormControl(false, []),
+      sort: new FormControl(0, []),
+      status: new FormControl(Status.Default, []),
 
     });
   }
@@ -87,38 +86,23 @@ export class AddComponent implements OnInit {
             this.status?.errors?.['maxlength'] ? 'Status长度最多位' : '';
 
       default:
-    return '';
+        return '';
     }
   }
 
   add(): void {
-    if(this.formGroup.valid) {
-    const data = this.formGroup.value as ResourceAttributeDefineAddDto;
-    this.data = { ...data, ...this.data };
-    this.service.add(this.data)
+    if (this.formGroup.valid) {
+      const data = this.formGroup.value as ResourceAttributeDefineAddDto;
+      this.data = { ...data, ...this.data };
+      this.service.add(this.data)
         .subscribe(res => {
-            this.snb.open('添加成功');
-            // this.dialogRef.close(res);
-            // this.router.navigate(['../index'],{relativeTo: this.route});
+          this.snb.open('添加成功');
+          // this.dialogRef.close(res);
+          this.router.navigate(['../index'], { relativeTo: this.route });
         });
     }
   }
   back(): void {
     this.location.back();
-  }
-  upload(event: any, type ?: string): void {
-    const files = event.target.files;
-    if(files[0]) {
-      const formdata = new FormData();
-      formdata.append('file', files[0]);
-    /*    this.service.uploadFile('agent-info' + type, formdata)
-          .subscribe(res => {
-            this.data.logoUrl = res.url;
-          }, error => {
-            this.snb.open(error?.detail);
-          }); */
-    } else {
-
-    }
   }
 }

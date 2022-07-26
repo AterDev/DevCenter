@@ -24,7 +24,7 @@ public class ResourceAttributeDefineController :
     [HttpPost("filter")]
     public async Task<ActionResult<PageList<ResourceAttributeDefineItemDto>>> FilterAsync(ResourceAttributeDefineFilterDto filter)
     {
-        return await manager.FilterAsync<ResourceAttributeDefineItemDto, ResourceAttributeDefineFilterDto>(filter);
+        return await manager.FilterAsync<ResourceAttributeDefineItemDto>(filter);
     }
 
     /// <summary>

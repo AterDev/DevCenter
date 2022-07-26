@@ -27,7 +27,7 @@ public class UserController :
     [HttpPost("filter")]
     public async Task<ActionResult<PageList<UserItemDto>>> FilterAsync(UserFilterDto filter)
     {
-        return await manager.FilterAsync<UserItemDto, UserFilterDto>(filter);
+        return await manager.FilterAsync<UserItemDto>(filter);
     }
 
     /// <summary>
