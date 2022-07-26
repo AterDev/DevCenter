@@ -1,7 +1,7 @@
 import { DocumentItemDto } from '../document/document-item-dto.model';
-export interface PageResultOfDocumentItemDto {
+export interface PageListOfDocumentItemDto {
   count: number;
-  data?: DocumentItemDto[] | null;
+  data?: DocumentItemDto[];
   pageIndex: number;
 
 }

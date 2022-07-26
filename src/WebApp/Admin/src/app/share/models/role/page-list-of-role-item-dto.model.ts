@@ -1,7 +1,7 @@
 import { RoleItemDto } from '../role/role-item-dto.model';
-export interface PageResultOfRoleItemDto {
+export interface PageListOfRoleItemDto {
   count: number;
-  data?: RoleItemDto[] | null;
+  data?: RoleItemDto[];
   pageIndex: number;
 
 }

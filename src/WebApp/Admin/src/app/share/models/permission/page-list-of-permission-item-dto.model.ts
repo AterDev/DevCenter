@@ -1,7 +1,7 @@
 import { PermissionItemDto } from '../permission/permission-item-dto.model';
-export interface PageResultOfPermissionItemDto {
+export interface PageListOfPermissionItemDto {
   count: number;
-  data?: PermissionItemDto[] | null;
+  data?: PermissionItemDto[];
   pageIndex: number;
 
 }

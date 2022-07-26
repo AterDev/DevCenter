@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { ResourceAttributeFilterDto } from '../models/resource-attribute/resource-attribute-filter-dto.model';
 import { ResourceAttributeAddDto } from '../models/resource-attribute/resource-attribute-add-dto.model';
 import { ResourceAttributeUpdateDto } from '../models/resource-attribute/resource-attribute-update-dto.model';
-import { PageResultOfResourceAttributeItemDto } from '../models/resource-attribute/page-result-of-resource-attribute-item-dto.model';
+import { PageListOfResourceAttributeItemDto } from '../models/resource-attribute/page-list-of-resource-attribute-item-dto.model';
 import { ResourceAttribute } from '../models/resource-attribute/resource-attribute.model';
 
 /**
@@ -16,9 +16,9 @@ export class ResourceAttributeService extends BaseService {
    * 分页筛选
    * @param data ResourceAttributeFilterDto
    */
-  filter(data: ResourceAttributeFilterDto): Observable<PageResultOfResourceAttributeItemDto> {
+  filter(data: ResourceAttributeFilterDto): Observable<PageListOfResourceAttributeItemDto> {
     const url = `/api/ResourceAttribute/filter`;
-    return this.request<PageResultOfResourceAttributeItemDto>('post', url, data);
+    return this.request<PageListOfResourceAttributeItemDto>('post', url, data);
   }
 
   /**

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { ResourceGroupFilterDto } from '../models/resource-group/resource-group-filter-dto.model';
 import { ResourceGroupAddDto } from '../models/resource-group/resource-group-add-dto.model';
 import { ResourceGroupUpdateDto } from '../models/resource-group/resource-group-update-dto.model';
-import { PageResultOfResourceGroupItemDto } from '../models/resource-group/page-result-of-resource-group-item-dto.model';
+import { PageListOfResourceGroupItemDto } from '../models/resource-group/page-list-of-resource-group-item-dto.model';
 import { ResourceGroupRoleDto } from '../models/resource-group/resource-group-role-dto.model';
 import { ResourceGroup } from '../models/resource-group/resource-group.model';
 
@@ -17,9 +17,9 @@ export class ResourceGroupService extends BaseService {
    * 分页筛选
    * @param data ResourceGroupFilterDto
    */
-  filter(data: ResourceGroupFilterDto): Observable<PageResultOfResourceGroupItemDto> {
+  filter(data: ResourceGroupFilterDto): Observable<PageListOfResourceGroupItemDto> {
     const url = `/api/ResourceGroup/filter`;
-    return this.request<PageResultOfResourceGroupItemDto>('post', url, data);
+    return this.request<PageListOfResourceGroupItemDto>('post', url, data);
   }
 
   /**

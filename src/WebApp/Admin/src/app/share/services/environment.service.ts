@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { EnvironmentFilterDto } from '../models/environment/environment-filter-dto.model';
 import { EnvironmentAddDto } from '../models/environment/environment-add-dto.model';
 import { EnvironmentUpdateDto } from '../models/environment/environment-update-dto.model';
-import { PageResultOfEnvironmentItemDto } from '../models/environment/page-result-of-environment-item-dto.model';
+import { PageListOfEnvironmentItemDto } from '../models/environment/page-list-of-environment-item-dto.model';
 import { Environment } from '../models/environment/environment.model';
 
 /**
@@ -16,9 +16,9 @@ export class EnvironmentService extends BaseService {
    * 分页筛选
    * @param data EnvironmentFilterDto
    */
-  filter(data: EnvironmentFilterDto): Observable<PageResultOfEnvironmentItemDto> {
+  filter(data: EnvironmentFilterDto): Observable<PageListOfEnvironmentItemDto> {
     const url = `/api/Environment/filter`;
-    return this.request<PageResultOfEnvironmentItemDto>('post', url, data);
+    return this.request<PageListOfEnvironmentItemDto>('post', url, data);
   }
 
   /**

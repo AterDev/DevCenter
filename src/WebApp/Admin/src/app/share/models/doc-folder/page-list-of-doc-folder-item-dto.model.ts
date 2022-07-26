@@ -1,7 +1,7 @@
 import { DocFolderItemDto } from '../doc-folder/doc-folder-item-dto.model';
-export interface PageResultOfDocFolderItemDto {
+export interface PageListOfDocFolderItemDto {
   count: number;
-  data?: DocFolderItemDto[] | null;
+  data?: DocFolderItemDto[];
   pageIndex: number;
 
 }

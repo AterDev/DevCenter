@@ -1,7 +1,7 @@
 import { ResourceTagsItemDto } from '../resource-tags/resource-tags-item-dto.model';
-export interface PageResultOfResourceTagsItemDto {
+export interface PageListOfResourceTagsItemDto {
   count: number;
-  data?: ResourceTagsItemDto[] | null;
+  data?: ResourceTagsItemDto[];
   pageIndex: number;
 
 }

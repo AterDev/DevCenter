@@ -16,7 +16,6 @@ export interface User extends EntityBase {
   accessFailedCount: number;
   lastLoginTime?: Date | null;
   retryCount: number;
-  isDeleted: boolean;
   avatar?: string | null;
   roles?: Role[] | null;
 

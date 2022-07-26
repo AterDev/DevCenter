@@ -1,7 +1,7 @@
 import { CodeFolderItemDto } from '../code-folder/code-folder-item-dto.model';
-export interface PageResultOfCodeFolderItemDto {
+export interface PageListOfCodeFolderItemDto {
   count: number;
-  data?: CodeFolderItemDto[] | null;
+  data?: CodeFolderItemDto[];
   pageIndex: number;
 
 }

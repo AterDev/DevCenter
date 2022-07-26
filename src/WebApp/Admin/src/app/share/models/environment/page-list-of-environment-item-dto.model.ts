@@ -1,7 +1,7 @@
 import { EnvironmentItemDto } from '../environment/environment-item-dto.model';
-export interface PageResultOfEnvironmentItemDto {
+export interface PageListOfEnvironmentItemDto {
   count: number;
-  data?: EnvironmentItemDto[] | null;
+  data?: EnvironmentItemDto[];
   pageIndex: number;
 
 }

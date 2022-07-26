@@ -5,7 +5,7 @@ import { RoleFilterDto } from '../models/role/role-filter-dto.model';
 import { RoleAddDto } from '../models/role/role-add-dto.model';
 import { RoleUpdateDto } from '../models/role/role-update-dto.model';
 import { RoleResourceDto } from '../models/role/role-resource-dto.model';
-import { PageResultOfRoleItemDto } from '../models/role/page-result-of-role-item-dto.model';
+import { PageListOfRoleItemDto } from '../models/role/page-list-of-role-item-dto.model';
 import { Role } from '../models/role/role.model';
 
 /**
@@ -17,9 +17,9 @@ export class RoleService extends BaseService {
    * 分页筛选
    * @param data RoleFilterDto
    */
-  filter(data: RoleFilterDto): Observable<PageResultOfRoleItemDto> {
+  filter(data: RoleFilterDto): Observable<PageListOfRoleItemDto> {
     const url = `/api/Role/filter`;
-    return this.request<PageResultOfRoleItemDto>('post', url, data);
+    return this.request<PageListOfRoleItemDto>('post', url, data);
   }
 
   /**

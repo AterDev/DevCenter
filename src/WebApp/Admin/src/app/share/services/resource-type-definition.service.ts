@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { ResourceTypeDefinitionFilterDto } from '../models/resource-type-definition/resource-type-definition-filter-dto.model';
 import { ResourceTypeDefinitionAddDto } from '../models/resource-type-definition/resource-type-definition-add-dto.model';
 import { ResourceTypeDefinitionUpdateDto } from '../models/resource-type-definition/resource-type-definition-update-dto.model';
-import { PageResultOfResourceTypeDefinitionItemDto } from '../models/resource-type-definition/page-result-of-resource-type-definition-item-dto.model';
+import { PageListOfResourceTypeDefinitionItemDto } from '../models/resource-type-definition/page-list-of-resource-type-definition-item-dto.model';
 import { ResourceTypeDefinition } from '../models/resource-type-definition/resource-type-definition.model';
 
 /**
@@ -16,9 +16,9 @@ export class ResourceTypeDefinitionService extends BaseService {
    * 分页筛选
    * @param data ResourceTypeDefinitionFilterDto
    */
-  filter(data: ResourceTypeDefinitionFilterDto): Observable<PageResultOfResourceTypeDefinitionItemDto> {
+  filter(data: ResourceTypeDefinitionFilterDto): Observable<PageListOfResourceTypeDefinitionItemDto> {
     const url = `/api/ResourceTypeDefinition/filter`;
-    return this.request<PageResultOfResourceTypeDefinitionItemDto>('post', url, data);
+    return this.request<PageListOfResourceTypeDefinitionItemDto>('post', url, data);
   }
 
   /**

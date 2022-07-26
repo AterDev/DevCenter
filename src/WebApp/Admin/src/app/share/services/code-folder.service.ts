@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { CodeFolderFilterDto } from '../models/code-folder/code-folder-filter-dto.model';
 import { CodeFolderAddDto } from '../models/code-folder/code-folder-add-dto.model';
 import { CodeFolderUpdateDto } from '../models/code-folder/code-folder-update-dto.model';
-import { PageResultOfCodeFolderItemDto } from '../models/code-folder/page-result-of-code-folder-item-dto.model';
+import { PageListOfCodeFolderItemDto } from '../models/code-folder/page-list-of-code-folder-item-dto.model';
 import { CodeFolder } from '../models/code-folder/code-folder.model';
 
 /**
@@ -16,9 +16,9 @@ export class CodeFolderService extends BaseService {
    * 分页筛选
    * @param data CodeFolderFilterDto
    */
-  filter(data: CodeFolderFilterDto): Observable<PageResultOfCodeFolderItemDto> {
+  filter(data: CodeFolderFilterDto): Observable<PageListOfCodeFolderItemDto> {
     const url = `/api/CodeFolder/filter`;
-    return this.request<PageResultOfCodeFolderItemDto>('post', url, data);
+    return this.request<PageListOfCodeFolderItemDto>('post', url, data);
   }
 
   /**

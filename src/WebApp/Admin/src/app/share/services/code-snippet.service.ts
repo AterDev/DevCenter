@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { CodeSnippetFilterDto } from '../models/code-snippet/code-snippet-filter-dto.model';
 import { CodeSnippetAddDto } from '../models/code-snippet/code-snippet-add-dto.model';
 import { CodeSnippetUpdateDto } from '../models/code-snippet/code-snippet-update-dto.model';
-import { PageResultOfCodeSnippetItemDto } from '../models/code-snippet/page-result-of-code-snippet-item-dto.model';
+import { PageListOfCodeSnippetItemDto } from '../models/code-snippet/page-list-of-code-snippet-item-dto.model';
 import { CodeSnippet } from '../models/code-snippet/code-snippet.model';
 
 /**
@@ -16,9 +16,9 @@ export class CodeSnippetService extends BaseService {
    * 分页筛选
    * @param data CodeSnippetFilterDto
    */
-  filter(data: CodeSnippetFilterDto): Observable<PageResultOfCodeSnippetItemDto> {
+  filter(data: CodeSnippetFilterDto): Observable<PageListOfCodeSnippetItemDto> {
     const url = `/api/CodeSnippet/filter`;
-    return this.request<PageResultOfCodeSnippetItemDto>('post', url, data);
+    return this.request<PageListOfCodeSnippetItemDto>('post', url, data);
   }
 
   /**

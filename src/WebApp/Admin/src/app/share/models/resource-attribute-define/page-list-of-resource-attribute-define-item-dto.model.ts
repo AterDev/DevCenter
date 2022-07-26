@@ -1,7 +1,7 @@
 import { ResourceAttributeDefineItemDto } from '../resource-attribute-define/resource-attribute-define-item-dto.model';
-export interface PageResultOfResourceAttributeDefineItemDto {
+export interface PageListOfResourceAttributeDefineItemDto {
   count: number;
-  data?: ResourceAttributeDefineItemDto[] | null;
+  data?: ResourceAttributeDefineItemDto[];
   pageIndex: number;
 
 }

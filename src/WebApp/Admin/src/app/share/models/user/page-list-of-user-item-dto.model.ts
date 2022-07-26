@@ -1,7 +1,7 @@
 import { UserItemDto } from '../user/user-item-dto.model';
-export interface PageResultOfUserItemDto {
+export interface PageListOfUserItemDto {
   count: number;
-  data?: UserItemDto[] | null;
+  data?: UserItemDto[];
   pageIndex: number;
 
 }

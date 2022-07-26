@@ -1,7 +1,7 @@
 import { ResourceTypeDefinitionItemDto } from '../resource-type-definition/resource-type-definition-item-dto.model';
-export interface PageResultOfResourceTypeDefinitionItemDto {
+export interface PageListOfResourceTypeDefinitionItemDto {
   count: number;
-  data?: ResourceTypeDefinitionItemDto[] | null;
+  data?: ResourceTypeDefinitionItemDto[];
   pageIndex: number;
 
 }

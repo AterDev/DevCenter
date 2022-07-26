@@ -1,7 +1,7 @@
 import { CodeSnippetItemDto } from '../code-snippet/code-snippet-item-dto.model';
-export interface PageResultOfCodeSnippetItemDto {
+export interface PageListOfCodeSnippetItemDto {
   count: number;
-  data?: CodeSnippetItemDto[] | null;
+  data?: CodeSnippetItemDto[];
   pageIndex: number;
 
 }

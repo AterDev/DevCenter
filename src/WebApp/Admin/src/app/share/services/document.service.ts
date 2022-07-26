@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { DocumentFilterDto } from '../models/document/document-filter-dto.model';
 import { DocumentAddDto } from '../models/document/document-add-dto.model';
 import { DocumentUpdateDto } from '../models/document/document-update-dto.model';
-import { PageResultOfDocumentItemDto } from '../models/document/page-result-of-document-item-dto.model';
+import { PageListOfDocumentItemDto } from '../models/document/page-list-of-document-item-dto.model';
 import { Document } from '../models/document/document.model';
 
 /**
@@ -16,9 +16,9 @@ export class DocumentService extends BaseService {
    * 分页筛选
    * @param data DocumentFilterDto
    */
-  filter(data: DocumentFilterDto): Observable<PageResultOfDocumentItemDto> {
+  filter(data: DocumentFilterDto): Observable<PageListOfDocumentItemDto> {
     const url = `/api/Document/filter`;
-    return this.request<PageResultOfDocumentItemDto>('post', url, data);
+    return this.request<PageListOfDocumentItemDto>('post', url, data);
   }
 
   /**

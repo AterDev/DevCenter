@@ -1,7 +1,7 @@
 import { ResourceGroupItemDto } from '../resource-group/resource-group-item-dto.model';
-export interface PageResultOfResourceGroupItemDto {
+export interface PageListOfResourceGroupItemDto {
   count: number;
-  data?: ResourceGroupItemDto[] | null;
+  data?: ResourceGroupItemDto[];
   pageIndex: number;
 
 }

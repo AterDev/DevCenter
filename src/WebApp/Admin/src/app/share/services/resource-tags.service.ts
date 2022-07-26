@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { ResourceTagsFilterDto } from '../models/resource-tags/resource-tags-filter-dto.model';
 import { ResourceTagsAddDto } from '../models/resource-tags/resource-tags-add-dto.model';
 import { ResourceTagsUpdateDto } from '../models/resource-tags/resource-tags-update-dto.model';
-import { PageResultOfResourceTagsItemDto } from '../models/resource-tags/page-result-of-resource-tags-item-dto.model';
+import { PageListOfResourceTagsItemDto } from '../models/resource-tags/page-list-of-resource-tags-item-dto.model';
 import { ResourceTags } from '../models/resource-tags/resource-tags.model';
 
 /**
@@ -16,9 +16,9 @@ export class ResourceTagsService extends BaseService {
    * 分页筛选
    * @param data ResourceTagsFilterDto
    */
-  filter(data: ResourceTagsFilterDto): Observable<PageResultOfResourceTagsItemDto> {
+  filter(data: ResourceTagsFilterDto): Observable<PageListOfResourceTagsItemDto> {
     const url = `/api/ResourceTags/filter`;
-    return this.request<PageResultOfResourceTagsItemDto>('post', url, data);
+    return this.request<PageListOfResourceTagsItemDto>('post', url, data);
   }
 
   /**

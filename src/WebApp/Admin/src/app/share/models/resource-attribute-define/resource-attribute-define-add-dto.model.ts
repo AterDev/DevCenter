@@ -1,4 +1,3 @@
-import { Status } from '../enum/status.model';
 /**
  * 资源属性定义
  */
@@ -14,10 +13,5 @@ export interface ResourceAttributeDefineAddDto {
    * 排序 
    */
   sort: number;
-  /**
-   * 状态
-   */
-  status?: Status;
-  typeId: string;
 
 }

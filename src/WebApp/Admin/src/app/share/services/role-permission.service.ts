@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { RolePermissionFilterDto } from '../models/role-permission/role-permission-filter-dto.model';
 import { RolePermissionAddDto } from '../models/role-permission/role-permission-add-dto.model';
 import { RolePermissionUpdateDto } from '../models/role-permission/role-permission-update-dto.model';
-import { PageResultOfRolePermissionItemDto } from '../models/role-permission/page-result-of-role-permission-item-dto.model';
+import { PageListOfRolePermissionItemDto } from '../models/role-permission/page-list-of-role-permission-item-dto.model';
 import { RolePermission } from '../models/role-permission/role-permission.model';
 
 /**
@@ -16,9 +16,9 @@ export class RolePermissionService extends BaseService {
    * 分页筛选
    * @param data RolePermissionFilterDto
    */
-  filter(data: RolePermissionFilterDto): Observable<PageResultOfRolePermissionItemDto> {
+  filter(data: RolePermissionFilterDto): Observable<PageListOfRolePermissionItemDto> {
     const url = `/api/RolePermission/filter`;
-    return this.request<PageResultOfRolePermissionItemDto>('post', url, data);
+    return this.request<PageListOfRolePermissionItemDto>('post', url, data);
   }
 
   /**

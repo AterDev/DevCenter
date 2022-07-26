@@ -1,7 +1,7 @@
 import { ConfigOptionItemDto } from '../config-option/config-option-item-dto.model';
-export interface PageResultOfConfigOptionItemDto {
+export interface PageListOfConfigOptionItemDto {
   count: number;
-  data?: ConfigOptionItemDto[] | null;
+  data?: ConfigOptionItemDto[];
   pageIndex: number;
 
 }

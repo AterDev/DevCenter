@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { DocFolderFilterDto } from '../models/doc-folder/doc-folder-filter-dto.model';
 import { DocFolderAddDto } from '../models/doc-folder/doc-folder-add-dto.model';
 import { DocFolderUpdateDto } from '../models/doc-folder/doc-folder-update-dto.model';
-import { PageResultOfDocFolderItemDto } from '../models/doc-folder/page-result-of-doc-folder-item-dto.model';
+import { PageListOfDocFolderItemDto } from '../models/doc-folder/page-list-of-doc-folder-item-dto.model';
 import { DocFolder } from '../models/doc-folder/doc-folder.model';
 
 /**
@@ -16,9 +16,9 @@ export class DocFolderService extends BaseService {
    * 分页筛选
    * @param data DocFolderFilterDto
    */
-  filter(data: DocFolderFilterDto): Observable<PageResultOfDocFolderItemDto> {
+  filter(data: DocFolderFilterDto): Observable<PageListOfDocFolderItemDto> {
     const url = `/api/DocFolder/filter`;
-    return this.request<PageResultOfDocFolderItemDto>('post', url, data);
+    return this.request<PageListOfDocFolderItemDto>('post', url, data);
   }
 
   /**

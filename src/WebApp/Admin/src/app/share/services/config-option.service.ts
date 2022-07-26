@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { ConfigOptionFilterDto } from '../models/config-option/config-option-filter-dto.model';
 import { ConfigOptionAddDto } from '../models/config-option/config-option-add-dto.model';
 import { ConfigOptionUpdateDto } from '../models/config-option/config-option-update-dto.model';
-import { PageResultOfConfigOptionItemDto } from '../models/config-option/page-result-of-config-option-item-dto.model';
+import { PageListOfConfigOptionItemDto } from '../models/config-option/page-list-of-config-option-item-dto.model';
 import { ConfigOption } from '../models/config-option/config-option.model';
 
 /**
@@ -16,9 +16,9 @@ export class ConfigOptionService extends BaseService {
    * 分页筛选
    * @param data ConfigOptionFilterDto
    */
-  filter(data: ConfigOptionFilterDto): Observable<PageResultOfConfigOptionItemDto> {
+  filter(data: ConfigOptionFilterDto): Observable<PageListOfConfigOptionItemDto> {
     const url = `/api/ConfigOption/filter`;
-    return this.request<PageResultOfConfigOptionItemDto>('post', url, data);
+    return this.request<PageListOfConfigOptionItemDto>('post', url, data);
   }
 
   /**
