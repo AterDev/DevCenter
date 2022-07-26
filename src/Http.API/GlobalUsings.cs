@@ -14,3 +14,9 @@ global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.DependencyInjection;
 // global using Core.Identity;
 global using Share.Models;
+
+
+global using Microsoft.AspNetCore.Authorization;
+global using Share;
+global using Http.API.Controllers;
+global using Http.Application;

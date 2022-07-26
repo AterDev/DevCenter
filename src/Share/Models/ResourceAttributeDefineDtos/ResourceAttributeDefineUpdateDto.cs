@@ -21,6 +21,6 @@ public class ResourceAttributeDefineUpdateDto
     /// 状态
     /// </summary>
     public Status? Status { get; set; }
-    public Guid? TypeId { get; set; } = default!;
+    public Guid? TypeId { get; set; }
 
 }

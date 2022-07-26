@@ -25,13 +25,16 @@ public static class StoreServicesExtensions
         services.AddScoped(typeof(RoleDataStore));
         services.AddScoped(typeof(RolePermissionDataStore));
         services.AddScoped(typeof(UserDataStore));
+        services.AddScoped(typeof(ResourceAttributeDefineQueryStore));
         services.AddScoped(typeof(UserQueryStore));
+        services.AddScoped(typeof(ResourceAttributeDefineCommandStore));
         services.AddScoped(typeof(UserCommandStore));
 
     }
 
     public static void AddManager(this IServiceCollection services)
     {
+        services.AddScoped(typeof(ResourceAttributeDefineManager));
         services.AddScoped(typeof(UserManager));
 
     }

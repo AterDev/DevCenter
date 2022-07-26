@@ -4,6 +4,10 @@ public class DataStoreContext
     public QueryDbContext QueryContext { get; init; }
     public CommandDbContext CommandContext { get; init; }
 
+    public QuerySet<ResourceAttributeDefine> ResourceAttributeDefineQuery { get; init; }
+    public QuerySet<User> UserQuery { get; init; }
+    public CommandSet<ResourceAttributeDefine> ResourceAttributeDefineCommand { get; init; }
+    public CommandSet<User> UserCommand { get; init; }
 
 
     /// <summary>
@@ -12,6 +16,10 @@ public class DataStoreContext
     private readonly Dictionary<string, object> SetCache = new();
 
     public DataStoreContext(
+        ResourceAttributeDefineQueryStore resourceAttributeDefineQuery,
+        UserQueryStore userQuery,
+        ResourceAttributeDefineCommandStore resourceAttributeDefineCommand,
+        UserCommandStore userCommand,
 
         QueryDbContext queryDbContext,
         CommandDbContext commandDbContext
@@ -19,6 +27,14 @@ public class DataStoreContext
     {
         QueryContext = queryDbContext;
         CommandContext = commandDbContext;
+        ResourceAttributeDefineQuery = resourceAttributeDefineQuery;
+        AddCache(ResourceAttributeDefineQuery);
+        UserQuery = userQuery;
+        AddCache(UserQuery);
+        ResourceAttributeDefineCommand = resourceAttributeDefineCommand;
+        AddCache(ResourceAttributeDefineCommand);
+        UserCommand = userCommand;
+        AddCache(UserCommand);
 
     }
 

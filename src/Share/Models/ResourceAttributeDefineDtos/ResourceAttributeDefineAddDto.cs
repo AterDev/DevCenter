@@ -12,15 +12,11 @@ public class ResourceAttributeDefineAddDto
     /// <summary>
     /// 是否必须
     /// </summary>
-    public bool Required { get; set; } = default!;
+    public bool Required { get; set; } = false;
     /// <summary>
     /// 排序 
     /// </summary>
-    public short Sort { get; set; } = default!;
-    /// <summary>
-    /// 状态
-    /// </summary>
-    public Status Status { get; set; } = default!;
-    public Guid TypeId { get; set; } = default!;
+    public short Sort { get; set; } = 0;
+
 
 }

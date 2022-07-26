@@ -1,5 +1,4 @@
 using System.Text;
-using Http.Application.Implement;
 using Http.Application.Services.Webhook;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -159,7 +158,7 @@ app.UseExceptionHandler(handler =>
         var result = new
         {
             Title = "程序内部错误:" + exception?.Message,
-            Detail = exception?.Source,
+            Detail = exception?.Source + exception?.StackTrace,
             Status = 500,
             TraceId = context.TraceIdentifier
         };
