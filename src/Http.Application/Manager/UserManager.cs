@@ -33,10 +33,10 @@ public class UserManager : DomainManagerBase<User, UserUpdateDto, UserFilterDto>
         return user;
     }
 
-    public override Task<PageList<TItem>> FilterAsync<TItem>(UserFilterDto filter)
+    public override async Task<PageList<TItem>> FilterAsync<TItem>(UserFilterDto filter)
     {
         // TODO:根据实际业务构建筛选条件
-        return Query.FilterAsync<TItem>(GetQueryable(), filter.OrderBy, filter.PageIndex ?? 1, filter.PageSize ?? 12);
+        return await base.FilterAsync<TItem>(filter);
     }
 
     public async Task<List<Role>> GetRolesAsync(List<Guid> roleIds)
