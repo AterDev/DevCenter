@@ -1,3 +1,20 @@
+<!-- 实用工具 -->
+<div class="container justify-content-center g-0">
+  <div class="row mt-2">
+    <h4>在线工具</h4>
+  </div>
+  <div class="col-auto text-center website-block p-1" (click)="openTool('generateCI')">
+    <div class="d-block icon m-auto">
+      CI
+    </div>
+    <div class="mt-1">
+      <span>
+        CI yml生成
+      </span>
+    </div>
+  </div>
+</div>
+
 <div class="container justify-content-center g-0">
   <div *ngFor="let group of groups" class="col-12">
     <!-- group标题 -->
@@ -12,8 +29,7 @@
       <div *ngFor="let resource of group.resource" class="col-auto text-center website-block p-1"
         (click)="openWebsite(resource)" [matTooltip]="resource.description!">
         <ng-container *ngIf="getResourceUrl(resource.attributes!)!=null; else elseTemplate">
-          <img [src]="getResourceUrl(resource.attributes!)" alt="" width="36" height="36"
-            onerror="javascript:this.src='http://www.genars.net/favicon.ico';">
+          <img [src]="getResourceUrl(resource.attributes!)" alt="" width="36" height="36">
         </ng-container>
         <ng-template #elseTemplate>
           <div class="d-block icon m-auto">

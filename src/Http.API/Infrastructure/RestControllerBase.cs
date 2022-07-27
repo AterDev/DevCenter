@@ -3,12 +3,9 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 namespace Http.API.Infrastructure;
 
 /// <summary>
-/// http api 基类，重写ControllerBase中的方法
+/// 带Manager的控制器
 /// </summary>
-[ApiController]
-[Route("api/[controller]")]
-[Authorize("User")]
-public class RestControllerBase<TManager> : ControllerBase
+public class RestControllerBase<TManager> : RestControllerBase
      where TManager : class
 {
     protected readonly TManager manager;
@@ -24,6 +21,16 @@ public class RestControllerBase<TManager> : ControllerBase
         _user = user;
         _logger = logger;
     }
+
+}
+/// <summary>
+/// http api 基类，重写ControllerBase中的方法
+/// </summary>
+[ApiController]
+[Route("api/[controller]")]
+[Authorize("User")]
+public class RestControllerBase : ControllerBase
+{
 
     /// <summary>
     /// 404返回格式处理
@@ -60,5 +67,4 @@ public class RestControllerBase<TManager> : ControllerBase
         };
         return base.Conflict(res);
     }
-
 }

@@ -11,6 +11,7 @@ import { ResourceGroupFilterDto } from 'src/app/share/models/resource-group/reso
 import { NavigationType } from 'src/app/share/models/enum/navigation-type.model';
 import { ResourceAttribute } from 'src/app/share/models/resource-attribute/resource-attribute.model';
 import { Resource } from 'src/app/share/models/resource/resource.model';
+import { ResourceService } from '../resource.service';
 
 @Component({
   selector: 'app-index',
@@ -29,6 +30,7 @@ export class IndexComponent implements OnInit {
     private loginService: LoginService,
     private envSrv: EnvironmentService,
     private groupSrv: ResourceGroupService,
+    private resourceSrv: ResourceService,
     public dialog: MatDialog
 
   ) {
@@ -66,10 +68,7 @@ export class IndexComponent implements OnInit {
     var faviconUrl = attributes.find(a => a.name == 'favicon');
     if (faviconUrl) {
       return faviconUrl.value;
-    } else if (attr) {
-      var url = new URL(attr.value);
-      return url.origin + '/favicon.ico';
-    }
+    } 
     return null;
   }
 

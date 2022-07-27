@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { lastValueFrom } from 'rxjs';
@@ -46,9 +47,9 @@ export class ResourceComponent implements OnInit {
     var faviconUrl = attributes.find(a => a.name == 'favicon');
     if (faviconUrl) {
       return faviconUrl.value;
-    } else if (attr) {
-      var url = new URL(attr.value);
-      return url.origin + '/favicon.ico';
+    } else if (attr?.value) {
+      const url = new URL(attr.value);
+      return url.origin + "/favicon.ico";
     }
     return null;
   }
@@ -65,5 +66,9 @@ export class ResourceComponent implements OnInit {
     if (attr?.value) {
       window.open(attr?.value);
     }
+  }
+
+  openTool(url: string) {
+    window.open(url);
   }
 }

@@ -9,6 +9,7 @@ import { ResourceDialogComponent } from './resource-dialog/resource-dialog.compo
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ServerComponent } from './server/server.component';
 import { ResourceComponent } from './resource/resource.component';
+import { ResourceService } from './resource.service';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { ResourceComponent } from './resource/resource.component';
     HomeRoutingModule
   ],
   providers: [
+    ResourceService,
     { provide: MatDialogRef, useValue: {} },
     { provide: MAT_DIALOG_DATA, useValue: [] }
   ]
