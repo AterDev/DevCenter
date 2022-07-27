@@ -43,7 +43,10 @@ export class ResourceComponent implements OnInit {
   }
   getResourceUrl(attributes: ResourceAttribute[]): string | null {
     var attr = attributes.find(a => a.name == 'url');
-    if (attr) {
+    var faviconUrl = attributes.find(a => a.name == 'favicon');
+    if (faviconUrl) {
+      return faviconUrl.value;
+    } else if (attr) {
       var url = new URL(attr.value);
       return url.origin + '/favicon.ico';
     }
