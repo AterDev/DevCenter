@@ -32,7 +32,7 @@ export class ServerComponent implements OnInit {
   environmentId: string | null = null;
   groups: ResourceGroupItemDto[] = [];
   dataSource!: MatTableDataSource<Resource>;
-  columnsToDisplay = ['name', 'ipAddress', 'port', 'tags'];
+  columnsToDisplay = ['group', 'name', 'ipAddress', 'port', 'tags'];
   expandedElement: ResourceGroupItemDto | null = null;
   columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
   constructor(
@@ -63,6 +63,12 @@ export class ServerComponent implements OnInit {
     const group = this.groups.find(g => g.resource!.includes(resource));
     return group!.environment || null;
   }
+
+  getGroup(resource: Resource): ResourceGroupItemDto {
+    return this.groups.find(g => g.resource!.includes(resource))!;
+  }
+
+
   getAttributeValue(resource: Resource, name: string) {
     const item = resource.attributes?.find(val => val.name == name);
     return item?.value;
