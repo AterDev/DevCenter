@@ -1,0 +1,64 @@
+<div class="container py-2">
+  <h1>
+    GitLab CI yml 脚本生成辅助工具
+  </h1>
+  <div class="row mt-1">
+    <div class="col-auto">
+      <form class="d-flex flex-column g-1" [formGroup]="formGroup" (ngSubmit)="generate()">
+        <mat-form-field>
+          <mat-label>任务名称</mat-label>
+          <input matInput placeholder="job名称" formControlName="jobName">
+          <mat-error>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>类型</mat-label>
+          <mat-select placeholder="任务类型" formControlName="type">
+            <mat-option *ngFor="let item of JobType | toKeyValue" [value]="item.value">
+              {{item.key}}
+            </mat-option>
+          </mat-select>
+          <mat-error>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>远程主机</mat-label>
+          <input matInput placeholder="主机连接 user@12.34.56.78" formControlName="sshHost">
+          <mat-error>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>项目路径</mat-label>
+          <input matInput placeholder="要构建的项目目录,相对于仓库根目录" formControlName="projectPath">
+          <mat-error>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>发布目录</mat-label>
+          <input matInput placeholder="构建后待发布的目录" formControlName="publishPath">
+          <mat-error>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>运行目录</mat-label>
+          <input matInput placeholder="远程主机运行目录" formControlName="runPath">
+          <mat-error>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>服务名称</mat-label>
+          <input matInput placeholder="system 服务名称" formControlName="serviceName">
+          <mat-error>
+          </mat-error>
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit" [disabled]="formGroup.invalid">生成</button>
+      </form>
+    </div>
+    <div class="col">
+      <mat-form-field appearance="fill" class="w-100">
+        <textarea matInput placeholder="yml content" rows="35" [(ngModel)]="ymlContent"></textarea>
+      </mat-form-field>
+
+    </div>
+  </div>
+</div>

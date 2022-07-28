@@ -69,6 +69,6 @@ export class ResourceComponent implements OnInit {
   }
 
   openTool(url: string) {
-    window.open(url);
+    window.open('/tool/' + url);
   }
 }

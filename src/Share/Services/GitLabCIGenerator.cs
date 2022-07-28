@@ -56,8 +56,7 @@ public class GitLabCIGenerator
     #endregion
     #region 模板
 
-    static string JobTmp=@"
-stages:    
+    static string JobTmp=@"stages:    
   - publish
 ${JobName}: 
   variables:
@@ -66,7 +65,8 @@ ${JobName}:
     PUBLISH_PATH: '${PublishPath}'
     RUN_PATH: '${RunPath}'
   stage: publish
-";
+
+  script:";
 
     /// <summary>
     /// 文件复制脚本
