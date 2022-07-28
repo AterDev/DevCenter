@@ -16,6 +16,7 @@ public class GitLabWebhookService
         return string.IsNullOrWhiteSpace(status)
             || status.Equals("pending")
             || status.Equals("running")
+            || status.Equals("manual")
             ? default
             : new PipelineInfo
             {
