@@ -2,6 +2,7 @@ global using System;
 global using System.Linq.Expressions;
 global using System.Text.Json;
 global using Core.Entities;
+global using Core.Entities.Resource;
 global using Core.Models;
 global using Core.Utils;
 global using EFCore.BulkExtensions;

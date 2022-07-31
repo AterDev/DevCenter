@@ -1,4 +1,4 @@
-﻿using Environment = Core.Entities.Environment;
+﻿using Environment = Core.Entities.Resource.Environment;
 
 namespace Http.Application;
 

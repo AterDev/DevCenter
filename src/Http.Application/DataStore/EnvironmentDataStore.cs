@@ -1,7 +1,6 @@
-using Http.Application.Implement;
 using Share.Models.EnvironmentDtos;
 
-using Environment = Core.Entities.Environment;
+using Environment = Core.Entities.Resource.Environment;
 
 namespace Http.Application.DataStore;
 public class EnvironmentDataStore : DataStoreBase<ContextBase, Environment, EnvironmentUpdateDto, EnvironmentFilterDto, EnvironmentItemDto>

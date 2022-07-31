@@ -1,3 +1,4 @@
+using Core.Entities.Resource;
 using Http.Application.Implement;
 using Share.Models.ResourceGroupDtos;
 namespace Http.Application.DataStore;

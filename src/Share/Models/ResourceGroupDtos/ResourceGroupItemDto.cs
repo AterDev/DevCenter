@@ -1,4 +1,5 @@
-using Environment = Core.Entities.Environment;
+using Core.Entities.Resource;
+using Environment = Core.Entities.Resource.Environment;
 
 namespace Share.Models.ResourceGroupDtos;
 /// <summary>
@@ -28,7 +29,7 @@ public class ResourceGroupItemDto
 
     public Guid Id { get; set; } = default!;
 
-    public Environment? Environment { get; set; } 
+    public Environment? Environment { get; set; }
 
     public List<Resource>? Resource { get; set; }
 

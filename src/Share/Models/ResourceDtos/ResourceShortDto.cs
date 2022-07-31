@@ -1,3 +1,5 @@
+using Core.Entities.Resource;
+
 namespace Share.Models.ResourceDtos;
 /// <summary>
 /// 资源

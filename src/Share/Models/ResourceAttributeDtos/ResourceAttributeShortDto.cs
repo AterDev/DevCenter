@@ -1,3 +1,4 @@
+using Core.Entities.Resource;
 using ValueType = Core.Models.ValueType;
 
 namespace Share.Models.ResourceAttributeDtos;

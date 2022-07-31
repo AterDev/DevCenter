@@ -1,3 +1,5 @@
+using Core.Entities.Resource;
+
 namespace Http.Application.Implement;
 public class DataStoreContext
 {

@@ -1,3 +1,8 @@
+using Core.Entities.Blog;
+using Core.Entities.Code;
+using Core.Entities.Resource;
+using Environment = Core.Entities.Resource.Environment;
+
 namespace EntityFramework;
 
 public class ContextBase : DbContext
@@ -6,6 +11,7 @@ public class ContextBase : DbContext
     public DbSet<Role> Roles { get; set; } = null!;
     public DbSet<CodeFolder> CodeFolders { get; set; } = null!;
     public DbSet<CodeSnippet> CodeSnippets { get; set; } = null!;
+    public DbSet<CodeLibrary> CodeLibraries { get; set; } = null!;
     public DbSet<ConfigOption> ConfigOptions { get; set; } = null!;
     public DbSet<DocFolder> DocFolders { get; set; } = null!;
     public DbSet<Document> Documents { get; set; } = null!;
@@ -17,8 +23,15 @@ public class ContextBase : DbContext
     public DbSet<ResourceGroup> ResourceGroups { get; set; } = null!;
     public DbSet<ResourceTags> ResourceTags { get; set; } = null!;
     public DbSet<ResourceTypeDefinition> ResourceTypeDefinitions { get; set; } = null!;
-    public DbSet<Core.Entities.Environment> Environments { get; set; } = null!;
+    public DbSet<Environment> Environments { get; set; } = null!;
     public DbSet<ResourceView> ResourceViews { get; set; } = null!;
+
+    public DbSet<Blog> Blogs { get; set; } = null!;
+    public DbSet<BlogCatalog> BlogCatalogs { get; set; } = null!;
+    public DbSet<BlogTag> BlogTags { get; set; } = null!;
+    public DbSet<Comment> Comments { get; set; } = null!;
+
+
     public ContextBase(DbContextOptions options) : base(options)
     {
     }
@@ -36,6 +49,20 @@ public class ContextBase : DbContext
         builder.Entity<ResourceView>()
             .ToView("ResrouceView")
             .HasNoKey();
+
+        builder.Entity<Blog>(e =>
+        {
+            e.HasIndex(e => e.Title).IsUnique();
+        });
+        builder.Entity<BlogCatalog>(e =>
+        {
+            e.HasIndex(e => e.Name);
+            e.HasIndex(e => e.Level);
+        });
+        builder.Entity<BlogTag>(e =>
+        {
+            e.HasIndex(e => e.Name);
+        });
         builder.Entity<Resource>(e =>
         {
             e.HasIndex(a => a.Name);
@@ -53,7 +80,7 @@ public class ContextBase : DbContext
         {
             e.HasIndex(a => a.Name);
         });
-        builder.Entity<Core.Entities.Environment>(e =>
+        builder.Entity<Environment>(e =>
         {
             e.HasIndex(a => a.Name);
         });
