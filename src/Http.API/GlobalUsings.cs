@@ -2,6 +2,7 @@
 global using System.Text.Json.Serialization;
 global using Core.Entities;
 global using Core.Entities.Blog;
+global using Core.Entities.Code;
 global using Core.Entities.Resource;
 global using Core.Models;
 global using Core.Utils;
