@@ -1,5 +1,3 @@
-
-using Core.Entities.Resource;
 using Share.Models.ResourceTypeDefinitionDtos;
 namespace Http.API.Controllers;
 
@@ -8,16 +6,13 @@ namespace Http.API.Controllers;
 /// </summary>
 public class ResourceTypeDefinitionController : RestApiBase<ResourceTypeDefinitionDataStore, ResourceTypeDefinition, ResourceTypeDefinitionAddDto, ResourceTypeDefinitionUpdateDto, ResourceTypeDefinitionFilterDto, ResourceTypeDefinitionItemDto>
 {
-    private readonly ResourceAttributeDefineDataStore attributeDataStore;
 
     public ResourceTypeDefinitionController(
         IUserContext user,
         ILogger<ResourceTypeDefinitionController> logger,
-        ResourceTypeDefinitionDataStore store,
-        ResourceAttributeDefineDataStore attributeDefineDataStore
+        ResourceTypeDefinitionDataStore store
         ) : base(user, logger, store)
     {
-        this.attributeDataStore = attributeDefineDataStore;
     }
 
     /// <summary>
@@ -42,7 +37,7 @@ public class ResourceTypeDefinitionController : RestApiBase<ResourceTypeDefiniti
 
         if (form.AttributeDefineIds != null)
         {
-            var attributeDefines = await attributeDataStore.Db.Where(a => form.AttributeDefineIds.Contains(a.Id)).ToListAsync();
+            var attributeDefines = await _store._context.ResourceAttributeDefines.Where(a => form.AttributeDefineIds.Contains(a.Id)).ToListAsync();
             typeDefine.AttributeDefines = attributeDefines;
         }
         return await _store.AddAsync(typeDefine);

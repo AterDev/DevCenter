@@ -1,5 +1,4 @@
 using Http.Application.DataStore;
-using Http.Application.Manager;
 
 namespace Http.Application.Implement;
 
@@ -9,15 +8,10 @@ public static class StoreServicesExtensions
     {
         services.AddTransient<IUserContext, UserContext>();
         services.AddScoped(typeof(DataStoreContext));
-        services.AddScoped(typeof(CodeFolderDataStore));
-        services.AddScoped(typeof(CodeSnippetDataStore));
         services.AddScoped(typeof(ConfigOptionDataStore));
-        services.AddScoped(typeof(DocFolderDataStore));
-        services.AddScoped(typeof(DocumentDataStore));
         services.AddScoped(typeof(EnvironmentDataStore));
         services.AddScoped(typeof(PermissionDataStore));
         services.AddScoped(typeof(ResourceAttributeDataStore));
-        services.AddScoped(typeof(ResourceAttributeDefineDataStore));
         services.AddScoped(typeof(ResourceDataStore));
         services.AddScoped(typeof(ResourceGroupDataStore));
         services.AddScoped(typeof(ResourceTagsDataStore));
