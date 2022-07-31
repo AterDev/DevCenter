@@ -1,4 +1,4 @@
-﻿namespace Core.Entities;
+﻿namespace Core.Entities.Resource;
 
 /// <summary>
 /// 资源视图

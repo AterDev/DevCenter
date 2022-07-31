@@ -1,4 +1,6 @@
-﻿namespace Core.Entities;
+﻿using Core.Entities.Blog;
+
+namespace Core.Entities;
 /// <summary>
 /// 系统用户
 /// </summary>
@@ -47,5 +49,8 @@ public class User : EntityBase
     [MaxLength(200)]
     public string? Avatar { get; set; }
     public List<Role>? Roles { get; set; }
+
+    public List<Blog.Blog>? Blogs { get; set; }
+    public List<Comment>? Comments { get; set; }
 }
 

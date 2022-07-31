@@ -1,4 +1,4 @@
-﻿using Core.Models;
+﻿using Core.Entities.Code;
 
 namespace Core.Entities;
 

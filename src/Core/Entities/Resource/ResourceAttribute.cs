@@ -1,6 +1,6 @@
 ﻿using ValueType = Core.Models.ValueType;
 
-namespace Core.Entities;
+namespace Core.Entities.Resource;
 
 /// <summary>
 /// 资源属性值 
