@@ -1,6 +1,4 @@
-﻿using Core.Models;
-
-namespace Core.Entities;
+﻿namespace Core.Entities;
 
 /// <summary>
 /// 文档目录

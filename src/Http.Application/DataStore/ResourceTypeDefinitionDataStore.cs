@@ -1,5 +1,3 @@
-using Core.Entities.Resource;
-using Http.Application.Implement;
 using Share.Models.ResourceTypeDefinitionDtos;
 namespace Http.Application.DataStore;
 public class ResourceTypeDefinitionDataStore : DataStoreBase<ContextBase, ResourceTypeDefinition, ResourceTypeDefinitionUpdateDto, ResourceTypeDefinitionFilterDto, ResourceTypeDefinitionItemDto>

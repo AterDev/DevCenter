@@ -11,5 +11,5 @@ public class RoleFilterDto : FilterBase
     public string? Name { get; set; }
     [MaxLength(30)]
     public string? IdentifyName { get; set; }
-    
+
 }

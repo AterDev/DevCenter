@@ -24,5 +24,5 @@ public class UserFilterDto : FilterBase
     /// 密码重试次数
     /// </summary>
     public int? RetryCount { get; set; }
-    
+
 }

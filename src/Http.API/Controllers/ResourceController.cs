@@ -1,4 +1,3 @@
-using Core.Entities.Resource;
 using Share.Models.ResourceDtos;
 namespace Http.API.Controllers;
 
@@ -45,10 +44,16 @@ public class ResourceController : RestApiBase<ResourceDataStore, Resource, Resou
     public override async Task<ActionResult<Resource>> AddAsync(ResourceAddDto form)
     {
         var group = await _store.FindGroupAsync(form.GroupId);
-        if (group == null) return BadRequest("不存在的资源组");
+        if (group == null)
+        {
+            return BadRequest("不存在的资源组");
+        }
 
         var type = await _store.FindTypeAsync(form.ResourceTypeId);
-        if (type == null) return BadRequest("不存在的类型");
+        if (type == null)
+        {
+            return BadRequest("不存在的类型");
+        }
 
         var resource = new Resource()
         {

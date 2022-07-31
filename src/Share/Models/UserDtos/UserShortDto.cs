@@ -39,5 +39,5 @@ public class UserShortDto
     [MaxLength(200)]
     public string? Avatar { get; set; }
     public Guid Id { get; set; } = default!;
-    
+
 }

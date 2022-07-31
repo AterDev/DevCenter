@@ -22,5 +22,5 @@ public class RoleUpdateDto
     /// 状态
     /// </summary>
     public Status? Status { get; set; }
-    
+
 }

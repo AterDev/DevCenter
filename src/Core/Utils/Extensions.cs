@@ -90,23 +90,17 @@ public static partial class Extensions
             var selector = Expression.Lambda(body, parameter);
 
 
-            MethodCallExpression expression;
-            if (item.Value)
-            {
-                expression = Expression.Call(typeof(Queryable),
+            MethodCallExpression expression = item.Value
+                ? Expression.Call(typeof(Queryable),
                                           "OrderBy",
                                           new Type[] { typeof(T), body.Type },
                                           query.Expression,
-                                          Expression.Quote(selector));
-            }
-            else
-            {
-                expression = Expression.Call(typeof(Queryable),
+                                          Expression.Quote(selector))
+                : Expression.Call(typeof(Queryable),
                                           "OrderByDescending",
                                           new Type[] { typeof(T), body.Type },
                                           query.Expression,
                                           Expression.Quote(selector));
-            }
             orderQuery = (IOrderedQueryable<T>)query.Provider.CreateQuery<T>(expression);
             query = orderQuery;
         }

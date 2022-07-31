@@ -64,9 +64,7 @@ public class UserController :
         if (_user.IsAdmin || _user.UserId == id)
         {
             var user = await manager.GetCurrent(id, "Roles");
-            if (user == null) return NotFound();
-
-            return await manager.UpdateAsync(user, form);
+            return user == null ? (ActionResult<User?>)NotFound() : (ActionResult<User?>)await manager.UpdateAsync(user, form);
         }
         return Forbid();
     }
@@ -82,10 +80,7 @@ public class UserController :
         if (_user.UserId != null)
         {
             var user = await manager.GetCurrent(_user.UserId.Value);
-            if (user != null)
-                return await manager.ChangePasswordAsync(user, newPassword);
-
-            return NotFound("非法用户");
+            return user != null ? (ActionResult<bool>)await manager.ChangePasswordAsync(user, newPassword) : (ActionResult<bool>)NotFound("非法用户");
         }
         return Forbid();
     }

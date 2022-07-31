@@ -1,5 +1,4 @@
 ﻿using Core.Entities.Resource;
-using Core.Models;
 
 namespace Core.Entities;
 /// <summary>

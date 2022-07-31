@@ -159,7 +159,10 @@ public class DingTalkWebhookService
     /// <param name="toUser"></param>
     public async Task SendNoteAsync(NoteInfo? note)
     {
-        if (note == null) return;
+        if (note == null)
+        {
+            return;
+        }
 
         var toUser = note.ToUser;
         if (toUser != null && toUser.Any())
@@ -176,7 +179,9 @@ public class DingTalkWebhookService
 
                     // 构造提醒列表
                     if (mobile != null)
+                    {
                         atMobiles.Add(mobile);
+                    }
                 });
             }
 

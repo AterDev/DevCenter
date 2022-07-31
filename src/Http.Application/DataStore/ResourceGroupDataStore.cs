@@ -1,5 +1,3 @@
-using Core.Entities.Resource;
-using Http.Application.Implement;
 using Share.Models.ResourceGroupDtos;
 namespace Http.Application.DataStore;
 public class ResourceGroupDataStore : DataStoreBase<ContextBase, ResourceGroup, ResourceGroupUpdateDto, ResourceGroupFilterDto, ResourceGroupItemDto>
@@ -125,7 +123,9 @@ public class ResourceGroupDataStore : DataStoreBase<ContextBase, ResourceGroup, 
         {
             var environment = await _context.Environments.FindAsync(dto.EnvironmentId);
             if (environment != null)
+            {
                 data.Environment = environment;
+            }
         }
         data.UpdatedTime = DateTimeOffset.UtcNow;
         await _context.SaveChangesAsync();

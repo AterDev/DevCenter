@@ -1,4 +1,3 @@
-using Core.Entities.Resource;
 using Share.Models.ResourceAttributeDefineDtos;
 
 namespace Http.Application.Manager;
@@ -31,7 +30,9 @@ public class ResourceAttributeDefineManager : DomainManagerBase<ResourceAttribut
                 .Select(d => d.Id)
                 .ToListAsync();
             if (ids != null)
+            {
                 query = query.Where(q => ids.Contains(q.Id));
+            }
         }
         return await Query.FilterAsync<TItem>(query, filter.OrderBy, filter.PageIndex ?? 1, filter.PageSize ?? 12);
     }

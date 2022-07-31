@@ -1,4 +1,3 @@
-using Core.Entities.Resource;
 using Share.Models.ResourceGroupDtos;
 namespace Http.API.Controllers;
 
@@ -51,7 +50,11 @@ public class ResourceGroupController : RestApiBase<ResourceGroupDataStore, Resou
     public override async Task<ActionResult<ResourceGroup>> AddAsync(ResourceGroupAddDto form)
     {
         var environment = await environmentStore.FindAsync(form.EnvironmentId);
-        if (environment == null) return BadRequest("未找到关联的环境");
+        if (environment == null)
+        {
+            return BadRequest("未找到关联的环境");
+        }
+
         var group = new ResourceGroup();
         group = group.Merge(form);
         group.Environment = environment;

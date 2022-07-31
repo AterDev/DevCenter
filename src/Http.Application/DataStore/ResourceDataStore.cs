@@ -1,5 +1,3 @@
-using Core.Entities.Resource;
-using Http.Application.Implement;
 using Share.Models.ResourceDtos;
 namespace Http.Application.DataStore;
 public class ResourceDataStore : DataStoreBase<ContextBase, Resource, ResourceUpdateDto, ResourceFilterDto, ResourceItemDto>
@@ -98,7 +96,10 @@ public class ResourceDataStore : DataStoreBase<ContextBase, Resource, ResourceUp
     {
         var resource = await FindAsync(id);
         if (resource!.Attributes != null)
+        {
             _context.RemoveRange(resource.Attributes);
+        }
+
         _context.Remove(resource);
         return await _context.SaveChangesAsync() > 0;
     }

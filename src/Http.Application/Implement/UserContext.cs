@@ -29,16 +29,11 @@ public class UserContext : IUserContext
         Username = FindClaim(ClaimTypes.Name)?.Value;
         Email = FindClaim(ClaimTypes.Email)?.Value;
         CurrentRole = FindClaim(ClaimTypes.Role)?.Value;
-        if (CurrentRole != null && CurrentRole.ToLower() == "admin")
-        {
-            IsAdmin = true;
-        }
-        else
-        {
-            IsAdmin = false;
-        }
+        IsAdmin = CurrentRole != null && CurrentRole.ToLower() == "admin";
     }
 
-    public Claim? FindClaim(string claimType) => _httpContextAccessor?.HttpContext?.User?.FindFirst(claimType);
-
+    public Claim? FindClaim(string claimType)
+    {
+        return _httpContextAccessor?.HttpContext?.User?.FindFirst(claimType);
+    }
 }

@@ -56,7 +56,7 @@ public class GitLabCIGenerator
     #endregion
     #region 模板
 
-    static string JobTmp=@"stages:    
+    private static string JobTmp=@"stages:    
   - publish
 ${JobName}: 
   variables:
@@ -71,16 +71,17 @@ ${JobName}:
     /// <summary>
     /// 文件复制脚本
     /// </summary>
-    static string CopyTmp=@"
+    private static string CopyTmp=@"
     - mkdir -p $PUBLISH_PATH
     - cd $PUBLISH_PATH
     - ssh $SSH_HOST sudo mkdir -p $RUN_PATH
     - scp -r./* $SSH_HOST:$RUN_PATH
 ";
+
     /// <summary>
     /// dotnet 构建及复制脚本
     /// </summary>
-    static string DotNetTmp=@"
+    private static string DotNetTmp=@"
     - mkdir -p $PUBLISH_PATH
     - dotnet build $PROJECT_PATH
     - dotnet publish $PROJECT_PATH -c Release -o $PUBLISH_PATH

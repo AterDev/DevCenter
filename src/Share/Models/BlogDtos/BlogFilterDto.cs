@@ -11,5 +11,5 @@ public class BlogFilterDto : FilterBase
     public string? Title { get; set; }
     public Guid? UserId { get; set; } = default!;
     public Guid? CatalogId { get; set; } = default!;
-    
+
 }

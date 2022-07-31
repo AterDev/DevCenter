@@ -18,5 +18,5 @@ public class RoleAddDto
     /// </summary>
     [MaxLength(30)]
     public string? Icon { get; set; }
-    
+
 }

@@ -15,8 +15,8 @@ public class QueryStoreBase<TContext, TEntity> :
     /// 当前实体DbSet
     /// </summary>
     protected readonly DbSet<TEntity> _db;
-    public DbSet<TEntity> Db { get => _db; }
-    public TContext Context { get => _context; }
+    public DbSet<TEntity> Db => _db;
+    public TContext Context => _context;
     public IQueryable<TEntity> _query;
 
 
@@ -90,8 +90,16 @@ public class QueryStoreBase<TContext, TEntity> :
     /// <returns></returns>
     public virtual async Task<PageList<TItem>> PageListAsync<TItem>(IQueryable<TEntity> query, int pageIndex = 1, int pageSize = 12)
     {
-        if (pageIndex < 1) pageIndex = 1;
-        if (pageSize < 0) pageSize = 12;
+        if (pageIndex < 1)
+        {
+            pageIndex = 1;
+        }
+
+        if (pageSize < 0)
+        {
+            pageSize = 12;
+        }
+
         _query = query;
 
         var count = _query.Count();
@@ -120,9 +128,16 @@ public class QueryStoreBase<TContext, TEntity> :
     /// <returns></returns>
     public virtual async Task<PageList<TItem>> FilterAsync<TItem>(IQueryable<TEntity> query, Dictionary<string, bool>? order = null, int pageIndex = 1, int pageSize = 12)
     {
-        if (pageIndex < 1) pageIndex = 1;
+        if (pageIndex < 1)
+        {
+            pageIndex = 1;
+        }
+
         if (query != null)
+        {
             _query = query;
+        }
+
         if (order != null)
         {
             _query = _query.OrderBy(order);

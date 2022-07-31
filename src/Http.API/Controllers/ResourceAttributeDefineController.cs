@@ -1,6 +1,6 @@
-using Core.Entities.Resource;
+using Http.API.Infrastructure;
 using Share.Models.ResourceAttributeDefineDtos;
-namespace Http.API.Infrastructure;
+namespace Http.API.Controllers;
 
 /// <summary>
 /// 资源属性定义
@@ -50,8 +50,7 @@ public class ResourceAttributeDefineController :
     public async Task<ActionResult<ResourceAttributeDefine?>> UpdateAsync([FromRoute] Guid id, ResourceAttributeDefineUpdateDto form)
     {
         var user = await manager.GetCurrent(id);
-        if (user == null) return NotFound();
-        return await manager.UpdateAsync(user, form);
+        return user == null ? (ActionResult<ResourceAttributeDefine?>)NotFound() : (ActionResult<ResourceAttributeDefine?>)await manager.UpdateAsync(user, form);
     }
 
 
@@ -59,7 +58,7 @@ public class ResourceAttributeDefineController :
     public async Task<ActionResult<ResourceAttributeDefine?>> GetDetailAsync([FromRoute] Guid id)
     {
         var res = await manager.FindAsync<ResourceAttributeDefine>(u => u.Id == id);
-        return (res == null) ? NotFound() : res;
+        return res == null ? NotFound() : res;
     }
 
     /// <summary>

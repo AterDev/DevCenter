@@ -35,7 +35,10 @@ public class GitLabWebhookService
     {
         // close,update,open
         var action = request.ObjectAttributes.Action ?? "";
-        if (action.Equals("update")) return default;
+        if (action.Equals("update"))
+        {
+            return default;
+        }
 
         var content = request.ObjectAttributes.Description;
         if (content.Length > 50)
@@ -56,7 +59,11 @@ public class GitLabWebhookService
     public static NoteInfo? GetNoteInfo(NoteRequest request)
     {
         var noteableId = request.ObjectAttributes!.NoteableId;
-        if (noteableId == null) return default;
+        if (noteableId == null)
+        {
+            return default;
+        }
+
         var content = request.ObjectAttributes.Note!;
 
         var noteUsers = content.Split(" ")

@@ -1,4 +1,3 @@
-using Core.Entities.Resource;
 using Share.Models.ResourceTagsDtos;
 namespace Http.Application.DataStore;
 public class ResourceTagsDataStore : DataStoreBase<ContextBase, ResourceTags, ResourceTagsUpdateDto, ResourceTagsFilterDto, ResourceTagsItemDto>

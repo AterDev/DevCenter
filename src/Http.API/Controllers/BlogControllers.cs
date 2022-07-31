@@ -1,5 +1,6 @@
+using Http.API.Infrastructure;
 using Share.Models.BlogDtos;
-namespace Http.API.Infrastructure;
+namespace Http.API.Controllers;
 
 /// <summary>
 /// 文章内容
@@ -49,8 +50,7 @@ public class BlogControllers :
     public async Task<ActionResult<Blog?>> UpdateAsync([FromRoute] Guid id, BlogUpdateDto form)
     {
         var user = await manager.GetCurrent(id);
-        if (user == null) return NotFound();
-        return await manager.UpdateAsync(user, form);
+        return user == null ? (ActionResult<Blog?>)NotFound() : (ActionResult<Blog?>)await manager.UpdateAsync(user, form);
     }
 
 
@@ -58,7 +58,7 @@ public class BlogControllers :
     public async Task<ActionResult<Blog?>> GetDetailAsync([FromRoute] Guid id)
     {
         var res = await manager.FindAsync<Blog>(u => u.Id == id);
-        return (res == null) ? NotFound() : res;
+        return res == null ? NotFound() : res;
     }
 
     /// <summary>

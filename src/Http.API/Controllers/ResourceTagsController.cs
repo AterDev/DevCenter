@@ -1,4 +1,3 @@
-using Core.Entities.Resource;
 using Share.Models.ResourceTagsDtos;
 namespace Http.API.Controllers;
 

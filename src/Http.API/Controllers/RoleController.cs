@@ -50,11 +50,7 @@ public class RoleController : RestApiBase<RoleDataStore, Role, RoleAddDto, RoleU
     [HttpPut("resourceGroup")]
     public async Task<ActionResult<bool>> SetResourceGroupsAsync([FromBody] RoleResourceDto dto)
     {
-        if (await _store.Exist(dto.RoleId))
-        {
-            return await _store.SetResourceGorupsAsync(dto);
-        }
-        return NotFound("无效的角色id");
+        return await _store.Exist(dto.RoleId) ? (ActionResult<bool>)await _store.SetResourceGorupsAsync(dto) : (ActionResult<bool>)NotFound("无效的角色id");
     }
 
     /// <summary>

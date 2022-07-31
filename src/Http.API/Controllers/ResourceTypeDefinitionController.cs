@@ -52,9 +52,7 @@ public class ResourceTypeDefinitionController : RestApiBase<ResourceTypeDefiniti
     public override async Task<ActionResult<ResourceTypeDefinition?>> UpdateAsync([FromRoute] Guid id, ResourceTypeDefinitionUpdateDto form)
     {
         var typeDefine = await _store.FindAsync(id);
-        if (typeDefine == null) return NotFound("未知type define id");
-
-        return await base.UpdateAsync(id, form);
+        return typeDefine == null ? (ActionResult<ResourceTypeDefinition?>)NotFound("未知type define id") : await base.UpdateAsync(id, form);
     }
 
     /// <summary>
