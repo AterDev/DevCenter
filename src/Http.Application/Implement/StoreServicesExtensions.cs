@@ -1,4 +1,5 @@
 using Http.Application.DataStore;
+using Http.Application.Manager;
 
 namespace Http.Application.Implement;
 
@@ -19,8 +20,10 @@ public static class StoreServicesExtensions
         services.AddScoped(typeof(RoleDataStore));
         services.AddScoped(typeof(RolePermissionDataStore));
         services.AddScoped(typeof(UserDataStore));
+        services.AddScoped(typeof(BlogQueryStore));
         services.AddScoped(typeof(ResourceAttributeDefineQueryStore));
         services.AddScoped(typeof(UserQueryStore));
+        services.AddScoped(typeof(BlogCommandStore));
         services.AddScoped(typeof(ResourceAttributeDefineCommandStore));
         services.AddScoped(typeof(UserCommandStore));
 
@@ -28,6 +31,7 @@ public static class StoreServicesExtensions
 
     public static void AddManager(this IServiceCollection services)
     {
+        services.AddScoped(typeof(BlogManager));
         services.AddScoped(typeof(ResourceAttributeDefineManager));
         services.AddScoped(typeof(UserManager));
 

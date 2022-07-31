@@ -1,13 +1,13 @@
-using Core.Entities.Resource;
-
 namespace Http.Application.Implement;
 public class DataStoreContext
 {
     public QueryDbContext QueryContext { get; init; }
     public CommandDbContext CommandContext { get; init; }
 
+    public QuerySet<Blog> BlogQuery { get; init; }
     public QuerySet<ResourceAttributeDefine> ResourceAttributeDefineQuery { get; init; }
     public QuerySet<User> UserQuery { get; init; }
+    public CommandSet<Blog> BlogCommand { get; init; }
     public CommandSet<ResourceAttributeDefine> ResourceAttributeDefineCommand { get; init; }
     public CommandSet<User> UserCommand { get; init; }
 
@@ -18,8 +18,10 @@ public class DataStoreContext
     private readonly Dictionary<string, object> SetCache = new();
 
     public DataStoreContext(
+        BlogQueryStore blogQuery,
         ResourceAttributeDefineQueryStore resourceAttributeDefineQuery,
         UserQueryStore userQuery,
+        BlogCommandStore blogCommand,
         ResourceAttributeDefineCommandStore resourceAttributeDefineCommand,
         UserCommandStore userCommand,
 
@@ -29,10 +31,14 @@ public class DataStoreContext
     {
         QueryContext = queryDbContext;
         CommandContext = commandDbContext;
+        BlogQuery = blogQuery;
+        AddCache(BlogQuery);
         ResourceAttributeDefineQuery = resourceAttributeDefineQuery;
         AddCache(ResourceAttributeDefineQuery);
         UserQuery = userQuery;
         AddCache(UserQuery);
+        BlogCommand = blogCommand;
+        AddCache(BlogCommand);
         ResourceAttributeDefineCommand = resourceAttributeDefineCommand;
         AddCache(ResourceAttributeDefineCommand);
         UserCommand = userCommand;

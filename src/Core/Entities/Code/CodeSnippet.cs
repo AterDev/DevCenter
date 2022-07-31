@@ -6,7 +6,7 @@
 public class CodeSnippet : EntityBase
 {
     /// <summary>
-    /// 实体名称
+    /// 名称
     /// </summary>
     [MaxLength(100)]
     public string Name { get; set; } = null!;
@@ -16,10 +16,12 @@ public class CodeSnippet : EntityBase
     [MaxLength(500)]
     public string? Description { get; set; }
     /// <summary>
-    /// 实体定义内容
+    /// 内容
     /// </summary>
-    [MaxLength(4000)]
+    [MaxLength(5000)]
     public string? Content { get; set; }
+
+    public User User { get; set; } = null!;
     /// <summary>
     /// 所属类库
     /// </summary>
@@ -27,11 +29,11 @@ public class CodeSnippet : EntityBase
     /// <summary>
     /// 语言类型
     /// </summary>
-    public Language Language { get; set; }
+    public Language Language { get; set; } = Language.Csharp;
     /// <summary>
     /// 类型
     /// </summary>
-    public CodeType? CodeType { get; set; } = Code.CodeType.Class;
+    public CodeType CodeType { get; set; } = CodeType.Class;
 
 }
 

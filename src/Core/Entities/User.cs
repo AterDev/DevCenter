@@ -1,4 +1,5 @@
 ﻿using Core.Entities.Blog;
+using Core.Entities.Code;
 
 namespace Core.Entities;
 /// <summary>
@@ -52,5 +53,7 @@ public class User : EntityBase
 
     public List<Blog.Blog>? Blogs { get; set; }
     public List<Comment>? Comments { get; set; }
+
+    public List<CodeSnippet>? CodeSnippets { get; set; }
 }
 
