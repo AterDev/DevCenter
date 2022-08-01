@@ -13,6 +13,10 @@ public class GitLabCIGenerator
         public string JobName { get; set; } = default!;
         public JobType Type { get; set; } = JobType.Static;
         /// <summary>
+        /// 分支，默认dev
+        /// </summary>
+        public string? BranchName { get; set; } = "dev";
+        /// <summary>
         /// 远程主机连接 user@12.34.56.78
         /// </summary>
         public string SSHHost { get; set; } = default!;
@@ -64,9 +68,14 @@ ${JobName}:
     PROJECT_PATH: '${ProjectPath}'
     PUBLISH_PATH: '${PublishPath}'
     RUN_PATH: '${RunPath}'
-  stage: publish
+  stage: publish";
 
-  script:";
+    private static string Rules=@"
+  rules: 
+    - if: '$CI_PIPELINE_SOURCE == ""push"" && $CI_COMMIT_BRANCH == ""${BranchName}""'
+      changes:
+        - ${ProjectPath}/**/*
+      when: always";
 
     /// <summary>
     /// 文件复制脚本
@@ -110,19 +119,21 @@ ${JobName}:
             .Replace("${PublishPath}",option.PublishPath)
             .Replace("${RunPath}",option.RunPath);
 
-        var scripts = "";
+        var rules = Rules.Replace("${ProjectPath}",option.ProjectPath)
+            .Replace("${BranchName}",option.BranchName);
+        var scripts = "  script:"+Environment.NewLine;
         switch (option.Type)
         {
             case JobType.Dotnet:
-                scripts = DotNetTmp.Replace("${ServiceName}", option.ServiceName);
+                scripts += DotNetTmp.Replace("${ServiceName}", option.ServiceName);
                 break;
             case JobType.Static:
-                scripts = CopyTmp;
+                scripts += CopyTmp;
                 break;
             default:
                 break;
         }
-        return content + System.Environment.NewLine + scripts;
+        return content + rules + Environment.NewLine + scripts;
     }
 
 }
