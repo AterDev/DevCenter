@@ -33,7 +33,7 @@ export class ServerComponent implements OnInit {
   environmentId: string | null = null;
   groups: ResourceGroupItemDto[] = [];
   dataSource!: MatTableDataSource<Resource>;
-  columnsToDisplay = ['group', 'name', 'ipAddress', 'port', 'tags'];
+  columnsToDisplay = ['name', 'ipAddress', 'port', 'tags'];
   expandedElement: ResourceGroupItemDto | null = null;
   columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
   constructor(

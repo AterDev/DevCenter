@@ -16,6 +16,33 @@
       </button> -->
     </div>
     <mat-accordion class="example-headers-align" multi>
+      <!-- 知识库 -->
+      <mat-expansion-panel hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <mat-icon>school</mat-icon>
+            <span *ngIf="opened">知识库</span>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-nav-list>
+          <a mat-list-item routerLink="/admin/library" routerLinkActive="active">
+            <mat-icon>class</mat-icon>
+            <span *ngIf="opened">代码库</span>
+          </a>
+          <a mat-list-item routerLink="/admin/codesnippet" routerLinkActive="active">
+            <mat-icon>code</mat-icon>
+            <span *ngIf="opened">代码片段</span>
+          </a>
+          <a mat-list-item routerLink="/admin/blogCatalog" routerLinkActive="active">
+            <mat-icon>view_list</mat-icon>
+            <span *ngIf="opened">博客目录</span>
+          </a>
+          <a mat-list-item routerLink="/admin/blog" routerLinkActive="active">
+            <mat-icon>rss_feed</mat-icon>
+            <span *ngIf="opened">博客管理</span>
+          </a>
+        </mat-nav-list>
+      </mat-expansion-panel>
       <!-- 资源管理 -->
       <mat-expansion-panel hideToggle>
         <mat-expansion-panel-header>
@@ -25,10 +52,6 @@
           </mat-panel-title>
         </mat-expansion-panel-header>
         <mat-nav-list>
-          <a mat-list-item routerLink="/admin/environment" routerLinkActive="active">
-            <mat-icon>loyalty</mat-icon>
-            <span *ngIf="opened">环境</span>
-          </a>
           <a mat-list-item routerLink="/admin/resource-group" routerLinkActive="active">
             <mat-icon>dashboard</mat-icon>
             <span *ngIf="opened">资源组</span>
@@ -37,13 +60,21 @@
             <mat-icon>format_align_right</mat-icon>
             <span *ngIf="opened">资源</span>
           </a>
+          <a mat-list-item routerLink="/admin/environment" routerLinkActive="active">
+            <mat-icon>loyalty</mat-icon>
+            <span *ngIf="opened">环境</span>
+          </a>
+          <a mat-list-item routerLink="/admin/resource-tags" routerLinkActive="active">
+            <mat-icon>style</mat-icon>
+            <span *ngIf="opened">标签管理</span>
+          </a>
         </mat-nav-list>
       </mat-expansion-panel>
       <mat-expansion-panel hideToggle>
         <mat-expansion-panel-header>
           <mat-panel-title>
             <mat-icon>widgets</mat-icon>
-            <span *ngIf="opened">基础配置</span>
+            <span *ngIf="opened">资源定义</span>
           </mat-panel-title>
         </mat-expansion-panel-header>
         <mat-nav-list>
@@ -54,11 +85,6 @@
           <a mat-list-item routerLink="/admin/resource-type-definition" routerLinkActive="active">
             <mat-icon>category</mat-icon>
             <span *ngIf="opened">资源类型定义</span>
-          </a>
-
-          <a mat-list-item routerLink="/admin/resource-tags" routerLinkActive="active">
-            <mat-icon>style</mat-icon>
-            <span *ngIf="opened">标签管理</span>
           </a>
         </mat-nav-list>
       </mat-expansion-panel>

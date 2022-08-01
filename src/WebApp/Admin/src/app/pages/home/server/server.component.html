@@ -1,6 +1,6 @@
-<div class="p-2 row" *ngIf="!isLoading">
+<div class="p-2 row g-0" *ngIf="!isLoading">
   <!-- 组导航 -->
-  <div class="col col-auto">
+  <div class="col col-auto p-1 me-1" style="border-bottom: 1px #eee;">
     <h3 class="ml-1 mt-1 mb-0">
       <strong>资源组</strong>
     </h3>
@@ -43,18 +43,6 @@
 
         </td>
       </ng-container>
-      <ng-container matColumnDef="group">
-        <th mat-header-cell *matHeaderCellDef>资源组</th>
-        <td mat-cell *matCellDef="let element">
-          <span [style]="{}">
-            <strong>
-              {{ getGroup(element).name }}
-            </strong>
-
-          </span>
-        </td>
-      </ng-container>
-
       <ng-container matColumnDef="ipAddress">
         <th mat-header-cell *matHeaderCellDef>IP</th>
         <td mat-cell *matCellDef="let element">{{getAttributeValue(element,'ipAddress')}}</td>
