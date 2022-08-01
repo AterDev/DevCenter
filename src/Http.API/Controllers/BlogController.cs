@@ -3,15 +3,15 @@ using Share.Models.BlogDtos;
 namespace Http.API.Controllers;
 
 /// <summary>
-/// 文章内容
+/// 博客
 /// </summary>
-public class BlogControllers :
+public class BlogController :
     RestControllerBase<BlogManager>,
     IRestController<Blog, BlogAddDto, BlogUpdateDto, BlogFilterDto, BlogItemDto>
 {
-    public BlogControllers(
+    public BlogController(
         IUserContext user,
-        ILogger<BlogControllers> logger,
+        ILogger<BlogController> logger,
         BlogManager manager
         ) : base(manager, user, logger)
     {

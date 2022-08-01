@@ -1,15 +1,17 @@
-using Share.Models.BlogCatalogDtos;
+using Share.Models.CodeSnippetDtos;
 namespace Http.API.Infrastructure;
 
-
-public class BlogCatalogControllers :
-    RestControllerBase<BlogCatalogManager>,
-    IRestController<BlogCatalog, BlogCatalogAddDto, BlogCatalogUpdateDto, BlogCatalogFilterDto, BlogCatalogItemDto>
+/// <summary>
+/// 代码片段
+/// </summary>
+public class CodeSnippetController :
+    RestControllerBase<CodeSnippetManager>,
+    IRestController<CodeSnippet, CodeSnippetAddDto, CodeSnippetUpdateDto, CodeSnippetFilterDto, CodeSnippetItemDto>
 {
-    public BlogCatalogControllers(
+    public CodeSnippetController(
         IUserContext user,
-        ILogger<BlogCatalogControllers> logger,
-        BlogCatalogManager manager
+        ILogger<CodeSnippetController> logger,
+        CodeSnippetManager manager
         ) : base(manager, user, logger)
     {
     }
@@ -20,9 +22,9 @@ public class BlogCatalogControllers :
     /// <param name="filter"></param>
     /// <returns></returns>
     [HttpPost("filter")]
-    public async Task<ActionResult<PageList<BlogCatalogItemDto>>> FilterAsync(BlogCatalogFilterDto filter)
+    public async Task<ActionResult<PageList<CodeSnippetItemDto>>> FilterAsync(CodeSnippetFilterDto filter)
     {
-        return await manager.FilterAsync<BlogCatalogItemDto>(filter);
+        return await manager.FilterAsync<CodeSnippetItemDto>(filter);
     }
 
     /// <summary>
@@ -31,9 +33,9 @@ public class BlogCatalogControllers :
     /// <param name="form"></param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<ActionResult<BlogCatalog>> AddAsync(BlogCatalogAddDto form)
+    public async Task<ActionResult<CodeSnippet>> AddAsync(CodeSnippetAddDto form)
     {
-        var entity = form.MapTo<BlogCatalogAddDto, BlogCatalog>();
+        var entity = form.MapTo<CodeSnippetAddDto, CodeSnippet>();
         return await manager.AddAsync(entity);
     }
 
@@ -44,7 +46,7 @@ public class BlogCatalogControllers :
     /// <param name="form"></param>
     /// <returns></returns>
     [HttpPut("{id}")]
-    public async Task<ActionResult<BlogCatalog?>> UpdateAsync([FromRoute] Guid id, BlogCatalogUpdateDto form)
+    public async Task<ActionResult<CodeSnippet?>> UpdateAsync([FromRoute] Guid id, CodeSnippetUpdateDto form)
     {
         var user = await manager.GetCurrent(id);
         if (user == null) return NotFound();
@@ -53,9 +55,9 @@ public class BlogCatalogControllers :
 
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<BlogCatalog?>> GetDetailAsync([FromRoute] Guid id)
+    public async Task<ActionResult<CodeSnippet?>> GetDetailAsync([FromRoute] Guid id)
     {
-        var res = await manager.FindAsync<BlogCatalog>(u => u.Id == id);
+        var res = await manager.FindAsync<CodeSnippet>(u => u.Id == id);
         return (res == null) ? NotFound() : res;
     }
 
@@ -66,7 +68,7 @@ public class BlogCatalogControllers :
     /// <returns></returns>
     [ApiExplorerSettings(IgnoreApi = true)]
     [HttpDelete("{id}")]
-    public async Task<ActionResult<BlogCatalog?>> DeleteAsync([FromRoute] Guid id)
+    public async Task<ActionResult<CodeSnippet?>> DeleteAsync([FromRoute] Guid id)
     {
         return await manager.DeleteAsync(id);
     }

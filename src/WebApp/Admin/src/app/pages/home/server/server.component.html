@@ -1,91 +1,109 @@
-<div class="p-2" *ngIf="!isLoading">
-  <mat-form-field appearance="standard" class="w-100">
-    <mat-label>搜索</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="搜索名称或描述" #input>
-  </mat-form-field>
-  <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8 w-100">
-    <!-- 行显示内容 -->
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef>名称</th>
-      <td mat-cell *matCellDef="let element" class="">
-        <span>
-          {{element.name}}
-        </span>
-        <span style=" vertical-align: middle">
-          <mat-icon *ngFor="let tag of element.tags" [style]="{color:tag.color}" [matTooltip]="tag.name">
-            {{tag.icon}}
-          </mat-icon>
-        </span>
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="tags">
-      <th mat-header-cell *matHeaderCellDef>环境</th>
-      <td mat-cell *matCellDef="let element">
-        <mat-chip-list>
-          <mat-chip [style]="{backgroundColor:getEnvironment(element)?.color,color:'#eee'}">
-            {{ getEnvironment(element)?.name }}
-          </mat-chip>
-        </mat-chip-list>
+<div class="p-2 row" *ngIf="!isLoading">
+  <!-- 组导航 -->
+  <div class="col col-auto">
+    <h3 class="ml-1 mt-1 mb-0">
+      <strong>资源组</strong>
+    </h3>
+    <mat-selection-list [multiple]="false" (selectionChange)="choseGroup($event)">
+      <mat-list-option [value]="null">全部</mat-list-option>
+      <mat-list-option *ngFor="let group of groups" [value]="group.id">
+        {{group.name}}
+      </mat-list-option>
+    </mat-selection-list>
+  </div>
+  <!-- table列表 -->
+  <div class="col">
+    <mat-form-field appearance="standard" class="w-100">
+      <mat-label>搜索</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="搜索名称或描述" #input>
+    </mat-form-field>
+    <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8 w-100">
+      <!-- 行显示内容 -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>名称</th>
+        <td mat-cell *matCellDef="let element" class="">
+          <span>
+            {{element.name}}
+          </span>
+          <span style=" vertical-align: middle">
+            <mat-icon *ngFor="let tag of element.tags" [style]="{color:tag.color}" [matTooltip]="tag.name">
+              {{tag.icon}}
+            </mat-icon>
+          </span>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="tags">
+        <th mat-header-cell *matHeaderCellDef>环境</th>
+        <td mat-cell *matCellDef="let element">
+          <mat-chip-list>
+            <mat-chip [style]="{backgroundColor:getEnvironment(element)?.color,color:'#eee'}">
+              {{ getEnvironment(element)?.name }}
+            </mat-chip>
+          </mat-chip-list>
 
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="group">
-      <th mat-header-cell *matHeaderCellDef>资源组</th>
-      <td mat-cell *matCellDef="let element">
-        <span [style]="{}">
-          <strong>
-            {{ getGroup(element).name }}
-          </strong>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="group">
+        <th mat-header-cell *matHeaderCellDef>资源组</th>
+        <td mat-cell *matCellDef="let element">
+          <span [style]="{}">
+            <strong>
+              {{ getGroup(element).name }}
+            </strong>
 
-        </span>
-      </td>
-    </ng-container>
+          </span>
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="ipAddress">
-      <th mat-header-cell *matHeaderCellDef>IP</th>
-      <td mat-cell *matCellDef="let element">{{getAttributeValue(element,'ipAddress')}}</td>
-    </ng-container>
-    <ng-container matColumnDef="port">
-      <th mat-header-cell *matHeaderCellDef>Port</th>
-      <td mat-cell *matCellDef="let element">{{getAttributeValue(element,'port')}}</td>
-    </ng-container>
+      <ng-container matColumnDef="ipAddress">
+        <th mat-header-cell *matHeaderCellDef>IP</th>
+        <td mat-cell *matCellDef="let element">{{getAttributeValue(element,'ipAddress')}}</td>
+      </ng-container>
+      <ng-container matColumnDef="port">
+        <th mat-header-cell *matHeaderCellDef>Port</th>
+        <td mat-cell *matCellDef="let element">{{getAttributeValue(element,'port')}}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="expand">
-      <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
-      <td mat-cell *matCellDef="let element">
-        <button mat-icon-button aria-label="expand row"
-          (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
-          <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
-          <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
-        </button>
-      </td>
-    </ng-container>
+      <ng-container matColumnDef="expand">
+        <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button aria-label="expand row"
+            (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+            <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
+            <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+          </button>
+        </td>
+      </ng-container>
 
-    <!-- 展开显示内容-->
-    <ng-container matColumnDef="expandedDetail">
-      <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
-        <div class="resource-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-          <div class="row m-0 mt-1">
-            {{element.description}}
-          </div>
-          <div class="row m-0 mt-2">
-            <div *ngFor="let attr of sortAttributes(element.attributes)" class="col col-auto">
-              <mat-form-field appearance="outline">
-                <mat-label>{{attr.displayName}}</mat-label>
-                <input matInput [placeholder]="attr.displayName" [value]="attr.value">
-              </mat-form-field>
+      <!-- 展开显示内容-->
+      <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
+          <div class="resource-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+            <div class="row m-0 mt-1">
+              {{element.description}}
             </div>
+            <div class="row m-0 mt-2">
+              <div *ngFor="let attr of sortAttributes(element.attributes)" class="col col-auto">
+                <mat-form-field appearance="outline">
+                  <mat-label>{{attr.displayName}}</mat-label>
+                  <input matInput [placeholder]="attr.displayName" [value]="attr.value">
+                </mat-form-field>
+              </div>
+            </div>
+
           </div>
+        </td>
+      </ng-container>
 
-        </div>
-      </td>
-    </ng-container>
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+      <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;" class="resource-element-row"
+        [class.resource-expanded-row]="expandedElement === element"
+        (click)="expandedElement = expandedElement === element ? null : element">
+      </tr>
+      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="resource-detail-row"></tr>
+    </table>
+  </div>
 
-    <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
-    <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;" class="resource-element-row"
-      [class.resource-expanded-row]="expandedElement === element"
-      (click)="expandedElement = expandedElement === element ? null : element">
-    </tr>
-    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="resource-detail-row"></tr>
-  </table>
+
+
 </div>

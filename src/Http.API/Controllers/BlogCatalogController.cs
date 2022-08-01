@@ -1,15 +1,18 @@
-using Share.Models.CommentDtos;
+using Share.Models.BlogCatalogDtos;
 namespace Http.API.Infrastructure;
 
-
-public class CommentControllers :
-    RestControllerBase<CommentManager>,
-    IRestController<Comment, CommentAddDto, CommentUpdateDto, CommentFilterDto, CommentItemDto>
+/// <summary>
+/// 博客目录
+/// </summary>
+[Route("api/[controller]")]
+public class BlogCatalogController :
+    RestControllerBase<BlogCatalogManager>,
+    IRestController<BlogCatalog, BlogCatalogAddDto, BlogCatalogUpdateDto, BlogCatalogFilterDto, BlogCatalogItemDto>
 {
-    public CommentControllers(
+    public BlogCatalogController(
         IUserContext user,
-        ILogger<CommentControllers> logger,
-        CommentManager manager
+        ILogger<BlogCatalogController> logger,
+        BlogCatalogManager manager
         ) : base(manager, user, logger)
     {
     }
@@ -20,9 +23,9 @@ public class CommentControllers :
     /// <param name="filter"></param>
     /// <returns></returns>
     [HttpPost("filter")]
-    public async Task<ActionResult<PageList<CommentItemDto>>> FilterAsync(CommentFilterDto filter)
+    public async Task<ActionResult<PageList<BlogCatalogItemDto>>> FilterAsync(BlogCatalogFilterDto filter)
     {
-        return await manager.FilterAsync<CommentItemDto>(filter);
+        return await manager.FilterAsync<BlogCatalogItemDto>(filter);
     }
 
     /// <summary>
@@ -31,9 +34,9 @@ public class CommentControllers :
     /// <param name="form"></param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<ActionResult<Comment>> AddAsync(CommentAddDto form)
+    public async Task<ActionResult<BlogCatalog>> AddAsync(BlogCatalogAddDto form)
     {
-        var entity = form.MapTo<CommentAddDto, Comment>();
+        var entity = form.MapTo<BlogCatalogAddDto, BlogCatalog>();
         return await manager.AddAsync(entity);
     }
 
@@ -44,7 +47,7 @@ public class CommentControllers :
     /// <param name="form"></param>
     /// <returns></returns>
     [HttpPut("{id}")]
-    public async Task<ActionResult<Comment?>> UpdateAsync([FromRoute] Guid id, CommentUpdateDto form)
+    public async Task<ActionResult<BlogCatalog?>> UpdateAsync([FromRoute] Guid id, BlogCatalogUpdateDto form)
     {
         var user = await manager.GetCurrent(id);
         if (user == null) return NotFound();
@@ -53,9 +56,9 @@ public class CommentControllers :
 
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Comment?>> GetDetailAsync([FromRoute] Guid id)
+    public async Task<ActionResult<BlogCatalog?>> GetDetailAsync([FromRoute] Guid id)
     {
-        var res = await manager.FindAsync<Comment>(u => u.Id == id);
+        var res = await manager.FindAsync<BlogCatalog>(u => u.Id == id);
         return (res == null) ? NotFound() : res;
     }
 
@@ -66,7 +69,7 @@ public class CommentControllers :
     /// <returns></returns>
     [ApiExplorerSettings(IgnoreApi = true)]
     [HttpDelete("{id}")]
-    public async Task<ActionResult<Comment?>> DeleteAsync([FromRoute] Guid id)
+    public async Task<ActionResult<BlogCatalog?>> DeleteAsync([FromRoute] Guid id)
     {
         return await manager.DeleteAsync(id);
     }

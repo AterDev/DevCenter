@@ -1,17 +1,17 @@
-using Share.Models.CodeLibraryDtos;
+using Share.Models.CommentDtos;
 namespace Http.API.Infrastructure;
 
 /// <summary>
-/// 模型库
+/// 博客评论
 /// </summary>
-public class CodeLibraryControllers :
-    RestControllerBase<CodeLibraryManager>,
-    IRestController<CodeLibrary, CodeLibraryAddDto, CodeLibraryUpdateDto, CodeLibraryFilterDto, CodeLibraryItemDto>
+public class CommentController :
+    RestControllerBase<CommentManager>,
+    IRestController<Comment, CommentAddDto, CommentUpdateDto, CommentFilterDto, CommentItemDto>
 {
-    public CodeLibraryControllers(
+    public CommentController(
         IUserContext user,
-        ILogger<CodeLibraryControllers> logger,
-        CodeLibraryManager manager
+        ILogger<CommentController> logger,
+        CommentManager manager
         ) : base(manager, user, logger)
     {
     }
@@ -22,9 +22,9 @@ public class CodeLibraryControllers :
     /// <param name="filter"></param>
     /// <returns></returns>
     [HttpPost("filter")]
-    public async Task<ActionResult<PageList<CodeLibraryItemDto>>> FilterAsync(CodeLibraryFilterDto filter)
+    public async Task<ActionResult<PageList<CommentItemDto>>> FilterAsync(CommentFilterDto filter)
     {
-        return await manager.FilterAsync<CodeLibraryItemDto>(filter);
+        return await manager.FilterAsync<CommentItemDto>(filter);
     }
 
     /// <summary>
@@ -33,9 +33,9 @@ public class CodeLibraryControllers :
     /// <param name="form"></param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<ActionResult<CodeLibrary>> AddAsync(CodeLibraryAddDto form)
+    public async Task<ActionResult<Comment>> AddAsync(CommentAddDto form)
     {
-        var entity = form.MapTo<CodeLibraryAddDto, CodeLibrary>();
+        var entity = form.MapTo<CommentAddDto, Comment>();
         return await manager.AddAsync(entity);
     }
 
@@ -46,7 +46,7 @@ public class CodeLibraryControllers :
     /// <param name="form"></param>
     /// <returns></returns>
     [HttpPut("{id}")]
-    public async Task<ActionResult<CodeLibrary?>> UpdateAsync([FromRoute] Guid id, CodeLibraryUpdateDto form)
+    public async Task<ActionResult<Comment?>> UpdateAsync([FromRoute] Guid id, CommentUpdateDto form)
     {
         var user = await manager.GetCurrent(id);
         if (user == null) return NotFound();
@@ -55,9 +55,9 @@ public class CodeLibraryControllers :
 
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<CodeLibrary?>> GetDetailAsync([FromRoute] Guid id)
+    public async Task<ActionResult<Comment?>> GetDetailAsync([FromRoute] Guid id)
     {
-        var res = await manager.FindAsync<CodeLibrary>(u => u.Id == id);
+        var res = await manager.FindAsync<Comment>(u => u.Id == id);
         return (res == null) ? NotFound() : res;
     }
 
@@ -68,7 +68,7 @@ public class CodeLibraryControllers :
     /// <returns></returns>
     [ApiExplorerSettings(IgnoreApi = true)]
     [HttpDelete("{id}")]
-    public async Task<ActionResult<CodeLibrary?>> DeleteAsync([FromRoute] Guid id)
+    public async Task<ActionResult<Comment?>> DeleteAsync([FromRoute] Guid id)
     {
         return await manager.DeleteAsync(id);
     }

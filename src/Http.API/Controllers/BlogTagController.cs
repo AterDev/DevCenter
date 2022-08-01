@@ -1,17 +1,17 @@
-using Share.Models.CodeSnippetDtos;
+using Share.Models.BlogTagDtos;
 namespace Http.API.Infrastructure;
 
 /// <summary>
-/// 代码片段
+/// 博客标签
 /// </summary>
-public class CodeSnippetControllers :
-    RestControllerBase<CodeSnippetManager>,
-    IRestController<CodeSnippet, CodeSnippetAddDto, CodeSnippetUpdateDto, CodeSnippetFilterDto, CodeSnippetItemDto>
+public class BlogTagController :
+    RestControllerBase<BlogTagManager>,
+    IRestController<BlogTag, BlogTagAddDto, BlogTagUpdateDto, BlogTagFilterDto, BlogTagItemDto>
 {
-    public CodeSnippetControllers(
+    public BlogTagController(
         IUserContext user,
-        ILogger<CodeSnippetControllers> logger,
-        CodeSnippetManager manager
+        ILogger<BlogTagController> logger,
+        BlogTagManager manager
         ) : base(manager, user, logger)
     {
     }
@@ -22,9 +22,9 @@ public class CodeSnippetControllers :
     /// <param name="filter"></param>
     /// <returns></returns>
     [HttpPost("filter")]
-    public async Task<ActionResult<PageList<CodeSnippetItemDto>>> FilterAsync(CodeSnippetFilterDto filter)
+    public async Task<ActionResult<PageList<BlogTagItemDto>>> FilterAsync(BlogTagFilterDto filter)
     {
-        return await manager.FilterAsync<CodeSnippetItemDto>(filter);
+        return await manager.FilterAsync<BlogTagItemDto>(filter);
     }
 
     /// <summary>
@@ -33,9 +33,9 @@ public class CodeSnippetControllers :
     /// <param name="form"></param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<ActionResult<CodeSnippet>> AddAsync(CodeSnippetAddDto form)
+    public async Task<ActionResult<BlogTag>> AddAsync(BlogTagAddDto form)
     {
-        var entity = form.MapTo<CodeSnippetAddDto, CodeSnippet>();
+        var entity = form.MapTo<BlogTagAddDto, BlogTag>();
         return await manager.AddAsync(entity);
     }
 
@@ -46,7 +46,7 @@ public class CodeSnippetControllers :
     /// <param name="form"></param>
     /// <returns></returns>
     [HttpPut("{id}")]
-    public async Task<ActionResult<CodeSnippet?>> UpdateAsync([FromRoute] Guid id, CodeSnippetUpdateDto form)
+    public async Task<ActionResult<BlogTag?>> UpdateAsync([FromRoute] Guid id, BlogTagUpdateDto form)
     {
         var user = await manager.GetCurrent(id);
         if (user == null) return NotFound();
@@ -55,9 +55,9 @@ public class CodeSnippetControllers :
 
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<CodeSnippet?>> GetDetailAsync([FromRoute] Guid id)
+    public async Task<ActionResult<BlogTag?>> GetDetailAsync([FromRoute] Guid id)
     {
-        var res = await manager.FindAsync<CodeSnippet>(u => u.Id == id);
+        var res = await manager.FindAsync<BlogTag>(u => u.Id == id);
         return (res == null) ? NotFound() : res;
     }
 
@@ -68,7 +68,7 @@ public class CodeSnippetControllers :
     /// <returns></returns>
     [ApiExplorerSettings(IgnoreApi = true)]
     [HttpDelete("{id}")]
-    public async Task<ActionResult<CodeSnippet?>> DeleteAsync([FromRoute] Guid id)
+    public async Task<ActionResult<BlogTag?>> DeleteAsync([FromRoute] Guid id)
     {
         return await manager.DeleteAsync(id);
     }

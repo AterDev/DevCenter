@@ -1,5 +1,6 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
+import { MatSelectionListChange } from '@angular/material/list';
 import { MatTableDataSource } from '@angular/material/table';
 import { lastValueFrom } from 'rxjs';
 import { NavigationType } from 'src/app/share/models/enum/navigation-type.model';
@@ -68,7 +69,17 @@ export class ServerComponent implements OnInit {
     return this.groups.find(g => g.resource!.includes(resource))!;
   }
 
+  choseGroup(event: MatSelectionListChange): void {
+    const id = event.options[0].value;
+    if (id == null) {
+      const resources = this.groups?.flatMap(g => g.resource!);
+      this.dataSource.data = resources;
+    } else {
+      const group = this.groups.find(g => g.id == id);
+      this.dataSource.data = group?.resource!;
+    }
 
+  }
   getAttributeValue(resource: Resource, name: string) {
     const item = resource.attributes?.find(val => val.name == name);
     return item?.value;

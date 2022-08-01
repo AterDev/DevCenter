@@ -1,17 +1,17 @@
-using Share.Models.BlogTagDtos;
+using Share.Models.CodeLibraryDtos;
 namespace Http.API.Infrastructure;
 
 /// <summary>
-/// 博客标签
+/// 模型库
 /// </summary>
-public class BlogTagControllers :
-    RestControllerBase<BlogTagManager>,
-    IRestController<BlogTag, BlogTagAddDto, BlogTagUpdateDto, BlogTagFilterDto, BlogTagItemDto>
+public class CodeLibraryController :
+    RestControllerBase<CodeLibraryManager>,
+    IRestController<CodeLibrary, CodeLibraryAddDto, CodeLibraryUpdateDto, CodeLibraryFilterDto, CodeLibraryItemDto>
 {
-    public BlogTagControllers(
+    public CodeLibraryController(
         IUserContext user,
-        ILogger<BlogTagControllers> logger,
-        BlogTagManager manager
+        ILogger<CodeLibraryController> logger,
+        CodeLibraryManager manager
         ) : base(manager, user, logger)
     {
     }
@@ -22,9 +22,9 @@ public class BlogTagControllers :
     /// <param name="filter"></param>
     /// <returns></returns>
     [HttpPost("filter")]
-    public async Task<ActionResult<PageList<BlogTagItemDto>>> FilterAsync(BlogTagFilterDto filter)
+    public async Task<ActionResult<PageList<CodeLibraryItemDto>>> FilterAsync(CodeLibraryFilterDto filter)
     {
-        return await manager.FilterAsync<BlogTagItemDto>(filter);
+        return await manager.FilterAsync<CodeLibraryItemDto>(filter);
     }
 
     /// <summary>
@@ -33,9 +33,9 @@ public class BlogTagControllers :
     /// <param name="form"></param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<ActionResult<BlogTag>> AddAsync(BlogTagAddDto form)
+    public async Task<ActionResult<CodeLibrary>> AddAsync(CodeLibraryAddDto form)
     {
-        var entity = form.MapTo<BlogTagAddDto, BlogTag>();
+        var entity = form.MapTo<CodeLibraryAddDto, CodeLibrary>();
         return await manager.AddAsync(entity);
     }
 
@@ -46,7 +46,7 @@ public class BlogTagControllers :
     /// <param name="form"></param>
     /// <returns></returns>
     [HttpPut("{id}")]
-    public async Task<ActionResult<BlogTag?>> UpdateAsync([FromRoute] Guid id, BlogTagUpdateDto form)
+    public async Task<ActionResult<CodeLibrary?>> UpdateAsync([FromRoute] Guid id, CodeLibraryUpdateDto form)
     {
         var user = await manager.GetCurrent(id);
         if (user == null) return NotFound();
@@ -55,9 +55,9 @@ public class BlogTagControllers :
 
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<BlogTag?>> GetDetailAsync([FromRoute] Guid id)
+    public async Task<ActionResult<CodeLibrary?>> GetDetailAsync([FromRoute] Guid id)
     {
-        var res = await manager.FindAsync<BlogTag>(u => u.Id == id);
+        var res = await manager.FindAsync<CodeLibrary>(u => u.Id == id);
         return (res == null) ? NotFound() : res;
     }
 
@@ -68,7 +68,7 @@ public class BlogTagControllers :
     /// <returns></returns>
     [ApiExplorerSettings(IgnoreApi = true)]
     [HttpDelete("{id}")]
-    public async Task<ActionResult<BlogTag?>> DeleteAsync([FromRoute] Guid id)
+    public async Task<ActionResult<CodeLibrary?>> DeleteAsync([FromRoute] Guid id)
     {
         return await manager.DeleteAsync(id);
     }
