@@ -49,4 +49,13 @@ export class BlogCatalogService extends BaseService {
     return this.request<BlogCatalog>('get', url);
   }
 
+  /**
+   * ⚠删除
+   * @param id string
+   */
+  delete(id: string): Observable<BlogCatalog> {
+    const url = `/api/BlogCatalog/${id}`;
+    return this.request<BlogCatalog>('delete', url);
+  }
+
 }

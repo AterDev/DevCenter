@@ -49,4 +49,13 @@ export class CommentService extends BaseService {
     return this.request<Comment>('get', url);
   }
 
+  /**
+   * ⚠删除
+   * @param id string
+   */
+  delete(id: string): Observable<Comment> {
+    const url = `/api/Comment/${id}`;
+    return this.request<Comment>('delete', url);
+  }
+
 }

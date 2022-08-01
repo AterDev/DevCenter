@@ -49,4 +49,13 @@ export class CodeLibraryService extends BaseService {
     return this.request<CodeLibrary>('get', url);
   }
 
+  /**
+   * ⚠删除
+   * @param id string
+   */
+  delete(id: string): Observable<CodeLibrary> {
+    const url = `/api/CodeLibrary/${id}`;
+    return this.request<CodeLibrary>('delete', url);
+  }
+
 }

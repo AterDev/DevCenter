@@ -1,5 +1,6 @@
+using Http.API.Infrastructure;
 using Share.Models.BlogTagDtos;
-namespace Http.API.Infrastructure;
+namespace Http.API.Controllers;
 
 /// <summary>
 /// 博客标签
@@ -58,7 +59,7 @@ public class BlogTagController :
     public async Task<ActionResult<BlogTag?>> GetDetailAsync([FromRoute] Guid id)
     {
         var res = await manager.FindAsync<BlogTag>(u => u.Id == id);
-        return (res == null) ? NotFound() : res;
+        return res == null ? NotFound() : res;
     }
 
     /// <summary>
@@ -66,7 +67,6 @@ public class BlogTagController :
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    [ApiExplorerSettings(IgnoreApi = true)]
     [HttpDelete("{id}")]
     public async Task<ActionResult<BlogTag?>> DeleteAsync([FromRoute] Guid id)
     {

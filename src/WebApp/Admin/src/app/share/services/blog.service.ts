@@ -49,4 +49,13 @@ export class BlogService extends BaseService {
     return this.request<Blog>('get', url);
   }
 
+  /**
+   * ⚠删除
+   * @param id string
+   */
+  delete(id: string): Observable<Blog> {
+    const url = `/api/Blog/${id}`;
+    return this.request<Blog>('delete', url);
+  }
+
 }

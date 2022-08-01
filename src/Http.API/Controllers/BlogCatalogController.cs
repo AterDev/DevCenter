@@ -1,5 +1,6 @@
+using Http.API.Infrastructure;
 using Share.Models.BlogCatalogDtos;
-namespace Http.API.Infrastructure;
+namespace Http.API.Controllers;
 
 /// <summary>
 /// 博客目录
@@ -59,7 +60,7 @@ public class BlogCatalogController :
     public async Task<ActionResult<BlogCatalog?>> GetDetailAsync([FromRoute] Guid id)
     {
         var res = await manager.FindAsync<BlogCatalog>(u => u.Id == id);
-        return (res == null) ? NotFound() : res;
+        return res == null ? NotFound() : res;
     }
 
     /// <summary>
@@ -67,7 +68,6 @@ public class BlogCatalogController :
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    [ApiExplorerSettings(IgnoreApi = true)]
     [HttpDelete("{id}")]
     public async Task<ActionResult<BlogCatalog?>> DeleteAsync([FromRoute] Guid id)
     {

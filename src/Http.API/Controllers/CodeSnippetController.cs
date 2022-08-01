@@ -1,5 +1,6 @@
+using Http.API.Infrastructure;
 using Share.Models.CodeSnippetDtos;
-namespace Http.API.Infrastructure;
+namespace Http.API.Controllers;
 
 /// <summary>
 /// 代码片段
@@ -58,7 +59,7 @@ public class CodeSnippetController :
     public async Task<ActionResult<CodeSnippet?>> GetDetailAsync([FromRoute] Guid id)
     {
         var res = await manager.FindAsync<CodeSnippet>(u => u.Id == id);
-        return (res == null) ? NotFound() : res;
+        return res == null ? NotFound() : res;
     }
 
     /// <summary>
@@ -66,7 +67,6 @@ public class CodeSnippetController :
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    [ApiExplorerSettings(IgnoreApi = true)]
     [HttpDelete("{id}")]
     public async Task<ActionResult<CodeSnippet?>> DeleteAsync([FromRoute] Guid id)
     {

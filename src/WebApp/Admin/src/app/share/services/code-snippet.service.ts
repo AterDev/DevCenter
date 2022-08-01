@@ -49,4 +49,13 @@ export class CodeSnippetService extends BaseService {
     return this.request<CodeSnippet>('get', url);
   }
 
+  /**
+   * ⚠删除
+   * @param id string
+   */
+  delete(id: string): Observable<CodeSnippet> {
+    const url = `/api/CodeSnippet/${id}`;
+    return this.request<CodeSnippet>('delete', url);
+  }
+
 }
