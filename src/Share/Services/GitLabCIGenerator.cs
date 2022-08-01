@@ -121,7 +121,7 @@ ${JobName}:
 
         var rules = Rules.Replace("${ProjectPath}",option.ProjectPath)
             .Replace("${BranchName}",option.BranchName);
-        var scripts = "  script:"e;
+        var scripts = "  script:";
         switch (option.Type)
         {
             case JobType.Dotnet:
