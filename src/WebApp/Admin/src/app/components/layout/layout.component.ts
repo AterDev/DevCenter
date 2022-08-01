@@ -30,10 +30,13 @@ export class LayoutComponent implements OnInit {
     // this layout is out of router-outlet, so we need to listen router event and change isLogin status
     router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
+        const navigateByUrls = ['/index', '/resource', '/server'];
+
         this.isLogin = this.auth.isLogin;
         this.isAdmin = this.auth.isAdmin;
         this.username = this.auth.userName;
-        if (this.isLogin)
+
+        if (this.isLogin && navigateByUrls.includes(event.url))
           this.getResources()
       }
     });
