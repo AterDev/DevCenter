@@ -1,15 +1,30 @@
-import { Status } from '../enum/status.model';
+import { Language } from '../enum/language.model';
+import { CodeType } from '../enum/code-type.model';
 /**
- * 代码片段
+ * 代码片段添加时请求结构
  */
 export interface CodeSnippetAddDto {
+  /**
+   * 名称
+   */
   name: string;
+  /**
+   * 描述
+   */
   description?: string | null;
-  format: string;
+  /**
+   * 内容
+   */
   content?: string | null;
   /**
-   * 状态
+   * 语言类型
    */
-  status?: Status;
+  language?: Language;
+  /**
+   * 类型
+   */
+  codeType?: CodeType;
+  userId: string;
+  libraryId: string;
 
 }

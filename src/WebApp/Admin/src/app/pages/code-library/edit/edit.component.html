@@ -1,0 +1,49 @@
+<mat-toolbar fxLayoutGap="4px">
+  <button color="basic" mat-icon-button matTooltip="返回" (click)="back()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+    编辑
+</mat-toolbar>
+<form class="d-flex" *ngIf="!isLoading" [formGroup]="formGroup" (ngSubmit)="edit()">
+  <div class="d-flex flex-column w-100">
+  <mat-form-field>
+    <mat-label>Namespace</mat-label>
+    <input matInput placeholder="Namespace" formControlName="namespace"  minlength="" maxlength="100">
+    <mat-error *ngIf="namespace?.invalid">
+    {{getValidatorMessage('namespace')}}
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Description</mat-label>
+    <textarea matInput placeholder="Description" formControlName="description"  minlength="" maxlength="500"
+      cols="5"></textarea>
+    <mat-error *ngIf="description?.invalid">
+    {{getValidatorMessage('description')}}
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Language</mat-label>
+    <input matInput placeholder="Language" formControlName="language"  minlength="" maxlength="100">
+    <mat-error *ngIf="language?.invalid">
+    {{getValidatorMessage('language')}}
+    </mat-error>
+  </mat-form-field>
+    <mat-slide-toggle color="primary" formControlName="isValid">IsValid</mat-slide-toggle>
+    <mat-slide-toggle color="primary" formControlName="isPublic">IsPublic</mat-slide-toggle>
+<mat-form-field>
+  <mat-label>Status</mat-label>
+  <mat-select formControlName="status">
+    <mat-option *ngFor="let item of Status | toKeyValue" [value]="item.value">
+      {{item.key}}
+    </mat-option>
+  </mat-select>
+  <mat-error *ngIf="status?.invalid">
+    {{getValidatorMessage('status')}}
+  </mat-error>
+</mat-form-field>    <mat-slide-toggle color="primary" formControlName="isDeleted">IsDeleted</mat-slide-toggle>
+
+    <div class="d-flex">
+      <button class="d-flex flex-column" mat-flat-button color="primary" type="submit">保存</button>
+    </div>
+  </div>
+</form>

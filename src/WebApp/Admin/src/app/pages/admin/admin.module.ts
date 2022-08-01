@@ -15,6 +15,11 @@ import { ResourceTagsModule } from '../resource-tags/resource-tags.module';
 import { ResourceTypeDefinitionModule } from '../resource-type-definition/resource-type-definition.module';
 import { RouteReuseStrategy } from '@angular/router';
 import { CustomRouteReuseStrategy } from 'src/app/custom-route-strategy';
+import { BlogModule } from '../blog/blog.module';
+import { BlogCatalogModule } from '../blog-catalog/blog-catalog.module';
+import { CodeLibraryModule } from '../code-library/code-library.module';
+import { CodeSnippetModule } from '../code-snippet/code-snippet.module';
+import { BlogTagModule } from '../blog-tag/blog-tag.module';
 
 
 @NgModule({
@@ -34,7 +39,13 @@ import { CustomRouteReuseStrategy } from 'src/app/custom-route-strategy';
     ResourceTagsModule,
     ResourceTypeDefinitionModule,
     RoleModule,
-    UserModule
+    UserModule,
+    BlogModule,
+    BlogCatalogModule,
+    BlogTagModule,
+    CodeLibraryModule,
+    CodeSnippetModule,
+
   ],
   providers: [{
     provide: RouteReuseStrategy,
