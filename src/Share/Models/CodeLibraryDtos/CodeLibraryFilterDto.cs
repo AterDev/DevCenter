@@ -10,6 +10,11 @@ public class CodeLibraryFilterDto : FilterBase
     [MaxLength(100)]
     public string? Namespace { get; set; }
     /// <summary>
+    /// 语言类型
+    /// </summary>
+    [MaxLength(100)]
+    public LibraryType? Type { get; set; }
+    /// <summary>
     /// 是否有效
     /// </summary>
     public bool? IsValid { get; set; }

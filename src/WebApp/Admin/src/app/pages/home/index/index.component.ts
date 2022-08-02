@@ -66,9 +66,9 @@ export class IndexComponent implements OnInit {
   getResourceUrl(attributes: ResourceAttribute[]): string | null {
     var attr = attributes.find(a => a.name == 'url');
     var faviconUrl = attributes.find(a => a.name == 'favicon');
-    if (faviconUrl) {
+    if (faviconUrl && faviconUrl.value !== '') {
       return faviconUrl.value;
-    } 
+    }
     return null;
   }
 

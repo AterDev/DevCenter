@@ -71,7 +71,7 @@ export class EditComponent implements OnInit {
     this.formGroup = new FormGroup({
       namespace: new FormControl(this.data.namespace, [Validators.maxLength(100)]),
       description: new FormControl(this.data.description, [Validators.maxLength(500)]),
-      language: new FormControl(this.data.language, [Validators.maxLength(100)]),
+      type: new FormControl(this.data.type, [Validators.maxLength(100)]),
       isValid: new FormControl(this.data.isValid, []),
       isPublic: new FormControl(this.data.isPublic, []),
       status: new FormControl(this.data.status, []),

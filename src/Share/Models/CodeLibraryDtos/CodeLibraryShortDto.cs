@@ -18,7 +18,7 @@ public class CodeLibraryShortDto
     /// 语言类型
     /// </summary>
     [MaxLength(100)]
-    public string? Language { get; set; }
+    public LibraryType Type { get; set; } = default!;
     /// <summary>
     /// 是否有效
     /// </summary>
@@ -33,5 +33,5 @@ public class CodeLibraryShortDto
     public DateTimeOffset UpdatedTime { get; set; } = default!;
     public Status Status { get; set; } = default!;
     public bool IsDeleted { get; set; } = default!;
-    
+
 }

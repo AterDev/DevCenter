@@ -17,8 +17,7 @@ public class CodeLibraryAddDto
     /// <summary>
     /// 语言类型
     /// </summary>
-    [MaxLength(100)]
-    public string? Language { get; set; }
+    public LibraryType Type { get; set; } = default!;
     /// <summary>
     /// 是否有效
     /// </summary>
@@ -27,6 +26,5 @@ public class CodeLibraryAddDto
     /// 是否公开
     /// </summary>
     public bool IsPublic { get; set; } = default!;
-    public Guid UserId { get; set; } = default!;
-    
+
 }

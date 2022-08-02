@@ -18,7 +18,7 @@ public class CodeLibraryItemDto
     /// 语言类型
     /// </summary>
     [MaxLength(100)]
-    public string? Language { get; set; }
+    public LibraryType Type { get; set; } = default!;
     /// <summary>
     /// 是否有效
     /// </summary>

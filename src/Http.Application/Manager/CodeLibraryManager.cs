@@ -1,4 +1,3 @@
-using Http.Application.IManager;
 using Share.Models.CodeLibraryDtos;
 
 namespace Http.Application.Manager;
@@ -7,6 +6,12 @@ public class CodeLibraryManager : DomainManagerBase<CodeLibrary, CodeLibraryUpda
 {
     public CodeLibraryManager(DataStoreContext storeContext) : base(storeContext)
     {
+    }
+
+
+    public override Task<CodeLibrary> AddAsync(CodeLibrary entity)
+    {
+        return base.AddAsync(entity);
     }
 
     public override async Task<CodeLibrary> UpdateAsync(CodeLibrary entity, CodeLibraryUpdateDto dto)
@@ -18,7 +23,7 @@ public class CodeLibraryManager : DomainManagerBase<CodeLibrary, CodeLibraryUpda
     public override async Task<PageList<TItem>> FilterAsync<TItem>(CodeLibraryFilterDto filter)
     {
         // TODO:根据实际业务构建筛选条件
-        return await  base.FilterAsync<TItem>(filter);
+        return await base.FilterAsync<TItem>(filter);
     }
 
 }

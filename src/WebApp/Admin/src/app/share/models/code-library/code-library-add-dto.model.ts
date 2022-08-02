@@ -1,3 +1,4 @@
+import { LibraryType } from '../enum/library-type.model';
 /**
  * 模型库添加时请求结构
  */
@@ -13,7 +14,7 @@ export interface CodeLibraryAddDto {
   /**
    * 语言类型
    */
-  language?: string | null;
+  type?: LibraryType;
   /**
    * 是否有效
    */

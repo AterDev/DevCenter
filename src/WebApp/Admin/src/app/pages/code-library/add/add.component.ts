@@ -7,52 +7,51 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Location } from '@angular/common';
+import { LibraryType } from 'src/app/share/models/enum/library-type.model';
 
 @Component({
-    selector: 'app-add',
-    templateUrl: './add.component.html',
-    styleUrls: ['./add.component.css']
+  selector: 'app-add',
+  templateUrl: './add.component.html',
+  styleUrls: ['./add.component.css']
 })
 export class AddComponent implements OnInit {
-    
-    formGroup!: FormGroup;
-    data = {} as CodeLibraryAddDto;
-    isLoading = true;
-    constructor(
-        
-        private service: CodeLibraryService,
-        public snb: MatSnackBar,
-        private router: Router,
-        private route: ActivatedRoute,
-        private location: Location
-        // public dialogRef: MatDialogRef<AddComponent>,
-        // @Inject(MAT_DIALOG_DATA) public dlgData: { id: '' }
-    ) {
+  LibraryType = LibraryType
+  formGroup!: FormGroup;
+  data = {} as CodeLibraryAddDto;
+  isLoading = true;
+  constructor(
+    private service: CodeLibraryService,
+    public snb: MatSnackBar,
+    private router: Router,
+    private route: ActivatedRoute,
+    private location: Location
+    // public dialogRef: MatDialogRef<AddComponent>,
+    // @Inject(MAT_DIALOG_DATA) public dlgData: { id: '' }
+  ) {
 
-    }
+  }
 
-    get namespace() { return this.formGroup.get('namespace'); }
-    get description() { return this.formGroup.get('description'); }
-    get language() { return this.formGroup.get('language'); }
-    get isValid() { return this.formGroup.get('isValid'); }
-    get isPublic() { return this.formGroup.get('isPublic'); }
+  get namespace() { return this.formGroup.get('namespace'); }
+  get description() { return this.formGroup.get('description'); }
+  get type() { return this.formGroup.get('type'); }
+  get isValid() { return this.formGroup.get('isValid'); }
+  get isPublic() { return this.formGroup.get('isPublic'); }
 
 
   ngOnInit(): void {
     this.initForm();
-    
+
     // TODO:获取其他相关数据后设置加载状态
     this.isLoading = false;
   }
-  
+
   initForm(): void {
     this.formGroup = new FormGroup({
       namespace: new FormControl(null, [Validators.maxLength(100)]),
       description: new FormControl(null, [Validators.maxLength(500)]),
-      language: new FormControl(null, [Validators.maxLength(100)]),
-      isValid: new FormControl(null, []),
-      isPublic: new FormControl(null, []),
-
+      type: new FormControl(LibraryType.Code, [Validators.maxLength(100)]),
+      isValid: new FormControl(true, []),
+      isPublic: new FormControl(false, []),
     });
   }
   getValidatorMessage(type: string): string {
@@ -65,10 +64,10 @@ export class AddComponent implements OnInit {
         return this.description?.errors?.['required'] ? 'Description必填' :
           this.description?.errors?.['minlength'] ? 'Description长度最少位' :
             this.description?.errors?.['maxlength'] ? 'Description长度最多500位' : '';
-      case 'language':
-        return this.language?.errors?.['required'] ? 'Language必填' :
-          this.language?.errors?.['minlength'] ? 'Language长度最少位' :
-            this.language?.errors?.['maxlength'] ? 'Language长度最多100位' : '';
+      case 'type':
+        return this.type?.errors?.['required'] ? 'type必填' :
+          this.type?.errors?.['minlength'] ? 'type长度最少位' :
+            this.type?.errors?.['maxlength'] ? 'type长度最多100位' : '';
       case 'isValid':
         return this.isValid?.errors?.['required'] ? 'IsValid必填' :
           this.isValid?.errors?.['minlength'] ? 'IsValid长度最少位' :
@@ -79,38 +78,23 @@ export class AddComponent implements OnInit {
             this.isPublic?.errors?.['maxlength'] ? 'IsPublic长度最多位' : '';
 
       default:
-    return '';
+        return '';
     }
   }
 
   add(): void {
-    if(this.formGroup.valid) {
-    const data = this.formGroup.value as CodeLibraryAddDto;
-    this.data = { ...data, ...this.data };
-    this.service.add(this.data)
+    if (this.formGroup.valid) {
+      const data = this.formGroup.value as CodeLibraryAddDto;
+      this.data = { ...data, ...this.data };
+      this.service.add(this.data)
         .subscribe(res => {
-            this.snb.open('添加成功');
-            // this.dialogRef.close(res);
-            this.router.navigate(['../index'],{relativeTo: this.route});
+          this.snb.open('添加成功');
+          // this.dialogRef.close(res);
+          this.router.navigate(['../index'], { relativeTo: this.route });
         });
     }
   }
   back(): void {
     this.location.back();
-  }
-  upload(event: any, type ?: string): void {
-    const files = event.target.files;
-    if(files[0]) {
-      const formdata = new FormData();
-      formdata.append('file', files[0]);
-    /*    this.service.uploadFile('agent-info' + type, formdata)
-          .subscribe(res => {
-            this.data.logoUrl = res.url;
-          }, error => {
-            this.snb.open(error?.detail);
-          }); */
-    } else {
-
-    }
   }
 }

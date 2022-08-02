@@ -1,3 +1,4 @@
+import { LibraryType } from '../enum/library-type.model';
 import { Status } from '../enum/status.model';
 /**
  * 模型库更新时请求结构
@@ -14,7 +15,7 @@ export interface CodeLibraryUpdateDto {
   /**
    * 语言类型
    */
-  language?: string | null;
+  type?: LibraryType | null;
   /**
    * 是否有效
    */

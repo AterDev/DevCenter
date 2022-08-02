@@ -16,10 +16,9 @@ public class CodeLibrary : EntityBase
     [MaxLength(500)]
     public string? Description { get; set; }
     /// <summary>
-    /// 语言类型
+    /// 库类型
     /// </summary>
-    [MaxLength(100)]
-    public string? Language { get; set; }
+    public LibraryType Type { get; set; } = LibraryType.Code;
     /// <summary>
     /// 是否有效
     /// </summary>
@@ -30,4 +29,24 @@ public class CodeLibrary : EntityBase
     public bool IsPublic { get; set; } = false;
     public User User { get; set; } = null!;
     public List<CodeSnippet>? Snippets { get; set; }
+}
+
+public enum LibraryType
+{
+    /// <summary>
+    /// 代码
+    /// </summary>
+    Code,
+    /// <summary>
+    /// 脚本
+    /// </summary>
+    Script,
+    /// <summary>
+    /// 配置
+    /// </summary>
+    Config,
+    /// <summary>
+    /// 运维
+    /// </summary>
+    DevOps
 }

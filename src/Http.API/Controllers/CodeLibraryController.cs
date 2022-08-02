@@ -37,6 +37,12 @@ public class CodeLibraryController :
     public async Task<ActionResult<CodeLibrary>> AddAsync(CodeLibraryAddDto form)
     {
         var entity = form.MapTo<CodeLibraryAddDto, CodeLibrary>();
+        var user = await _user.GetUserAsync();
+        if (user == null)
+        {
+            return NotFound();
+        }
+        entity.User = user;
         return await manager.AddAsync(entity);
     }
 

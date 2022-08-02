@@ -17,8 +17,7 @@ public class CodeLibraryUpdateDto
     /// <summary>
     /// 语言类型
     /// </summary>
-    [MaxLength(100)]
-    public string? Language { get; set; }
+    public LibraryType? Type { get; set; }
     /// <summary>
     /// 是否有效
     /// </summary>
@@ -29,6 +28,4 @@ public class CodeLibraryUpdateDto
     public bool? IsPublic { get; set; }
     public Status? Status { get; set; }
     public bool? IsDeleted { get; set; }
-    public Guid? UserId { get; set; } = default!;
-    
 }

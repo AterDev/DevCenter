@@ -13,6 +13,10 @@ export interface SSHOption {
    */
   type?: JobType | null;
   /**
+   * 分支，默认dev
+   */
+  branchName?: string | null;
+  /**
    * 远程主机连接 user@12.34.56.78
    */
   sshHost: string;
