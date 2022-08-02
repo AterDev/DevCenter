@@ -26,6 +26,5 @@ export interface CodeLibraryUpdateDto {
   isPublic?: boolean | null;
   status?: Status | null;
   isDeleted?: boolean | null;
-  userId?: string | null;
 
 }

@@ -11,36 +11,42 @@ import * as ClassicEditor from 'ng-ckeditor5-classic';
 import { environment } from 'src/environments/environment';
 import { CKEditor5 } from '@ckeditor/ckeditor5-angular';
 // import { OidcSecurityService } from 'angular-auth-oidc-client';
+import { Language } from 'src/app/share/models/enum/language.model';
+import { CodeType } from 'src/app/share/models/enum/code-type.model';
 
 @Component({
-    selector: 'app-add',
-    templateUrl: './add.component.html',
-    styleUrls: ['./add.component.css']
+  selector: 'app-add',
+  templateUrl: './add.component.html',
+  styleUrls: ['./add.component.css']
 })
 export class AddComponent implements OnInit {
-    public editorConfig!: CKEditor5.Config;
+  public editorConfig!: CKEditor5.Config;
   public editor: CKEditor5.EditorConstructor = ClassicEditor;
-  
-    formGroup!: FormGroup;
-    data = {} as CodeSnippetAddDto;
-    isLoading = true;
-    constructor(
-        
+  Language = Language;
+  CodeType = CodeType;
+
+  formGroup!: FormGroup;
+  data = {} as CodeSnippetAddDto;
+  isLoading = true;
+  constructor(
+
     // private authService: OidcSecurityService,
-        private service: CodeSnippetService,
-        public snb: MatSnackBar,
-        private router: Router,
-        private route: ActivatedRoute,
-        private location: Location
-        // public dialogRef: MatDialogRef<AddComponent>,
-        // @Inject(MAT_DIALOG_DATA) public dlgData: { id: '' }
-    ) {
+    private service: CodeSnippetService,
+    public snb: MatSnackBar,
+    private router: Router,
+    private route: ActivatedRoute,
+    private location: Location
+    // public dialogRef: MatDialogRef<AddComponent>,
+    // @Inject(MAT_DIALOG_DATA) public dlgData: { id: '' }
+  ) {
 
-    }
+  }
 
-    get name() { return this.formGroup.get('name'); }
-    get description() { return this.formGroup.get('description'); }
-    get content() { return this.formGroup.get('content'); }
+  get name() { return this.formGroup.get('name'); }
+  get description() { return this.formGroup.get('description'); }
+  get content() { return this.formGroup.get('content'); }
+  get language() { return this.formGroup.get('language'); }
+  get codeType() { return this.formGroup.get('codeType'); }
 
 
   ngOnInit(): void {
@@ -49,7 +55,7 @@ export class AddComponent implements OnInit {
     // TODO:获取其他相关数据后设置加载状态
     this.isLoading = false;
   }
-    initEditor(): void {
+  initEditor(): void {
     this.editorConfig = {
       // placeholder: '请添加图文信息提供证据，也可以直接从Word文档中复制',
       simpleUpload: {
@@ -72,6 +78,8 @@ export class AddComponent implements OnInit {
       name: new FormControl(null, [Validators.maxLength(100)]),
       description: new FormControl(null, [Validators.maxLength(500)]),
       content: new FormControl(null, [Validators.maxLength(5000)]),
+      language: new FormControl(Language.Csharp, []),
+      codeType: new FormControl(CodeType.Entity, []),
 
     });
   }
@@ -89,40 +97,33 @@ export class AddComponent implements OnInit {
         return this.content?.errors?.['required'] ? 'Content必填' :
           this.content?.errors?.['minlength'] ? 'Content长度最少位' :
             this.content?.errors?.['maxlength'] ? 'Content长度最多5000位' : '';
+      case 'language':
+        return this.language?.errors?.['required'] ? 'Language必填' :
+          this.language?.errors?.['minlength'] ? 'Language长度最少位' :
+            this.language?.errors?.['maxlength'] ? 'Language长度最多位' : '';
+      case 'codeType':
+        return this.codeType?.errors?.['required'] ? 'CodeType必填' :
+          this.codeType?.errors?.['minlength'] ? 'CodeType长度最少位' :
+            this.codeType?.errors?.['maxlength'] ? 'CodeType长度最多位' : '';
 
       default:
-    return '';
+        return '';
     }
   }
 
   add(): void {
-    if(this.formGroup.valid) {
-    const data = this.formGroup.value as CodeSnippetAddDto;
-    this.data = { ...data, ...this.data };
-    this.service.add(this.data)
+    if (this.formGroup.valid) {
+      const data = this.formGroup.value as CodeSnippetAddDto;
+      this.data = { ...data, ...this.data };
+      this.service.add(this.data)
         .subscribe(res => {
-            this.snb.open('添加成功');
-            // this.dialogRef.close(res);
-            this.router.navigate(['../index'],{relativeTo: this.route});
+          this.snb.open('添加成功');
+          // this.dialogRef.close(res);
+          this.router.navigate(['../index'], { relativeTo: this.route });
         });
     }
   }
   back(): void {
     this.location.back();
-  }
-  upload(event: any, type ?: string): void {
-    const files = event.target.files;
-    if(files[0]) {
-      const formdata = new FormData();
-      formdata.append('file', files[0]);
-    /*    this.service.uploadFile('agent-info' + type, formdata)
-          .subscribe(res => {
-            this.data.logoUrl = res.url;
-          }, error => {
-            this.snb.open(error?.detail);
-          }); */
-    } else {
-
-    }
   }
 }

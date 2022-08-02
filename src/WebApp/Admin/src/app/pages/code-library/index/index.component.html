@@ -22,10 +22,10 @@
       {{element.description}}
     </td>
   </ng-container>
-  <ng-container matColumnDef="language">
-    <th mat-header-cell *matHeaderCellDef>Language</th>
+  <ng-container matColumnDef="type">
+    <th mat-header-cell *matHeaderCellDef>类型</th>
     <td mat-cell *matCellDef="let element">
-      {{element.language}}
+      {{LibraryType[element.type]}}
     </td>
   </ng-container>
   <ng-container matColumnDef="isValid">

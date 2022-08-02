@@ -45,7 +45,6 @@ import { BlogTagModule } from '../blog-tag/blog-tag.module';
     BlogTagModule,
     CodeLibraryModule,
     CodeSnippetModule,
-
   ],
   providers: [{
     provide: RouteReuseStrategy,

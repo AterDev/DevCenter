@@ -21,8 +21,31 @@
         {{getValidatorMessage('description')}}
       </mat-error>
     </mat-form-field>
-    <!-- <ckeditor [editor]="editor" [config]="editorConfig" formControlName="content" (ready)="onReady($event)">
-    </ckeditor> -->
+    <mat-form-field>
+      <mat-label>Language</mat-label>
+      <mat-select formControlName="language">
+        <mat-option *ngFor="let item of Language | toKeyValue" [value]="item.value">
+          {{item.key}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="language?.invalid">
+        {{getValidatorMessage('language')}}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>CodeType</mat-label>
+      <mat-select formControlName="codeType">
+        <mat-option *ngFor="let item of CodeType | toKeyValue" [value]="item.value">
+          {{item.key}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="codeType?.invalid">
+        {{getValidatorMessage('codeType')}}
+      </mat-error>
+    </mat-form-field>
+    <ckeditor [editor]="editor" [config]="editorConfig" formControlName="content" (ready)="onReady($event)">
+    </ckeditor>
+
     <mat-form-field>
       <mat-label>Status</mat-label>
       <mat-select formControlName="status">
@@ -34,9 +57,7 @@
         {{getValidatorMessage('status')}}
       </mat-error>
     </mat-form-field>
-    <mat-slide-toggle color="primary" formControlName="isDeleted">IsDeleted</mat-slide-toggle>
-
-    <div class="d-flex">
+    <div class="d-flex mt-1">
       <button class="d-flex flex-column" mat-flat-button color="primary" type="submit">保存</button>
     </div>
   </div>

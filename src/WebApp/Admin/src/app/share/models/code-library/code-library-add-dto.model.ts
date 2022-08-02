@@ -23,6 +23,5 @@ export interface CodeLibraryAddDto {
    * 是否公开
    */
   isPublic: boolean;
-  userId: string;
 
 }

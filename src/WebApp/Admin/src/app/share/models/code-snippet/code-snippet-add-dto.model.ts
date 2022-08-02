@@ -24,7 +24,6 @@ export interface CodeSnippetAddDto {
    * 类型
    */
   codeType?: CodeType;
-  userId: string;
   libraryId: string;
 
 }

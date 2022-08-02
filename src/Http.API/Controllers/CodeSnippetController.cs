@@ -37,6 +37,9 @@ public class CodeSnippetController :
     public async Task<ActionResult<CodeSnippet>> AddAsync(CodeSnippetAddDto form)
     {
         var entity = form.MapTo<CodeSnippetAddDto, CodeSnippet>();
+        var user = await _user.GetUserAsync();
+        if (user == null) return NotFound();
+        entity.User = user;
         return await manager.AddAsync(entity);
     }
 

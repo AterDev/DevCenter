@@ -8,6 +8,8 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
+import { CodeType } from 'src/app/share/models/enum/code-type.model';
+import { Language } from 'src/app/share/models/enum/language.model';
 
 @Component({
   selector: 'app-index',
@@ -16,10 +18,13 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class IndexComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
+
+  Language = Language;
+  CodeType = CodeType;
   isLoading = true;
   total = 0;
   data: CodeSnippetItemDto[] = [];
-  columns: string[] = ['name', 'description', 'createdTime', 'updatedTime', 'status', 'actions'];
+  columns: string[] = ['name', 'description', 'language', 'codeType', 'createdTime', 'actions'];
   dataSource!: MatTableDataSource<CodeSnippetItemDto>;
   filter: CodeSnippetFilterDto;
   pageSizeOption = [12, 20, 50];
@@ -110,7 +115,7 @@ export class IndexComponent implements OnInit {
       if (res) { }
     });
   }
-
+  
   openEditDialog(id: string): void {
     const ref = this.dialog.open(EditComponent, {
       hasBackdrop: true,

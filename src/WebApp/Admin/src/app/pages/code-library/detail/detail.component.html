@@ -15,17 +15,55 @@
     </mat-card-header> -->
     <!-- <img mat-card-image src="" alt=""> -->
     <mat-card-content>
-      <p>Namespace: <span class="text-primary">{{data.namespace}}</span></p>
-      <p>Description: <span class="text-primary">{{data.description}}</span></p>
-      <p>Type: <span class="text-primary">{{data.type}}</span></p>
-      <p>IsValid: <span class="text-primary">{{data.isValid}}</span></p>
-      <p>IsPublic: <span class="text-primary">{{data.isPublic}}</span></p>
-      <p>Id: <span class="text-primary">{{data.id}}</span></p>
-      <p>CreatedTime: <span class="text-primary">{{data.createdTime}}</span></p>
-      <p>UpdatedTime: <span class="text-primary">{{data.updatedTime}}</span></p>
-      <p>Status: <span class="text-primary">{{data.status}}</span></p>
-      <p>IsDeleted: <span class="text-primary">{{data.isDeleted}}</span></p>
+      <p>
+        <strong>Namespace</strong> <br>
+        <span class="text-primary">{{data.namespace}}</span>
+      </p>
 
+      <p>
+        <strong>Description</strong> <br>
+        <span class="text-primary">{{data.description}}</span>
+      </p>
+
+      <p>
+        <strong>Type</strong> <br>
+        <span class="text-primary">{{data.type}}</span>
+      </p>
+
+      <p>
+        <strong>IsValid</strong> <br>
+        <span class="text-primary">{{data.isValid}}</span>
+      </p>
+
+      <p>
+        <strong>IsPublic</strong> <br>
+        <span class="text-primary">{{data.isPublic}}</span>
+      </p>
+
+      <p>
+        <strong>Id</strong> <br>
+        <span class="text-primary">{{data.id}}</span>
+      </p>
+
+      <p>
+        <strong>CreatedTime</strong> <br>
+        <span class="text-primary">{{data.createdTime|date:'yyyy-MM-dd HH:mm:ss'}}</span>
+      </p>
+
+      <p>
+        <strong>UpdatedTime</strong> <br>
+        <span class="text-primary">{{data.updatedTime|date:'yyyy-MM-dd HH:mm:ss'}}</span>
+      </p>
+
+      <p>
+        <strong>Status</strong> <br>
+        <span class="text-primary">{{data.status}}</span>
+      </p>
+
+      <p>
+        <strong>IsDeleted</strong> <br>
+        <span class="text-primary">{{data.isDeleted}}</span>
+      </p>
     </mat-card-content>
     <mat-card-actions>
       <!-- <button mat-button></button>

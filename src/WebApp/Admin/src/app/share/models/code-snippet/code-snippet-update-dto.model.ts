@@ -26,7 +26,5 @@ export interface CodeSnippetUpdateDto {
    */
   codeType?: CodeType | null;
   status?: Status | null;
-  isDeleted?: boolean | null;
-  userId?: string | null;
 
 }

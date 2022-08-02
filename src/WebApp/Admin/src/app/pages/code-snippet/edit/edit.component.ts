@@ -11,6 +11,8 @@ import * as ClassicEditor from 'ng-ckeditor5-classic';
 import { environment } from 'src/environments/environment';
 import { CKEditor5 } from '@ckeditor/ckeditor5-angular';
 // import { OidcSecurityService } from 'angular-auth-oidc-client';
+import { Language } from 'src/app/share/models/enum/language.model';
+import { CodeType } from 'src/app/share/models/enum/code-type.model';
 import { Status } from 'src/app/share/models/enum/status.model';
 
 @Component({
@@ -21,6 +23,8 @@ import { Status } from 'src/app/share/models/enum/status.model';
 export class EditComponent implements OnInit {
   public editorConfig!: CKEditor5.Config;
   public editor: CKEditor5.EditorConstructor = ClassicEditor;
+  Language = Language;
+  CodeType = CodeType;
   Status = Status;
 
   id!: string;
@@ -28,8 +32,8 @@ export class EditComponent implements OnInit {
   data = {} as CodeSnippet;
   updateData = {} as CodeSnippetUpdateDto;
   formGroup!: FormGroup;
-    constructor(
-    
+  constructor(
+
     // private authService: OidcSecurityService,
     private service: CodeSnippetService,
     private snb: MatSnackBar,
@@ -47,11 +51,12 @@ export class EditComponent implements OnInit {
     }
   }
 
-    get name() { return this.formGroup.get('name'); }
-    get description() { return this.formGroup.get('description'); }
-    get content() { return this.formGroup.get('content'); }
-    get status() { return this.formGroup.get('status'); }
-    get isDeleted() { return this.formGroup.get('isDeleted'); }
+  get name() { return this.formGroup.get('name'); }
+  get description() { return this.formGroup.get('description'); }
+  get content() { return this.formGroup.get('content'); }
+  get language() { return this.formGroup.get('language'); }
+  get codeType() { return this.formGroup.get('codeType'); }
+  get status() { return this.formGroup.get('status'); }
 
 
   ngOnInit(): void {
@@ -60,7 +65,7 @@ export class EditComponent implements OnInit {
     // TODO:等待数据加载完成
     // this.isLoading = false;
   }
-    initEditor(): void {
+  initEditor(): void {
     this.editorConfig = {
       // placeholder: '请添加图文信息提供证据，也可以直接从Word文档中复制',
       simpleUpload: {
@@ -94,8 +99,9 @@ export class EditComponent implements OnInit {
       name: new FormControl(this.data.name, [Validators.maxLength(100)]),
       description: new FormControl(this.data.description, [Validators.maxLength(500)]),
       content: new FormControl(this.data.content, [Validators.maxLength(5000)]),
+      language: new FormControl(this.data.language, []),
+      codeType: new FormControl(this.data.codeType, []),
       status: new FormControl(this.data.status, []),
-      isDeleted: new FormControl(this.data.isDeleted, []),
 
     });
   }
@@ -113,49 +119,37 @@ export class EditComponent implements OnInit {
         return this.content?.errors?.['required'] ? 'Content必填' :
           this.content?.errors?.['minlength'] ? 'Content长度最少位' :
             this.content?.errors?.['maxlength'] ? 'Content长度最多5000位' : '';
+      case 'language':
+        return this.language?.errors?.['required'] ? 'Language必填' :
+          this.language?.errors?.['minlength'] ? 'Language长度最少位' :
+            this.language?.errors?.['maxlength'] ? 'Language长度最多位' : '';
+      case 'codeType':
+        return this.codeType?.errors?.['required'] ? 'CodeType必填' :
+          this.codeType?.errors?.['minlength'] ? 'CodeType长度最少位' :
+            this.codeType?.errors?.['maxlength'] ? 'CodeType长度最多位' : '';
       case 'status':
         return this.status?.errors?.['required'] ? 'Status必填' :
           this.status?.errors?.['minlength'] ? 'Status长度最少位' :
             this.status?.errors?.['maxlength'] ? 'Status长度最多位' : '';
-      case 'isDeleted':
-        return this.isDeleted?.errors?.['required'] ? 'IsDeleted必填' :
-          this.isDeleted?.errors?.['minlength'] ? 'IsDeleted长度最少位' :
-            this.isDeleted?.errors?.['maxlength'] ? 'IsDeleted长度最多位' : '';
 
       default:
         return '';
     }
   }
   edit(): void {
-    if(this.formGroup.valid) {
+    if (this.formGroup.valid) {
       this.updateData = this.formGroup.value as CodeSnippetUpdateDto;
       this.service.update(this.id, this.updateData)
         .subscribe(res => {
           this.snb.open('修改成功');
-           // this.dialogRef.close(res);
-          // this.router.navigate(['../index'],{relativeTo: this.route});
+          // this.dialogRef.close(res);
+          this.router.navigate(['../../index'], { relativeTo: this.route });
         });
     }
   }
 
   back(): void {
     this.location.back();
-  }
-
-  upload(event: any, type ?: string): void {
-    const files = event.target.files;
-    if(files[0]) {
-    const formdata = new FormData();
-    formdata.append('file', files[0]);
-    /*    this.service.uploadFile('agent-info' + type, formdata)
-          .subscribe(res => {
-            this.updateData.logoUrl = res.url;
-          }, error => {
-            this.snb.open(error?.detail);
-          }); */
-    } else {
-
-    }
   }
 
 }

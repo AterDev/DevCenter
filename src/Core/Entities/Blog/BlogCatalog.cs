@@ -13,7 +13,7 @@ public class BlogCatalog : EntityBase
     /// <summary>
     /// 该目录的文章
     /// </summary>
-    public List<Blog>? Articles { get; set; }
+    public List<Blog>? Blogs { get; set; }
     /// <summary>
     /// 父目录
     /// </summary>

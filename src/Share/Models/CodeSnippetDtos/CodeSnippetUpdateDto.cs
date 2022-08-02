@@ -28,7 +28,5 @@ public class CodeSnippetUpdateDto
     /// </summary>
     public CodeType? CodeType { get; set; }
     public Status? Status { get; set; }
-    public bool? IsDeleted { get; set; }
-    public Guid? UserId { get; set; } = default!;
-    
+
 }

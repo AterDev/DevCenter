@@ -8,6 +8,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Location } from '@angular/common';
 import { Status } from 'src/app/share/models/enum/status.model';
+import { LibraryType } from 'src/app/share/models/enum/library-type.model';
 
 @Component({
   selector: 'app-edit',
@@ -16,14 +17,13 @@ import { Status } from 'src/app/share/models/enum/status.model';
 })
 export class EditComponent implements OnInit {
   Status = Status;
-
+  LibraryType = LibraryType
   id!: string;
   isLoading = true;
   data = {} as CodeLibrary;
   updateData = {} as CodeLibraryUpdateDto;
   formGroup!: FormGroup;
-    constructor(
-    
+  constructor(
     private service: CodeLibraryService,
     private snb: MatSnackBar,
     private router: Router,
@@ -40,22 +40,22 @@ export class EditComponent implements OnInit {
     }
   }
 
-    get namespace() { return this.formGroup.get('namespace'); }
-    get description() { return this.formGroup.get('description'); }
-    get language() { return this.formGroup.get('language'); }
-    get isValid() { return this.formGroup.get('isValid'); }
-    get isPublic() { return this.formGroup.get('isPublic'); }
-    get status() { return this.formGroup.get('status'); }
-    get isDeleted() { return this.formGroup.get('isDeleted'); }
+  get namespace() { return this.formGroup.get('namespace'); }
+  get description() { return this.formGroup.get('description'); }
+  get type() { return this.formGroup.get('type'); }
+  get isValid() { return this.formGroup.get('isValid'); }
+  get isPublic() { return this.formGroup.get('isPublic'); }
+  get status() { return this.formGroup.get('status'); }
+  get isDeleted() { return this.formGroup.get('isDeleted'); }
 
 
   ngOnInit(): void {
     this.getDetail();
-    
+
     // TODO:等待数据加载完成
     // this.isLoading = false;
   }
-  
+
   getDetail(): void {
     this.service.getDetail(this.id)
       .subscribe(res => {
@@ -89,10 +89,10 @@ export class EditComponent implements OnInit {
         return this.description?.errors?.['required'] ? 'Description必填' :
           this.description?.errors?.['minlength'] ? 'Description长度最少位' :
             this.description?.errors?.['maxlength'] ? 'Description长度最多500位' : '';
-      case 'language':
-        return this.language?.errors?.['required'] ? 'Language必填' :
-          this.language?.errors?.['minlength'] ? 'Language长度最少位' :
-            this.language?.errors?.['maxlength'] ? 'Language长度最多100位' : '';
+      case 'type':
+        return this.type?.errors?.['required'] ? 'type必填' :
+          this.type?.errors?.['minlength'] ? 'type长度最少位' :
+            this.type?.errors?.['maxlength'] ? 'type长度最多100位' : '';
       case 'isValid':
         return this.isValid?.errors?.['required'] ? 'IsValid必填' :
           this.isValid?.errors?.['minlength'] ? 'IsValid长度最少位' :
@@ -115,12 +115,12 @@ export class EditComponent implements OnInit {
     }
   }
   edit(): void {
-    if(this.formGroup.valid) {
+    if (this.formGroup.valid) {
       this.updateData = this.formGroup.value as CodeLibraryUpdateDto;
       this.service.update(this.id, this.updateData)
         .subscribe(res => {
           this.snb.open('修改成功');
-           // this.dialogRef.close(res);
+          // this.dialogRef.close(res);
           // this.router.navigate(['../index'],{relativeTo: this.route});
         });
     }
@@ -130,17 +130,17 @@ export class EditComponent implements OnInit {
     this.location.back();
   }
 
-  upload(event: any, type ?: string): void {
+  upload(event: any, type?: string): void {
     const files = event.target.files;
-    if(files[0]) {
-    const formdata = new FormData();
-    formdata.append('file', files[0]);
-    /*    this.service.uploadFile('agent-info' + type, formdata)
-          .subscribe(res => {
-            this.updateData.logoUrl = res.url;
-          }, error => {
-            this.snb.open(error?.detail);
-          }); */
+    if (files[0]) {
+      const formdata = new FormData();
+      formdata.append('file', files[0]);
+      /*    this.service.uploadFile('agent-info' + type, formdata)
+            .subscribe(res => {
+              this.updateData.logoUrl = res.url;
+            }, error => {
+              this.snb.open(error?.detail);
+            }); */
     } else {
 
     }
