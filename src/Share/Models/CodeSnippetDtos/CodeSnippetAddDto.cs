@@ -29,5 +29,5 @@ public class CodeSnippetAddDto
     public CodeType CodeType { get; set; } = default!;
     public Guid UserId { get; set; } = default!;
     public Guid LibraryId { get; set; } = default!;
-    
+
 }

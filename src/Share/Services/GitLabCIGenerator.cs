@@ -96,7 +96,7 @@ ${JobName}:
     - dotnet publish $PROJECT_PATH -c Release -o $PUBLISH_PATH
     - cd $PUBLISH_PATH
     - ssh $SSH_HOST sudo mkdir -p $RUN_PATH
-    - scp -r./* $SSH_HOST:$RUN_PATH
+    - scp -r ./* $SSH_HOST:$RUN_PATH
     - ssh $SSH_HOST sudo systemctl restart ${ServiceName}
 ";
 
