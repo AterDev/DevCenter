@@ -17,7 +17,7 @@ namespace EntityFramework.Migrator.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.4")
+                .HasAnnotation("ProductVersion", "6.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseHiLo(modelBuilder, "EntityFrameworkHiLoSequence");
@@ -25,7 +25,285 @@ namespace EntityFramework.Migrator.Migrations
             modelBuilder.HasSequence("EntityFrameworkHiLoSequence")
                 .IncrementsBy(10);
 
-            modelBuilder.Entity("Core.Models.CodeFolder", b =>
+            modelBuilder.Entity("BlogBlogTag", b =>
+                {
+                    b.Property<Guid>("BlogTagsId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("BlogsId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("BlogTagsId", "BlogsId");
+
+                    b.HasIndex("BlogsId");
+
+                    b.ToTable("BlogBlogTag");
+                });
+
+            modelBuilder.Entity("Core.Entities.Blog.Blog", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("AuthorName")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<Guid?>("CatalogId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("CreatedTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool?>("IsPrivate")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Summary")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTimeOffset>("UpdatedTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CatalogId");
+
+                    b.HasIndex("Title")
+                        .IsUnique();
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Blogs");
+                });
+
+            modelBuilder.Entity("Core.Entities.Blog.BlogCatalog", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<short>("Level")
+                        .HasColumnType("smallint");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<short>("Sort")
+                        .HasColumnType("smallint");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Type")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<DateTimeOffset>("UpdatedTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Level");
+
+                    b.HasIndex("Name");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("BlogCatalogs");
+                });
+
+            modelBuilder.Entity("Core.Entities.Blog.BlogTag", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Color")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<DateTimeOffset>("CreatedTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Icon")
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTimeOffset>("UpdatedTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name");
+
+                    b.ToTable("BlogTags");
+                });
+
+            modelBuilder.Entity("Core.Entities.Blog.Comment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("BlogId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Content")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<DateTimeOffset>("CreatedTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTimeOffset>("UpdatedTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BlogId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("Core.Entities.Code.CodeLibrary", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsValid")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Language")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("Namespace")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTimeOffset>("UpdatedTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("CodeLibraries");
+                });
+
+            modelBuilder.Entity("Core.Entities.Code.CodeSnippet", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("CodeFolderId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("CodeType")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Content")
+                        .HasMaxLength(5000)
+                        .HasColumnType("character varying(5000)");
+
+                    b.Property<DateTimeOffset>("CreatedTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<int>("Language")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid?>("LibraryId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTimeOffset>("UpdatedTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CodeFolderId");
+
+                    b.HasIndex("LibraryId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("CodeSnippets");
+                });
+
+            modelBuilder.Entity("Core.Entities.CodeFolder", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -55,50 +333,7 @@ namespace EntityFramework.Migrator.Migrations
                     b.ToTable("CodeFolders");
                 });
 
-            modelBuilder.Entity("Core.Models.CodeSnippet", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("CodeFolderId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Content")
-                        .HasMaxLength(2000)
-                        .HasColumnType("character varying(2000)");
-
-                    b.Property<DateTimeOffset>("CreatedTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
-                    b.Property<string>("Format")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTimeOffset>("UpdatedTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CodeFolderId");
-
-                    b.ToTable("CodeSnippets");
-                });
-
-            modelBuilder.Entity("Core.Models.ConfigOption", b =>
+            modelBuilder.Entity("Core.Entities.ConfigOption", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -143,7 +378,7 @@ namespace EntityFramework.Migrator.Migrations
                     b.ToTable("ConfigOptions");
                 });
 
-            modelBuilder.Entity("Core.Models.DocFolder", b =>
+            modelBuilder.Entity("Core.Entities.DocFolder", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -173,7 +408,7 @@ namespace EntityFramework.Migrator.Migrations
                     b.ToTable("DocFolders");
                 });
 
-            modelBuilder.Entity("Core.Models.Document", b =>
+            modelBuilder.Entity("Core.Entities.Document", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -213,7 +448,41 @@ namespace EntityFramework.Migrator.Migrations
                     b.ToTable("Documents");
                 });
 
-            modelBuilder.Entity("Core.Models.Environment", b =>
+            modelBuilder.Entity("Core.Entities.Permission", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("PermissionPath")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTimeOffset>("UpdatedTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("Permissions");
+                });
+
+            modelBuilder.Entity("Core.Entities.Resource.Environment", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -248,41 +517,7 @@ namespace EntityFramework.Migrator.Migrations
                     b.ToTable("Environments");
                 });
 
-            modelBuilder.Entity("Core.Models.Permission", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTimeOffset>("CreatedTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
-
-                    b.Property<Guid?>("ParentId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("PermissionPath")
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTimeOffset>("UpdatedTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ParentId");
-
-                    b.ToTable("Permissions");
-                });
-
-            modelBuilder.Entity("Core.Models.Resource", b =>
+            modelBuilder.Entity("Core.Entities.Resource.Resource", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -323,7 +558,7 @@ namespace EntityFramework.Migrator.Migrations
                     b.ToTable("Resources");
                 });
 
-            modelBuilder.Entity("Core.Models.ResourceAttribute", b =>
+            modelBuilder.Entity("Core.Entities.Resource.ResourceAttribute", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -372,7 +607,7 @@ namespace EntityFramework.Migrator.Migrations
                     b.ToTable("ResourceAttributes");
                 });
 
-            modelBuilder.Entity("Core.Models.ResourceAttributeDefine", b =>
+            modelBuilder.Entity("Core.Entities.Resource.ResourceAttributeDefine", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -414,7 +649,7 @@ namespace EntityFramework.Migrator.Migrations
                     b.ToTable("ResourceAttributeDefines");
                 });
 
-            modelBuilder.Entity("Core.Models.ResourceGroup", b =>
+            modelBuilder.Entity("Core.Entities.Resource.ResourceGroup", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -459,7 +694,7 @@ namespace EntityFramework.Migrator.Migrations
                     b.ToTable("ResourceGroups");
                 });
 
-            modelBuilder.Entity("Core.Models.ResourceTags", b =>
+            modelBuilder.Entity("Core.Entities.Resource.ResourceTags", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -494,7 +729,7 @@ namespace EntityFramework.Migrator.Migrations
                     b.ToTable("ResourceTags");
                 });
 
-            modelBuilder.Entity("Core.Models.ResourceTypeDefinition", b =>
+            modelBuilder.Entity("Core.Entities.Resource.ResourceTypeDefinition", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -533,7 +768,7 @@ namespace EntityFramework.Migrator.Migrations
                     b.ToTable("ResourceTypeDefinitions");
                 });
 
-            modelBuilder.Entity("Core.Models.ResourceView", b =>
+            modelBuilder.Entity("Core.Entities.Resource.ResourceView", b =>
                 {
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -555,7 +790,7 @@ namespace EntityFramework.Migrator.Migrations
                     b.ToView("ResrouceView");
                 });
 
-            modelBuilder.Entity("Core.Models.Role", b =>
+            modelBuilder.Entity("Core.Entities.Role", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -592,12 +827,10 @@ namespace EntityFramework.Migrator.Migrations
 
                     b.HasIndex("Name");
 
-                    b.HasIndex("Status");
-
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("Core.Models.RolePermission", b =>
+            modelBuilder.Entity("Core.Entities.RolePermission", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -630,7 +863,7 @@ namespace EntityFramework.Migrator.Migrations
                     b.ToTable("RolePermissions");
                 });
 
-            modelBuilder.Entity("Core.Models.User", b =>
+            modelBuilder.Entity("Core.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -718,8 +951,6 @@ namespace EntityFramework.Migrator.Migrations
 
                     b.HasIndex("PhoneNumber");
 
-                    b.HasIndex("Status");
-
                     b.HasIndex("UserName");
 
                     b.ToTable("Users");
@@ -800,58 +1031,143 @@ namespace EntityFramework.Migrator.Migrations
                     b.ToTable("RoleUser");
                 });
 
-            modelBuilder.Entity("Core.Models.CodeFolder", b =>
+            modelBuilder.Entity("BlogBlogTag", b =>
                 {
-                    b.HasOne("Core.Models.CodeFolder", "Parent")
-                        .WithMany("Children")
+                    b.HasOne("Core.Entities.Blog.BlogTag", null)
+                        .WithMany()
+                        .HasForeignKey("BlogTagsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entities.Blog.Blog", null)
+                        .WithMany()
+                        .HasForeignKey("BlogsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Core.Entities.Blog.Blog", b =>
+                {
+                    b.HasOne("Core.Entities.Blog.BlogCatalog", "Catalog")
+                        .WithMany("Articles")
+                        .HasForeignKey("CatalogId");
+
+                    b.HasOne("Core.Entities.User", "User")
+                        .WithMany("Blogs")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Catalog");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Core.Entities.Blog.BlogCatalog", b =>
+                {
+                    b.HasOne("Core.Entities.Blog.BlogCatalog", "Parent")
+                        .WithMany("Catalogs")
                         .HasForeignKey("ParentId");
 
                     b.Navigation("Parent");
                 });
 
-            modelBuilder.Entity("Core.Models.CodeSnippet", b =>
+            modelBuilder.Entity("Core.Entities.Blog.Comment", b =>
                 {
-                    b.HasOne("Core.Models.CodeFolder", null)
+                    b.HasOne("Core.Entities.Blog.Blog", "Blog")
+                        .WithMany("Comments")
+                        .HasForeignKey("BlogId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entities.User", "User")
+                        .WithMany("Comments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Blog");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Core.Entities.Code.CodeLibrary", b =>
+                {
+                    b.HasOne("Core.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Core.Entities.Code.CodeSnippet", b =>
+                {
+                    b.HasOne("Core.Entities.CodeFolder", null)
                         .WithMany("Documents")
                         .HasForeignKey("CodeFolderId");
+
+                    b.HasOne("Core.Entities.Code.CodeLibrary", "Library")
+                        .WithMany("Snippets")
+                        .HasForeignKey("LibraryId");
+
+                    b.HasOne("Core.Entities.User", "User")
+                        .WithMany("CodeSnippets")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Library");
+
+                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Core.Models.DocFolder", b =>
+            modelBuilder.Entity("Core.Entities.CodeFolder", b =>
                 {
-                    b.HasOne("Core.Models.DocFolder", "Parent")
+                    b.HasOne("Core.Entities.CodeFolder", "Parent")
                         .WithMany("Children")
                         .HasForeignKey("ParentId");
 
                     b.Navigation("Parent");
                 });
 
-            modelBuilder.Entity("Core.Models.Document", b =>
+            modelBuilder.Entity("Core.Entities.DocFolder", b =>
                 {
-                    b.HasOne("Core.Models.DocFolder", "Folder")
+                    b.HasOne("Core.Entities.DocFolder", "Parent")
+                        .WithMany("Children")
+                        .HasForeignKey("ParentId");
+
+                    b.Navigation("Parent");
+                });
+
+            modelBuilder.Entity("Core.Entities.Document", b =>
+                {
+                    b.HasOne("Core.Entities.DocFolder", "Folder")
                         .WithMany("Documents")
                         .HasForeignKey("FolderId");
 
                     b.Navigation("Folder");
                 });
 
-            modelBuilder.Entity("Core.Models.Permission", b =>
+            modelBuilder.Entity("Core.Entities.Permission", b =>
                 {
-                    b.HasOne("Core.Models.Permission", "Parent")
+                    b.HasOne("Core.Entities.Permission", "Parent")
                         .WithMany()
                         .HasForeignKey("ParentId");
 
                     b.Navigation("Parent");
                 });
 
-            modelBuilder.Entity("Core.Models.Resource", b =>
+            modelBuilder.Entity("Core.Entities.Resource.Resource", b =>
                 {
-                    b.HasOne("Core.Models.ResourceGroup", "Group")
+                    b.HasOne("Core.Entities.Resource.ResourceGroup", "Group")
                         .WithMany("Resources")
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Core.Models.ResourceTypeDefinition", "ResourceType")
+                    b.HasOne("Core.Entities.Resource.ResourceTypeDefinition", "ResourceType")
                         .WithMany("Resources")
                         .HasForeignKey("ResourceTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -862,9 +1178,9 @@ namespace EntityFramework.Migrator.Migrations
                     b.Navigation("ResourceType");
                 });
 
-            modelBuilder.Entity("Core.Models.ResourceAttribute", b =>
+            modelBuilder.Entity("Core.Entities.Resource.ResourceAttribute", b =>
                 {
-                    b.HasOne("Core.Models.Resource", "Resource")
+                    b.HasOne("Core.Entities.Resource.Resource", "Resource")
                         .WithMany("Attributes")
                         .HasForeignKey("ResourceId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -873,9 +1189,9 @@ namespace EntityFramework.Migrator.Migrations
                     b.Navigation("Resource");
                 });
 
-            modelBuilder.Entity("Core.Models.ResourceGroup", b =>
+            modelBuilder.Entity("Core.Entities.Resource.ResourceGroup", b =>
                 {
-                    b.HasOne("Core.Models.Environment", "Environment")
+                    b.HasOne("Core.Entities.Resource.Environment", "Environment")
                         .WithMany("ResourceGroups")
                         .HasForeignKey("EnvironmentId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -884,15 +1200,15 @@ namespace EntityFramework.Migrator.Migrations
                     b.Navigation("Environment");
                 });
 
-            modelBuilder.Entity("Core.Models.ResourceView", b =>
+            modelBuilder.Entity("Core.Entities.Resource.ResourceView", b =>
                 {
-                    b.HasOne("Core.Models.ResourceGroup", "Group")
+                    b.HasOne("Core.Entities.Resource.ResourceGroup", "Group")
                         .WithMany()
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Core.Models.ResourceTypeDefinition", "ResourceType")
+                    b.HasOne("Core.Entities.Resource.ResourceTypeDefinition", "ResourceType")
                         .WithMany()
                         .HasForeignKey("ResourceTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -903,15 +1219,15 @@ namespace EntityFramework.Migrator.Migrations
                     b.Navigation("ResourceType");
                 });
 
-            modelBuilder.Entity("Core.Models.RolePermission", b =>
+            modelBuilder.Entity("Core.Entities.RolePermission", b =>
                 {
-                    b.HasOne("Core.Models.Permission", "Permission")
+                    b.HasOne("Core.Entities.Permission", "Permission")
                         .WithMany("RolePermissions")
                         .HasForeignKey("PermissionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Core.Models.Role", "Role")
+                    b.HasOne("Core.Entities.Role", "Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -924,13 +1240,13 @@ namespace EntityFramework.Migrator.Migrations
 
             modelBuilder.Entity("PermissionRole", b =>
                 {
-                    b.HasOne("Core.Models.Permission", null)
+                    b.HasOne("Core.Entities.Permission", null)
                         .WithMany()
                         .HasForeignKey("PermissionsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Core.Models.Role", null)
+                    b.HasOne("Core.Entities.Role", null)
                         .WithMany()
                         .HasForeignKey("RolesId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -939,13 +1255,13 @@ namespace EntityFramework.Migrator.Migrations
 
             modelBuilder.Entity("ResourceAttributeDefineResourceTypeDefinition", b =>
                 {
-                    b.HasOne("Core.Models.ResourceAttributeDefine", null)
+                    b.HasOne("Core.Entities.Resource.ResourceAttributeDefine", null)
                         .WithMany()
                         .HasForeignKey("AttributeDefinesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Core.Models.ResourceTypeDefinition", null)
+                    b.HasOne("Core.Entities.Resource.ResourceTypeDefinition", null)
                         .WithMany()
                         .HasForeignKey("TypeDefinitionsId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -954,13 +1270,13 @@ namespace EntityFramework.Migrator.Migrations
 
             modelBuilder.Entity("ResourceGroupRole", b =>
                 {
-                    b.HasOne("Core.Models.ResourceGroup", null)
+                    b.HasOne("Core.Entities.Resource.ResourceGroup", null)
                         .WithMany()
                         .HasForeignKey("ResourceGroupsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Core.Models.Role", null)
+                    b.HasOne("Core.Entities.Role", null)
                         .WithMany()
                         .HasForeignKey("RolesId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -969,13 +1285,13 @@ namespace EntityFramework.Migrator.Migrations
 
             modelBuilder.Entity("ResourceResourceTags", b =>
                 {
-                    b.HasOne("Core.Models.Resource", null)
+                    b.HasOne("Core.Entities.Resource.Resource", null)
                         .WithMany()
                         .HasForeignKey("ResourcesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Core.Models.ResourceTags", null)
+                    b.HasOne("Core.Entities.Resource.ResourceTags", null)
                         .WithMany()
                         .HasForeignKey("TagsId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -984,56 +1300,82 @@ namespace EntityFramework.Migrator.Migrations
 
             modelBuilder.Entity("RoleUser", b =>
                 {
-                    b.HasOne("Core.Models.Role", null)
+                    b.HasOne("Core.Entities.Role", null)
                         .WithMany()
                         .HasForeignKey("RolesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Core.Models.User", null)
+                    b.HasOne("Core.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Core.Models.CodeFolder", b =>
+            modelBuilder.Entity("Core.Entities.Blog.Blog", b =>
+                {
+                    b.Navigation("Comments");
+                });
+
+            modelBuilder.Entity("Core.Entities.Blog.BlogCatalog", b =>
+                {
+                    b.Navigation("Articles");
+
+                    b.Navigation("Catalogs");
+                });
+
+            modelBuilder.Entity("Core.Entities.Code.CodeLibrary", b =>
+                {
+                    b.Navigation("Snippets");
+                });
+
+            modelBuilder.Entity("Core.Entities.CodeFolder", b =>
                 {
                     b.Navigation("Children");
 
                     b.Navigation("Documents");
                 });
 
-            modelBuilder.Entity("Core.Models.DocFolder", b =>
+            modelBuilder.Entity("Core.Entities.DocFolder", b =>
                 {
                     b.Navigation("Children");
 
                     b.Navigation("Documents");
                 });
 
-            modelBuilder.Entity("Core.Models.Environment", b =>
-                {
-                    b.Navigation("ResourceGroups");
-                });
-
-            modelBuilder.Entity("Core.Models.Permission", b =>
+            modelBuilder.Entity("Core.Entities.Permission", b =>
                 {
                     b.Navigation("RolePermissions");
                 });
 
-            modelBuilder.Entity("Core.Models.Resource", b =>
+            modelBuilder.Entity("Core.Entities.Resource.Environment", b =>
+                {
+                    b.Navigation("ResourceGroups");
+                });
+
+            modelBuilder.Entity("Core.Entities.Resource.Resource", b =>
                 {
                     b.Navigation("Attributes");
                 });
 
-            modelBuilder.Entity("Core.Models.ResourceGroup", b =>
+            modelBuilder.Entity("Core.Entities.Resource.ResourceGroup", b =>
                 {
                     b.Navigation("Resources");
                 });
 
-            modelBuilder.Entity("Core.Models.ResourceTypeDefinition", b =>
+            modelBuilder.Entity("Core.Entities.Resource.ResourceTypeDefinition", b =>
                 {
                     b.Navigation("Resources");
+                });
+
+            modelBuilder.Entity("Core.Entities.User", b =>
+                {
+                    b.Navigation("Blogs");
+
+                    b.Navigation("CodeSnippets");
+
+                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }

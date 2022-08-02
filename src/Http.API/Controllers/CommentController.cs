@@ -1,5 +1,6 @@
+using Http.API.Infrastructure;
 using Share.Models.CommentDtos;
-namespace Http.API.Infrastructure;
+namespace Http.API.Controllers;
 
 /// <summary>
 /// 博客评论
@@ -58,7 +59,7 @@ public class CommentController :
     public async Task<ActionResult<Comment?>> GetDetailAsync([FromRoute] Guid id)
     {
         var res = await manager.FindAsync<Comment>(u => u.Id == id);
-        return (res == null) ? NotFound() : res;
+        return res == null ? NotFound() : res;
     }
 
     /// <summary>
@@ -66,7 +67,6 @@ public class CommentController :
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    [ApiExplorerSettings(IgnoreApi = true)]
     [HttpDelete("{id}")]
     public async Task<ActionResult<Comment?>> DeleteAsync([FromRoute] Guid id)
     {

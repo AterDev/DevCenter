@@ -66,7 +66,6 @@ public class BlogController :
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    [ApiExplorerSettings(IgnoreApi = true)]
     [HttpDelete("{id}")]
     public async Task<ActionResult<Blog?>> DeleteAsync([FromRoute] Guid id)
     {

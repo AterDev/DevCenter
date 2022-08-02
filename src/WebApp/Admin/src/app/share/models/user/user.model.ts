@@ -1,5 +1,8 @@
 import { EntityBase } from '../entity-base.model';
 import { Role } from '../role/role.model';
+import { Blog } from '../blog/blog.model';
+import { Comment } from '../comment/comment.model';
+import { CodeSnippet } from '../code-snippet/code-snippet.model';
 export interface User extends EntityBase {
   userName: string;
   realName?: string | null;
@@ -18,5 +21,8 @@ export interface User extends EntityBase {
   retryCount: number;
   avatar?: string | null;
   roles?: Role[] | null;
+  blogs?: Blog[] | null;
+  comments?: Comment[] | null;
+  codeSnippets?: CodeSnippet[] | null;
 
 }

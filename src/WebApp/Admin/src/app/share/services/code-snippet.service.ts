@@ -13,7 +13,7 @@ import { CodeSnippet } from '../models/code-snippet/code-snippet.model';
 @Injectable({ providedIn: 'root' })
 export class CodeSnippetService extends BaseService {
   /**
-   * 分页筛选
+   * 筛选
    * @param data CodeSnippetFilterDto
    */
   filter(data: CodeSnippetFilterDto): Observable<PageListOfCodeSnippetItemDto> {
@@ -22,7 +22,7 @@ export class CodeSnippetService extends BaseService {
   }
 
   /**
-   * 添加
+   * 新增
    * @param data CodeSnippetAddDto
    */
   add(data: CodeSnippetAddDto): Observable<CodeSnippet> {
@@ -31,7 +31,7 @@ export class CodeSnippetService extends BaseService {
   }
 
   /**
-   * ⚠更新
+   * 更新
    * @param id string
    * @param data CodeSnippetUpdateDto
    */
@@ -41,21 +41,21 @@ export class CodeSnippetService extends BaseService {
   }
 
   /**
-   * ⚠删除
-   * @param id string
-   */
-  delete(id: string): Observable<boolean> {
-    const url = `/api/CodeSnippet/${id}`;
-    return this.request<boolean>('delete', url);
-  }
-
-  /**
-   * 详情
+   * getDetail
    * @param id string
    */
   getDetail(id: string): Observable<CodeSnippet> {
     const url = `/api/CodeSnippet/${id}`;
     return this.request<CodeSnippet>('get', url);
+  }
+
+  /**
+   * ⚠删除
+   * @param id string
+   */
+  delete(id: string): Observable<CodeSnippet> {
+    const url = `/api/CodeSnippet/${id}`;
+    return this.request<CodeSnippet>('delete', url);
   }
 
 }

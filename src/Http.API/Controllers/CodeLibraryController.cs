@@ -1,5 +1,6 @@
+using Http.API.Infrastructure;
 using Share.Models.CodeLibraryDtos;
-namespace Http.API.Infrastructure;
+namespace Http.API.Controllers;
 
 /// <summary>
 /// 模型库
@@ -58,7 +59,7 @@ public class CodeLibraryController :
     public async Task<ActionResult<CodeLibrary?>> GetDetailAsync([FromRoute] Guid id)
     {
         var res = await manager.FindAsync<CodeLibrary>(u => u.Id == id);
-        return (res == null) ? NotFound() : res;
+        return res == null ? NotFound() : res;
     }
 
     /// <summary>
@@ -66,7 +67,6 @@ public class CodeLibraryController :
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    [ApiExplorerSettings(IgnoreApi = true)]
     [HttpDelete("{id}")]
     public async Task<ActionResult<CodeLibrary?>> DeleteAsync([FromRoute] Guid id)
     {
