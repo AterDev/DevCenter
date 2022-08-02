@@ -37,7 +37,7 @@ namespace EntityFramework.Migrator.Migrations
 
                     b.HasIndex("BlogsId");
 
-                    b.ToTable("BlogBlogTag");
+                    b.ToTable("BlogBlogTag", (string)null);
                 });
 
             modelBuilder.Entity("Core.Entities.Blog.Blog", b =>
@@ -89,7 +89,7 @@ namespace EntityFramework.Migrator.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Blogs");
+                    b.ToTable("Blogs", (string)null);
                 });
 
             modelBuilder.Entity("Core.Entities.Blog.BlogCatalog", b =>
@@ -133,7 +133,7 @@ namespace EntityFramework.Migrator.Migrations
 
                     b.HasIndex("ParentId");
 
-                    b.ToTable("BlogCatalogs");
+                    b.ToTable("BlogCatalogs", (string)null);
                 });
 
             modelBuilder.Entity("Core.Entities.Blog.BlogTag", b =>
@@ -168,7 +168,7 @@ namespace EntityFramework.Migrator.Migrations
 
                     b.HasIndex("Name");
 
-                    b.ToTable("BlogTags");
+                    b.ToTable("BlogTags", (string)null);
                 });
 
             modelBuilder.Entity("Core.Entities.Blog.Comment", b =>
@@ -202,7 +202,7 @@ namespace EntityFramework.Migrator.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("Core.Entities.Code.CodeLibrary", b =>
@@ -246,7 +246,7 @@ namespace EntityFramework.Migrator.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("CodeLibraries");
+                    b.ToTable("CodeLibraries", (string)null);
                 });
 
             modelBuilder.Entity("Core.Entities.Code.CodeSnippet", b =>
@@ -300,7 +300,7 @@ namespace EntityFramework.Migrator.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("CodeSnippets");
+                    b.ToTable("CodeSnippets", (string)null);
                 });
 
             modelBuilder.Entity("Core.Entities.CodeFolder", b =>
@@ -330,7 +330,7 @@ namespace EntityFramework.Migrator.Migrations
 
                     b.HasIndex("ParentId");
 
-                    b.ToTable("CodeFolders");
+                    b.ToTable("CodeFolders", (string)null);
                 });
 
             modelBuilder.Entity("Core.Entities.ConfigOption", b =>
@@ -375,7 +375,7 @@ namespace EntityFramework.Migrator.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ConfigOptions");
+                    b.ToTable("ConfigOptions", (string)null);
                 });
 
             modelBuilder.Entity("Core.Entities.DocFolder", b =>
@@ -405,7 +405,7 @@ namespace EntityFramework.Migrator.Migrations
 
                     b.HasIndex("ParentId");
 
-                    b.ToTable("DocFolders");
+                    b.ToTable("DocFolders", (string)null);
                 });
 
             modelBuilder.Entity("Core.Entities.Document", b =>
@@ -445,7 +445,7 @@ namespace EntityFramework.Migrator.Migrations
 
                     b.HasIndex("FolderId");
 
-                    b.ToTable("Documents");
+                    b.ToTable("Documents", (string)null);
                 });
 
             modelBuilder.Entity("Core.Entities.Permission", b =>
@@ -479,7 +479,7 @@ namespace EntityFramework.Migrator.Migrations
 
                     b.HasIndex("ParentId");
 
-                    b.ToTable("Permissions");
+                    b.ToTable("Permissions", (string)null);
                 });
 
             modelBuilder.Entity("Core.Entities.Resource.Environment", b =>
@@ -514,7 +514,7 @@ namespace EntityFramework.Migrator.Migrations
 
                     b.HasIndex("Name");
 
-                    b.ToTable("Environments");
+                    b.ToTable("Environments", (string)null);
                 });
 
             modelBuilder.Entity("Core.Entities.Resource.Resource", b =>
@@ -555,7 +555,7 @@ namespace EntityFramework.Migrator.Migrations
 
                     b.HasIndex("ResourceTypeId");
 
-                    b.ToTable("Resources");
+                    b.ToTable("Resources", (string)null);
                 });
 
             modelBuilder.Entity("Core.Entities.Resource.ResourceAttribute", b =>
@@ -604,7 +604,7 @@ namespace EntityFramework.Migrator.Migrations
 
                     b.HasIndex("ResourceId");
 
-                    b.ToTable("ResourceAttributes");
+                    b.ToTable("ResourceAttributes", (string)null);
                 });
 
             modelBuilder.Entity("Core.Entities.Resource.ResourceAttributeDefine", b =>
@@ -646,7 +646,7 @@ namespace EntityFramework.Migrator.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ResourceAttributeDefines");
+                    b.ToTable("ResourceAttributeDefines", (string)null);
                 });
 
             modelBuilder.Entity("Core.Entities.Resource.ResourceGroup", b =>
@@ -691,7 +691,7 @@ namespace EntityFramework.Migrator.Migrations
 
                     b.HasIndex("Name");
 
-                    b.ToTable("ResourceGroups");
+                    b.ToTable("ResourceGroups", (string)null);
                 });
 
             modelBuilder.Entity("Core.Entities.Resource.ResourceTags", b =>
@@ -726,7 +726,7 @@ namespace EntityFramework.Migrator.Migrations
 
                     b.HasIndex("Name");
 
-                    b.ToTable("ResourceTags");
+                    b.ToTable("ResourceTags", (string)null);
                 });
 
             modelBuilder.Entity("Core.Entities.Resource.ResourceTypeDefinition", b =>
@@ -765,7 +765,7 @@ namespace EntityFramework.Migrator.Migrations
 
                     b.HasIndex("Name");
 
-                    b.ToTable("ResourceTypeDefinitions");
+                    b.ToTable("ResourceTypeDefinitions", (string)null);
                 });
 
             modelBuilder.Entity("Core.Entities.Resource.ResourceView", b =>
@@ -827,7 +827,7 @@ namespace EntityFramework.Migrator.Migrations
 
                     b.HasIndex("Name");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
                 });
 
             modelBuilder.Entity("Core.Entities.RolePermission", b =>
@@ -860,7 +860,7 @@ namespace EntityFramework.Migrator.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("RolePermissions");
+                    b.ToTable("RolePermissions", (string)null);
                 });
 
             modelBuilder.Entity("Core.Entities.User", b =>
@@ -953,7 +953,7 @@ namespace EntityFramework.Migrator.Migrations
 
                     b.HasIndex("UserName");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("PermissionRole", b =>
@@ -968,7 +968,7 @@ namespace EntityFramework.Migrator.Migrations
 
                     b.HasIndex("RolesId");
 
-                    b.ToTable("PermissionRole");
+                    b.ToTable("PermissionRole", (string)null);
                 });
 
             modelBuilder.Entity("ResourceAttributeDefineResourceTypeDefinition", b =>
@@ -983,7 +983,7 @@ namespace EntityFramework.Migrator.Migrations
 
                     b.HasIndex("TypeDefinitionsId");
 
-                    b.ToTable("ResourceAttributeDefineResourceTypeDefinition");
+                    b.ToTable("ResourceAttributeDefineResourceTypeDefinition", (string)null);
                 });
 
             modelBuilder.Entity("ResourceGroupRole", b =>
@@ -998,7 +998,7 @@ namespace EntityFramework.Migrator.Migrations
 
                     b.HasIndex("RolesId");
 
-                    b.ToTable("ResourceGroupRole");
+                    b.ToTable("ResourceGroupRole", (string)null);
                 });
 
             modelBuilder.Entity("ResourceResourceTags", b =>
@@ -1013,7 +1013,7 @@ namespace EntityFramework.Migrator.Migrations
 
                     b.HasIndex("TagsId");
 
-                    b.ToTable("ResourceResourceTags");
+                    b.ToTable("ResourceResourceTags", (string)null);
                 });
 
             modelBuilder.Entity("RoleUser", b =>
@@ -1028,7 +1028,7 @@ namespace EntityFramework.Migrator.Migrations
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("RoleUser");
+                    b.ToTable("RoleUser", (string)null);
                 });
 
             modelBuilder.Entity("BlogBlogTag", b =>

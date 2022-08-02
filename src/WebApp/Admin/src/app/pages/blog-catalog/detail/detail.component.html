@@ -15,16 +15,16 @@
     </mat-card-header> -->
     <!-- <img mat-card-image src="" alt=""> -->
     <mat-card-content>
-      <p>Name: <span class="text-primary">{{data.name}}</span></p>
-      <p>Type: <span class="text-primary">{{data.type}}</span></p>
-      <p>Sort: <span class="text-primary">{{data.sort}}</span></p>
-      <p>Level: <span class="text-primary">{{data.level}}</span></p>
-      <p>ParentId: <span class="text-primary">{{data.parentId}}</span></p>
-      <p>Id: <span class="text-primary">{{data.id}}</span></p>
-      <p>CreatedTime: <span class="text-primary">{{data.createdTime}}</span></p>
-      <p>UpdatedTime: <span class="text-primary">{{data.updatedTime}}</span></p>
-      <p>Status: <span class="text-primary">{{data.status}}</span></p>
-      <p>IsDeleted: <span class="text-primary">{{data.isDeleted}}</span></p>
+      <p><strong>Name</strong><br> <span class="text-primary">{{data.name}}</span></p>
+      <p><strong>Type</strong><br> <span class="text-primary">{{data.type}}</span></p>
+      <p><strong>Sort</strong><br> <span class="text-primary">{{data.sort}}</span></p>
+      <p><strong>Level</strong><br> <span class="text-primary">{{data.level}}</span></p>
+      <p><strong>ParentId</strong><br> <span class="text-primary">{{data.parentId}}</span></p>
+      <p><strong>Id</strong><br> <span class="text-primary">{{data.id}}</span></p>
+      <p><strong>CreatedTime</strong><br> <span class="text-primary">{{data.createdTime|date:'yyyy-MM-dd HH:mm:ss'}}</span></p>
+      <p><strong>UpdatedTime</strong><br> <span class="text-primary">{{data.updatedTime|date:'yyyy-MM-dd HH:mm:ss'}}</span></p>
+      <p><strong>Status</strong><br> <span class="text-primary">{{data.status}}</span></p>
+      <p><strong>IsDeleted</strong><br> <span class="text-primary">{{data.isDeleted}}</span></p>
 
     </mat-card-content>
     <mat-card-actions>
