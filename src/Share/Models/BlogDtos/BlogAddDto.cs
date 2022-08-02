@@ -24,10 +24,11 @@ public class BlogAddDto
     /// </summary>
     public bool? IsPrivate { get; set; }
     /// <summary>
-    /// 文章扩展内容
+    /// 文章内容
     /// </summary>
+    [MaxLength(12000)]
     public string? Content { get; set; }
     public Guid UserId { get; set; } = default!;
     public Guid CatalogId { get; set; } = default!;
-
+    
 }

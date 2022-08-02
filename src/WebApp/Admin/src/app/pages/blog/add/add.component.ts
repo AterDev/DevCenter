@@ -7,6 +7,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Location } from '@angular/common';
+import * as ClassicEditor from 'ng-ckeditor5-classic';
+import { environment } from 'src/environments/environment';
+import { CKEditor5 } from '@ckeditor/ckeditor5-angular';
+// import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Component({
     selector: 'app-add',
@@ -14,12 +18,15 @@ import { Location } from '@angular/common';
     styleUrls: ['./add.component.css']
 })
 export class AddComponent implements OnInit {
-    
+    public editorConfig!: CKEditor5.Config;
+  public editor: CKEditor5.EditorConstructor = ClassicEditor;
+  
     formGroup!: FormGroup;
     data = {} as BlogAddDto;
     isLoading = true;
     constructor(
         
+    // private authService: OidcSecurityService,
         private service: BlogService,
         public snb: MatSnackBar,
         private router: Router,
@@ -40,18 +47,35 @@ export class AddComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
-    
+    this.initEditor();
     // TODO:获取其他相关数据后设置加载状态
     this.isLoading = false;
   }
-  
+    initEditor(): void {
+    this.editorConfig = {
+      // placeholder: '请添加图文信息提供证据，也可以直接从Word文档中复制',
+      simpleUpload: {
+        uploadUrl: environment.uploadEditorFileUrl,
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem("accessToken")
+        }
+      },
+      language: 'zh-cn'
+    };
+  }
+  onReady(editor: any) {
+    editor.ui.getEditableElement().parentElement.insertBefore(
+      editor.ui.view.toolbar.element,
+      editor.ui.getEditableElement()
+    );
+  }
   initForm(): void {
     this.formGroup = new FormGroup({
       title: new FormControl(null, [Validators.maxLength(100)]),
       summary: new FormControl(null, [Validators.maxLength(500)]),
       authorName: new FormControl(null, [Validators.maxLength(100)]),
       isPrivate: new FormControl(null, []),
-      content: new FormControl(null, []),
+      content: new FormControl(null, [Validators.maxLength(12000)]),
 
     });
   }
@@ -76,7 +100,7 @@ export class AddComponent implements OnInit {
       case 'content':
         return this.content?.errors?.['required'] ? 'Content必填' :
           this.content?.errors?.['minlength'] ? 'Content长度最少位' :
-            this.content?.errors?.['maxlength'] ? 'Content长度最多位' : '';
+            this.content?.errors?.['maxlength'] ? 'Content长度最多12000位' : '';
 
       default:
     return '';
@@ -97,20 +121,5 @@ export class AddComponent implements OnInit {
   }
   back(): void {
     this.location.back();
-  }
-  upload(event: any, type ?: string): void {
-    const files = event.target.files;
-    if(files[0]) {
-      const formdata = new FormData();
-      formdata.append('file', files[0]);
-    /*    this.service.uploadFile('agent-info' + type, formdata)
-          .subscribe(res => {
-            this.data.logoUrl = res.url;
-          }, error => {
-            this.snb.open(error?.detail);
-          }); */
-    } else {
-
-    }
   }
 }

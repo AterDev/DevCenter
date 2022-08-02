@@ -2,46 +2,49 @@
   <button color="basic" mat-icon-button matTooltip="返回" (click)="back()">
     <mat-icon>arrow_back</mat-icon>
   </button>
-    编辑
+  编辑
 </mat-toolbar>
 <form class="d-flex" *ngIf="!isLoading" [formGroup]="formGroup" (ngSubmit)="edit()">
   <div class="d-flex flex-column w-100">
-  <mat-form-field>
-    <mat-label>Title</mat-label>
-    <input matInput placeholder="Title" formControlName="title"  minlength="" maxlength="100">
-    <mat-error *ngIf="title?.invalid">
-    {{getValidatorMessage('title')}}
-    </mat-error>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Summary</mat-label>
-    <textarea matInput placeholder="Summary" formControlName="summary"  minlength="" maxlength="500"
-      cols="5"></textarea>
-    <mat-error *ngIf="summary?.invalid">
-    {{getValidatorMessage('summary')}}
-    </mat-error>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>AuthorName</mat-label>
-    <input matInput placeholder="AuthorName" formControlName="authorName"  minlength="" maxlength="100">
-    <mat-error *ngIf="authorName?.invalid">
-    {{getValidatorMessage('authorName')}}
-    </mat-error>
-  </mat-form-field>
+    <mat-form-field>
+      <mat-label>Title</mat-label>
+      <input matInput placeholder="Title" formControlName="title" minlength="" maxlength="100">
+      <mat-error *ngIf="title?.invalid">
+        {{getValidatorMessage('title')}}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Summary</mat-label>
+      <textarea matInput placeholder="Summary" formControlName="summary" minlength="" maxlength="500"
+        cols="5"></textarea>
+      <mat-error *ngIf="summary?.invalid">
+        {{getValidatorMessage('summary')}}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>AuthorName</mat-label>
+      <input matInput placeholder="AuthorName" formControlName="authorName" minlength="" maxlength="100">
+      <mat-error *ngIf="authorName?.invalid">
+        {{getValidatorMessage('authorName')}}
+      </mat-error>
+    </mat-form-field>
     <mat-slide-toggle color="primary" formControlName="isPrivate">IsPrivate</mat-slide-toggle>
-<mat-form-field>
-  <mat-label>Status</mat-label>
-  <mat-select formControlName="status">
-    <mat-option *ngFor="let item of Status | toKeyValue" [value]="item.value">
-      {{item.key}}
-    </mat-option>
-  </mat-select>
-  <mat-error *ngIf="status?.invalid">
-    {{getValidatorMessage('status')}}
-  </mat-error>
-</mat-form-field>    <mat-slide-toggle color="primary" formControlName="isDeleted">IsDeleted</mat-slide-toggle>
+    <ckeditor [editor]="editor" [config]="editorConfig" formControlName="content" (ready)="onReady($event)">
+    </ckeditor>
+    <mat-form-field>
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status">
+        <mat-option *ngFor="let item of Status | toKeyValue" [value]="item.value">
+          {{item.key}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="status?.invalid">
+        {{getValidatorMessage('status')}}
+      </mat-error>
+    </mat-form-field>
+    <mat-slide-toggle color="primary" formControlName="isDeleted">IsDeleted</mat-slide-toggle>
 
-    <div class="d-flex">
+    <div class="d-flex mt-1">
       <button class="d-flex flex-column" mat-flat-button color="primary" type="submit">保存</button>
     </div>
   </div>

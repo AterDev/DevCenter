@@ -7,6 +7,10 @@ import { BlogUpdateDto } from 'src/app/share/models/blog/blog-update-dto.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Location } from '@angular/common';
+import * as ClassicEditor from 'ng-ckeditor5-classic';
+import { environment } from 'src/environments/environment';
+import { CKEditor5 } from '@ckeditor/ckeditor5-angular';
+// import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { Status } from 'src/app/share/models/enum/status.model';
 
 @Component({
@@ -15,6 +19,8 @@ import { Status } from 'src/app/share/models/enum/status.model';
   styleUrls: ['./edit.component.css']
 })
 export class EditComponent implements OnInit {
+  public editorConfig!: CKEditor5.Config;
+  public editor: CKEditor5.EditorConstructor = ClassicEditor;
   Status = Status;
 
   id!: string;
@@ -24,6 +30,7 @@ export class EditComponent implements OnInit {
   formGroup!: FormGroup;
     constructor(
     
+    // private authService: OidcSecurityService,
     private service: BlogService,
     private snb: MatSnackBar,
     private router: Router,
@@ -51,11 +58,28 @@ export class EditComponent implements OnInit {
 
   ngOnInit(): void {
     this.getDetail();
-    
+    this.initEditor();
     // TODO:等待数据加载完成
     // this.isLoading = false;
   }
-  
+    initEditor(): void {
+    this.editorConfig = {
+      // placeholder: '请添加图文信息提供证据，也可以直接从Word文档中复制',
+      simpleUpload: {
+        uploadUrl: environment.uploadEditorFileUrl,
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem("accessToken")
+        }
+      },
+      language: 'zh-cn'
+    };
+  }
+  onReady(editor: any) {
+    editor.ui.getEditableElement().parentElement.insertBefore(
+      editor.ui.view.toolbar.element,
+      editor.ui.getEditableElement()
+    );
+  }
   getDetail(): void {
     this.service.getDetail(this.id)
       .subscribe(res => {
@@ -73,7 +97,7 @@ export class EditComponent implements OnInit {
       summary: new FormControl(this.data.summary, [Validators.maxLength(500)]),
       authorName: new FormControl(this.data.authorName, [Validators.maxLength(100)]),
       isPrivate: new FormControl(this.data.isPrivate, []),
-      content: new FormControl(this.data.content, []),
+      content: new FormControl(this.data.content, [Validators.maxLength(12000)]),
       status: new FormControl(this.data.status, []),
       isDeleted: new FormControl(this.data.isDeleted, []),
 
@@ -100,7 +124,7 @@ export class EditComponent implements OnInit {
       case 'content':
         return this.content?.errors?.['required'] ? 'Content必填' :
           this.content?.errors?.['minlength'] ? 'Content长度最少位' :
-            this.content?.errors?.['maxlength'] ? 'Content长度最多位' : '';
+            this.content?.errors?.['maxlength'] ? 'Content长度最多12000位' : '';
       case 'status':
         return this.status?.errors?.['required'] ? 'Status必填' :
           this.status?.errors?.['minlength'] ? 'Status长度最少位' :
@@ -121,29 +145,13 @@ export class EditComponent implements OnInit {
         .subscribe(res => {
           this.snb.open('修改成功');
            // this.dialogRef.close(res);
-          // this.router.navigate(['../index'],{relativeTo: this.route});
+          this.router.navigate(['../../index'],{relativeTo: this.route});
         });
     }
   }
 
   back(): void {
     this.location.back();
-  }
-
-  upload(event: any, type ?: string): void {
-    const files = event.target.files;
-    if(files[0]) {
-    const formdata = new FormData();
-    formdata.append('file', files[0]);
-    /*    this.service.uploadFile('agent-info' + type, formdata)
-          .subscribe(res => {
-            this.updateData.logoUrl = res.url;
-          }, error => {
-            this.snb.open(error?.detail);
-          }); */
-    } else {
-
-    }
   }
 
 }

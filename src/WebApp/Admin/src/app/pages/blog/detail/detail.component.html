@@ -15,15 +15,15 @@
     </mat-card-header> -->
     <!-- <img mat-card-image src="" alt=""> -->
     <mat-card-content>
-      <p>Title: <span class="text-primary">{{data.title}}</span></p>
-      <p>Summary: <span class="text-primary">{{data.summary}}</span></p>
-      <p>AuthorName: <span class="text-primary">{{data.authorName}}</span></p>
-      <p>IsPrivate: <span class="text-primary">{{data.isPrivate}}</span></p>
-      <p>Id: <span class="text-primary">{{data.id}}</span></p>
-      <p>CreatedTime: <span class="text-primary">{{data.createdTime}}</span></p>
-      <p>UpdatedTime: <span class="text-primary">{{data.updatedTime}}</span></p>
-      <p>Status: <span class="text-primary">{{data.status}}</span></p>
-      <p>IsDeleted: <span class="text-primary">{{data.isDeleted}}</span></p>
+      <p><strong>Title</strong><br> <span class="text-primary">{{data.title}}</span></p>
+      <p><strong>Summary</strong><br> <span class="text-primary">{{data.summary}}</span></p>
+      <p><strong>AuthorName</strong><br> <span class="text-primary">{{data.authorName}}</span></p>
+      <p><strong>IsPrivate</strong><br> <span class="text-primary">{{data.isPrivate}}</span></p>
+      <p><strong>Id</strong><br> <span class="text-primary">{{data.id}}</span></p>
+      <p><strong>CreatedTime</strong><br> <span class="text-primary">{{data.createdTime|date:'yyyy-MM-dd HH:mm:ss'}}</span></p>
+      <p><strong>UpdatedTime</strong><br> <span class="text-primary">{{data.updatedTime|date:'yyyy-MM-dd HH:mm:ss'}}</span></p>
+      <p><strong>Status</strong><br> <span class="text-primary">{{data.status}}</span></p>
+      <p><strong>IsDeleted</strong><br> <span class="text-primary">{{data.isDeleted}}</span></p>
 
     </mat-card-content>
     <mat-card-actions>

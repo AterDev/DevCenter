@@ -27,8 +27,9 @@ public partial class Blog : EntityBase
     /// </summary>
     public bool? IsPrivate { get; set; }
     /// <summary>
-    /// 文章扩展内容
+    /// 文章内容
     /// </summary>
+    [MaxLength(12000)]
     public string? Content { get; set; }
     /// <summary>
     /// 所属目录
