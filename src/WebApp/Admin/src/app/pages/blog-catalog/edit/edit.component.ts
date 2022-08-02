@@ -22,8 +22,8 @@ export class EditComponent implements OnInit {
   data = {} as BlogCatalog;
   updateData = {} as BlogCatalogUpdateDto;
   formGroup!: FormGroup;
-    constructor(
-    
+  constructor(
+
     private service: BlogCatalogService,
     private snb: MatSnackBar,
     private router: Router,
@@ -40,21 +40,19 @@ export class EditComponent implements OnInit {
     }
   }
 
-    get name() { return this.formGroup.get('name'); }
-    get type() { return this.formGroup.get('type'); }
-    get sort() { return this.formGroup.get('sort'); }
-    get level() { return this.formGroup.get('level'); }
-    get status() { return this.formGroup.get('status'); }
-    get isDeleted() { return this.formGroup.get('isDeleted'); }
-
+  get name() { return this.formGroup.get('name'); }
+  get type() { return this.formGroup.get('type'); }
+  get sort() { return this.formGroup.get('sort'); }
+  get level() { return this.formGroup.get('level'); }
+  get status() { return this.formGroup.get('status'); }
 
   ngOnInit(): void {
     this.getDetail();
-    
+
     // TODO:等待数据加载完成
     // this.isLoading = false;
   }
-  
+
   getDetail(): void {
     this.service.getDetail(this.id)
       .subscribe(res => {
@@ -99,23 +97,18 @@ export class EditComponent implements OnInit {
         return this.status?.errors?.['required'] ? 'Status必填' :
           this.status?.errors?.['minlength'] ? 'Status长度最少位' :
             this.status?.errors?.['maxlength'] ? 'Status长度最多位' : '';
-      case 'isDeleted':
-        return this.isDeleted?.errors?.['required'] ? 'IsDeleted必填' :
-          this.isDeleted?.errors?.['minlength'] ? 'IsDeleted长度最少位' :
-            this.isDeleted?.errors?.['maxlength'] ? 'IsDeleted长度最多位' : '';
-
       default:
         return '';
     }
   }
   edit(): void {
-    if(this.formGroup.valid) {
+    if (this.formGroup.valid) {
       this.updateData = this.formGroup.value as BlogCatalogUpdateDto;
       this.service.update(this.id, this.updateData)
         .subscribe(res => {
           this.snb.open('修改成功');
-           // this.dialogRef.close(res);
-          this.router.navigate(['../../index'],{relativeTo: this.route});
+          // this.dialogRef.close(res);
+          this.router.navigate(['../../index'], { relativeTo: this.route });
         });
     }
   }

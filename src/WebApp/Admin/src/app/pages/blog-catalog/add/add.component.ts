@@ -9,47 +9,47 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Location } from '@angular/common';
 
 @Component({
-    selector: 'app-add',
-    templateUrl: './add.component.html',
-    styleUrls: ['./add.component.css']
+  selector: 'app-add',
+  templateUrl: './add.component.html',
+  styleUrls: ['./add.component.css']
 })
 export class AddComponent implements OnInit {
-    
-    formGroup!: FormGroup;
-    data = {} as BlogCatalogAddDto;
-    isLoading = true;
-    constructor(
-        
-        private service: BlogCatalogService,
-        public snb: MatSnackBar,
-        private router: Router,
-        private route: ActivatedRoute,
-        private location: Location
-        // public dialogRef: MatDialogRef<AddComponent>,
-        // @Inject(MAT_DIALOG_DATA) public dlgData: { id: '' }
-    ) {
 
-    }
+  formGroup!: FormGroup;
+  data = {} as BlogCatalogAddDto;
+  isLoading = true;
+  constructor(
 
-    get name() { return this.formGroup.get('name'); }
-    get type() { return this.formGroup.get('type'); }
-    get sort() { return this.formGroup.get('sort'); }
-    get level() { return this.formGroup.get('level'); }
+    private service: BlogCatalogService,
+    public snb: MatSnackBar,
+    private router: Router,
+    private route: ActivatedRoute,
+    private location: Location
+    // public dialogRef: MatDialogRef<AddComponent>,
+    // @Inject(MAT_DIALOG_DATA) public dlgData: { id: '' }
+  ) {
+
+  }
+
+  get name() { return this.formGroup.get('name'); }
+  get type() { return this.formGroup.get('type'); }
+  get sort() { return this.formGroup.get('sort'); }
+  get level() { return this.formGroup.get('level'); }
 
 
   ngOnInit(): void {
     this.initForm();
-    
+
     // TODO:获取其他相关数据后设置加载状态
     this.isLoading = false;
   }
-  
+
   initForm(): void {
     this.formGroup = new FormGroup({
       name: new FormControl(null, [Validators.maxLength(50)]),
       type: new FormControl(null, [Validators.maxLength(50)]),
-      sort: new FormControl(null, []),
-      level: new FormControl(null, []),
+      sort: new FormControl(0, []),
+      level: new FormControl(1, []),
 
     });
   }
@@ -73,19 +73,19 @@ export class AddComponent implements OnInit {
             this.level?.errors?.['maxlength'] ? 'Level长度最多位' : '';
 
       default:
-    return '';
+        return '';
     }
   }
 
   add(): void {
-    if(this.formGroup.valid) {
-    const data = this.formGroup.value as BlogCatalogAddDto;
-    this.data = { ...data, ...this.data };
-    this.service.add(this.data)
+    if (this.formGroup.valid) {
+      const data = this.formGroup.value as BlogCatalogAddDto;
+      this.data = { ...data, ...this.data };
+      this.service.add(this.data)
         .subscribe(res => {
-            this.snb.open('添加成功');
-            // this.dialogRef.close(res);
-            this.router.navigate(['../index'],{relativeTo: this.route});
+          this.snb.open('添加成功');
+          // this.dialogRef.close(res);
+          this.router.navigate(['../index'], { relativeTo: this.route });
         });
     }
   }

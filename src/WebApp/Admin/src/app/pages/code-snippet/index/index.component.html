@@ -3,6 +3,11 @@
     <mat-toolbar-row style="font-size:16px">
       <div class="d-flex">
         <!-- 筛选 -->
+        <mat-select placeholder="选择代码库" [(ngModel)]="filter.libraryId" (selectionChange)="filterList($event)">
+          <mat-option *ngFor="let item of codeLibs" [value]="item.id">
+            {{item.namespace}}
+          </mat-option>
+        </mat-select>
       </div>
       <div class="d-flex flex-grow-1"></div>
       <button mat-flat-button color="primary" matTooltipPosition="right" [routerLink]="['../add']">
@@ -63,4 +68,5 @@
   <tr mat-row *matRowDef="let row; columns: columns;"></tr>
 </table>
 <mat-paginator [pageSizeOptions]="pageSizeOption" [pageIndex]="filter.pageIndex!-1" [pageSize]="filter.pageSize"
-  [length]="total" (page)="getList($event)" showFirstLastButtons></mat-paginator>
+  [length]="total" (page)="getList($event)" showFirstLastButtons>
+</mat-paginator>

@@ -7,6 +7,7 @@ import { DetailComponent } from './detail/detail.component';
 import { AddComponent } from './add/add.component';
 import { EditComponent } from './edit/edit.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { ListStateService } from 'src/app/share/services/list-state.service';
 
 @NgModule({
   declarations: [IndexComponent, DetailComponent, AddComponent, EditComponent],
@@ -15,6 +16,7 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     ShareModule,
     CKEditorModule,
     CodeSnippetRoutingModule
-  ]
+  ],
+  providers: [ListStateService]
 })
 export class CodeSnippetModule { }

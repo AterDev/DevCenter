@@ -2,40 +2,40 @@
   <button color="basic" mat-icon-button matTooltip="返回" (click)="back()">
     <mat-icon>arrow_back</mat-icon>
   </button>
-    添加
+  添加
 </mat-toolbar>
 <form class="d-flex" *ngIf="!isLoading" [formGroup]="formGroup" (ngSubmit)="add()">
   <div class="d-flex flex-column w-100">
-  <mat-form-field>
-    <mat-label>Name</mat-label>
-    <input matInput placeholder="Name" formControlName="name"  minlength="" maxlength="50">
-    <mat-error *ngIf="name?.invalid">
-    {{getValidatorMessage('name')}}
-    </mat-error>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Type</mat-label>
-    <input matInput placeholder="Type" formControlName="type"  minlength="" maxlength="50">
-    <mat-error *ngIf="type?.invalid">
-    {{getValidatorMessage('type')}}
-    </mat-error>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Sort</mat-label>
-    <input matInput type="number" placeholder="Sort" formControlName="sort"  step="1" min="0">
-    <mat-error *ngIf="sort?.invalid">
-    {{getValidatorMessage('sort')}}
-    </mat-error>
-  </mat-form-field>  <mat-form-field>
-    <mat-label>Level</mat-label>
-    <input matInput type="number" placeholder="Level" formControlName="level"  step="1" min="0">
-    <mat-error *ngIf="level?.invalid">
-    {{getValidatorMessage('level')}}
-    </mat-error>
-  </mat-form-field>
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput placeholder="Name" formControlName="name" minlength="" maxlength="50">
+      <mat-error *ngIf="name?.invalid">
+        {{getValidatorMessage('name')}}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Type</mat-label>
+      <input matInput placeholder="Type" formControlName="type" minlength="" maxlength="50">
+      <mat-error *ngIf="type?.invalid">
+        {{getValidatorMessage('type')}}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Sort</mat-label>
+      <input matInput type="number" placeholder="Sort" formControlName="sort" step="1" min="0">
+      <mat-error *ngIf="sort?.invalid">
+        {{getValidatorMessage('sort')}}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Level</mat-label>
+      <input matInput type="number" placeholder="Level" formControlName="level" step="1" min="0">
+      <mat-error *ngIf="level?.invalid">
+        {{getValidatorMessage('level')}}
+      </mat-error>
+    </mat-form-field>
     <div class="d-flex mt-1">
       <button class="d-flex flex-column" mat-flat-button color="primary" type="submit">保存</button>
     </div>
   </div>
 </form>
-

@@ -29,8 +29,6 @@ export class EditComponent implements OnInit {
   updateData = {} as BlogUpdateDto;
   formGroup!: FormGroup;
     constructor(
-    
-    // private authService: OidcSecurityService,
     private service: BlogService,
     private snb: MatSnackBar,
     private router: Router,

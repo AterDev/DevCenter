@@ -10,6 +10,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { CodeType } from 'src/app/share/models/enum/code-type.model';
 import { Language } from 'src/app/share/models/enum/language.model';
+import { CodeLibraryService } from 'src/app/share/services/code-library.service';
+import { lastValueFrom } from 'rxjs';
+import { CodeLibraryItemDto } from 'src/app/share/models/code-library/code-library-item-dto.model';
+import { MatSelectChange } from '@angular/material/select';
+import { ListStateService } from 'src/app/share/services/list-state.service';
 
 @Component({
   selector: 'app-index',
@@ -22,6 +27,7 @@ export class IndexComponent implements OnInit {
   Language = Language;
   CodeType = CodeType;
   isLoading = true;
+  codeLibs = [] as CodeLibraryItemDto[];
   total = 0;
   data: CodeSnippetItemDto[] = [];
   columns: string[] = ['name', 'description', 'language', 'codeType', 'createdTime', 'actions'];
@@ -30,6 +36,8 @@ export class IndexComponent implements OnInit {
   pageSizeOption = [12, 20, 50];
   constructor(
     private service: CodeSnippetService,
+    private librarySrv: CodeLibraryService,
+    private listSrv: ListStateService,
     private snb: MatSnackBar,
     private dialog: MatDialog,
     private router: Router,
@@ -42,10 +50,14 @@ export class IndexComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getLibrary();
     this.getList();
   }
 
   getList(event?: PageEvent): void {
+    if (this.listSrv.filter?.filter)
+      this.filter = this.listSrv.filter?.filter;
+
     if (event) {
       this.filter.pageIndex = event.pageIndex + 1;
       this.filter.pageSize = event.pageSize;
@@ -59,6 +71,21 @@ export class IndexComponent implements OnInit {
         }
         this.isLoading = false;
       });
+  }
+
+  async getLibrary() {
+    const res = await lastValueFrom(this.librarySrv.filter({
+      pageIndex: 1,
+      pageSize: 100
+    }));
+    if (res.data) {
+      this.codeLibs = res.data;
+    }
+  }
+
+  filterList(event: MatSelectChange): void {
+    this.listSrv.filter = { query: null, filter: this.filter };
+    this.getList();
   }
 
   deleteConfirm(item: CodeSnippetItemDto): void {
@@ -115,7 +142,7 @@ export class IndexComponent implements OnInit {
       if (res) { }
     });
   }
-  
+
   openEditDialog(id: string): void {
     const ref = this.dialog.open(EditComponent, {
       hasBackdrop: true,
