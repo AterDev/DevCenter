@@ -34,6 +34,7 @@ public class ResourceAttributeDefineController :
     /// <param name="form"></param>
     /// <returns></returns>
     [HttpPost]
+    [Authorize("Admin")]
     public async Task<ActionResult<ResourceAttributeDefine>> AddAsync(ResourceAttributeDefineAddDto form)
     {
         var entity = form.MapTo<ResourceAttributeDefineAddDto, ResourceAttributeDefine>();
@@ -47,6 +48,7 @@ public class ResourceAttributeDefineController :
     /// <param name="form"></param>
     /// <returns></returns>
     [HttpPut("{id}")]
+    [Authorize("Admin")]
     public async Task<ActionResult<ResourceAttributeDefine?>> UpdateAsync([FromRoute] Guid id, ResourceAttributeDefineUpdateDto form)
     {
         var user = await manager.GetCurrent(id);
@@ -68,6 +70,7 @@ public class ResourceAttributeDefineController :
     /// <returns></returns>
     //[ApiExplorerSettings(IgnoreApi = true)]
     [HttpDelete("{id}")]
+    [Authorize("Admin")]
     public async Task<ActionResult<ResourceAttributeDefine?>> DeleteAsync([FromRoute] Guid id)
     {
         return await manager.DeleteAsync(id);

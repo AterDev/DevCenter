@@ -1,4 +1,4 @@
-<mat-toolbar fxLayoutGap="4px">
+<mat-toolbar>
   <button color="basic" mat-icon-button matTooltip="返回" (click)="back()">
     <mat-icon>arrow_back</mat-icon>
   </button>
@@ -6,8 +6,8 @@
     <mat-icon>edit</mat-icon>
   </button>
 </mat-toolbar>
-<div *ngIf="!isLoading" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="8px">
-  <mat-card class="" style="width: 100%;">
+<div *ngIf="!isLoading" class="d-flex">
+  <mat-card class="w-100">
     <!-- <mat-card-header>
       <div mat-card-avatar class=""></div>
       <mat-card-title></mat-card-title>
@@ -20,11 +20,13 @@
       <p><strong>Language</strong><br> <span class="text-primary">{{data.language}}</span></p>
       <p><strong>CodeType</strong><br> <span class="text-primary">{{data.codeType}}</span></p>
       <p><strong>Id</strong><br> <span class="text-primary">{{data.id}}</span></p>
-      <p><strong>CreatedTime</strong><br> <span class="text-primary">{{data.createdTime|date:'yyyy-MM-dd HH:mm:ss'}}</span></p>
-      <p><strong>UpdatedTime</strong><br> <span class="text-primary">{{data.updatedTime|date:'yyyy-MM-dd HH:mm:ss'}}</span></p>
-      <p><strong>Status</strong><br> <span class="text-primary">{{data.status}}</span></p>
-      <p><strong>IsDeleted</strong><br> <span class="text-primary">{{data.isDeleted}}</span></p>
-
+      <p><strong>CreatedTime</strong><br> <span
+          class="text-primary">{{data.createdTime|date:'yyyy-MM-dd HH:mm:ss'}}</span></p>
+      <p><strong>UpdatedTime</strong><br> <span
+          class="text-primary">{{data.updatedTime|date:'yyyy-MM-dd HH:mm:ss'}}</span></p>
+      <span>内容</span> <br>
+      <!-- <div [innerHtml]="data.content"></div> -->
+      <ckeditor [editor]="editor" [disabled]="true" [data]="data.content!"></ckeditor>
     </mat-card-content>
     <mat-card-actions>
       <!-- <button mat-button></button>

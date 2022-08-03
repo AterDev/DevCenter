@@ -4,6 +4,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CodeSnippet } from 'src/app/share/models/code-snippet/code-snippet.model';
 import { Location } from '@angular/common';
+import * as ClassicEditor from 'ng-ckeditor5-classic';
+import { CKEditor5 } from '@ckeditor/ckeditor5-angular';
 
 @Component({
   selector: 'app-detail',
@@ -14,6 +16,7 @@ export class DetailComponent implements OnInit {
   id!: string;
   isLoading = true;
   data = {} as CodeSnippet;
+  public editor: CKEditor5.EditorConstructor = ClassicEditor;
   constructor(
     private service: CodeSnippetService,
     private snb: MatSnackBar,

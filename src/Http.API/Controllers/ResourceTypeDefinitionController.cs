@@ -30,6 +30,7 @@ public class ResourceTypeDefinitionController : RestApiBase<ResourceTypeDefiniti
     /// </summary>
     /// <param name="form"></param>
     /// <returns></returns>
+    [Authorize("Admin")]
     public override async Task<ActionResult<ResourceTypeDefinition>> AddAsync(ResourceTypeDefinitionAddDto form)
     {
         var typeDefine = new ResourceTypeDefinition();
@@ -49,6 +50,7 @@ public class ResourceTypeDefinitionController : RestApiBase<ResourceTypeDefiniti
     /// <param name="id"></param>
     /// <param name="form"></param>
     /// <returns></returns>
+    [Authorize("Admin")]
     public override async Task<ActionResult<ResourceTypeDefinition?>> UpdateAsync([FromRoute] Guid id, ResourceTypeDefinitionUpdateDto form)
     {
         var typeDefine = await _store.FindAsync(id);
@@ -60,6 +62,7 @@ public class ResourceTypeDefinitionController : RestApiBase<ResourceTypeDefiniti
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
+    [Authorize("Admin")]
     // [ApiExplorerSettings(IgnoreApi = true)]
     public override async Task<ActionResult<bool>> DeleteAsync([FromRoute] Guid id)
     {

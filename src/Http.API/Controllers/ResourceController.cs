@@ -41,6 +41,7 @@ public class ResourceController : RestApiBase<ResourceDataStore, Resource, Resou
     /// </summary>
     /// <param name="form"></param>
     /// <returns></returns>
+    [Authorize("Admin")]
     public override async Task<ActionResult<Resource>> AddAsync(ResourceAddDto form)
     {
         var group = await _store.FindGroupAsync(form.GroupId);
@@ -88,6 +89,7 @@ public class ResourceController : RestApiBase<ResourceDataStore, Resource, Resou
     /// <param name="id"></param>
     /// <param name="form"></param>
     /// <returns></returns>
+    [Authorize("Admin")]
     public override async Task<ActionResult<Resource?>> UpdateAsync([FromRoute] Guid id, ResourceUpdateDto form)
     {
         return await base.UpdateAsync(id, form);
@@ -98,6 +100,7 @@ public class ResourceController : RestApiBase<ResourceDataStore, Resource, Resou
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
+    [Authorize("Admin")]
     // [ApiExplorerSettings(IgnoreApi = true)]
     public override async Task<ActionResult<bool>> DeleteAsync([FromRoute] Guid id)
     {
