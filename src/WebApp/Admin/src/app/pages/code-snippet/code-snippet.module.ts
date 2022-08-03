@@ -8,6 +8,7 @@ import { AddComponent } from './add/add.component';
 import { EditComponent } from './edit/edit.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { ListStateService } from 'src/app/share/services/list-state.service';
+import { MonacoEditorModule } from '@materia-ui/ngx-monaco-editor';
 
 @NgModule({
   declarations: [IndexComponent, DetailComponent, AddComponent, EditComponent],
@@ -15,6 +16,7 @@ import { ListStateService } from 'src/app/share/services/list-state.service';
     ComponentsModule,
     ShareModule,
     CKEditorModule,
+    MonacoEditorModule,
     CodeSnippetRoutingModule
   ],
   providers: [ListStateService]

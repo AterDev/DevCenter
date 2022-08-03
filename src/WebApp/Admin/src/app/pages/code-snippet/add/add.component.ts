@@ -13,6 +13,7 @@ import { CKEditor5 } from '@ckeditor/ckeditor5-angular';
 // import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { Language } from 'src/app/share/models/enum/language.model';
 import { CodeType } from 'src/app/share/models/enum/code-type.model';
+import { MonacoEditorConstructionOptions, MonacoStandaloneCodeEditor } from '@materia-ui/ngx-monaco-editor';
 
 @Component({
   selector: 'app-add',
@@ -20,11 +21,12 @@ import { CodeType } from 'src/app/share/models/enum/code-type.model';
   styleUrls: ['./add.component.css']
 })
 export class AddComponent implements OnInit {
-  public editorConfig!: CKEditor5.Config;
-  public editor: CKEditor5.EditorConstructor = ClassicEditor;
+  // public editorConfig!: CKEditor5.Config;
+  // public editor: CKEditor5.EditorConstructor = ClassicEditor;
+  public editor!: MonacoStandaloneCodeEditor;
+  public editorOption: MonacoEditorConstructionOptions;
   Language = Language;
   CodeType = CodeType;
-
   formGroup!: FormGroup;
   data = {} as CodeSnippetAddDto;
   isLoading = true;
@@ -40,6 +42,11 @@ export class AddComponent implements OnInit {
     // @Inject(MAT_DIALOG_DATA) public dlgData: { id: '' }
   ) {
 
+    this.editorOption = {
+      theme: 'vs-dark',
+      language: 'csharp',
+      minimap: { enabled: false }
+    }
   }
 
   get name() { return this.formGroup.get('name'); }
@@ -51,21 +58,19 @@ export class AddComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
-    this.initEditor();
     // TODO:获取其他相关数据后设置加载状态
     this.isLoading = false;
   }
-  initEditor(): void {
-    this.editorConfig = {
-      // placeholder: '请添加图文信息提供证据，也可以直接从Word文档中复制',
-      simpleUpload: {
-        uploadUrl: environment.uploadEditorFileUrl,
-        headers: {
-          Authorization: 'Bearer ' + localStorage.getItem("accessToken")
-        }
-      },
-      language: 'zh-cn'
-    };
+  editorInit(editor: MonacoStandaloneCodeEditor) {
+    // Here you can access editor instance
+    this.editor = editor;
+  }
+  changeLanguage(event: any): void {
+    const language = Language[event.value].toLowerCase();
+    console.log(language);
+    const model = this.editor.getModel();
+    monaco.editor.setModelLanguage(model!, language);
+    this.editorOption.language = language;
   }
   onReady(editor: any) {
     editor.ui.getEditableElement().parentElement.insertBefore(
@@ -114,7 +119,7 @@ export class AddComponent implements OnInit {
   add(): void {
     if (this.formGroup.valid) {
       const data = this.formGroup.value as CodeSnippetAddDto;
-      this.data = { ...data, ...this.data };
+      this.data = data;
       this.service.add(this.data)
         .subscribe(res => {
           this.snb.open('添加成功');
