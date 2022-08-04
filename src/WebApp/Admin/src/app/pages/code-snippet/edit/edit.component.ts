@@ -14,6 +14,7 @@ import { CKEditor5 } from '@ckeditor/ckeditor5-angular';
 import { Language } from 'src/app/share/models/enum/language.model';
 import { CodeType } from 'src/app/share/models/enum/code-type.model';
 import { Status } from 'src/app/share/models/enum/status.model';
+import { MonacoEditorConstructionOptions, MonacoStandaloneCodeEditor } from '@materia-ui/ngx-monaco-editor';
 
 @Component({
   selector: 'app-edit',
@@ -21,8 +22,8 @@ import { Status } from 'src/app/share/models/enum/status.model';
   styleUrls: ['./edit.component.css']
 })
 export class EditComponent implements OnInit {
-  public editorConfig!: CKEditor5.Config;
-  public editor: CKEditor5.EditorConstructor = ClassicEditor;
+  public editor!: MonacoStandaloneCodeEditor;
+  public editorOption: MonacoEditorConstructionOptions;
   Language = Language;
   CodeType = CodeType;
   Status = Status;
@@ -47,7 +48,11 @@ export class EditComponent implements OnInit {
     if (id) {
       this.id = id;
     } else {
-      // TODO: id为空
+
+    }
+    this.editorOption = {
+      theme: 'vs-dark',
+      minimap: { enabled: false }
     }
   }
 
@@ -61,22 +66,8 @@ export class EditComponent implements OnInit {
 
   ngOnInit(): void {
     this.getDetail();
-    this.initEditor();
-    // TODO:等待数据加载完成
-    // this.isLoading = false;
   }
-  initEditor(): void {
-    this.editorConfig = {
-      // placeholder: '请添加图文信息提供证据，也可以直接从Word文档中复制',
-      simpleUpload: {
-        uploadUrl: environment.uploadEditorFileUrl,
-        headers: {
-          Authorization: 'Bearer ' + localStorage.getItem("accessToken")
-        }
-      },
-      language: 'zh-cn'
-    };
-  }
+
   onReady(editor: any) {
     editor.ui.getEditableElement().parentElement.insertBefore(
       editor.ui.view.toolbar.element,
@@ -87,8 +78,8 @@ export class EditComponent implements OnInit {
     this.service.getDetail(this.id)
       .subscribe(res => {
         this.data = res;
-        this.initForm();
         this.isLoading = false;
+        this.initForm();
       }, error => {
         this.snb.open(error);
       })
@@ -104,6 +95,22 @@ export class EditComponent implements OnInit {
       status: new FormControl(this.data.status, []),
 
     });
+
+  }
+  editorInit(editor: MonacoStandaloneCodeEditor) {
+    this.editor = editor;
+    const language = Language[this.data.language!].toLowerCase();
+    console.log(language);
+
+    const model = this.editor.getModel();
+    monaco.editor.setModelLanguage(model!, language);
+    this.editorOption.language = language;
+  }
+  changeLanguage(event: any): void {
+    const language = Language[event.value].toLowerCase();
+    const model = this.editor.getModel();
+    monaco.editor.setModelLanguage(model!, language);
+    this.editorOption.language = language;
   }
   getValidatorMessage(type: string): string {
     switch (type) {

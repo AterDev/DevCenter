@@ -23,7 +23,7 @@
     </mat-form-field>
     <mat-form-field>
       <mat-label>Language</mat-label>
-      <mat-select formControlName="language">
+      <mat-select formControlName="language" (selectionChange)="changeLanguage($event)">
         <mat-option *ngFor="let item of Language | toKeyValue" [value]="item.value">
           {{item.key}}
         </mat-option>
@@ -43,8 +43,10 @@
         {{getValidatorMessage('codeType')}}
       </mat-error>
     </mat-form-field>
-    <ckeditor [editor]="editor" [config]="editorConfig" formControlName="content" (ready)="onReady($event)">
-    </ckeditor>
+    <div class="w-100" style="min-height: 500px;">
+      <ngx-monaco-editor [options]="editorOption" formControlName="content" (init)="editorInit($event)">
+      </ngx-monaco-editor>
+    </div>
 
     <mat-form-field>
       <mat-label>Status</mat-label>

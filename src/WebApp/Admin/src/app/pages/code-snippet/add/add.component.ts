@@ -62,21 +62,13 @@ export class AddComponent implements OnInit {
     this.isLoading = false;
   }
   editorInit(editor: MonacoStandaloneCodeEditor) {
-    // Here you can access editor instance
     this.editor = editor;
   }
   changeLanguage(event: any): void {
     const language = Language[event.value].toLowerCase();
-    console.log(language);
     const model = this.editor.getModel();
     monaco.editor.setModelLanguage(model!, language);
     this.editorOption.language = language;
-  }
-  onReady(editor: any) {
-    editor.ui.getEditableElement().parentElement.insertBefore(
-      editor.ui.view.toolbar.element,
-      editor.ui.getEditableElement()
-    );
   }
   initForm(): void {
     this.formGroup = new FormGroup({
