@@ -25,8 +25,10 @@
       <p><strong>UpdatedTime</strong><br> <span
           class="text-primary">{{data.updatedTime|date:'yyyy-MM-dd HH:mm:ss'}}</span></p>
       <span>内容</span> <br>
-      <!-- <div [innerHtml]="data.content"></div> -->
-      <ckeditor [editor]="editor" [disabled]="true" [data]="data.content!"></ckeditor>
+      <div class="w-100" style="min-height: 500px;">
+        <ngx-monaco-editor [options]="editorOption" [(ngModel)]="data.content" (init)="editorInit($event)">
+        </ngx-monaco-editor>
+      </div>
     </mat-card-content>
     <mat-card-actions>
       <!-- <button mat-button></button>

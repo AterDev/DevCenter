@@ -6,6 +6,8 @@ import { CodeSnippet } from 'src/app/share/models/code-snippet/code-snippet.mode
 import { Location } from '@angular/common';
 import * as ClassicEditor from 'ng-ckeditor5-classic';
 import { CKEditor5 } from '@ckeditor/ckeditor5-angular';
+import { MonacoEditorConstructionOptions, MonacoStandaloneCodeEditor } from '@materia-ui/ngx-monaco-editor';
+import { Language } from 'src/app/share/models/enum/language.model';
 
 @Component({
   selector: 'app-detail',
@@ -13,10 +15,12 @@ import { CKEditor5 } from '@ckeditor/ckeditor5-angular';
   styleUrls: ['./detail.component.css']
 })
 export class DetailComponent implements OnInit {
+  Language = Language;
   id!: string;
+  public editor!: MonacoStandaloneCodeEditor;
+  public editorOption: MonacoEditorConstructionOptions;
   isLoading = true;
   data = {} as CodeSnippet;
-  public editor: CKEditor5.EditorConstructor = ClassicEditor;
   constructor(
     private service: CodeSnippetService,
     private snb: MatSnackBar,
@@ -29,6 +33,10 @@ export class DetailComponent implements OnInit {
       this.id = id;
     } else {
       // TODO: id为空
+    }
+    this.editorOption = {
+      theme: 'vs-dark',
+      minimap: { enabled: false },
 
     }
   }
@@ -40,9 +48,19 @@ export class DetailComponent implements OnInit {
       .subscribe(res => {
         this.data = res;
         this.isLoading = false;
+        this.editor.setValue(this.data.content!);
+
       }, error => {
         this.snb.open(error);
       })
+
+  }
+  editorInit(editor: MonacoStandaloneCodeEditor) {
+    this.editor = editor;
+    const language = Language[this.data.language!].toLowerCase();
+    const model = this.editor.getModel();
+    monaco.editor.setModelLanguage(model!, language);
+    this.editorOption.language = language;
   }
   back(): void {
     this.location.back();
