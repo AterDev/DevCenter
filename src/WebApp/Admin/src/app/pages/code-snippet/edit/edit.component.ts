@@ -67,13 +67,6 @@ export class EditComponent implements OnInit {
   ngOnInit(): void {
     this.getDetail();
   }
-
-  onReady(editor: any) {
-    editor.ui.getEditableElement().parentElement.insertBefore(
-      editor.ui.view.toolbar.element,
-      editor.ui.getEditableElement()
-    );
-  }
   getDetail(): void {
     this.service.getDetail(this.id)
       .subscribe(res => {
