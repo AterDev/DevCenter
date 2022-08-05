@@ -66,7 +66,7 @@ export class EditComponent implements OnInit {
 
   initForm(): void {
     this.formGroup = new FormGroup({
-      name: new FormControl(this.data.name, [Validators.maxLength(50)]),
+      name: new FormControl(this.data.name, [Validators.required, Validators.maxLength(50)]),
       type: new FormControl(this.data.type, [Validators.maxLength(50)]),
       sort: new FormControl(this.data.sort, []),
       level: new FormControl(this.data.level, []),

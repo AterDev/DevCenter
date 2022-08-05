@@ -47,9 +47,9 @@ export class DetailComponent implements OnInit {
     this.service.getDetail(this.id)
       .subscribe(res => {
         this.data = res;
+        console.log(this.data.content);
+        
         this.isLoading = false;
-        this.editor.setValue(this.data.content!);
-
       }, error => {
         this.snb.open(error);
       })

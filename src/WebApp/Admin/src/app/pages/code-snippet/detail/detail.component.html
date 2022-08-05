@@ -25,8 +25,8 @@
       <p><strong>UpdatedTime</strong><br> <span
           class="text-primary">{{data.updatedTime|date:'yyyy-MM-dd HH:mm:ss'}}</span></p>
       <span>内容</span> <br>
-      <div class="w-100" style="min-height: 500px;">
-        <ngx-monaco-editor [options]="editorOption" [(ngModel)]="data.content" (init)="editorInit($event)">
+      <div class="d-flex w-100" style="min-height: 500px;">
+        <ngx-monaco-editor class="editor-container" [options]="editorOption" [(ngModel)]="data.content" (init)="editorInit($event)">
         </ngx-monaco-editor>
       </div>
     </mat-card-content>
