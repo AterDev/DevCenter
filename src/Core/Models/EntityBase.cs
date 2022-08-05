@@ -13,8 +13,7 @@ public class EntityBase
     public Guid Id { get; set; }
     public DateTimeOffset CreatedTime { get; set; } = DateTimeOffset.UtcNow;
     public DateTimeOffset UpdatedTime { get; set; } = DateTimeOffset.UtcNow;
-    public Status Status { get; set; } = Models.Status.Default;
-    [NotMapped]
+    public Status? Status { get; set; } = Models.Status.Default;
     public bool IsDeleted { get; set; } = false;
 }
 

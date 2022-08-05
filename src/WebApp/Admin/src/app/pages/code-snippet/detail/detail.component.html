@@ -25,7 +25,7 @@
       <p><strong>UpdatedTime</strong><br> <span
           class="text-primary">{{data.updatedTime|date:'yyyy-MM-dd HH:mm:ss'}}</span></p>
       <span>内容</span> <br>
-      <div class="d-flex w-100" style="min-height: 500px;">
+      <div class="d-flex w-100" >
         <ngx-monaco-editor class="editor-container" [options]="editorOption" [(ngModel)]="data.content" (init)="editorInit($event)">
         </ngx-monaco-editor>
       </div>

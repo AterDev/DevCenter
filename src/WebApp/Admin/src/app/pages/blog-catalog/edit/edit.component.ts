@@ -103,8 +103,6 @@ export class EditComponent implements OnInit {
   }
   edit(): void {
     if (this.formGroup.valid) {
-      console.log(this.formGroup.value);
-      return;
       this.updateData = this.formGroup.value as BlogCatalogUpdateDto;
       this.service.update(this.id, this.updateData)
         .subscribe(res => {

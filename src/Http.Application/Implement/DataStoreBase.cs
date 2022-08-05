@@ -128,7 +128,7 @@ public class DataStoreBase<TContext, TEntity, TUpdate, TFilter, TItem> : IDataSt
         var data = await _db.FindAsync(id);
         if (data == null) { return null; }
         // merge data and save 
-        data.Merge(dto);
+        data.Merge(dto, false);
         data.UpdatedTime = DateTimeOffset.UtcNow;
         await _context.SaveChangesAsync();
         return data;
