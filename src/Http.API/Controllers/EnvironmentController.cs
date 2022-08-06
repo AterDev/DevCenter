@@ -50,8 +50,7 @@ public class EnvironmentController :
     public async Task<ActionResult<Environment?>> UpdateAsync([FromRoute] Guid id, EnvironmentUpdateDto form)
     {
         var user = await manager.GetCurrent(id);
-        if (user == null) return NotFound();
-        return await manager.UpdateAsync(user, form);
+        return user == null ? (ActionResult<Environment?>)NotFound() : (ActionResult<Environment?>)await manager.UpdateAsync(user, form);
     }
 
     /// <summary>
@@ -76,7 +75,6 @@ public class EnvironmentController :
     public async Task<ActionResult<Environment?>> DeleteAsync([FromRoute] Guid id)
     {
         var entity = await manager.GetCurrent(id);
-        if (entity == null) return NotFound();
-        return await manager.DeleteAsync(entity);
+        return entity == null ? (ActionResult<Environment?>)NotFound() : (ActionResult<Environment?>)await manager.DeleteAsync(entity);
     }
 }

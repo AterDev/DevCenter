@@ -1,5 +1,4 @@
-﻿using Http.Application.IManager;
-using Share.Models.AuthDtos;
+﻿using Share.Models.AuthDtos;
 
 namespace Http.API.Controllers;
 

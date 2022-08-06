@@ -80,7 +80,10 @@ public class ResourceManager : DomainManagerBase<Resource, ResourceUpdateDto, Re
     public override async Task<PageList<ResourceItemDto>> FilterAsync(ResourceFilterDto filter)
     {
         var query = Queryable;
-        query = query.Where(q => q.Group.Id == filter.GroupId);
+        if (filter.GroupId != null)
+        {
+            query = query.Where(q => q.Group.Id == filter.GroupId);
+        }
         return await Query.FilterAsync<ResourceItemDto>(query);
     }
 

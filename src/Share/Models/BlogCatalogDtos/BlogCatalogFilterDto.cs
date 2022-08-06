@@ -7,5 +7,5 @@ public class BlogCatalogFilterDto : FilterBase
     public short? Sort { get; set; }
     public short? Level { get; set; }
     public Guid? ParentId { get; set; } = default!;
-    
+
 }

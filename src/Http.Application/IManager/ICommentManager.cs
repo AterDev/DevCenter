@@ -6,5 +6,5 @@ namespace Http.Application.IManager;
 /// </summary>
 public interface ICommentManager : IDomainManager<Comment, CommentUpdateDto, CommentFilterDto, CommentItemDto>
 {
-	// TODO: 定义业务方法
+    // TODO: 定义业务方法
 }

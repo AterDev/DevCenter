@@ -23,5 +23,5 @@ public class CodeLibraryFilterDto : FilterBase
     /// </summary>
     public bool? IsPublic { get; set; }
     public Guid? UserId { get; set; } = default!;
-    
+
 }

@@ -9,5 +9,5 @@ public class BlogCatalogAddDto
     public short Sort { get; set; } = default!;
     public short Level { get; set; } = default!;
     public Guid? ParentId { get; set; }
-    
+
 }

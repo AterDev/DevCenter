@@ -10,5 +10,5 @@ public class BlogTagAddDto
     public string? Color { get; set; }
     [MaxLength(30)]
     public string? Icon { get; set; }
-    
+
 }

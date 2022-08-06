@@ -70,7 +70,6 @@ public class BlogController :
     public async Task<ActionResult<Blog?>> DeleteAsync([FromRoute] Guid id)
     {
         var entity = await manager.GetCurrent(id);
-        if (entity == null) return NotFound();
-        return await manager.DeleteAsync(entity);
+        return entity == null ? (ActionResult<Blog?>)NotFound() : (ActionResult<Blog?>)await manager.DeleteAsync(entity);
     }
 }

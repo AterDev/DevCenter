@@ -60,7 +60,7 @@ public class GitLabCIGenerator
     #endregion
     #region 模板
 
-    private static string JobTmp=@"stages:    
+    private static string JobTmp = @"stages:    
   - publish
 ${JobName}: 
   variables:
@@ -70,7 +70,7 @@ ${JobName}:
     RUN_PATH: '${RunPath}'
   stage: publish";
 
-    private static string Rules=@"
+    private static string Rules = @"
   rules: 
     - if: '$CI_PIPELINE_SOURCE == ""push"" && $CI_COMMIT_BRANCH == ""${BranchName}""'
       changes:
@@ -80,7 +80,7 @@ ${JobName}:
     /// <summary>
     /// 文件复制脚本
     /// </summary>
-    private static string CopyTmp=@"
+    private static string CopyTmp = @"
     - mkdir -p $PUBLISH_PATH
     - cd $PUBLISH_PATH
     - ssh $SSH_HOST sudo mkdir -p $RUN_PATH
@@ -90,7 +90,7 @@ ${JobName}:
     /// <summary>
     /// dotnet 构建及复制脚本
     /// </summary>
-    private static string DotNetTmp=@"
+    private static string DotNetTmp = @"
     - mkdir -p $PUBLISH_PATH
     - dotnet build $PROJECT_PATH
     - dotnet publish $PROJECT_PATH -c Release -o $PUBLISH_PATH
@@ -113,14 +113,14 @@ ${JobName}:
     /// <returns></returns>
     public static string GetYmlContent(SSHOption option)
     {
-        var content = JobTmp.Replace("${JobName}",option.JobName)
-            .Replace("${SSH_HOST}",option.SSHHost)
-            .Replace("${ProjectPath}",option.ProjectPath)
-            .Replace("${PublishPath}",option.PublishPath)
-            .Replace("${RunPath}",option.RunPath);
+        var content = JobTmp.Replace("${JobName}", option.JobName)
+            .Replace("${SSH_HOST}", option.SSHHost)
+            .Replace("${ProjectPath}", option.ProjectPath)
+            .Replace("${PublishPath}", option.PublishPath)
+            .Replace("${RunPath}", option.RunPath);
 
-        var rules = Rules.Replace("${ProjectPath}",option.ProjectPath)
-            .Replace("${BranchName}",option.BranchName);
+        var rules = Rules.Replace("${ProjectPath}", option.ProjectPath)
+            .Replace("${BranchName}", option.BranchName);
         var scripts = "  script:";
         switch (option.Type)
         {

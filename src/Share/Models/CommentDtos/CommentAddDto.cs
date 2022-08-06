@@ -9,5 +9,5 @@ public class CommentAddDto
     public string? Content { get; set; }
     public Guid BlogId { get; set; } = default!;
     public Guid UserId { get; set; } = default!;
-    
+
 }

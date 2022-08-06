@@ -31,5 +31,5 @@ public class BlogUpdateDto
     public Status? Status { get; set; }
     public bool? IsDeleted { get; set; }
     public Guid? UserId { get; set; } = default!;
-    
+
 }

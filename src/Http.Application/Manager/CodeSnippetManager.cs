@@ -1,4 +1,3 @@
-using Http.Application.IManager;
 using Share.Models.CodeSnippetDtos;
 
 namespace Http.Application.Manager;

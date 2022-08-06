@@ -33,6 +33,16 @@ public class ResourceGroupController :
     }
 
     /// <summary>
+    /// 资源组列表
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost("list")]
+    public async Task<List<ResourceGroupItemDto>> GetList()
+    {
+        return await manager.GetList();
+    }
+
+    /// <summary>
     /// 获取某角色分配的资源组
     /// </summary>
     /// <param name="roleId"></param>
@@ -72,8 +82,7 @@ public class ResourceGroupController :
     public async Task<ActionResult<ResourceGroup?>> UpdateAsync([FromRoute] Guid id, ResourceGroupUpdateDto form)
     {
         var user = await manager.GetCurrent(id);
-        if (user == null) return NotFound();
-        return await manager.UpdateAsync(user, form);
+        return user == null ? (ActionResult<ResourceGroup?>)NotFound() : (ActionResult<ResourceGroup?>)await manager.UpdateAsync(user, form);
     }
 
     /// <summary>
@@ -98,7 +107,6 @@ public class ResourceGroupController :
     public async Task<ActionResult<ResourceGroup?>> DeleteAsync([FromRoute] Guid id)
     {
         var entity = await manager.GetCurrent(id);
-        if (entity == null) return NotFound();
-        return await manager.DeleteAsync(entity);
+        return entity == null ? (ActionResult<ResourceGroup?>)NotFound() : (ActionResult<ResourceGroup?>)await manager.DeleteAsync(entity);
     }
 }

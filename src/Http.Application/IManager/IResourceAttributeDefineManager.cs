@@ -6,5 +6,5 @@ namespace Http.Application.IManager;
 /// </summary>
 public interface IResourceAttributeDefineManager : IDomainManager<ResourceAttributeDefine, ResourceAttributeDefineUpdateDto, ResourceAttributeDefineFilterDto, ResourceAttributeDefineItemDto>
 {
-	// TODO: 定义业务方法
+    // TODO: 定义业务方法
 }

@@ -30,5 +30,5 @@ public class BlogAddDto
     public string? Content { get; set; }
     public Guid UserId { get; set; } = default!;
     public Guid CatalogId { get; set; } = default!;
-    
+
 }

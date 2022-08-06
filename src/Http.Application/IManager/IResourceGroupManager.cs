@@ -8,4 +8,11 @@ public interface IResourceGroupManager : IDomainManager<ResourceGroup, ResourceG
 {
     // TODO: 定义业务方法
     Task<List<ResourceGroupRoleDto>> GetRoleResourceGroupsAsync(Guid? roleId);
+
+    /// <summary>
+    /// 列表
+    /// </summary>
+    /// <returns></returns>
+    Task<List<ResourceGroupItemDto>> GetList();
+
 }

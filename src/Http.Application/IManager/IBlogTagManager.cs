@@ -6,5 +6,5 @@ namespace Http.Application.IManager;
 /// </summary>
 public interface IBlogTagManager : IDomainManager<BlogTag, BlogTagUpdateDto, BlogTagFilterDto, BlogTagItemDto>
 {
-	// TODO: 定义业务方法
+    // TODO: 定义业务方法
 }

@@ -6,5 +6,5 @@ namespace Http.Application.IManager;
 /// </summary>
 public interface IResourceTagsManager : IDomainManager<ResourceTags, ResourceTagsUpdateDto, ResourceTagsFilterDto, ResourceTagsItemDto>
 {
-	// TODO: 定义业务方法
+    // TODO: 定义业务方法
 }

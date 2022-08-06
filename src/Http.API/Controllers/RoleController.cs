@@ -50,8 +50,7 @@ public class RoleController :
     public async Task<ActionResult<Role?>> UpdateAsync([FromRoute] Guid id, RoleUpdateDto form)
     {
         var current = await manager.GetCurrent(id);
-        if (current == null) return NotFound();
-        return await manager.UpdateAsync(current, form);
+        return current == null ? (ActionResult<Role?>)NotFound() : (ActionResult<Role?>)await manager.UpdateAsync(current, form);
     }
 
     /// <summary>
@@ -63,8 +62,7 @@ public class RoleController :
     public async Task<ActionResult<bool>> SetResourceGroupsAsync([FromBody] RoleResourceDto dto)
     {
         var current = await manager.GetCurrent(dto.RoleId);
-        if (current == null) return NotFound();
-        return await manager.SetResourceGroupsAsync(dto);
+        return current == null ? (ActionResult<bool>)NotFound() : (ActionResult<bool>)await manager.SetResourceGroupsAsync(dto);
     }
     /// <summary>
     /// 详情
@@ -88,7 +86,6 @@ public class RoleController :
     public async Task<ActionResult<Role?>> DeleteAsync([FromRoute] Guid id)
     {
         var entity = await manager.GetCurrent(id);
-        if (entity == null) return NotFound();
-        return await manager.DeleteAsync(entity);
+        return entity == null ? (ActionResult<Role?>)NotFound() : (ActionResult<Role?>)await manager.DeleteAsync(entity);
     }
 }

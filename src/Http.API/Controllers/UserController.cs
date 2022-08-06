@@ -102,7 +102,6 @@ public class UserController :
     public async Task<ActionResult<User?>> DeleteAsync([FromRoute] Guid id)
     {
         var entity = await manager.GetCurrent(id);
-        if (entity == null) return NotFound();
-        return await manager.DeleteAsync(entity);
+        return entity == null ? (ActionResult<User?>)NotFound() : (ActionResult<User?>)await manager.DeleteAsync(entity);
     }
 }

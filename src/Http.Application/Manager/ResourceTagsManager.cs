@@ -1,4 +1,3 @@
-using Http.Application.IManager;
 using Share.Models.ResourceTagsDtos;
 
 namespace Http.Application.Manager;

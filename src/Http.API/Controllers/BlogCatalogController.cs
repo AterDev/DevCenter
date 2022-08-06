@@ -51,8 +51,7 @@ public class BlogCatalogController :
     public async Task<ActionResult<BlogCatalog?>> UpdateAsync([FromRoute] Guid id, BlogCatalogUpdateDto form)
     {
         var user = await manager.GetCurrent(id);
-        if (user == null) return NotFound();
-        return await manager.UpdateAsync(user, form);
+        return user == null ? (ActionResult<BlogCatalog?>)NotFound() : (ActionResult<BlogCatalog?>)await manager.UpdateAsync(user, form);
     }
 
 
@@ -72,7 +71,6 @@ public class BlogCatalogController :
     public async Task<ActionResult<BlogCatalog?>> DeleteAsync([FromRoute] Guid id)
     {
         var entity = await manager.GetCurrent(id);
-        if (entity == null) return NotFound();
-        return await manager.DeleteAsync(entity);
+        return entity == null ? (ActionResult<BlogCatalog?>)NotFound() : (ActionResult<BlogCatalog?>)await manager.DeleteAsync(entity);
     }
 }

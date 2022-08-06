@@ -15,5 +15,5 @@ public class BlogTagShortDto
     public DateTimeOffset UpdatedTime { get; set; } = default!;
     public Status Status { get; set; } = default!;
     public bool IsDeleted { get; set; } = default!;
-    
+
 }

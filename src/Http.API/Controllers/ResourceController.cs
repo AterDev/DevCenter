@@ -66,8 +66,7 @@ public class ResourceController :
     public async Task<ActionResult<Resource?>> UpdateAsync([FromRoute] Guid id, ResourceUpdateDto form)
     {
         var current = await manager.GetCurrent(id);
-        if (current == null) return NotFound();
-        return await manager.UpdateAsync(current, form);
+        return current == null ? (ActionResult<Resource?>)NotFound() : (ActionResult<Resource?>)await manager.UpdateAsync(current, form);
     }
 
     /// <summary>
@@ -92,7 +91,6 @@ public class ResourceController :
     public async Task<ActionResult<Resource?>> DeleteAsync([FromRoute] Guid id)
     {
         var entity = await manager.GetCurrent(id);
-        if (entity == null) return NotFound();
-        return await manager.DeleteAsync(entity);
+        return entity == null ? (ActionResult<Resource?>)NotFound() : (ActionResult<Resource?>)await manager.DeleteAsync(entity);
     }
 }

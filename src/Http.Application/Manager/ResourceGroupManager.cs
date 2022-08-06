@@ -8,6 +8,8 @@ public class ResourceGroupManager : DomainManagerBase<ResourceGroup, ResourceGro
     {
     }
 
+
+
     public override async Task<ResourceGroup> UpdateAsync(ResourceGroup entity, ResourceGroupUpdateDto dto)
     {
         if (dto.EnvironmentId != null)
@@ -20,7 +22,6 @@ public class ResourceGroupManager : DomainManagerBase<ResourceGroup, ResourceGro
         }
         return await base.UpdateAsync(entity, dto);
     }
-
 
     public override async Task<ResourceGroup?> FindAsync(Guid id)
     {
@@ -41,7 +42,9 @@ public class ResourceGroupManager : DomainManagerBase<ResourceGroup, ResourceGro
             {
                 // 查询角色包含的资源组
                 var roleIds = roles.Select(r => r.Id).ToList();
-                var groups = await Stores.QueryContext.Roles.Where(r => roleIds.Contains(r.Id))
+                var groups = await Stores.QueryContext.Roles
+                    .AsNoTracking()
+                    .Where(r => roleIds.Contains(r.Id))
                     .SelectMany(r => r.ResourceGroups!)
                     .ToListAsync();
 
@@ -63,10 +66,27 @@ public class ResourceGroupManager : DomainManagerBase<ResourceGroup, ResourceGro
         }
         var count = Queryable.Count();
         var data = await Queryable.AsNoTracking()
-
+            .OrderBy(q => q.Sort)
+            .OrderBy(q => q.Environment.Name)
+            .Include(q => q.Environment)
+            .Include(q => q.Resources)!
+                .ThenInclude(r => r.Attributes)
+            .Include(q => q.Resources)!
+                .ThenInclude(r => r.Tags)
+            .Include(q => q.Resources)!
+                .ThenInclude(r => r.ResourceType)
             .Skip((filter.PageIndex!.Value - 1) * filter.PageSize!.Value)
             .Take(filter.PageSize!.Value)
-            .Select<ResourceGroup, ResourceGroupItemDto>()
+            .Select(s => new ResourceGroupItemDto()
+            {
+                Id = s.Id,
+                Name = s.Name,
+                Resource = s.Resources!,
+                Environment = s.Environment,
+                Descriptioin = s.Descriptioin,
+                Navigation = s.Navigation,
+                Sort = s.Sort
+            })
             .ToListAsync();
         return new PageList<ResourceGroupItemDto>
         {
@@ -89,6 +109,12 @@ public class ResourceGroupManager : DomainManagerBase<ResourceGroup, ResourceGro
             Queryable = Queryable.Where(d => d.Roles!.Contains(role!));
         }
         return await Queryable.Select<ResourceGroup, ResourceGroupRoleDto>()
+            .ToListAsync();
+    }
+
+    public async Task<List<ResourceGroupItemDto>> GetList()
+    {
+        return await Query.Db.ProjectTo<ResourceGroupItemDto>()
             .ToListAsync();
     }
 }

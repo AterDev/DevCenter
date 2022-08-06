@@ -38,7 +38,11 @@ public class CodeSnippetController :
     {
         var entity = form.MapTo<CodeSnippetAddDto, CodeSnippet>();
         var user = await _user.GetUserAsync();
-        if (user == null) return NotFound();
+        if (user == null)
+        {
+            return NotFound();
+        }
+
         entity.User = user;
         return await manager.AddAsync(entity);
     }
@@ -53,8 +57,7 @@ public class CodeSnippetController :
     public async Task<ActionResult<CodeSnippet?>> UpdateAsync([FromRoute] Guid id, CodeSnippetUpdateDto form)
     {
         var user = await manager.GetCurrent(id);
-        if (user == null) return NotFound();
-        return await manager.UpdateAsync(user, form);
+        return user == null ? (ActionResult<CodeSnippet?>)NotFound() : (ActionResult<CodeSnippet?>)await manager.UpdateAsync(user, form);
     }
 
 
@@ -74,7 +77,6 @@ public class CodeSnippetController :
     public async Task<ActionResult<CodeSnippet?>> DeleteAsync([FromRoute] Guid id)
     {
         var entity = await manager.GetCurrent(id);
-        if (entity == null) return NotFound();
-        return await manager.DeleteAsync(entity);
+        return entity == null ? (ActionResult<CodeSnippet?>)NotFound() : (ActionResult<CodeSnippet?>)await manager.DeleteAsync(entity);
     }
 }

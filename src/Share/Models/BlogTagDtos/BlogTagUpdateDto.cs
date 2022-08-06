@@ -12,5 +12,5 @@ public class BlogTagUpdateDto
     public string? Icon { get; set; }
     public Status? Status { get; set; }
     public bool? IsDeleted { get; set; }
-    
+
 }

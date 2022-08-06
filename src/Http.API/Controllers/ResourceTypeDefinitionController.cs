@@ -50,8 +50,7 @@ public class ResourceTypeDefinitionController :
     public async Task<ActionResult<ResourceTypeDefinition?>> UpdateAsync([FromRoute] Guid id, ResourceTypeDefinitionUpdateDto form)
     {
         var user = await manager.GetCurrent(id);
-        if (user == null) return NotFound();
-        return await manager.UpdateAsync(user, form);
+        return user == null ? (ActionResult<ResourceTypeDefinition?>)NotFound() : (ActionResult<ResourceTypeDefinition?>)await manager.UpdateAsync(user, form);
     }
 
     /// <summary>
@@ -76,7 +75,6 @@ public class ResourceTypeDefinitionController :
     public async Task<ActionResult<ResourceTypeDefinition?>> DeleteAsync([FromRoute] Guid id)
     {
         var entity = await manager.GetCurrent(id);
-        if (entity == null) return NotFound();
-        return await manager.DeleteAsync(entity);
+        return entity == null ? (ActionResult<ResourceTypeDefinition?>)NotFound() : (ActionResult<ResourceTypeDefinition?>)await manager.DeleteAsync(entity);
     }
 }

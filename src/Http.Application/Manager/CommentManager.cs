@@ -1,4 +1,3 @@
-using Http.Application.IManager;
 using Share.Models.CommentDtos;
 
 namespace Http.Application.Manager;

@@ -74,7 +74,6 @@ public class ResourceAttributeDefineController :
     public async Task<ActionResult<ResourceAttributeDefine?>> DeleteAsync([FromRoute] Guid id)
     {
         var entity = await manager.GetCurrent(id);
-        if (entity == null) return NotFound();
-        return await manager.DeleteAsync(entity);
+        return entity == null ? (ActionResult<ResourceAttributeDefine?>)NotFound() : (ActionResult<ResourceAttributeDefine?>)await manager.DeleteAsync(entity);
     }
 }

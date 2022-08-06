@@ -11,5 +11,5 @@ public class BlogCatalogUpdateDto
     public Guid? ParentId { get; set; }
     public Status? Status { get; set; }
     public bool? IsDeleted { get; set; }
-    
+
 }

@@ -50,8 +50,7 @@ public class CommentController :
     public async Task<ActionResult<Comment?>> UpdateAsync([FromRoute] Guid id, CommentUpdateDto form)
     {
         var user = await manager.GetCurrent(id);
-        if (user == null) return NotFound();
-        return await manager.UpdateAsync(user, form);
+        return user == null ? (ActionResult<Comment?>)NotFound() : (ActionResult<Comment?>)await manager.UpdateAsync(user, form);
     }
 
 
@@ -71,7 +70,6 @@ public class CommentController :
     public async Task<ActionResult<Comment?>> DeleteAsync([FromRoute] Guid id)
     {
         var entity = await manager.GetCurrent(id);
-        if (entity == null) return NotFound();
-        return await manager.DeleteAsync(entity);
+        return entity == null ? (ActionResult<Comment?>)NotFound() : (ActionResult<Comment?>)await manager.DeleteAsync(entity);
     }
 }

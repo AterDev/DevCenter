@@ -11,5 +11,5 @@ public class CommentUpdateDto
     public bool? IsDeleted { get; set; }
     public Guid? BlogId { get; set; } = default!;
     public Guid? UserId { get; set; } = default!;
-    
+
 }

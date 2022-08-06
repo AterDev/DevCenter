@@ -6,5 +6,5 @@ public class BlogTagFilterDto : FilterBase
 {
     [MaxLength(100)]
     public string? Name { get; set; }
-    
+
 }
