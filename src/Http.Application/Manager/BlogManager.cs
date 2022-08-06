@@ -1,8 +1,9 @@
+using Http.Application.IManager;
 using Share.Models.BlogDtos;
 
 namespace Http.Application.Manager;
 
-public class BlogManager : DomainManagerBase<Blog, BlogUpdateDto, BlogFilterDto>, IBlogManager
+public class BlogManager : DomainManagerBase<Blog, BlogUpdateDto, BlogFilterDto, BlogItemDto>, IBlogManager
 {
     public BlogManager(DataStoreContext storeContext) : base(storeContext)
     {
@@ -14,10 +15,11 @@ public class BlogManager : DomainManagerBase<Blog, BlogUpdateDto, BlogFilterDto>
         return await base.UpdateAsync(entity, dto);
     }
 
-    public override async Task<PageList<TItem>> FilterAsync<TItem>(BlogFilterDto filter)
+    public override async Task<PageList<BlogItemDto>> FilterAsync(BlogFilterDto filter)
     {
         // TODO:根据实际业务构建筛选条件
-        return await base.FilterAsync<TItem>(filter);
+        // if ... Queryable = ...
+        return await Query.FilterAsync<BlogItemDto>(Queryable);
     }
 
 }

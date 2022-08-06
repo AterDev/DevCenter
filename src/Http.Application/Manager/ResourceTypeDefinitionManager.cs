@@ -2,7 +2,7 @@ using Share.Models.ResourceTypeDefinitionDtos;
 
 namespace Http.Application.Manager;
 
-public class ResourceTypeDefinitionManager : DomainManagerBase<ResourceTypeDefinition, ResourceTypeDefinitionUpdateDto, ResourceTypeDefinitionFilterDto>, IResourceTypeDefinitionManager
+public class ResourceTypeDefinitionManager : DomainManagerBase<ResourceTypeDefinition, ResourceTypeDefinitionUpdateDto, ResourceTypeDefinitionFilterDto, ResourceTypeDefinitionItemDto>, IResourceTypeDefinitionManager
 {
     public ResourceTypeDefinitionManager(DataStoreContext storeContext) : base(storeContext)
     {
@@ -21,10 +21,10 @@ public class ResourceTypeDefinitionManager : DomainManagerBase<ResourceTypeDefin
         return await base.UpdateAsync(entity, dto);
     }
 
-    public override async Task<PageList<TItem>> FilterAsync<TItem>(ResourceTypeDefinitionFilterDto filter)
+    public override async Task<PageList<ResourceTypeDefinitionItemDto>> FilterAsync(ResourceTypeDefinitionFilterDto filter)
     {
         // TODO:根据实际业务构建筛选条件
-        return await base.FilterAsync<TItem>(filter);
+        return await base.FilterAsync(filter);
     }
 
     public override async Task<ResourceTypeDefinition?> FindAsync(Guid id)

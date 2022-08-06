@@ -4,7 +4,8 @@ namespace Http.Application.IManager;
 /// <summary>
 /// 定义实体业务接口规范
 /// </summary>
-public interface IResourceManager : IDomainManager<Resource, ResourceUpdateDto, ResourceFilterDto>
+public interface IResourceManager : IDomainManager<Resource, ResourceUpdateDto, ResourceFilterDto, ResourceItemDto>
 {
-	// TODO: 定义业务方法
+    Task<ResourceSelectDataDto> GetRelationSelectDataAsync();
+    Task<List<Resource>> GetAllResourcesAsync(Guid value);
 }

@@ -6,13 +6,13 @@ namespace Http.API.Controllers;
 /// 资源类型的定义
 /// </summary>
 public class ResourceTypeDefinitionController :
-    RestControllerBase<ResourceTypeDefinitionManager>,
+    RestControllerBase<IResourceTypeDefinitionManager>,
     IRestController<ResourceTypeDefinition, ResourceTypeDefinitionAddDto, ResourceTypeDefinitionUpdateDto, ResourceTypeDefinitionFilterDto, ResourceTypeDefinitionItemDto>
 {
     public ResourceTypeDefinitionController(
         IUserContext user,
         ILogger<ResourceTypeDefinitionController> logger,
-        ResourceTypeDefinitionManager manager
+        IResourceTypeDefinitionManager manager
         ) : base(manager, user, logger)
     {
     }
@@ -25,7 +25,7 @@ public class ResourceTypeDefinitionController :
     [HttpPost("filter")]
     public async Task<ActionResult<PageList<ResourceTypeDefinitionItemDto>>> FilterAsync(ResourceTypeDefinitionFilterDto filter)
     {
-        return await manager.FilterAsync<ResourceTypeDefinitionItemDto>(filter);
+        return await manager.FilterAsync(filter);
     }
 
     /// <summary>

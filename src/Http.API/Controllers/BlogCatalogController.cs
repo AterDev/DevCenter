@@ -7,13 +7,13 @@ namespace Http.API.Controllers;
 /// </summary>
 [Route("api/[controller]")]
 public class BlogCatalogController :
-    RestControllerBase<BlogCatalogManager>,
+    RestControllerBase<IBlogCatalogManager>,
     IRestController<BlogCatalog, BlogCatalogAddDto, BlogCatalogUpdateDto, BlogCatalogFilterDto, BlogCatalogItemDto>
 {
     public BlogCatalogController(
         IUserContext user,
         ILogger<BlogCatalogController> logger,
-        BlogCatalogManager manager
+        IBlogCatalogManager manager
         ) : base(manager, user, logger)
     {
     }
@@ -26,7 +26,7 @@ public class BlogCatalogController :
     [HttpPost("filter")]
     public async Task<ActionResult<PageList<BlogCatalogItemDto>>> FilterAsync(BlogCatalogFilterDto filter)
     {
-        return await manager.FilterAsync<BlogCatalogItemDto>(filter);
+        return await manager.FilterAsync(filter);
     }
 
     /// <summary>

@@ -6,13 +6,13 @@ namespace Http.API.Controllers;
 /// 代码片段
 /// </summary>
 public class CodeSnippetController :
-    RestControllerBase<CodeSnippetManager>,
+    RestControllerBase<ICodeSnippetManager>,
     IRestController<CodeSnippet, CodeSnippetAddDto, CodeSnippetUpdateDto, CodeSnippetFilterDto, CodeSnippetItemDto>
 {
     public CodeSnippetController(
         IUserContext user,
         ILogger<CodeSnippetController> logger,
-        CodeSnippetManager manager
+        ICodeSnippetManager manager
         ) : base(manager, user, logger)
     {
     }
@@ -25,7 +25,7 @@ public class CodeSnippetController :
     [HttpPost("filter")]
     public async Task<ActionResult<PageList<CodeSnippetItemDto>>> FilterAsync(CodeSnippetFilterDto filter)
     {
-        return await manager.FilterAsync<CodeSnippetItemDto>(filter);
+        return await manager.FilterAsync(filter);
     }
 
     /// <summary>

@@ -6,13 +6,13 @@ namespace Http.API.Controllers;
 /// 资源属性定义
 /// </summary>
 public class ResourceAttributeDefineController :
-    RestControllerBase<ResourceAttributeDefineManager>,
+    RestControllerBase<IResourceAttributeDefineManager>,
     IRestController<ResourceAttributeDefine, ResourceAttributeDefineAddDto, ResourceAttributeDefineUpdateDto, ResourceAttributeDefineFilterDto, ResourceAttributeDefineItemDto>
 {
     public ResourceAttributeDefineController(
         IUserContext user,
         ILogger<ResourceAttributeDefineController> logger,
-        ResourceAttributeDefineManager manager
+        IResourceAttributeDefineManager manager
         ) : base(manager, user, logger)
     {
     }
@@ -25,7 +25,7 @@ public class ResourceAttributeDefineController :
     [HttpPost("filter")]
     public async Task<ActionResult<PageList<ResourceAttributeDefineItemDto>>> FilterAsync(ResourceAttributeDefineFilterDto filter)
     {
-        return await manager.FilterAsync<ResourceAttributeDefineItemDto>(filter);
+        return await manager.FilterAsync(filter);
     }
 
     /// <summary>

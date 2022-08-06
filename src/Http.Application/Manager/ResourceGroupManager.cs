@@ -2,7 +2,7 @@ using Share.Models.ResourceGroupDtos;
 
 namespace Http.Application.Manager;
 
-public class ResourceGroupManager : DomainManagerBase<ResourceGroup, ResourceGroupUpdateDto, ResourceGroupFilterDto>, IResourceGroupManager
+public class ResourceGroupManager : DomainManagerBase<ResourceGroup, ResourceGroupUpdateDto, ResourceGroupFilterDto, ResourceGroupItemDto>, IResourceGroupManager
 {
     public ResourceGroupManager(DataStoreContext storeContext) : base(storeContext)
     {
@@ -22,16 +22,15 @@ public class ResourceGroupManager : DomainManagerBase<ResourceGroup, ResourceGro
     }
 
 
-    public async Task<ResourceGroup?> FindAsync(Guid id)
+    public override async Task<ResourceGroup?> FindAsync(Guid id)
     {
         return await Query.Db
             .Include(g => g.Environment)
             .FirstOrDefaultAsync(g => g.Id == id);
     }
 
-    public override async Task<PageList<TItem>> FilterAsync<TItem>(ResourceGroupFilterDto filter)
+    public override async Task<PageList<ResourceGroupItemDto>> FilterAsync(ResourceGroupFilterDto filter)
     {
-        var query = GetQueryable();
         // 根据当前用户筛选
         if (filter.UserId != null)
         {
@@ -49,29 +48,32 @@ public class ResourceGroupManager : DomainManagerBase<ResourceGroup, ResourceGro
                 if (groups.Any())
                 {
                     var groupIds = groups.Select(g => g.Id).ToList();
-                    query = query.Where(q => groupIds.Contains(q.Id));
+                    Queryable = Queryable.Where(q => groupIds.Contains(q.Id));
                 }
             }
         }
 
         if (filter.Navigation != null)
         {
-            query = query.Where(q => q.Navigation == filter.Navigation);
+            Queryable = Queryable.Where(q => q.Navigation == filter.Navigation);
         }
         if (filter.EnvironmentId != null)
         {
-            query = query.Where(q => q.Environment.Id == filter.EnvironmentId);
+            Queryable = Queryable.Where(q => q.Environment.Id == filter.EnvironmentId);
         }
-        query = query.OrderBy(q => q.Sort)
-            .OrderBy(q => q.Environment.Name)
-            .Include(q => q.Environment)
-            .Include(q => q.Resources)!
-                .ThenInclude(r => r.Attributes)
-            .Include(q => q.Resources)!
-                .ThenInclude(r => r.Tags)
-            .Include(q => q.Resources)!
-                .ThenInclude(r => r.ResourceType);
-        return await base.FilterAsync<TItem>(filter);
+        var count = Queryable.Count();
+        var data = await Queryable.AsNoTracking()
+
+            .Skip((filter.PageIndex!.Value - 1) * filter.PageSize!.Value)
+            .Take(filter.PageSize!.Value)
+            .Select<ResourceGroup, ResourceGroupItemDto>()
+            .ToListAsync();
+        return new PageList<ResourceGroupItemDto>
+        {
+            Count = count,
+            Data = data,
+            PageIndex = filter.PageIndex!.Value
+        };
     }
 
     /// <summary>
@@ -81,13 +83,12 @@ public class ResourceGroupManager : DomainManagerBase<ResourceGroup, ResourceGro
     /// <returns></returns>
     public async Task<List<ResourceGroupRoleDto>> GetRoleResourceGroupsAsync(Guid? roleId)
     {
-        var query = GetQueryable();
         if (roleId != null)
         {
             var role = await Stores.QueryContext.Roles.FindAsync(roleId);
-            query = query.Where(d => d.Roles!.Contains(role!));
+            Queryable = Queryable.Where(d => d.Roles!.Contains(role!));
         }
-        return await query.Select<ResourceGroup, ResourceGroupRoleDto>()
+        return await Queryable.Select<ResourceGroup, ResourceGroupRoleDto>()
             .ToListAsync();
     }
 }

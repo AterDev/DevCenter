@@ -25,7 +25,7 @@ public class CommentController :
     [HttpPost("filter")]
     public async Task<ActionResult<PageList<CommentItemDto>>> FilterAsync(CommentFilterDto filter)
     {
-        return await manager.FilterAsync<CommentItemDto>(filter);
+        return await manager.FilterAsync(filter);
     }
 
     /// <summary>

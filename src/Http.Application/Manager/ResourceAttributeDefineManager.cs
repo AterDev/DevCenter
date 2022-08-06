@@ -2,7 +2,7 @@ using Share.Models.ResourceAttributeDefineDtos;
 
 namespace Http.Application.Manager;
 
-public class ResourceAttributeDefineManager : DomainManagerBase<ResourceAttributeDefine, ResourceAttributeDefineUpdateDto, ResourceAttributeDefineFilterDto>, IResourceAttributeDefineManager
+public class ResourceAttributeDefineManager : DomainManagerBase<ResourceAttributeDefine, ResourceAttributeDefineUpdateDto, ResourceAttributeDefineFilterDto, ResourceAttributeDefineItemDto>, IResourceAttributeDefineManager
 {
     public ResourceAttributeDefineManager(DataStoreContext storeContext) : base(storeContext)
     {
@@ -14,9 +14,9 @@ public class ResourceAttributeDefineManager : DomainManagerBase<ResourceAttribut
         return await base.UpdateAsync(entity, dto);
     }
 
-    public override async Task<PageList<TItem>> FilterAsync<TItem>(ResourceAttributeDefineFilterDto filter)
+    public override async Task<PageList<ResourceAttributeDefineItemDto>> FilterAsync(ResourceAttributeDefineFilterDto filter)
     {
-        var query = GetQueryable();
+        var query = Queryable;
         if (filter.IsEnable != null)
         {
             query = query.Where(e => e.IsEnable == filter.IsEnable);
@@ -34,7 +34,7 @@ public class ResourceAttributeDefineManager : DomainManagerBase<ResourceAttribut
                 query = query.Where(q => ids.Contains(q.Id));
             }
         }
-        return await Query.FilterAsync<TItem>(query, filter.OrderBy, filter.PageIndex ?? 1, filter.PageSize ?? 12);
+        return await Query.FilterAsync<ResourceAttributeDefineItemDto>(query, filter.OrderBy, filter.PageIndex ?? 1, filter.PageSize ?? 12);
     }
 
 }

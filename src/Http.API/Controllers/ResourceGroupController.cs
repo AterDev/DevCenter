@@ -6,13 +6,13 @@ namespace Http.API.Controllers;
 /// 资源组
 /// </summary>
 public class ResourceGroupController :
-    RestControllerBase<ResourceGroupManager>,
+    RestControllerBase<IResourceGroupManager>,
     IRestController<ResourceGroup, ResourceGroupAddDto, ResourceGroupUpdateDto, ResourceGroupFilterDto, ResourceGroupItemDto>
 {
     public ResourceGroupController(
         IUserContext user,
         ILogger<ResourceGroupController> logger,
-        ResourceGroupManager manager
+        IResourceGroupManager manager
         ) : base(manager, user, logger)
     {
     }
@@ -29,7 +29,7 @@ public class ResourceGroupController :
         {
             filter.UserId = _user.UserId;
         }
-        return await manager.FilterAsync<ResourceGroupItemDto>(filter);
+        return await manager.FilterAsync(filter);
     }
 
     /// <summary>

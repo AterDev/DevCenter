@@ -4,7 +4,7 @@ namespace Http.Application.IManager;
 /// <summary>
 /// 定义实体业务接口规范
 /// </summary>
-public interface IBlogManager : IDomainManager<Blog, BlogUpdateDto, BlogFilterDto>
+public interface IBlogManager : IDomainManager<Blog, BlogUpdateDto, BlogFilterDto, BlogItemDto>
 {
-    // TODO: 定义业务方法
+	// TODO: 定义业务方法
 }

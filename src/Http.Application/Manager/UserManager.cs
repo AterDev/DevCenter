@@ -2,7 +2,7 @@ using Share.Models.UserDtos;
 
 namespace Http.Application.Manager;
 
-public class UserManager : DomainManagerBase<User, UserUpdateDto, UserFilterDto>, IUserManager
+public class UserManager : DomainManagerBase<User, UserUpdateDto, UserFilterDto, UserItemDto>, IUserManager
 {
     public UserManager(DataStoreContext storeContext) : base(storeContext)
     {
@@ -33,10 +33,10 @@ public class UserManager : DomainManagerBase<User, UserUpdateDto, UserFilterDto>
         return user;
     }
 
-    public override async Task<PageList<TItem>> FilterAsync<TItem>(UserFilterDto filter)
+    public override async Task<PageList<UserItemDto>> FilterAsync(UserFilterDto filter)
     {
         // TODO:根据实际业务构建筛选条件
-        return await base.FilterAsync<TItem>(filter);
+        return await base.FilterAsync(filter);
     }
 
     public async Task<List<Role>> GetRolesAsync(List<Guid> roleIds)

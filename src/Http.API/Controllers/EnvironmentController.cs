@@ -6,13 +6,13 @@ namespace Http.API.Controllers;
 /// 环境
 /// </summary>
 public class EnvironmentController :
-    RestControllerBase<EnvironmentManager>,
+    RestControllerBase<IEnvironmentManager>,
     IRestController<Environment, EnvironmentAddDto, EnvironmentUpdateDto, EnvironmentFilterDto, EnvironmentItemDto>
 {
     public EnvironmentController(
         IUserContext user,
         ILogger<EnvironmentController> logger,
-        EnvironmentManager manager
+        IEnvironmentManager manager
         ) : base(manager, user, logger)
     {
     }
@@ -25,7 +25,7 @@ public class EnvironmentController :
     [HttpPost("filter")]
     public async Task<ActionResult<PageList<EnvironmentItemDto>>> FilterAsync(EnvironmentFilterDto filter)
     {
-        return await manager.FilterAsync<EnvironmentItemDto>(filter);
+        return await manager.FilterAsync(filter);
     }
 
     /// <summary>

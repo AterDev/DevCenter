@@ -3,7 +3,7 @@ using Share.Models.CommentDtos;
 
 namespace Http.Application.Manager;
 
-public class CommentManager : DomainManagerBase<Comment, CommentUpdateDto, CommentFilterDto>, ICommentManager
+public class CommentManager : DomainManagerBase<Comment, CommentUpdateDto, CommentFilterDto, CommentItemDto>, ICommentManager
 {
     public CommentManager(DataStoreContext storeContext) : base(storeContext)
     {
@@ -15,10 +15,11 @@ public class CommentManager : DomainManagerBase<Comment, CommentUpdateDto, Comme
         return await base.UpdateAsync(entity, dto);
     }
 
-    public override async Task<PageList<TItem>> FilterAsync<TItem>(CommentFilterDto filter)
+    public override async Task<PageList<CommentItemDto>> FilterAsync(CommentFilterDto filter)
     {
         // TODO:根据实际业务构建筛选条件
-        return await  base.FilterAsync<TItem>(filter);
+        // if ... Queryable = ...
+        return await Query.FilterAsync<CommentItemDto>(Queryable);
     }
 
 }

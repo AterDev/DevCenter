@@ -6,13 +6,13 @@ namespace Http.API.Controllers;
 /// 角色表
 /// </summary>
 public class RoleController :
-    RestControllerBase<RoleManager>,
+    RestControllerBase<IRoleManager>,
     IRestController<Role, RoleAddDto, RoleUpdateDto, RoleFilterDto, RoleItemDto>
 {
     public RoleController(
         IUserContext user,
         ILogger<RoleController> logger,
-        RoleManager manager
+        IRoleManager manager
         ) : base(manager, user, logger)
     {
     }
@@ -25,7 +25,7 @@ public class RoleController :
     [HttpPost("filter")]
     public async Task<ActionResult<PageList<RoleItemDto>>> FilterAsync(RoleFilterDto filter)
     {
-        return await manager.FilterAsync<RoleItemDto>(filter);
+        return await manager.FilterAsync(filter);
     }
 
     /// <summary>

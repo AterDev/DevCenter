@@ -1,17 +1,19 @@
 ﻿namespace Http.Application.Implement;
 
-public class DomainManagerBase<TEntity, TUpdate, TFilter> : IDomainManager<TEntity, TUpdate, TFilter>
+public class DomainManagerBase<TEntity, TUpdate, TFilter, TItem> : IDomainManager<TEntity, TUpdate, TFilter, TItem>
     where TEntity : EntityBase
     where TFilter : FilterBase
 {
     /// <summary>
-    /// 仓储上下文，可通过Store访问到其他实体的上下文
+    /// 实体仓储上下文
     /// </summary>
     public DataStoreContext Stores { get; init; }
     /// <summary>
     /// 实体的只读仓储实现
     /// </summary>
     public QuerySet<TEntity> Query { get; init; }
+
+    public IQueryable<TEntity> Queryable { get; set; }
     /// <summary>
     /// 实体的可写仓储实现
     /// </summary>
@@ -25,6 +27,7 @@ public class DomainManagerBase<TEntity, TUpdate, TFilter> : IDomainManager<TEnti
         Stores = storeContext;
         Query = Stores.QuerySet<TEntity>();
         Command = Stores.CommandSet<TEntity>();
+        Queryable = Query._query;
     }
 
     public async Task<int> SaveChangesAsync()
@@ -39,7 +42,6 @@ public class DomainManagerBase<TEntity, TUpdate, TFilter> : IDomainManager<TEnti
             await SaveChangesAsync();
         }
     }
-
     /// <summary>
     /// 在修改前查询对象
     /// </summary>
@@ -84,23 +86,14 @@ public class DomainManagerBase<TEntity, TUpdate, TFilter> : IDomainManager<TEnti
     }
 
     /// <summary>
-    /// 获取当前查询构造对象
-    /// </summary>
-    /// <returns></returns>
-    public IQueryable<TEntity> GetQueryable()
-    {
-        return Query._query;
-    }
-
-    /// <summary>
     /// 分页筛选，需要重写该方法
     /// </summary>
     /// <typeparam name="TItem"></typeparam>
     /// <param name="filter"></param>
     /// <returns></returns>
-    public virtual async Task<PageList<TItem>> FilterAsync<TItem>(TFilter filter)
+    public virtual async Task<PageList<TItem>> FilterAsync(TFilter filter)
     {
-        return await Query.FilterAsync<TItem>(GetQueryable(), filter.OrderBy, filter.PageIndex ?? 1, filter.PageSize ?? 12);
+        return await Query.FilterAsync<TItem>(Queryable, filter.OrderBy, filter.PageIndex ?? 1, filter.PageSize ?? 12);
     }
 
 }

@@ -6,13 +6,13 @@ namespace Http.API.Controllers;
 /// 资源标识 
 /// </summary>
 public class ResourceTagsController :
-    RestControllerBase<ResourceTagsManager>,
+    RestControllerBase<IResourceTagsManager>,
     IRestController<ResourceTags, ResourceTagsAddDto, ResourceTagsUpdateDto, ResourceTagsFilterDto, ResourceTagsItemDto>
 {
     public ResourceTagsController(
         IUserContext user,
         ILogger<ResourceTagsController> logger,
-        ResourceTagsManager manager
+        IResourceTagsManager manager
         ) : base(manager, user, logger)
     {
     }
@@ -25,7 +25,7 @@ public class ResourceTagsController :
     [HttpPost("filter")]
     public async Task<ActionResult<PageList<ResourceTagsItemDto>>> FilterAsync(ResourceTagsFilterDto filter)
     {
-        return await manager.FilterAsync<ResourceTagsItemDto>(filter);
+        return await manager.FilterAsync(filter);
     }
 
     /// <summary>

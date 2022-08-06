@@ -3,7 +3,7 @@ using Share.Models.ResourceTagsDtos;
 
 namespace Http.Application.Manager;
 
-public class ResourceTagsManager : DomainManagerBase<ResourceTags, ResourceTagsUpdateDto, ResourceTagsFilterDto>, IResourceTagsManager
+public class ResourceTagsManager : DomainManagerBase<ResourceTags, ResourceTagsUpdateDto, ResourceTagsFilterDto, ResourceTagsItemDto>, IResourceTagsManager
 {
     public ResourceTagsManager(DataStoreContext storeContext) : base(storeContext)
     {
@@ -15,10 +15,11 @@ public class ResourceTagsManager : DomainManagerBase<ResourceTags, ResourceTagsU
         return await base.UpdateAsync(entity, dto);
     }
 
-    public override async Task<PageList<TItem>> FilterAsync<TItem>(ResourceTagsFilterDto filter)
+    public override async Task<PageList<ResourceTagsItemDto>> FilterAsync(ResourceTagsFilterDto filter)
     {
         // TODO:根据实际业务构建筛选条件
-        return await  base.FilterAsync<TItem>(filter);
+        // if ... Queryable = ...
+        return await Query.FilterAsync<ResourceTagsItemDto>(Queryable);
     }
 
 }

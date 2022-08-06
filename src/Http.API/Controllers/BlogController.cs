@@ -6,13 +6,13 @@ namespace Http.API.Controllers;
 /// 博客
 /// </summary>
 public class BlogController :
-    RestControllerBase<BlogManager>,
+    RestControllerBase<IBlogManager>,
     IRestController<Blog, BlogAddDto, BlogUpdateDto, BlogFilterDto, BlogItemDto>
 {
     public BlogController(
         IUserContext user,
         ILogger<BlogController> logger,
-        BlogManager manager
+        IBlogManager manager
         ) : base(manager, user, logger)
     {
     }
@@ -25,7 +25,7 @@ public class BlogController :
     [HttpPost("filter")]
     public async Task<ActionResult<PageList<BlogItemDto>>> FilterAsync(BlogFilterDto filter)
     {
-        return await manager.FilterAsync<BlogItemDto>(filter);
+        return await manager.FilterAsync(filter);
     }
 
     /// <summary>

@@ -2,7 +2,7 @@ using Share.Models.RoleDtos;
 
 namespace Http.Application.Manager;
 
-public class RoleManager : DomainManagerBase<Role, RoleUpdateDto, RoleFilterDto>, IRoleManager
+public class RoleManager : DomainManagerBase<Role, RoleUpdateDto, RoleFilterDto, RoleItemDto>, IRoleManager
 {
     public RoleManager(DataStoreContext storeContext) : base(storeContext)
     {
@@ -14,11 +14,10 @@ public class RoleManager : DomainManagerBase<Role, RoleUpdateDto, RoleFilterDto>
         return await base.UpdateAsync(entity, dto);
     }
 
-    public override async Task<PageList<TItem>> FilterAsync<TItem>(RoleFilterDto filter)
+    public override async Task<PageList<RoleItemDto>> FilterAsync(RoleFilterDto filter)
     {
         // TODO:根据实际业务构建筛选条件
-        var query = GetQueryable();
-        return await Query.FilterAsync<TItem>(query);
+        return await base.FilterAsync(filter);
     }
 
     /// <summary>

@@ -3,7 +3,7 @@ using Share.Models.BlogTagDtos;
 
 namespace Http.Application.Manager;
 
-public class BlogTagManager : DomainManagerBase<BlogTag, BlogTagUpdateDto, BlogTagFilterDto>, IBlogTagManager
+public class BlogTagManager : DomainManagerBase<BlogTag, BlogTagUpdateDto, BlogTagFilterDto, BlogTagItemDto>, IBlogTagManager
 {
     public BlogTagManager(DataStoreContext storeContext) : base(storeContext)
     {
@@ -15,10 +15,11 @@ public class BlogTagManager : DomainManagerBase<BlogTag, BlogTagUpdateDto, BlogT
         return await base.UpdateAsync(entity, dto);
     }
 
-    public override async Task<PageList<TItem>> FilterAsync<TItem>(BlogTagFilterDto filter)
+    public override async Task<PageList<BlogTagItemDto>> FilterAsync(BlogTagFilterDto filter)
     {
         // TODO:根据实际业务构建筛选条件
-        return await  base.FilterAsync<TItem>(filter);
+        // if ... Queryable = ...
+        return await Query.FilterAsync<BlogTagItemDto>(Queryable);
     }
 
 }

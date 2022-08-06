@@ -6,13 +6,13 @@ namespace Http.API.Controllers;
 /// 模型库
 /// </summary>
 public class CodeLibraryController :
-    RestControllerBase<CodeLibraryManager>,
+    RestControllerBase<ICodeLibraryManager>,
     IRestController<CodeLibrary, CodeLibraryAddDto, CodeLibraryUpdateDto, CodeLibraryFilterDto, CodeLibraryItemDto>
 {
     public CodeLibraryController(
         IUserContext user,
         ILogger<CodeLibraryController> logger,
-        CodeLibraryManager manager
+        ICodeLibraryManager manager
         ) : base(manager, user, logger)
     {
     }
@@ -25,7 +25,7 @@ public class CodeLibraryController :
     [HttpPost("filter")]
     public async Task<ActionResult<PageList<CodeLibraryItemDto>>> FilterAsync(CodeLibraryFilterDto filter)
     {
-        return await manager.FilterAsync<CodeLibraryItemDto>(filter);
+        return await manager.FilterAsync(filter);
     }
 
     /// <summary>

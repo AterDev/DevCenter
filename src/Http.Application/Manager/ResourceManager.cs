@@ -2,7 +2,7 @@ using Share.Models.ResourceDtos;
 
 namespace Http.Application.Manager;
 
-public class ResourceManager : DomainManagerBase<Resource, ResourceUpdateDto, ResourceFilterDto>, IResourceManager
+public class ResourceManager : DomainManagerBase<Resource, ResourceUpdateDto, ResourceFilterDto, ResourceItemDto>, IResourceManager
 {
     private readonly IResourceTypeDefinitionManager typeDefinitionManager;
     private readonly IResourceTagsManager tagsManager;
@@ -77,11 +77,11 @@ public class ResourceManager : DomainManagerBase<Resource, ResourceUpdateDto, Re
         return await base.UpdateAsync(entity, dto);
     }
 
-    public override async Task<PageList<TItem>> FilterAsync<TItem>(ResourceFilterDto filter)
+    public override async Task<PageList<ResourceItemDto>> FilterAsync(ResourceFilterDto filter)
     {
-        var query = GetQueryable();
+        var query = Queryable;
         query = query.Where(q => q.Group.Id == filter.GroupId);
-        return await Query.FilterAsync<TItem>(query);
+        return await Query.FilterAsync<ResourceItemDto>(query);
     }
 
     /// <summary>
@@ -114,8 +114,38 @@ public class ResourceManager : DomainManagerBase<Resource, ResourceUpdateDto, Re
         {
             Stores.CommandContext.RemoveRange(resource.Attributes);
         }
-        Command.Remove(resource);
-        await SaveChangesAsync();
-        return resource;
+        return await DeleteAsync(resource);
+    }
+
+    public async Task<ResourceSelectDataDto> GetRelationSelectDataAsync()
+    {
+        var _context = Query.Context;
+        var types = await _context.ResourceTypeDefinitions
+           .Select(s => new Selection
+           {
+               Id = s.Id,
+               Name = s.Name
+           }).ToListAsync();
+
+        var tags = await _context.ResourceTags
+            .Select(s => new Selection
+            {
+                Id = s.Id,
+                Name = s.Name
+            }).ToListAsync();
+
+        var group = await _context.ResourceGroups
+            .Select(s => new Selection
+            {
+                Id = s.Id,
+                Name = s.Name
+            }).ToListAsync();
+
+        return new ResourceSelectDataDto
+        {
+            TypeDefines = types,
+            Group = group,
+            Tags = tags
+        };
     }
 }

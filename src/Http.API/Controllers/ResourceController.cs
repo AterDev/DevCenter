@@ -6,13 +6,13 @@ namespace Http.API.Controllers;
 /// 资源
 /// </summary>
 public class ResourceController :
-    RestControllerBase<ResourceManager>,
+    RestControllerBase<IResourceManager>,
     IRestController<Resource, ResourceAddDto, ResourceUpdateDto, ResourceFilterDto, ResourceItemDto>
 {
     public ResourceController(
         IUserContext user,
         ILogger<ResourceController> logger,
-        ResourceManager manager
+        IResourceManager manager
         ) : base(manager, user, logger)
     {
     }
@@ -25,7 +25,23 @@ public class ResourceController :
     [HttpPost("filter")]
     public async Task<ActionResult<PageList<ResourceItemDto>>> FilterAsync(ResourceFilterDto filter)
     {
-        return await manager.FilterAsync<ResourceItemDto>(filter);
+        return await manager.FilterAsync(filter);
+    }
+
+    /// <summary>
+    /// 获取关联的选项
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("selection")]
+    public async Task<ActionResult<ResourceSelectDataDto>> GetSelectionDataAsync()
+    {
+        return await manager.GetRelationSelectDataAsync();
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<List<Resource>>> GetAllResourcesAsync()
+    {
+        return await manager.GetAllResourcesAsync(_user.UserId!.Value);
     }
 
     /// <summary>
