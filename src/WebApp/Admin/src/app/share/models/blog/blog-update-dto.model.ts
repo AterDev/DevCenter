@@ -20,7 +20,7 @@ export interface BlogUpdateDto {
    */
   isPrivate?: boolean | null;
   /**
-   * 文章扩展内容
+   * 文章内容
    */
   content?: string | null;
   status?: Status | null;

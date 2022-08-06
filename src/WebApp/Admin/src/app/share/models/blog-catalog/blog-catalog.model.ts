@@ -5,7 +5,7 @@ export interface BlogCatalog extends EntityBase {
   type?: string | null;
   sort: number;
   level: number;
-  articles?: Blog[] | null;
+  blogs?: Blog[] | null;
   parent?: BlogCatalog | null;
   parentId?: string | null;
   catalogs?: BlogCatalog[] | null;

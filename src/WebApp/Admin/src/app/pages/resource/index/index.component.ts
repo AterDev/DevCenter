@@ -75,9 +75,9 @@ export class IndexComponent implements OnInit {
       });
   }
   async getGroup() {
-    const res = await lastValueFrom(this.groupSrv.filter({ pageSize: 30, pageIndex: 1 }));
-    if (res.data) {
-      this.groups = res.data;
+    const res = await lastValueFrom(this.groupSrv.getList());
+    if (res) {
+      this.groups = res;
     }
   }
 

@@ -14,7 +14,7 @@ import { Resource } from '../models/resource/resource.model';
 @Injectable({ providedIn: 'root' })
 export class ResourceService extends BaseService {
   /**
-   * 分页筛选
+   * 筛选
    * @param data ResourceFilterDto
    */
   filter(data: ResourceFilterDto): Observable<PageListOfResourceItemDto> {
@@ -39,7 +39,7 @@ export class ResourceService extends BaseService {
   }
 
   /**
-   * 添加
+   * 新增
    * @param data ResourceAddDto
    */
   add(data: ResourceAddDto): Observable<Resource> {
@@ -48,7 +48,7 @@ export class ResourceService extends BaseService {
   }
 
   /**
-   * ⚠更新
+   * 更新
    * @param id string
    * @param data ResourceUpdateDto
    */
@@ -58,21 +58,21 @@ export class ResourceService extends BaseService {
   }
 
   /**
-   * ⚠删除
-   * @param id string
-   */
-  delete(id: string): Observable<boolean> {
-    const url = `/api/Resource/${id}`;
-    return this.request<boolean>('delete', url);
-  }
-
-  /**
    * 详情
    * @param id string
    */
   getDetail(id: string): Observable<Resource> {
     const url = `/api/Resource/${id}`;
     return this.request<Resource>('get', url);
+  }
+
+  /**
+   * ⚠删除
+   * @param id string
+   */
+  delete(id: string): Observable<Resource> {
+    const url = `/api/Resource/${id}`;
+    return this.request<Resource>('delete', url);
   }
 
 }

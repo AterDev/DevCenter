@@ -14,7 +14,7 @@ import { Role } from '../models/role/role.model';
 @Injectable({ providedIn: 'root' })
 export class RoleService extends BaseService {
   /**
-   * 分页筛选
+   * 筛选
    * @param data RoleFilterDto
    */
   filter(data: RoleFilterDto): Observable<PageListOfRoleItemDto> {
@@ -23,7 +23,7 @@ export class RoleService extends BaseService {
   }
 
   /**
-   * 添加
+   * 新增
    * @param data RoleAddDto
    */
   add(data: RoleAddDto): Observable<Role> {
@@ -32,7 +32,7 @@ export class RoleService extends BaseService {
   }
 
   /**
-   * ⚠更新
+   * 更新
    * @param id string
    * @param data RoleUpdateDto
    */
@@ -42,21 +42,21 @@ export class RoleService extends BaseService {
   }
 
   /**
-   * ⚠删除
-   * @param id string
-   */
-  delete(id: string): Observable<boolean> {
-    const url = `/api/Role/${id}`;
-    return this.request<boolean>('delete', url);
-  }
-
-  /**
    * 详情
    * @param id string
    */
   getDetail(id: string): Observable<Role> {
     const url = `/api/Role/${id}`;
     return this.request<Role>('get', url);
+  }
+
+  /**
+   * ⚠删除
+   * @param id string
+   */
+  delete(id: string): Observable<Role> {
+    const url = `/api/Role/${id}`;
+    return this.request<Role>('delete', url);
   }
 
   /**

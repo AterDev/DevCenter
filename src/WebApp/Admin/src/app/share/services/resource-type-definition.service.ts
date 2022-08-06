@@ -13,7 +13,7 @@ import { ResourceTypeDefinition } from '../models/resource-type-definition/resou
 @Injectable({ providedIn: 'root' })
 export class ResourceTypeDefinitionService extends BaseService {
   /**
-   * 分页筛选
+   * 筛选
    * @param data ResourceTypeDefinitionFilterDto
    */
   filter(data: ResourceTypeDefinitionFilterDto): Observable<PageListOfResourceTypeDefinitionItemDto> {
@@ -22,7 +22,7 @@ export class ResourceTypeDefinitionService extends BaseService {
   }
 
   /**
-   * 添加
+   * 新增
    * @param data ResourceTypeDefinitionAddDto
    */
   add(data: ResourceTypeDefinitionAddDto): Observable<ResourceTypeDefinition> {
@@ -31,7 +31,7 @@ export class ResourceTypeDefinitionService extends BaseService {
   }
 
   /**
-   * ⚠更新
+   * 更新
    * @param id string
    * @param data ResourceTypeDefinitionUpdateDto
    */
@@ -41,21 +41,21 @@ export class ResourceTypeDefinitionService extends BaseService {
   }
 
   /**
-   * ⚠删除
-   * @param id string
-   */
-  delete(id: string): Observable<boolean> {
-    const url = `/api/ResourceTypeDefinition/${id}`;
-    return this.request<boolean>('delete', url);
-  }
-
-  /**
    * 详情
    * @param id string
    */
   getDetail(id: string): Observable<ResourceTypeDefinition> {
     const url = `/api/ResourceTypeDefinition/${id}`;
     return this.request<ResourceTypeDefinition>('get', url);
+  }
+
+  /**
+   * ⚠删除
+   * @param id string
+   */
+  delete(id: string): Observable<ResourceTypeDefinition> {
+    const url = `/api/ResourceTypeDefinition/${id}`;
+    return this.request<ResourceTypeDefinition>('delete', url);
   }
 
 }

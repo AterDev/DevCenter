@@ -13,7 +13,7 @@ import { ResourceTags } from '../models/resource-tags/resource-tags.model';
 @Injectable({ providedIn: 'root' })
 export class ResourceTagsService extends BaseService {
   /**
-   * 分页筛选
+   * 筛选
    * @param data ResourceTagsFilterDto
    */
   filter(data: ResourceTagsFilterDto): Observable<PageListOfResourceTagsItemDto> {
@@ -22,7 +22,7 @@ export class ResourceTagsService extends BaseService {
   }
 
   /**
-   * 添加
+   * 新增
    * @param data ResourceTagsAddDto
    */
   add(data: ResourceTagsAddDto): Observable<ResourceTags> {
@@ -31,7 +31,7 @@ export class ResourceTagsService extends BaseService {
   }
 
   /**
-   * ⚠更新
+   * 更新
    * @param id string
    * @param data ResourceTagsUpdateDto
    */
@@ -41,21 +41,21 @@ export class ResourceTagsService extends BaseService {
   }
 
   /**
-   * ⚠删除
-   * @param id string
-   */
-  delete(id: string): Observable<boolean> {
-    const url = `/api/ResourceTags/${id}`;
-    return this.request<boolean>('delete', url);
-  }
-
-  /**
    * 详情
    * @param id string
    */
   getDetail(id: string): Observable<ResourceTags> {
     const url = `/api/ResourceTags/${id}`;
     return this.request<ResourceTags>('get', url);
+  }
+
+  /**
+   * ⚠删除
+   * @param id string
+   */
+  delete(id: string): Observable<ResourceTags> {
+    const url = `/api/ResourceTags/${id}`;
+    return this.request<ResourceTags>('delete', url);
   }
 
 }

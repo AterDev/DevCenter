@@ -1,7 +1,7 @@
 import { LayoutType } from '../enum/layout-type.model';
 import { NavigationType } from '../enum/navigation-type.model';
 import { Environment } from '../environment/environment.model';
-import { Resource } from '../resource/resource.model';
+import { Resource } from '../old-resource/resource.model';
 /**
  * 资源组
  */
@@ -25,6 +25,6 @@ export interface ResourceGroupItemDto {
   navigation?: NavigationType;
   id: string;
   environment?: Environment | null;
-  resource?: Resource[] | null;
+  resource?: Resource[];
 
 }

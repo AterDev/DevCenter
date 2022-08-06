@@ -19,7 +19,7 @@ export interface BlogAddDto {
    */
   isPrivate?: boolean | null;
   /**
-   * 文章扩展内容
+   * 文章内容
    */
   content?: string | null;
   userId: string;

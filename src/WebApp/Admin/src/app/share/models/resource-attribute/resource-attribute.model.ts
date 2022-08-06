@@ -1,6 +1,6 @@
 import { EntityBase } from '../entity-base.model';
 import { ValueType } from '../enum/value-type.model';
-import { Resource } from '../resource/resource.model';
+import { Resource } from '../old-resource/resource.model';
 export interface ResourceAttribute extends EntityBase {
   displayName: string;
   name: string;

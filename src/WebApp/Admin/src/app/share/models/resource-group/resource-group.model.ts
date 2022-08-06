@@ -2,7 +2,7 @@ import { EntityBase } from '../entity-base.model';
 import { LayoutType } from '../enum/layout-type.model';
 import { NavigationType } from '../enum/navigation-type.model';
 import { Environment } from '../environment/environment.model';
-import { Resource } from '../resource/resource.model';
+import { Resource } from '../old-resource/resource.model';
 import { Role } from '../role/role.model';
 export interface ResourceGroup extends EntityBase {
   name: string;

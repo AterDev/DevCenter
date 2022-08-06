@@ -1,5 +1,5 @@
 import { EntityBase } from '../entity-base.model';
-import { Resource } from '../resource/resource.model';
+import { Resource } from '../old-resource/resource.model';
 export interface ResourceTags extends EntityBase {
   name: string;
   color?: string | null;
