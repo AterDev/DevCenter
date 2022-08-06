@@ -1,60 +1,69 @@
+using Http.API.Infrastructure;
 using Share.Models.ResourceTypeDefinitionDtos;
 namespace Http.API.Controllers;
 
 /// <summary>
 /// 资源类型的定义
 /// </summary>
-public class ResourceTypeDefinitionController : RestApiBase<ResourceTypeDefinitionDataStore, ResourceTypeDefinition, ResourceTypeDefinitionAddDto, ResourceTypeDefinitionUpdateDto, ResourceTypeDefinitionFilterDto, ResourceTypeDefinitionItemDto>
+public class ResourceTypeDefinitionController :
+    RestControllerBase<ResourceTypeDefinitionManager>,
+    IRestController<ResourceTypeDefinition, ResourceTypeDefinitionAddDto, ResourceTypeDefinitionUpdateDto, ResourceTypeDefinitionFilterDto, ResourceTypeDefinitionItemDto>
 {
-
     public ResourceTypeDefinitionController(
         IUserContext user,
         ILogger<ResourceTypeDefinitionController> logger,
-        ResourceTypeDefinitionDataStore store
-        ) : base(user, logger, store)
+        ResourceTypeDefinitionManager manager
+        ) : base(manager, user, logger)
     {
     }
 
     /// <summary>
-    /// 分页筛选
+    /// 筛选
     /// </summary>
     /// <param name="filter"></param>
     /// <returns></returns>
-    public override async Task<ActionResult<PageList<ResourceTypeDefinitionItemDto>>> FilterAsync(ResourceTypeDefinitionFilterDto filter)
+    [HttpPost("filter")]
+    public async Task<ActionResult<PageList<ResourceTypeDefinitionItemDto>>> FilterAsync(ResourceTypeDefinitionFilterDto filter)
     {
-        return await base.FilterAsync(filter);
+        return await manager.FilterAsync<ResourceTypeDefinitionItemDto>(filter);
     }
 
     /// <summary>
-    /// 添加
+    /// 新增
     /// </summary>
     /// <param name="form"></param>
     /// <returns></returns>
-    [Authorize("Admin")]
-    public override async Task<ActionResult<ResourceTypeDefinition>> AddAsync(ResourceTypeDefinitionAddDto form)
+    [HttpPost]
+    public async Task<ActionResult<ResourceTypeDefinition>> AddAsync(ResourceTypeDefinitionAddDto form)
     {
-        var typeDefine = new ResourceTypeDefinition();
-        typeDefine = typeDefine.Merge(form);
-
-        if (form.AttributeDefineIds != null)
-        {
-            var attributeDefines = await _store._context.ResourceAttributeDefines.Where(a => form.AttributeDefineIds.Contains(a.Id)).ToListAsync();
-            typeDefine.AttributeDefines = attributeDefines;
-        }
-        return await _store.AddAsync(typeDefine);
+        var entity = form.MapTo<ResourceTypeDefinitionAddDto, ResourceTypeDefinition>();
+        return await manager.AddAsync(entity);
     }
 
     /// <summary>
-    /// ⚠更新
+    /// 更新
     /// </summary>
     /// <param name="id"></param>
     /// <param name="form"></param>
     /// <returns></returns>
-    [Authorize("Admin")]
-    public override async Task<ActionResult<ResourceTypeDefinition?>> UpdateAsync([FromRoute] Guid id, ResourceTypeDefinitionUpdateDto form)
+    [HttpPut("{id}")]
+    public async Task<ActionResult<ResourceTypeDefinition?>> UpdateAsync([FromRoute] Guid id, ResourceTypeDefinitionUpdateDto form)
     {
-        var typeDefine = await _store.FindAsync(id);
-        return typeDefine == null ? (ActionResult<ResourceTypeDefinition?>)NotFound("未知type define id") : await base.UpdateAsync(id, form);
+        var user = await manager.GetCurrent(id);
+        if (user == null) return NotFound();
+        return await manager.UpdateAsync(user, form);
+    }
+
+    /// <summary>
+    /// 详情
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpGet("{id}")]
+    public async Task<ActionResult<ResourceTypeDefinition?>> GetDetailAsync([FromRoute] Guid id)
+    {
+        var res = await manager.FindAsync(id);
+        return res == null ? NotFound() : res;
     }
 
     /// <summary>
@@ -62,22 +71,12 @@ public class ResourceTypeDefinitionController : RestApiBase<ResourceTypeDefiniti
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    [Authorize("Admin")]
     // [ApiExplorerSettings(IgnoreApi = true)]
-    public override async Task<ActionResult<bool>> DeleteAsync([FromRoute] Guid id)
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<ResourceTypeDefinition?>> DeleteAsync([FromRoute] Guid id)
     {
-        return await base.DeleteAsync(id);
-    }
-
-    /// <summary>
-    /// ⚠ 批量删除
-    /// </summary>
-    /// <param name="ids"></param>
-    /// <returns></returns>
-    public override async Task<ActionResult<int>> BatchDeleteAsync(List<Guid> ids)
-    {
-        // 危险操作，请确保该方法的执行权限
-        //return await base.BatchDeleteAsync(ids);
-        return await Task.FromResult(0);
+        var entity = await manager.GetCurrent(id);
+        if (entity == null) return NotFound();
+        return await manager.DeleteAsync(entity);
     }
 }

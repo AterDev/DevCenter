@@ -1,5 +1,6 @@
+using Http.API.Infrastructure;
 using Share.Models.ResourceTagsDtos;
-namespace Http.API.Infrastructure;
+namespace Http.API.Controllers;
 
 /// <summary>
 /// 资源标识 
@@ -62,7 +63,7 @@ public class ResourceTagsController :
     public async Task<ActionResult<ResourceTags?>> GetDetailAsync([FromRoute] Guid id)
     {
         var res = await manager.FindAsync<ResourceTags>(u => u.Id == id);
-        return (res == null) ? NotFound() : res;
+        return res == null ? NotFound() : res;
     }
 
     /// <summary>
@@ -74,6 +75,8 @@ public class ResourceTagsController :
     [HttpDelete("{id}")]
     public async Task<ActionResult<ResourceTags?>> DeleteAsync([FromRoute] Guid id)
     {
-        return await manager.DeleteAsync(id);
+        var entity = await manager.GetCurrent(id);
+        if (entity == null) return NotFound();
+        return await manager.DeleteAsync(entity);
     }
 }

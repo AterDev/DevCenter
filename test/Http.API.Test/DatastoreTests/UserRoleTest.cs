@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Core.Entities;
-
-using Http.Application.DataStore;
+using Http.Application.IManager;
 
 namespace Http.API.Test.DatastoreTests;
 /// <summary>
@@ -13,12 +12,12 @@ namespace Http.API.Test.DatastoreTests;
 public class UserRoleTest : BaseTest
 {
     //readonly UserDataStore _userStore;
-    private readonly RoleDataStore _roleStore;
+    private readonly IRoleManager _roleStore;
 
     public UserRoleTest(WebApplicationFactory<Program> factory) : base(factory)
     {
         //_userStore = _service.GetRequiredService<UserDataStore>();
-        _roleStore = _service.GetRequiredService<RoleDataStore>();
+        _roleStore = _service.GetRequiredService<IRoleManager>();
     }
 
 

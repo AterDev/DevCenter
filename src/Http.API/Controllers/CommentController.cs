@@ -70,6 +70,8 @@ public class CommentController :
     [HttpDelete("{id}")]
     public async Task<ActionResult<Comment?>> DeleteAsync([FromRoute] Guid id)
     {
-        return await manager.DeleteAsync(id);
+        var entity = await manager.GetCurrent(id);
+        if (entity == null) return NotFound();
+        return await manager.DeleteAsync(entity);
     }
 }

@@ -1,46 +1,58 @@
+using Http.API.Infrastructure;
 using Share.Models.RoleDtos;
 namespace Http.API.Controllers;
 
 /// <summary>
 /// 角色表
 /// </summary>
-public class RoleController : RestApiBase<RoleDataStore, Role, RoleAddDto, RoleUpdateDto, RoleFilterDto, RoleItemDto>
+public class RoleController :
+    RestControllerBase<RoleManager>,
+    IRestController<Role, RoleAddDto, RoleUpdateDto, RoleFilterDto, RoleItemDto>
 {
-    public RoleController(IUserContext user, ILogger<RoleController> logger, RoleDataStore store) : base(user, logger, store)
+    public RoleController(
+        IUserContext user,
+        ILogger<RoleController> logger,
+        RoleManager manager
+        ) : base(manager, user, logger)
     {
     }
 
     /// <summary>
-    /// 分页筛选
+    /// 筛选
     /// </summary>
     /// <param name="filter"></param>
     /// <returns></returns>
-    public override async Task<ActionResult<PageList<RoleItemDto>>> FilterAsync(RoleFilterDto filter)
+    [HttpPost("filter")]
+    public async Task<ActionResult<PageList<RoleItemDto>>> FilterAsync(RoleFilterDto filter)
     {
-        return await base.FilterAsync(filter);
+        return await manager.FilterAsync<RoleItemDto>(filter);
     }
 
     /// <summary>
-    /// 添加
+    /// 新增
     /// </summary>
     /// <param name="form"></param>
     /// <returns></returns>
-    public override async Task<ActionResult<Role>> AddAsync(RoleAddDto form)
+    [HttpPost]
+    public async Task<ActionResult<Role>> AddAsync(RoleAddDto form)
     {
-        return await base.AddAsync(form);
+        var entity = form.MapTo<RoleAddDto, Role>();
+        return await manager.AddAsync(entity);
     }
 
     /// <summary>
-    /// ⚠更新
+    /// 更新
     /// </summary>
     /// <param name="id"></param>
     /// <param name="form"></param>
     /// <returns></returns>
-    public override async Task<ActionResult<Role?>> UpdateAsync([FromRoute] Guid id, RoleUpdateDto form)
+    [HttpPut("{id}")]
+    public async Task<ActionResult<Role?>> UpdateAsync([FromRoute] Guid id, RoleUpdateDto form)
     {
-        return await base.UpdateAsync(id, form);
+        var current = await manager.GetCurrent(id);
+        if (current == null) return NotFound();
+        return await manager.UpdateAsync(current, form);
     }
-
 
     /// <summary>
     /// 分配资源组
@@ -50,7 +62,20 @@ public class RoleController : RestApiBase<RoleDataStore, Role, RoleAddDto, RoleU
     [HttpPut("resourceGroup")]
     public async Task<ActionResult<bool>> SetResourceGroupsAsync([FromBody] RoleResourceDto dto)
     {
-        return await _store.Exist(dto.RoleId) ? (ActionResult<bool>)await _store.SetResourceGorupsAsync(dto) : (ActionResult<bool>)NotFound("无效的角色id");
+        var current = await manager.GetCurrent(dto.RoleId);
+        if (current == null) return NotFound();
+        return await manager.SetResourceGroupsAsync(dto);
+    }
+    /// <summary>
+    /// 详情
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Role?>> GetDetailAsync([FromRoute] Guid id)
+    {
+        var res = await manager.FindAsync<Role>(u => u.Id == id);
+        return res == null ? NotFound() : res;
     }
 
     /// <summary>
@@ -59,20 +84,11 @@ public class RoleController : RestApiBase<RoleDataStore, Role, RoleAddDto, RoleU
     /// <param name="id"></param>
     /// <returns></returns>
     // [ApiExplorerSettings(IgnoreApi = true)]
-    public override async Task<ActionResult<bool>> DeleteAsync([FromRoute] Guid id)
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<Role?>> DeleteAsync([FromRoute] Guid id)
     {
-        return await base.DeleteAsync(id);
-    }
-
-    /// <summary>
-    /// ⚠ 批量删除
-    /// </summary>
-    /// <param name="ids"></param>
-    /// <returns></returns>
-    public override async Task<ActionResult<int>> BatchDeleteAsync(List<Guid> ids)
-    {
-        // 危险操作，请确保该方法的执行权限
-        //return await base.BatchDeleteAsync(ids);
-        return await Task.FromResult(0);
+        var entity = await manager.GetCurrent(id);
+        if (entity == null) return NotFound();
+        return await manager.DeleteAsync(entity);
     }
 }

@@ -15,6 +15,8 @@ public class DataStoreContext
     public QuerySet<ResourceGroup> ResourceGroupQuery { get; init; }
     public QuerySet<Resource> ResourceQuery { get; init; }
     public QuerySet<ResourceTags> ResourceTagsQuery { get; init; }
+    public QuerySet<ResourceTypeDefinition> ResourceTypeDefinitionQuery { get; init; }
+    public QuerySet<Role> RoleQuery { get; init; }
     public QuerySet<User> UserQuery { get; init; }
     public CommandSet<BlogCatalog> BlogCatalogCommand { get; init; }
     public CommandSet<Blog> BlogCommand { get; init; }
@@ -27,6 +29,8 @@ public class DataStoreContext
     public CommandSet<Resource> ResourceCommand { get; init; }
     public CommandSet<ResourceGroup> ResourceGroupCommand { get; init; }
     public CommandSet<ResourceTags> ResourceTagsCommand { get; init; }
+    public CommandSet<ResourceTypeDefinition> ResourceTypeDefinitionCommand { get; init; }
+    public CommandSet<Role> RoleCommand { get; init; }
     public CommandSet<User> UserCommand { get; init; }
 
 
@@ -47,6 +51,8 @@ public class DataStoreContext
         ResourceGroupQueryStore resourceGroupQuery,
         ResourceQueryStore resourceQuery,
         ResourceTagsQueryStore resourceTagsQuery,
+        ResourceTypeDefinitionQueryStore resourceTypeDefinitionQuery,
+        RoleQueryStore roleQuery,
         UserQueryStore userQuery,
         BlogCatalogCommandStore blogCatalogCommand,
         BlogCommandStore blogCommand,
@@ -59,6 +65,8 @@ public class DataStoreContext
         ResourceCommandStore resourceCommand,
         ResourceGroupCommandStore resourceGroupCommand,
         ResourceTagsCommandStore resourceTagsCommand,
+        ResourceTypeDefinitionCommandStore resourceTypeDefinitionCommand,
+        RoleCommandStore roleCommand,
         UserCommandStore userCommand,
 
         QueryDbContext queryDbContext,
@@ -89,6 +97,10 @@ public class DataStoreContext
         AddCache(ResourceQuery);
         ResourceTagsQuery = resourceTagsQuery;
         AddCache(ResourceTagsQuery);
+        ResourceTypeDefinitionQuery = resourceTypeDefinitionQuery;
+        AddCache(ResourceTypeDefinitionQuery);
+        RoleQuery = roleQuery;
+        AddCache(RoleQuery);
         UserQuery = userQuery;
         AddCache(UserQuery);
         BlogCatalogCommand = blogCatalogCommand;
@@ -113,6 +125,10 @@ public class DataStoreContext
         AddCache(ResourceGroupCommand);
         ResourceTagsCommand = resourceTagsCommand;
         AddCache(ResourceTagsCommand);
+        ResourceTypeDefinitionCommand = resourceTypeDefinitionCommand;
+        AddCache(ResourceTypeDefinitionCommand);
+        RoleCommand = roleCommand;
+        AddCache(RoleCommand);
         UserCommand = userCommand;
         AddCache(UserCommand);
 

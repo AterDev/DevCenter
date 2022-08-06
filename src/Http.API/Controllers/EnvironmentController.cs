@@ -1,5 +1,6 @@
+using Http.API.Infrastructure;
 using Share.Models.EnvironmentDtos;
-namespace Http.API.Infrastructure;
+namespace Http.API.Controllers;
 
 /// <summary>
 /// 环境
@@ -62,7 +63,7 @@ public class EnvironmentController :
     public async Task<ActionResult<Environment?>> GetDetailAsync([FromRoute] Guid id)
     {
         var res = await manager.FindAsync<Environment>(u => u.Id == id);
-        return (res == null) ? NotFound() : res;
+        return res == null ? NotFound() : res;
     }
 
     /// <summary>
@@ -74,6 +75,8 @@ public class EnvironmentController :
     [HttpDelete("{id}")]
     public async Task<ActionResult<Environment?>> DeleteAsync([FromRoute] Guid id)
     {
-        return await manager.DeleteAsync(id);
+        var entity = await manager.GetCurrent(id);
+        if (entity == null) return NotFound();
+        return await manager.DeleteAsync(entity);
     }
 }

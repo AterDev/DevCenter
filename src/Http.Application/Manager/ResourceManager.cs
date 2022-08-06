@@ -4,8 +4,18 @@ namespace Http.Application.Manager;
 
 public class ResourceManager : DomainManagerBase<Resource, ResourceUpdateDto, ResourceFilterDto>, IResourceManager
 {
-    public ResourceManager(DataStoreContext storeContext) : base(storeContext)
+    private readonly IResourceTypeDefinitionManager typeDefinitionManager;
+    private readonly IResourceTagsManager tagsManager;
+    private readonly IResourceGroupManager resourceGroupManager;
+
+    public ResourceManager(DataStoreContext storeContext,
+                           IResourceTypeDefinitionManager typeDefinitionManager,
+                           IResourceTagsManager tagsManager,
+                           IResourceGroupManager resourceGroupManager) : base(storeContext)
     {
+        this.typeDefinitionManager = typeDefinitionManager;
+        this.tagsManager = tagsManager;
+        this.resourceGroupManager = resourceGroupManager;
     }
 
     /// <summary>
@@ -38,21 +48,21 @@ public class ResourceManager : DomainManagerBase<Resource, ResourceUpdateDto, Re
         var resource = entity;
         resource!.Attributes = null;
         resource!.Tags = null;
-        //if (dto.ResourceTypeId != null)
-        //{
-        //    var resourceType = await _context.ResourceTypeDefinitions.FindAsync(dto.ResourceTypeId);
-        //    resource.ResourceType = resourceType!;
-        //}
-        //if (dto.GroupId != null)
-        //{
-        //    var group = await _context.ResourceGroups.FindAsync(dto.GroupId);
-        //    resource.Group = group!;
-        //}
-        //if (dto.TagIds != null)
-        //{
-        //    var tags = await _context.ResourceTags.Where(t => dto.TagIds.Contains(t.Id)).ToListAsync();
-        //    resource.Tags = tags;
-        //}
+        if (dto.ResourceTypeId != null)
+        {
+            var resourceType = await typeDefinitionManager.GetCurrent(dto.ResourceTypeId.Value);
+            resource.ResourceType = resourceType!;
+        }
+        if (dto.GroupId != null)
+        {
+            var group = await resourceGroupManager.GetCurrent(dto.GroupId.Value);
+            resource.Group = group!;
+        }
+        if (dto.TagIds != null)
+        {
+            var tags = await tagsManager.Command.ListAsync<ResourceTags>(t => dto.TagIds.Contains(t.Id));
+            resource.Tags = tags;
+        }
         if (dto.AttributeAddItem != null)
         {
             var attributes = new List<ResourceAttribute>();
@@ -74,4 +84,38 @@ public class ResourceManager : DomainManagerBase<Resource, ResourceUpdateDto, Re
         return await Query.FilterAsync<TItem>(query);
     }
 
+    /// <summary>
+    /// 获取当前用户可查询的所有资源
+    /// </summary>
+    /// <param name="UserId"></param>
+    /// <returns></returns>
+    public async Task<List<Resource>> GetAllResourcesAsync(Guid UserId)
+    {
+        var roles = await Stores.UserQuery.Db.Where(u => u.Id == UserId)
+            .SelectMany(s => s.Roles!)
+            .ToListAsync();
+
+        var groupIds = await Stores.RoleQuery.Db.Where(r => roles.Contains(r))
+            .SelectMany(r => r.ResourceGroups!)
+            .Select(s => s.Id)
+            .ToListAsync();
+
+        var resources = await Query.Db.Where(r => groupIds.Contains(r.Group.Id))
+            .Include(r => r.Attributes)
+            .ToListAsync();
+        return resources;
+    }
+
+
+    public override async Task<Resource?> DeleteAsync(Resource entity)
+    {
+        var resource = entity;
+        if (resource!.Attributes != null)
+        {
+            Stores.CommandContext.RemoveRange(resource.Attributes);
+        }
+        Command.Remove(resource);
+        await SaveChangesAsync();
+        return resource;
+    }
 }

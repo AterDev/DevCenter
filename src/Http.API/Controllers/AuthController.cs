@@ -1,4 +1,5 @@
-﻿using Share.Models.AuthDtos;
+﻿using Http.Application.IManager;
+using Share.Models.AuthDtos;
 
 namespace Http.API.Controllers;
 
@@ -9,15 +10,15 @@ namespace Http.API.Controllers;
 [ApiController]
 public class AuthController : ControllerBase
 {
-    private readonly UserDataStore _store;
+    private readonly IUserManager userManager;
     private readonly IConfiguration _config;
     //private readonly RedisService _redis;
-    public AuthController(UserDataStore userDataStore,
+    public AuthController(IUserManager userManager,
                           IConfiguration config
         //RedisService redis
         )
     {
-        _store = userDataStore;
+        this.userManager = userManager;
         _config = config;
         //_redis = redis;
     }
@@ -30,7 +31,7 @@ public class AuthController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<AuthResult>> LoginAsync(LoginDto dto)
     {
-        var user = await _store.Db.Where(u => u.UserName.Equals(dto.UserName)
+        var user = await userManager.Query.Db.Where(u => u.UserName.Equals(dto.UserName)
             || u.Email.Equals(dto.UserName))
             .Include(u => u.Roles)
             .FirstOrDefaultAsync();
