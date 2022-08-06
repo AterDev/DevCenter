@@ -9,10 +9,7 @@ using Share.Models.Webhook.DingTalk;
 using Share.Models.Webhook.GitLab;
 using Share.Options;
 
-using Environment = System.Environment;
-
 namespace Http.Application.Services.Webhook;
-
 
 public class DingTalkWebhookService
 {
@@ -74,13 +71,13 @@ public class DingTalkWebhookService
         if (pipelineInfo != null)
         {
             var title = pipelineInfo.GetTitle();
-            var content = $"## {title}" + Environment.NewLine;
-            content += "- 提交人: " + pipelineInfo.CommitUserName + Environment.NewLine;
-            content += "- 提交内容: " + pipelineInfo.CommitContent + Environment.NewLine;
-            content += "- 提交时间: " + pipelineInfo.FinishTime?.ToString("yyyy-MM-dd HH:mm:ss") + Environment.NewLine;
-            content += "- 流水线:`" + pipelineInfo.Job + "`" + Environment.NewLine;
-            content += "- 耗时: **" + pipelineInfo.Duration + "**秒" + Environment.NewLine;
-            content += $@"## [查看详情]({pipelineInfo.Url})" + Environment.NewLine;
+            var content = $"## {title}" + System.Environment.NewLine;
+            content += "- 提交人: " + pipelineInfo.CommitUserName + System.Environment.NewLine;
+            content += "- 提交内容: " + pipelineInfo.CommitContent + System.Environment.NewLine;
+            content += "- 提交时间: " + pipelineInfo.FinishTime?.ToString("yyyy-MM-dd HH:mm:ss") + System.Environment.NewLine;
+            content += "- 流水线:`" + pipelineInfo.Job + "`" + System.Environment.NewLine;
+            content += "- 耗时: **" + pipelineInfo.Duration + "**秒" + System.Environment.NewLine;
+            content += $@"## [查看详情]({pipelineInfo.Url})" + System.Environment.NewLine;
             var msg = new MarkdownMessage
             {
                 MarkdownText = new MarkdownText(title, content)
@@ -104,13 +101,13 @@ public class DingTalkWebhookService
                 _ => "任务:"
             };
             var title = action + issueInfo.Title;
-            var content = $"## {title}" + Environment.NewLine;
+            var content = $"## {title}" + System.Environment.NewLine;
             AppendListItem(ref content, "### 分配给", issueInfo.UserName);
-            content += "概要: " + Environment.NewLine
+            content += "概要: " + System.Environment.NewLine
                 + issueInfo.Content
-                + Environment.NewLine + Environment.NewLine;
-            content += "标签: **" + issueInfo.Tags + "**" + Environment.NewLine;
-            content += $@"## [查看详情]({issueInfo.Url})" + Environment.NewLine;
+                + System.Environment.NewLine + System.Environment.NewLine;
+            content += "标签: **" + issueInfo.Tags + "**" + System.Environment.NewLine;
+            content += $@"## [查看详情]({issueInfo.Url})" + System.Environment.NewLine;
             var msg = new MarkdownMessage
             {
                 MarkdownText = new MarkdownText(title, content)
@@ -132,15 +129,15 @@ public class DingTalkWebhookService
             return;
         }
         var title = "❗异常:" + request.ProjectName + request.FilterName;
-        var content = $"## {title}" + Environment.NewLine;
+        var content = $"## {title}" + System.Environment.NewLine;
         AppendListItem(ref content, "服务名", request.ServiceName);
         AppendListItem(ref content, "请求路由", request.Route);
         AppendListItem(ref content, "请求体", request.RequestBody);
         AppendListItem(ref content, "请求参数", request.QueryString);
         AppendListItem(ref content, "TraceId", request.TraceId);
-        content += "- 错误详情：" + Environment.NewLine
-            + "> " + Environment.NewLine
-            + FormatStackTrace(request.ErrorDetail) + Environment.NewLine;
+        content += "- 错误详情：" + System.Environment.NewLine
+            + "> " + System.Environment.NewLine
+            + FormatStackTrace(request.ErrorDetail) + System.Environment.NewLine;
 
         // 详情跳转页面
         content += $"### [查看详情]({request.TraceId})";
@@ -186,11 +183,11 @@ public class DingTalkWebhookService
             }
 
             var title = $"来自{note.FromUser}的评论";
-            var mdcontent = $"## 新评论提醒：{Environment.NewLine}";
+            var mdcontent = $"## 新评论提醒：{System.Environment.NewLine}";
             AppendListItem(ref mdcontent, "来自", note.FromUser);
             AppendListItem(ref mdcontent, "项目", note.Project);
             AppendListItem(ref mdcontent, "内容", note.Content);
-            mdcontent += $@"## [查看详情]({note.Url})" + Environment.NewLine;
+            mdcontent += $@"## [查看详情]({note.Url})" + System.Environment.NewLine;
 
 
             var msg = new MarkdownMessage
@@ -218,7 +215,7 @@ public class DingTalkWebhookService
         {
             if (line.Contains(":line"))
             {
-                content += line + Environment.NewLine;
+                content += line + System.Environment.NewLine;
             }
         }
         return content;
@@ -228,7 +225,7 @@ public class DingTalkWebhookService
     {
         if (!string.IsNullOrEmpty(append))
         {
-            content += $"- {prefix}: {append}" + Environment.NewLine;
+            content += $"- {prefix}: {append}" + System.Environment.NewLine;
         }
     }
     public async Task TestAsync()
@@ -244,12 +241,12 @@ public class DingTalkWebhookService
             Status = "success"
         };
         var title = pipeLineInfo.GetTitle();
-        var content = $"## {title}" + Environment.NewLine;
-        content += "- 提交人: " + pipeLineInfo.CommitUserName + Environment.NewLine;
-        content += "- 提交内容: " + pipeLineInfo.CommitContent + Environment.NewLine;
-        content += "- 完成时间: " + pipeLineInfo.FinishTime?.ToString("yyyy-MM-dd HH:mm:ss") + Environment.NewLine;
-        content += "- 耗时: **" + pipeLineInfo.Duration + "**秒" + Environment.NewLine;
-        content += $@"## [查看详情]({pipeLineInfo.Url})" + Environment.NewLine;
+        var content = $"## {title}" + System.Environment.NewLine;
+        content += "- 提交人: " + pipeLineInfo.CommitUserName + System.Environment.NewLine;
+        content += "- 提交内容: " + pipeLineInfo.CommitContent + System.Environment.NewLine;
+        content += "- 完成时间: " + pipeLineInfo.FinishTime?.ToString("yyyy-MM-dd HH:mm:ss") + System.Environment.NewLine;
+        content += "- 耗时: **" + pipeLineInfo.Duration + "**秒" + System.Environment.NewLine;
+        content += $@"## [查看详情]({pipeLineInfo.Url})" + System.Environment.NewLine;
         var msg = new MarkdownMessage
         {
             MarkdownText = new MarkdownText(title, content)

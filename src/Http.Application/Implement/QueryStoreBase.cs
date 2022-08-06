@@ -34,8 +34,7 @@ public class QueryStoreBase<TContext, TEntity> :
         _query = _db.AsQueryable();
     }
 
-    public virtual async Task<TDto?> FindAsync<TDto>(Guid id)
-        where TDto : class
+    public virtual async Task<TDto?> FindAsync<TDto>(Guid id) where TDto : class
     {
         var res = await _query.Where(d => d.Id == id)
             .AsNoTracking()

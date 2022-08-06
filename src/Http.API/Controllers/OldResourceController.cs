@@ -1,0 +1,121 @@
+using Share.Models.ResourceDtos;
+namespace Http.API.Controllers;
+
+/// <summary>
+/// 资源
+/// </summary>
+public class OldResourceController : RestApiBase<ResourceDataStore, Resource, ResourceAddDto, ResourceUpdateDto, ResourceFilterDto, ResourceItemDto>
+{
+    public OldResourceController(IUserContext user, ILogger<OldResourceController> logger, ResourceDataStore store) : base(user, logger, store)
+    {
+    }
+
+    /// <summary>
+    /// 分页筛选
+    /// </summary>
+    /// <param name="filter"></param>
+    /// <returns></returns>
+    public override async Task<ActionResult<PageList<ResourceItemDto>>> FilterAsync(ResourceFilterDto filter)
+    {
+        return await base.FilterAsync(filter);
+    }
+
+    /// <summary>
+    /// 获取关联的选项
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("selection")]
+    public async Task<ActionResult<ResourceSelectDataDto>> GetSelectionDataAsync()
+    {
+        return await _store.GetRelationSelectDataAsync();
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<List<Resource>>> GetAllResourcesAsync()
+    {
+        return await _store.GetAllResourcesAsync(_user.UserId!.Value);
+    }
+
+    /// <summary>
+    /// 添加
+    /// </summary>
+    /// <param name="form"></param>
+    /// <returns></returns>
+    [Authorize("Admin")]
+    public override async Task<ActionResult<Resource>> AddAsync(ResourceAddDto form)
+    {
+        var group = await _store.FindGroupAsync(form.GroupId);
+        if (group == null)
+        {
+            return BadRequest("不存在的资源组");
+        }
+
+        var type = await _store.FindTypeAsync(form.ResourceTypeId);
+        if (type == null)
+        {
+            return BadRequest("不存在的类型");
+        }
+
+        var resource = new Resource()
+        {
+            Group = group,
+            ResourceType = type,
+        };
+        resource = resource.Merge(form);
+        if (form.TagIds != null)
+        {
+            var tags = await _store.FindTagsAsync(form.TagIds);
+            resource.Tags = tags;
+        }
+        if (form.AttributeAddItem != null)
+        {
+            var attributes = new List<ResourceAttribute>();
+
+            form.AttributeAddItem.ForEach(a =>
+            {
+                var attribute = new ResourceAttribute();
+                attribute = attribute.Merge(a);
+                attributes.Add(attribute);
+            });
+            resource.Attributes = attributes;
+        }
+
+        return await _store.AddAsync(resource);
+    }
+
+    /// <summary>
+    /// ⚠更新
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="form"></param>
+    /// <returns></returns>
+    [Authorize("Admin")]
+    public override async Task<ActionResult<Resource?>> UpdateAsync([FromRoute] Guid id, ResourceUpdateDto form)
+    {
+        return await base.UpdateAsync(id, form);
+    }
+
+    /// <summary>
+    /// ⚠删除
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [Authorize("Admin")]
+    // [ApiExplorerSettings(IgnoreApi = true)]
+    public override async Task<ActionResult<bool>> DeleteAsync([FromRoute] Guid id)
+    {
+        return await base.DeleteAsync(id);
+    }
+
+    /// <summary>
+    /// ⚠ 批量删除
+    /// </summary>
+    /// <param name="ids"></param>
+    /// <returns></returns>
+    public override async Task<ActionResult<int>> BatchDeleteAsync(List<Guid> ids)
+    {
+        // 危险操作，请确保该方法的执行权限
+        //return await base.BatchDeleteAsync(ids);
+        return await Task.FromResult(0);
+    }
+}

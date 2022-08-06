@@ -1,98 +1,69 @@
+using Http.API.Infrastructure;
 using Share.Models.ResourceDtos;
 namespace Http.API.Controllers;
 
 /// <summary>
 /// 资源
 /// </summary>
-public class ResourceController : RestApiBase<ResourceDataStore, Resource, ResourceAddDto, ResourceUpdateDto, ResourceFilterDto, ResourceItemDto>
+public class ResourceController :
+    RestControllerBase<ResourceManager>,
+    IRestController<Resource, ResourceAddDto, ResourceUpdateDto, ResourceFilterDto, ResourceItemDto>
 {
-    public ResourceController(IUserContext user, ILogger<ResourceController> logger, ResourceDataStore store) : base(user, logger, store)
+    public ResourceController(
+        IUserContext user,
+        ILogger<ResourceController> logger,
+        ResourceManager manager
+        ) : base(manager, user, logger)
     {
     }
 
     /// <summary>
-    /// 分页筛选
+    /// 筛选
     /// </summary>
     /// <param name="filter"></param>
     /// <returns></returns>
-    public override async Task<ActionResult<PageList<ResourceItemDto>>> FilterAsync(ResourceFilterDto filter)
+    [HttpPost("filter")]
+    public async Task<ActionResult<PageList<ResourceItemDto>>> FilterAsync(ResourceFilterDto filter)
     {
-        return await base.FilterAsync(filter);
+        return await manager.FilterAsync<ResourceItemDto>(filter);
     }
 
     /// <summary>
-    /// 获取关联的选项
-    /// </summary>
-    /// <returns></returns>
-    [HttpGet("selection")]
-    public async Task<ActionResult<ResourceSelectDataDto>> GetSelectionDataAsync()
-    {
-        return await _store.GetRelationSelectDataAsync();
-    }
-
-    [HttpGet]
-    public async Task<ActionResult<List<Resource>>> GetAllResourcesAsync()
-    {
-        return await _store.GetAllResourcesAsync(_user.UserId!.Value);
-    }
-
-    /// <summary>
-    /// 添加
+    /// 新增
     /// </summary>
     /// <param name="form"></param>
     /// <returns></returns>
-    [Authorize("Admin")]
-    public override async Task<ActionResult<Resource>> AddAsync(ResourceAddDto form)
+    [HttpPost]
+    public async Task<ActionResult<Resource>> AddAsync(ResourceAddDto form)
     {
-        var group = await _store.FindGroupAsync(form.GroupId);
-        if (group == null)
-        {
-            return BadRequest("不存在的资源组");
-        }
-
-        var type = await _store.FindTypeAsync(form.ResourceTypeId);
-        if (type == null)
-        {
-            return BadRequest("不存在的类型");
-        }
-
-        var resource = new Resource()
-        {
-            Group = group,
-            ResourceType = type,
-        };
-        resource = resource.Merge(form);
-        if (form.TagIds != null)
-        {
-            var tags = await _store.FindTagsAsync(form.TagIds);
-            resource.Tags = tags;
-        }
-        if (form.AttributeAddItem != null)
-        {
-            var attributes = new List<ResourceAttribute>();
-
-            form.AttributeAddItem.ForEach(a =>
-            {
-                var attribute = new ResourceAttribute();
-                attribute = attribute.Merge(a);
-                attributes.Add(attribute);
-            });
-            resource.Attributes = attributes;
-        }
-
-        return await _store.AddAsync(resource);
+        var entity = form.MapTo<ResourceAddDto, Resource>();
+        return await manager.AddAsync(entity);
     }
 
     /// <summary>
-    /// ⚠更新
+    /// 更新
     /// </summary>
     /// <param name="id"></param>
     /// <param name="form"></param>
     /// <returns></returns>
-    [Authorize("Admin")]
-    public override async Task<ActionResult<Resource?>> UpdateAsync([FromRoute] Guid id, ResourceUpdateDto form)
+    [HttpPut("{id}")]
+    public async Task<ActionResult<Resource?>> UpdateAsync([FromRoute] Guid id, ResourceUpdateDto form)
     {
-        return await base.UpdateAsync(id, form);
+        var current = await manager.GetCurrent(id);
+        if (current == null) return NotFound();
+        return await manager.UpdateAsync(current, form);
+    }
+
+    /// <summary>
+    /// 详情
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Resource?>> GetDetailAsync([FromRoute] Guid id)
+    {
+        var res = await manager.FindAsync<Resource>(u => u.Id == id);
+        return res == null ? NotFound() : res;
     }
 
     /// <summary>
@@ -100,22 +71,10 @@ public class ResourceController : RestApiBase<ResourceDataStore, Resource, Resou
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    [Authorize("Admin")]
     // [ApiExplorerSettings(IgnoreApi = true)]
-    public override async Task<ActionResult<bool>> DeleteAsync([FromRoute] Guid id)
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<Resource?>> DeleteAsync([FromRoute] Guid id)
     {
-        return await base.DeleteAsync(id);
-    }
-
-    /// <summary>
-    /// ⚠ 批量删除
-    /// </summary>
-    /// <param name="ids"></param>
-    /// <returns></returns>
-    public override async Task<ActionResult<int>> BatchDeleteAsync(List<Guid> ids)
-    {
-        // 危险操作，请确保该方法的执行权限
-        //return await base.BatchDeleteAsync(ids);
-        return await Task.FromResult(0);
+        return await manager.DeleteAsync(id);
     }
 }

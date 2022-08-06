@@ -1,44 +1,68 @@
 using Share.Models.ResourceTagsDtos;
-namespace Http.API.Controllers;
+namespace Http.API.Infrastructure;
 
 /// <summary>
 /// 资源标识 
 /// </summary>
-public class ResourceTagsController : RestApiBase<ResourceTagsDataStore, ResourceTags, ResourceTagsAddDto, ResourceTagsUpdateDto, ResourceTagsFilterDto, ResourceTagsItemDto>
+public class ResourceTagsController :
+    RestControllerBase<ResourceTagsManager>,
+    IRestController<ResourceTags, ResourceTagsAddDto, ResourceTagsUpdateDto, ResourceTagsFilterDto, ResourceTagsItemDto>
 {
-    public ResourceTagsController(IUserContext user, ILogger<ResourceTagsController> logger, ResourceTagsDataStore store) : base(user, logger, store)
+    public ResourceTagsController(
+        IUserContext user,
+        ILogger<ResourceTagsController> logger,
+        ResourceTagsManager manager
+        ) : base(manager, user, logger)
     {
     }
 
     /// <summary>
-    /// 分页筛选
+    /// 筛选
     /// </summary>
     /// <param name="filter"></param>
     /// <returns></returns>
-    public override async Task<ActionResult<PageList<ResourceTagsItemDto>>> FilterAsync(ResourceTagsFilterDto filter)
+    [HttpPost("filter")]
+    public async Task<ActionResult<PageList<ResourceTagsItemDto>>> FilterAsync(ResourceTagsFilterDto filter)
     {
-        return await base.FilterAsync(filter);
+        return await manager.FilterAsync<ResourceTagsItemDto>(filter);
     }
 
     /// <summary>
-    /// 添加
+    /// 新增
     /// </summary>
     /// <param name="form"></param>
     /// <returns></returns>
-    public override async Task<ActionResult<ResourceTags>> AddAsync(ResourceTagsAddDto form)
+    [HttpPost]
+    public async Task<ActionResult<ResourceTags>> AddAsync(ResourceTagsAddDto form)
     {
-        return await base.AddAsync(form);
+        var entity = form.MapTo<ResourceTagsAddDto, ResourceTags>();
+        return await manager.AddAsync(entity);
     }
 
     /// <summary>
-    /// ⚠更新
+    /// 更新
     /// </summary>
     /// <param name="id"></param>
     /// <param name="form"></param>
     /// <returns></returns>
-    public override async Task<ActionResult<ResourceTags?>> UpdateAsync([FromRoute] Guid id, ResourceTagsUpdateDto form)
+    [HttpPut("{id}")]
+    public async Task<ActionResult<ResourceTags?>> UpdateAsync([FromRoute] Guid id, ResourceTagsUpdateDto form)
     {
-        return await base.UpdateAsync(id, form);
+        var user = await manager.GetCurrent(id);
+        if (user == null) return NotFound();
+        return await manager.UpdateAsync(user, form);
+    }
+
+    /// <summary>
+    /// 详情
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpGet("{id}")]
+    public async Task<ActionResult<ResourceTags?>> GetDetailAsync([FromRoute] Guid id)
+    {
+        var res = await manager.FindAsync<ResourceTags>(u => u.Id == id);
+        return (res == null) ? NotFound() : res;
     }
 
     /// <summary>
@@ -47,20 +71,9 @@ public class ResourceTagsController : RestApiBase<ResourceTagsDataStore, Resourc
     /// <param name="id"></param>
     /// <returns></returns>
     // [ApiExplorerSettings(IgnoreApi = true)]
-    public override async Task<ActionResult<bool>> DeleteAsync([FromRoute] Guid id)
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<ResourceTags?>> DeleteAsync([FromRoute] Guid id)
     {
-        return await base.DeleteAsync(id);
-    }
-
-    /// <summary>
-    /// ⚠ 批量删除
-    /// </summary>
-    /// <param name="ids"></param>
-    /// <returns></returns>
-    public override async Task<ActionResult<int>> BatchDeleteAsync(List<Guid> ids)
-    {
-        // 危险操作，请确保该方法的执行权限
-        //return await base.BatchDeleteAsync(ids);
-        return await Task.FromResult(0);
+        return await manager.DeleteAsync(id);
     }
 }

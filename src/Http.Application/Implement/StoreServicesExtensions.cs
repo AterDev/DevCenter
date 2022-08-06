@@ -26,7 +26,11 @@ public static class StoreServicesExtensions
         services.AddScoped(typeof(CodeLibraryQueryStore));
         services.AddScoped(typeof(CodeSnippetQueryStore));
         services.AddScoped(typeof(CommentQueryStore));
+        services.AddScoped(typeof(EnvironmentQueryStore));
         services.AddScoped(typeof(ResourceAttributeDefineQueryStore));
+        services.AddScoped(typeof(ResourceGroupQueryStore));
+        services.AddScoped(typeof(ResourceQueryStore));
+        services.AddScoped(typeof(ResourceTagsQueryStore));
         services.AddScoped(typeof(UserQueryStore));
         services.AddScoped(typeof(BlogCatalogCommandStore));
         services.AddScoped(typeof(BlogCommandStore));
@@ -34,7 +38,11 @@ public static class StoreServicesExtensions
         services.AddScoped(typeof(CodeLibraryCommandStore));
         services.AddScoped(typeof(CodeSnippetCommandStore));
         services.AddScoped(typeof(CommentCommandStore));
+        services.AddScoped(typeof(EnvironmentCommandStore));
         services.AddScoped(typeof(ResourceAttributeDefineCommandStore));
+        services.AddScoped(typeof(ResourceCommandStore));
+        services.AddScoped(typeof(ResourceGroupCommandStore));
+        services.AddScoped(typeof(ResourceTagsCommandStore));
         services.AddScoped(typeof(UserCommandStore));
 
     }
@@ -47,7 +55,11 @@ public static class StoreServicesExtensions
         services.AddScoped(typeof(CodeLibraryManager));
         services.AddScoped(typeof(CodeSnippetManager));
         services.AddScoped(typeof(CommentManager));
+        services.AddScoped(typeof(EnvironmentManager));
         services.AddScoped(typeof(ResourceAttributeDefineManager));
+        services.AddScoped(typeof(ResourceGroupManager));
+        services.AddScoped(typeof(ResourceManager));
+        services.AddScoped(typeof(ResourceTagsManager));
         services.AddScoped(typeof(UserManager));
 
     }

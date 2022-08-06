@@ -10,7 +10,11 @@ public class DataStoreContext
     public QuerySet<CodeLibrary> CodeLibraryQuery { get; init; }
     public QuerySet<CodeSnippet> CodeSnippetQuery { get; init; }
     public QuerySet<Comment> CommentQuery { get; init; }
+    public QuerySet<Environment> EnvironmentQuery { get; init; }
     public QuerySet<ResourceAttributeDefine> ResourceAttributeDefineQuery { get; init; }
+    public QuerySet<ResourceGroup> ResourceGroupQuery { get; init; }
+    public QuerySet<Resource> ResourceQuery { get; init; }
+    public QuerySet<ResourceTags> ResourceTagsQuery { get; init; }
     public QuerySet<User> UserQuery { get; init; }
     public CommandSet<BlogCatalog> BlogCatalogCommand { get; init; }
     public CommandSet<Blog> BlogCommand { get; init; }
@@ -18,7 +22,11 @@ public class DataStoreContext
     public CommandSet<CodeLibrary> CodeLibraryCommand { get; init; }
     public CommandSet<CodeSnippet> CodeSnippetCommand { get; init; }
     public CommandSet<Comment> CommentCommand { get; init; }
+    public CommandSet<Environment> EnvironmentCommand { get; init; }
     public CommandSet<ResourceAttributeDefine> ResourceAttributeDefineCommand { get; init; }
+    public CommandSet<Resource> ResourceCommand { get; init; }
+    public CommandSet<ResourceGroup> ResourceGroupCommand { get; init; }
+    public CommandSet<ResourceTags> ResourceTagsCommand { get; init; }
     public CommandSet<User> UserCommand { get; init; }
 
 
@@ -34,7 +42,11 @@ public class DataStoreContext
         CodeLibraryQueryStore codeLibraryQuery,
         CodeSnippetQueryStore codeSnippetQuery,
         CommentQueryStore commentQuery,
+        EnvironmentQueryStore environmentQuery,
         ResourceAttributeDefineQueryStore resourceAttributeDefineQuery,
+        ResourceGroupQueryStore resourceGroupQuery,
+        ResourceQueryStore resourceQuery,
+        ResourceTagsQueryStore resourceTagsQuery,
         UserQueryStore userQuery,
         BlogCatalogCommandStore blogCatalogCommand,
         BlogCommandStore blogCommand,
@@ -42,7 +54,11 @@ public class DataStoreContext
         CodeLibraryCommandStore codeLibraryCommand,
         CodeSnippetCommandStore codeSnippetCommand,
         CommentCommandStore commentCommand,
+        EnvironmentCommandStore environmentCommand,
         ResourceAttributeDefineCommandStore resourceAttributeDefineCommand,
+        ResourceCommandStore resourceCommand,
+        ResourceGroupCommandStore resourceGroupCommand,
+        ResourceTagsCommandStore resourceTagsCommand,
         UserCommandStore userCommand,
 
         QueryDbContext queryDbContext,
@@ -63,8 +79,16 @@ public class DataStoreContext
         AddCache(CodeSnippetQuery);
         CommentQuery = commentQuery;
         AddCache(CommentQuery);
+        EnvironmentQuery = environmentQuery;
+        AddCache(EnvironmentQuery);
         ResourceAttributeDefineQuery = resourceAttributeDefineQuery;
         AddCache(ResourceAttributeDefineQuery);
+        ResourceGroupQuery = resourceGroupQuery;
+        AddCache(ResourceGroupQuery);
+        ResourceQuery = resourceQuery;
+        AddCache(ResourceQuery);
+        ResourceTagsQuery = resourceTagsQuery;
+        AddCache(ResourceTagsQuery);
         UserQuery = userQuery;
         AddCache(UserQuery);
         BlogCatalogCommand = blogCatalogCommand;
@@ -79,8 +103,16 @@ public class DataStoreContext
         AddCache(CodeSnippetCommand);
         CommentCommand = commentCommand;
         AddCache(CommentCommand);
+        EnvironmentCommand = environmentCommand;
+        AddCache(EnvironmentCommand);
         ResourceAttributeDefineCommand = resourceAttributeDefineCommand;
         AddCache(ResourceAttributeDefineCommand);
+        ResourceCommand = resourceCommand;
+        AddCache(ResourceCommand);
+        ResourceGroupCommand = resourceGroupCommand;
+        AddCache(ResourceGroupCommand);
+        ResourceTagsCommand = resourceTagsCommand;
+        AddCache(ResourceTagsCommand);
         UserCommand = userCommand;
         AddCache(UserCommand);
 

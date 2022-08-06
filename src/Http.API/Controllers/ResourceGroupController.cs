@@ -1,34 +1,35 @@
+using Http.API.Infrastructure;
 using Share.Models.ResourceGroupDtos;
 namespace Http.API.Controllers;
 
 /// <summary>
 /// 资源组
 /// </summary>
-public class ResourceGroupController : RestApiBase<ResourceGroupDataStore, ResourceGroup, ResourceGroupAddDto, ResourceGroupUpdateDto, ResourceGroupFilterDto, ResourceGroupItemDto>
+public class ResourceGroupController :
+    RestControllerBase<ResourceGroupManager>,
+    IRestController<ResourceGroup, ResourceGroupAddDto, ResourceGroupUpdateDto, ResourceGroupFilterDto, ResourceGroupItemDto>
 {
-
-    private readonly EnvironmentDataStore environmentStore;
     public ResourceGroupController(
         IUserContext user,
         ILogger<ResourceGroupController> logger,
-        ResourceGroupDataStore store,
-        EnvironmentDataStore environmentDataStore) : base(user, logger, store)
+        ResourceGroupManager manager
+        ) : base(manager, user, logger)
     {
-        environmentStore = environmentDataStore;
     }
 
     /// <summary>
-    /// 分页筛选
+    /// 筛选
     /// </summary>
     /// <param name="filter"></param>
     /// <returns></returns>
-    public override async Task<ActionResult<PageList<ResourceGroupItemDto>>> FilterAsync(ResourceGroupFilterDto filter)
+    [HttpPost("filter")]
+    public async Task<ActionResult<PageList<ResourceGroupItemDto>>> FilterAsync(ResourceGroupFilterDto filter)
     {
         if (!_user.IsAdmin)
         {
             filter.UserId = _user.UserId;
         }
-        return await base.FilterAsync(filter);
+        return await manager.FilterAsync<ResourceGroupItemDto>(filter);
     }
 
     /// <summary>
@@ -39,39 +40,52 @@ public class ResourceGroupController : RestApiBase<ResourceGroupDataStore, Resou
     [HttpGet("role")]
     public async Task<List<ResourceGroupRoleDto>> GetRoleResourceGroupsAsync(Guid? roleId)
     {
-        return await _store.GetRoleResourceGroupsAsync(roleId);
+        return await manager.GetRoleResourceGroupsAsync(roleId);
     }
 
     /// <summary>
-    /// 添加
+    /// 新增
     /// </summary>
     /// <param name="form"></param>
     /// <returns></returns>
+    [HttpPost]
     [Authorize("Admin")]
-    public override async Task<ActionResult<ResourceGroup>> AddAsync(ResourceGroupAddDto form)
+    public async Task<ActionResult<ResourceGroup>> AddAsync(ResourceGroupAddDto form)
     {
-        var environment = await environmentStore.FindAsync(form.EnvironmentId);
+        var environment = await manager.Stores.EnvironmentCommand.FindAsync(e => e.Id == form.EnvironmentId);
         if (environment == null)
         {
             return BadRequest("未找到关联的环境");
         }
-
-        var group = new ResourceGroup();
-        group = group.Merge(form);
-        group.Environment = environment;
-        return await _store.AddAsync(group);
+        var entity = form.MapTo<ResourceGroupAddDto, ResourceGroup>();
+        entity.Environment = environment;
+        return await manager.AddAsync(entity);
     }
 
     /// <summary>
-    /// ⚠更新
+    /// 更新
     /// </summary>
     /// <param name="id"></param>
     /// <param name="form"></param>
     /// <returns></returns>
-    [Authorize("Admin")]
-    public override async Task<ActionResult<ResourceGroup?>> UpdateAsync([FromRoute] Guid id, ResourceGroupUpdateDto form)
+    [HttpPut("{id}")]
+    public async Task<ActionResult<ResourceGroup?>> UpdateAsync([FromRoute] Guid id, ResourceGroupUpdateDto form)
     {
-        return await base.UpdateAsync(id, form);
+        var user = await manager.GetCurrent(id);
+        if (user == null) return NotFound();
+        return await manager.UpdateAsync(user, form);
+    }
+
+    /// <summary>
+    /// 详情
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpGet("{id}")]
+    public async Task<ActionResult<ResourceGroup?>> GetDetailAsync([FromRoute] Guid id)
+    {
+        var res = await manager.FindAsync(id);
+        return res == null ? NotFound() : res;
     }
 
     /// <summary>
@@ -79,22 +93,10 @@ public class ResourceGroupController : RestApiBase<ResourceGroupDataStore, Resou
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    [Authorize("Admin")]
     // [ApiExplorerSettings(IgnoreApi = true)]
-    public override async Task<ActionResult<bool>> DeleteAsync([FromRoute] Guid id)
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<ResourceGroup?>> DeleteAsync([FromRoute] Guid id)
     {
-        return await base.DeleteAsync(id);
-    }
-
-    /// <summary>
-    /// ⚠ 批量删除
-    /// </summary>
-    /// <param name="ids"></param>
-    /// <returns></returns>
-    public override async Task<ActionResult<int>> BatchDeleteAsync(List<Guid> ids)
-    {
-        // 危险操作，请确保该方法的执行权限
-        //return await base.BatchDeleteAsync(ids);
-        return await Task.FromResult(0);
+        return await manager.DeleteAsync(id);
     }
 }

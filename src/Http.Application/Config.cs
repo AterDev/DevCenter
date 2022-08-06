@@ -1,5 +1,4 @@
-﻿using Environment = Core.Entities.Resource.Environment;
-
+﻿
 namespace Http.Application;
 
 internal class Config

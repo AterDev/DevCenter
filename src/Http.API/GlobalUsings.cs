@@ -18,3 +18,7 @@ global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.DependencyInjection;
 // global using Core.Identity;
 global using Share.Models;
+global using Environment = Core.Entities.Resource.Environment;
+
+
+global using Http.Application;

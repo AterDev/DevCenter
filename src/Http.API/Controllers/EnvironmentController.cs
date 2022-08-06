@@ -1,47 +1,68 @@
 using Share.Models.EnvironmentDtos;
-
-using Environment = Core.Entities.Resource.Environment;
-
-namespace Http.API.Controllers;
+namespace Http.API.Infrastructure;
 
 /// <summary>
 /// 环境
 /// </summary>
-public class EnvironmentController : RestApiBase<EnvironmentDataStore, Environment, EnvironmentAddDto, EnvironmentUpdateDto, EnvironmentFilterDto, EnvironmentItemDto>
+public class EnvironmentController :
+    RestControllerBase<EnvironmentManager>,
+    IRestController<Environment, EnvironmentAddDto, EnvironmentUpdateDto, EnvironmentFilterDto, EnvironmentItemDto>
 {
-    public EnvironmentController(IUserContext user, ILogger<EnvironmentController> logger, EnvironmentDataStore store) : base(user, logger, store)
+    public EnvironmentController(
+        IUserContext user,
+        ILogger<EnvironmentController> logger,
+        EnvironmentManager manager
+        ) : base(manager, user, logger)
     {
     }
 
     /// <summary>
-    /// 分页筛选
+    /// 筛选
     /// </summary>
     /// <param name="filter"></param>
     /// <returns></returns>
-    public override async Task<ActionResult<PageList<EnvironmentItemDto>>> FilterAsync(EnvironmentFilterDto filter)
+    [HttpPost("filter")]
+    public async Task<ActionResult<PageList<EnvironmentItemDto>>> FilterAsync(EnvironmentFilterDto filter)
     {
-        return await base.FilterAsync(filter);
+        return await manager.FilterAsync<EnvironmentItemDto>(filter);
     }
 
     /// <summary>
-    /// 添加
+    /// 新增
     /// </summary>
     /// <param name="form"></param>
     /// <returns></returns>
-    public override async Task<ActionResult<Environment>> AddAsync(EnvironmentAddDto form)
+    [HttpPost]
+    public async Task<ActionResult<Environment>> AddAsync(EnvironmentAddDto form)
     {
-        return await base.AddAsync(form);
+        var entity = form.MapTo<EnvironmentAddDto, Environment>();
+        return await manager.AddAsync(entity);
     }
 
     /// <summary>
-    /// ⚠更新
+    /// 更新
     /// </summary>
     /// <param name="id"></param>
     /// <param name="form"></param>
     /// <returns></returns>
-    public override async Task<ActionResult<Environment?>> UpdateAsync([FromRoute] Guid id, EnvironmentUpdateDto form)
+    [HttpPut("{id}")]
+    public async Task<ActionResult<Environment?>> UpdateAsync([FromRoute] Guid id, EnvironmentUpdateDto form)
     {
-        return await base.UpdateAsync(id, form);
+        var user = await manager.GetCurrent(id);
+        if (user == null) return NotFound();
+        return await manager.UpdateAsync(user, form);
+    }
+
+    /// <summary>
+    /// 详情
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Environment?>> GetDetailAsync([FromRoute] Guid id)
+    {
+        var res = await manager.FindAsync<Environment>(u => u.Id == id);
+        return (res == null) ? NotFound() : res;
     }
 
     /// <summary>
@@ -50,20 +71,9 @@ public class EnvironmentController : RestApiBase<EnvironmentDataStore, Environme
     /// <param name="id"></param>
     /// <returns></returns>
     // [ApiExplorerSettings(IgnoreApi = true)]
-    public override async Task<ActionResult<bool>> DeleteAsync([FromRoute] Guid id)
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<Environment?>> DeleteAsync([FromRoute] Guid id)
     {
-        return await base.DeleteAsync(id);
-    }
-
-    /// <summary>
-    /// ⚠ 批量删除
-    /// </summary>
-    /// <param name="ids"></param>
-    /// <returns></returns>
-    public override async Task<ActionResult<int>> BatchDeleteAsync(List<Guid> ids)
-    {
-        // 危险操作，请确保该方法的执行权限
-        //return await base.BatchDeleteAsync(ids);
-        return await Task.FromResult(0);
+        return await manager.DeleteAsync(id);
     }
 }
