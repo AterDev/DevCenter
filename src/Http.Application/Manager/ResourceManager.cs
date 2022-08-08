@@ -60,7 +60,7 @@ public class ResourceManager : DomainManagerBase<Resource, ResourceUpdateDto, Re
         }
         if (dto.TagIds != null)
         {
-            var tags = await tagsManager.Command.ListAsync<ResourceTags>(t => dto.TagIds.Contains(t.Id));
+            var tags = await tagsManager.Command.ListAsync(t => dto.TagIds.Contains(t.Id));
             resource.Tags = tags;
         }
         if (dto.AttributeAddItem != null)

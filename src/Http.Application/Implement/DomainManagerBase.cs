@@ -52,6 +52,7 @@ public class DomainManagerBase<TEntity, TUpdate, TFilter, TItem> : IDomainManage
     {
         return await Command.FindAsync(e => e.Id == id, navigations);
     }
+
     public virtual async Task<TEntity> AddAsync(TEntity entity)
     {
         var res = await Command.CreateAsync(entity);
@@ -83,6 +84,17 @@ public class DomainManagerBase<TEntity, TUpdate, TFilter, TItem> : IDomainManage
     public async Task<TDto?> FindAsync<TDto>(Expression<Func<TEntity, bool>>? whereExp) where TDto : class
     {
         return await Query.FindAsync<TDto>(whereExp);
+    }
+
+    /// <summary>
+    /// 条件查询列表
+    /// </summary>
+    /// <typeparam name="TDto">返回类型</typeparam>
+    /// <param name="whereExp"></param>
+    /// <returns></returns>
+    public async Task<List<TDto>> ListAsync<TDto>(Expression<Func<TEntity, bool>>? whereExp) where TDto : class
+    {
+        return await Query.ListAsync<TDto>(whereExp);
     }
 
     /// <summary>

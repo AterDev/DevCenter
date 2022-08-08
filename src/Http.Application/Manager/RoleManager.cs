@@ -32,7 +32,7 @@ public class RoleManager : DomainManagerBase<Role, RoleUpdateDto, RoleFilterDto,
         role!.ResourceGroups = null;
 
         var groups = await Stores.ResourceGroupCommand
-            .ListAsync<ResourceGroup>(g => dto.GroupIds.Contains(g.Id));
+            .ListAsync(g => dto.GroupIds.Contains(g.Id));
         role.ResourceGroups = groups;
         return await SaveChangesAsync() > 0;
     }

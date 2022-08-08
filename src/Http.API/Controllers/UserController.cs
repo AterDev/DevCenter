@@ -38,8 +38,15 @@ public class UserController :
     [HttpPost]
     public async Task<ActionResult<User>> AddAsync(UserAddDto form)
     {
-        var entity = form.MapTo<UserAddDto, User>();
-        return await manager.AddAsync(entity);
+        var user = form.MapTo<UserAddDto, User>();
+        if (form.RoleIds != null)
+        {
+            user.Roles = await manager.GetRolesAsync(form.RoleIds);
+        }
+        user.PasswordSalt = HashCrypto.BuildSalt();
+        user.PasswordHash = HashCrypto.GeneratePwd(form.Password ?? "123456", user.PasswordSalt);
+
+        return await manager.AddAsync(user);
     }
 
     /// <summary>

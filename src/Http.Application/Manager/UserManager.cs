@@ -15,6 +15,13 @@ public class UserManager : DomainManagerBase<User, UserUpdateDto, UserFilterDto,
         return await SaveChangesAsync() > 0;
     }
 
+    public override Task<User> AddAsync(User entity)
+    {
+
+
+        return base.AddAsync(entity);
+    }
+
     public override async Task<User> UpdateAsync(User user, UserUpdateDto dto)
     {
         if (dto.RoleIds != null)

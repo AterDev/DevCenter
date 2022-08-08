@@ -5,9 +5,7 @@ namespace Http.API.Controllers;
 /// <summary>
 /// 资源
 /// </summary>
-public class ResourceController :
-    RestControllerBase<IResourceManager>,
-    IRestController<Resource, ResourceAddDto, ResourceUpdateDto, ResourceFilterDto, ResourceItemDto>
+public class ResourceController : RestControllerBase<IResourceManager>
 {
     public ResourceController(
         IUserContext user,
@@ -48,12 +46,52 @@ public class ResourceController :
     /// 新增
     /// </summary>
     /// <param name="form"></param>
+    /// <param name="groupManager"></param>
+    /// <param name="typeDefinitionManager"></param>
+    /// <param name="tagsManager"></param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<ActionResult<Resource>> AddAsync(ResourceAddDto form)
+    public async Task<ActionResult<Resource>> AddAsync(
+        ResourceAddDto form,
+        [FromServices] IResourceGroupManager groupManager,
+        [FromServices] IResourceTypeDefinitionManager typeDefinitionManager,
+        [FromServices] IResourceTagsManager tagsManager)
     {
-        var entity = form.MapTo<ResourceAddDto, Resource>();
-        return await manager.AddAsync(entity);
+        var resource = form.MapTo<ResourceAddDto, Resource>();
+
+        var group = await groupManager.GetCurrent(form.GroupId);
+        if (group == null)
+        {
+            return BadRequest("不存在的资源组");
+        }
+        var type = await typeDefinitionManager.GetCurrent(form.ResourceTypeId);
+        if (type == null)
+        {
+            return BadRequest("不存在的类型");
+        }
+
+        resource.Group = group;
+        resource.ResourceType = type;
+
+        if (form.TagIds != null)
+        {
+            var tags = await tagsManager.Command.ListAsync(t => form.TagIds.Contains(t.Id));
+            resource.Tags = tags;
+        }
+        if (form.AttributeAddItem != null)
+        {
+            var attributes = new List<ResourceAttribute>();
+
+            form.AttributeAddItem.ForEach(a =>
+            {
+                var attribute = new ResourceAttribute();
+                attribute = attribute.Merge(a);
+                attributes.Add(attribute);
+            });
+            resource.Attributes = attributes;
+        }
+
+        return await manager.AddAsync(resource);
     }
 
     /// <summary>
@@ -93,4 +131,6 @@ public class ResourceController :
         var entity = await manager.GetCurrent(id);
         return entity == null ? (ActionResult<Resource?>)NotFound() : (ActionResult<Resource?>)await manager.DeleteAsync(entity);
     }
+
+
 }

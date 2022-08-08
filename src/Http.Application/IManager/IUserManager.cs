@@ -13,5 +13,5 @@ public interface IUserManager : IDomainManager<User, UserUpdateDto, UserFilterDt
     /// <param name="newPassword"></param>
     /// <returns></returns>
     Task<bool> ChangePasswordAsync(User user, string newPassword);
-
+    Task<List<Role>> GetRolesAsync(List<Guid> roleIds);
 }
