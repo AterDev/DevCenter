@@ -109,7 +109,6 @@ public class ResourceManager : DomainManagerBase<Resource, ResourceUpdateDto, Re
         return resources;
     }
 
-
     public override async Task<Resource?> DeleteAsync(Resource entity)
     {
         var resource = entity;

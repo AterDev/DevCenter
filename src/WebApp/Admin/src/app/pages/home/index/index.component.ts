@@ -80,9 +80,19 @@ export class IndexComponent implements OnInit {
   }
 
   openWebsite(resource: Resource) {
-    var attr = resource.attributes!.find(a => a.name == 'url');
-    if (attr?.value) {
-      window.open(attr?.value);
+    var more = resource.attributes!
+      .find(a => a.name == 'username'
+        || a.name == 'password'
+        || a.name == 'host');
+    if (more?.value) {
+      this.dialog.open(ResourceDialogComponent, {
+        data: resource
+      });
+    } else {
+      var attr = resource.attributes!.find(a => a.name == 'url');
+      if (attr?.value) {
+        window.open(attr?.value);
+      }
     }
   }
 

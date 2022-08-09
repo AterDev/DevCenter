@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { lastValueFrom } from 'rxjs';
 import { NavigationType } from 'src/app/share/models/enum/navigation-type.model';
@@ -9,6 +10,7 @@ import { ResourceGroupFilterDto } from 'src/app/share/models/resource-group/reso
 import { ResourceGroupItemDto } from 'src/app/share/models/resource-group/resource-group-item-dto.model';
 import { Resource } from 'src/app/share/models/resource/resource.model';
 import { ResourceGroupService } from 'src/app/share/services/resource-group.service';
+import { ResourceDialogComponent } from '../resource-dialog/resource-dialog.component';
 
 @Component({
   selector: 'app-resource',
@@ -21,7 +23,8 @@ export class ResourceComponent implements OnInit {
   groups: ResourceGroupItemDto[] = [];
   environments: EnvironmentItemDto[] = [];
   constructor(
-    private groupSrv: ResourceGroupService
+    private groupSrv: ResourceGroupService,
+    public dialog: MatDialog
   ) {
     this.filter = {
       pageIndex: 1,
@@ -62,12 +65,21 @@ export class ResourceComponent implements OnInit {
   }
 
   openWebsite(resource: Resource) {
-    var attr = resource.attributes!.find(a => a.name == 'url');
-    if (attr?.value) {
-      window.open(attr?.value);
+    var more = resource.attributes!
+      .find(a => a.name == 'username'
+        || a.name == 'password'
+        || a.name == 'host');
+    if (more?.value) {
+      this.dialog.open(ResourceDialogComponent, {
+        data: resource
+      });
+    } else {
+      var attr = resource.attributes!.find(a => a.name == 'url');
+      if (attr?.value) {
+        window.open(attr?.value);
+      }
     }
   }
-
   openTool(url: string) {
     window.open('/tool/' + url);
   }

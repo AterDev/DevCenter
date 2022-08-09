@@ -8,14 +8,28 @@ public class ResourceTypeDefinitionManager : DomainManagerBase<ResourceTypeDefin
     {
     }
 
+    public override Task<ResourceTypeDefinition?> GetCurrent(Guid id, params string[]? navigations)
+    {
+        return base.GetCurrent(id);
+    }
+
     public override async Task<ResourceTypeDefinition> UpdateAsync(ResourceTypeDefinition entity, ResourceTypeDefinitionUpdateDto dto)
     {
-        // 更新关联的内容
+
+        await Stores.CommandContext.Entry(entity)
+            .Collection(e => e.AttributeDefines!)
+            .LoadAsync();
+
+        // 更新关联的内容,前端是要先查询出来 
         entity!.AttributeDefines = null;
+
         if (dto.AttributeDefineIds != null)
         {
             // 通过父类的 Stores 查询其他实体的内容
-            var attributeDefines = await Stores.ResourceAttributeDefineCommand.Db.Where(a => dto.AttributeDefineIds.Contains(a.Id)).ToListAsync();
+            var attributeDefines = await Stores.ResourceAttributeDefineCommand.Db
+                .Where(a => dto.AttributeDefineIds.Contains(a.Id))
+                .ToListAsync();
+
             entity.AttributeDefines = attributeDefines;
         }
         return await base.UpdateAsync(entity, dto);
