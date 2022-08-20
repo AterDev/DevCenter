@@ -1,5 +1,5 @@
 import { Status } from '../enum/status.model';
-import { ResourceAttributeAddDto } from '../resource-attribute/resource-attribute-add-dto.model';
+import { ResourceAttributeAddDto } from '../resource/resource-attribute-add-dto.model';
 /**
  * 资源
  */

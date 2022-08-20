@@ -1,7 +1,16 @@
 <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
   <mat-toolbar color="">
     <mat-toolbar-row style="font-size:16px">
-      <div fxFlex></div>
+
+      <div class="d-flex">
+        <mat-select placeholder="角色" [(ngModel)]="filter.roleId" name="item" (selectionChange)="filterList($event)">
+          <mat-option [value]="null">全部</mat-option>
+          <mat-option *ngFor="let item of roles" [value]="item.id">
+            {{item.name}}
+          </mat-option>
+        </mat-select>
+      </div>
+      <div class="d-flex flex-grow-1"></div>
       <button mat-raised-button color="primary" matTooltipPosition="right" [routerLink]="['../add']">
         <mat-icon>add</mat-icon>
         添加
@@ -63,7 +72,7 @@
     </mat-menu>
   </div>
   <div class="col col-auto">
-  </div> 
+  </div>
 </div> -->
 <mat-paginator [pageSizeOptions]="pageSizeOption" [pageIndex]="filter.pageIndex!-1" [pageSize]="filter.pageSize"
   [length]="total" (page)="getList($event)" showFirstLastButtons></mat-paginator>

@@ -14,5 +14,6 @@ export interface UserFilterDto extends FilterBase {
    * 密码重试次数
    */
   retryCount?: number | null;
+  roleId?: string | null;
 
 }

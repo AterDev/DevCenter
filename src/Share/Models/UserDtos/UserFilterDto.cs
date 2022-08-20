@@ -25,4 +25,6 @@ public class UserFilterDto : FilterBase
     /// </summary>
     public int? RetryCount { get; set; }
 
+    public Guid? RoleId { get; set; }
+
 }
