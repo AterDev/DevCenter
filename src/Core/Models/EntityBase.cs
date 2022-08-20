@@ -5,7 +5,6 @@ namespace Core.Models;
 /// <summary>
 /// 数据加基础字段模型
 /// </summary>
-/// <inheritdoc/>
 public class EntityBase
 {
     [Key]
