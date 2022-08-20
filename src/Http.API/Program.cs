@@ -4,7 +4,8 @@ using Http.Application.Services.Webhook;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.IdentityModel.Tokens;
-
+using NSwag;
+using NSwag.Generation.Processors.Security;
 using Share.Options;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -116,6 +117,17 @@ services.AddOpenApiDocument(c =>
         document.Info.Description = "Api 文档";
         document.Info.Version = "1.0";
     };
+    // 为swagger添加jwt authorize
+    c.AddSecurity("JWT", Enumerable.Empty<string>(), new OpenApiSecurityScheme
+    {
+        Type = OpenApiSecuritySchemeType.ApiKey,
+        Name = "Authorization",
+        In = OpenApiSecurityApiKeyLocation.Header,
+        Description = "Type into the textbox: Bearer {your JWT token}."
+    });
+
+    c.OperationProcessors.Add(
+        new AspNetCoreOperationSecurityScopeProcessor("JWT"));
 });
 services.AddControllers()
     .AddJsonOptions(options =>
