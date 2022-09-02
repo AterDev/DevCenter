@@ -8,8 +8,6 @@ public class ResourceGroupManager : DomainManagerBase<ResourceGroup, ResourceGro
     {
     }
 
-
-
     public override async Task<ResourceGroup> UpdateAsync(ResourceGroup entity, ResourceGroupUpdateDto dto)
     {
         if (dto.EnvironmentId != null)
