@@ -9,6 +9,12 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { SelectionModel } from '@angular/cdk/collections';
+import { RoleItemDto } from 'src/app/share/models/role/role-item-dto.model';
+import { RoleService } from 'src/app/share/services/role.service';
+import { lastValueFrom } from 'rxjs';
+import { PageListOfRoleItemDto } from 'src/app/share/models/role/page-list-of-role-item-dto.model';
+import { MatSelectChange } from '@angular/material/select';
+import { ListStateService } from 'src/app/share/services/list-state.service';
 
 @Component({
   selector: 'app-index',
@@ -20,6 +26,7 @@ export class IndexComponent implements OnInit {
   isLoading = true;
   total = 0;
   data: UserItemDto[] = [];
+  roles: RoleItemDto[] = [];
   columns: string[] = ['userName', 'realName', 'position', 'email', 'actions'];
   dataSource!: MatTableDataSource<UserItemDto>;
   selection = new SelectionModel<UserItemDto>(true, []);
@@ -27,6 +34,9 @@ export class IndexComponent implements OnInit {
   pageSizeOption = [12, 20, 50];
   constructor(
     private service: UserService,
+    private roleSrv: RoleService,
+
+    private listSrv: ListStateService,
     private snb: MatSnackBar,
     private dialog: MatDialog,
     private router: Router,
@@ -39,10 +49,14 @@ export class IndexComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getList();
+    this.getRoles().then(() => {
+      this.getList();
+    });
   }
 
   getList(event?: PageEvent): void {
+    if (this.listSrv.filter?.filter)
+      this.filter = this.listSrv.filter?.filter;
     if (event) {
       this.filter.pageIndex = event.pageIndex + 1;
       this.filter.pageSize = event.pageSize;
@@ -56,6 +70,16 @@ export class IndexComponent implements OnInit {
         }
         this.isLoading = false;
       });
+  }
+  filterList(event: MatSelectChange): void {
+    this.listSrv.filter = { query: null, filter: this.filter };
+    this.getList();
+  }
+  async getRoles() {
+    let res = await lastValueFrom(this.roleSrv.filter({ pageIndex: 1, pageSize: 10 }));
+    if (res) {
+      this.roles = res.data!;
+    }
   }
 
   deleteConfirm(item: UserItemDto): void {

@@ -1,6 +1,3 @@
-using Http.Application.DataStore;
-using Http.Application.Manager;
-
 namespace Http.Application.Implement;
 
 public static class StoreServicesExtensions
@@ -9,11 +6,6 @@ public static class StoreServicesExtensions
     {
         services.AddTransient<IUserContext, UserContext>();
         services.AddScoped(typeof(DataStoreContext));
-        services.AddScoped(typeof(ConfigOptionDataStore));
-        services.AddScoped(typeof(PermissionDataStore));
-        services.AddScoped(typeof(ResourceAttributeDataStore));
-        services.AddScoped(typeof(ResourceDataStore));
-        services.AddScoped(typeof(RolePermissionDataStore));
         services.AddScoped(typeof(BlogCatalogQueryStore));
         services.AddScoped(typeof(BlogQueryStore));
         services.AddScoped(typeof(BlogTagQueryStore));

@@ -5,8 +5,6 @@ export class ListStateService {
 
   filter: FilterState<any> | null = null;
   constructor() { }
-
-
 }
 
 export interface FilterState<T> {

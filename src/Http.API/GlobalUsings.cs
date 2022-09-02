@@ -7,7 +7,6 @@ global using Core.Entities.Resource;
 global using Core.Models;
 global using Core.Utils;
 global using EntityFramework;
-global using Http.Application.DataStore;
 global using Http.Application.IManager;
 global using Http.Application.Implement;
 global using Http.Application.Interface;

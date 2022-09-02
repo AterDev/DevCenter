@@ -43,6 +43,11 @@ public class UserManager : DomainManagerBase<User, UserUpdateDto, UserFilterDto,
     public override async Task<PageList<UserItemDto>> FilterAsync(UserFilterDto filter)
     {
         // TODO:根据实际业务构建筛选条件
+        if (filter.RoleId != null)
+        {
+            var role = await Stores.RoleQuery.FindAsync<Role>(filter.RoleId.Value);
+            Queryable = Queryable.Where(u => u.Roles!.Contains(role!));
+        }
         return await base.FilterAsync(filter);
     }
 
