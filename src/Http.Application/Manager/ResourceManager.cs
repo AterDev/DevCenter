@@ -111,12 +111,12 @@ public class ResourceManager : DomainManagerBase<Resource, ResourceUpdateDto, Re
 
     public override async Task<Resource?> DeleteAsync(Resource entity)
     {
-        var resource = entity;
-        if (resource!.Attributes != null)
+        if (entity!.Attributes != null)
         {
-            Stores.CommandContext.RemoveRange(resource.Attributes);
+            Stores.CommandContext.RemoveRange(entity.Attributes);
         }
-        return await DeleteAsync(resource);
+        entity.Tags = null;
+        return await base.DeleteAsync(entity);
     }
 
     public async Task<ResourceSelectDataDto> GetRelationSelectDataAsync()

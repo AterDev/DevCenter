@@ -129,7 +129,7 @@ public class ResourceController : RestControllerBase<IResourceManager>
     public async Task<ActionResult<Resource?>> DeleteAsync([FromRoute] Guid id)
     {
         var entity = await manager.GetCurrent(id);
-        return entity == null ? (ActionResult<Resource?>)NotFound() : (ActionResult<Resource?>)await manager.DeleteAsync(entity);
+        return entity == null ? NotFound() : await manager.DeleteAsync(entity);
     }
 
 
