@@ -8,6 +8,8 @@ public class ResourceManager : DomainManagerBase<Resource, ResourceUpdateDto, Re
     private readonly IResourceTagsManager tagsManager;
     private readonly IResourceGroupManager resourceGroupManager;
 
+
+
     public ResourceManager(DataStoreContext storeContext,
                            IResourceTypeDefinitionManager typeDefinitionManager,
                            IResourceTagsManager tagsManager,
@@ -109,14 +111,14 @@ public class ResourceManager : DomainManagerBase<Resource, ResourceUpdateDto, Re
         return resources;
     }
 
-    public override async Task<Resource?> DeleteAsync(Resource entity)
+    public override async Task<Resource?> DeleteAsync(Resource entity, bool softDelete = false)
     {
         if (entity!.Attributes != null)
         {
             Stores.CommandContext.RemoveRange(entity.Attributes);
         }
         entity.Tags = null;
-        return await base.DeleteAsync(entity);
+        return await base.DeleteAsync(entity, softDelete);
     }
 
     public async Task<ResourceSelectDataDto> GetRelationSelectDataAsync()

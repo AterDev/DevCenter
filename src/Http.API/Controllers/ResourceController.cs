@@ -132,5 +132,4 @@ public class ResourceController : RestControllerBase<IResourceManager>
         return entity == null ? NotFound() : await manager.DeleteAsync(entity);
     }
 
-
 }

@@ -79,7 +79,7 @@ public class ResourceGroupManager : DomainManagerBase<ResourceGroup, ResourceGro
             {
                 Id = s.Id,
                 Name = s.Name,
-                Resource = s.Resources!,
+                Resource = s.Resources!.Where(r => r.IsDeleted == false).ToList(),
                 Environment = s.Environment,
                 Descriptioin = s.Descriptioin,
                 Navigation = s.Navigation,
