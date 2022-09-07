@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "Admin": {
+    "admin": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:application": {
