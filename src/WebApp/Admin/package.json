@@ -6,7 +6,10 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "dev:ssr": "ng run angular.io-example:serve-ssr",
+    "serve:ssr": "node dist/server/main.js",
+    "build:ssr": "ng build && ng run admin:server"
   },
   "private": true,
   "dependencies": {
@@ -22,6 +25,8 @@
     "@angular/router": "^14.0.1",
     "@ckeditor/ckeditor5-angular": "^4.0.0",
     "@materia-ui/ngx-monaco-editor": "^6.0.0",
+    "@nguniversal/express-engine": "^14.0.1",
+    "@angular/platform-server": "^14.0.1",
     "jest-editor-support": "*",
     "monaco-editor": "^0.33.0",
     "ng-ckeditor5-classic": "^13.2.1",
