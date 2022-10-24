@@ -32,6 +32,7 @@ public class AuthController : ControllerBase
     {
         var user = await userManager.Query.Db.Where(u => u.UserName.Equals(dto.UserName)
             || u.Email.Equals(dto.UserName))
+            .Where(u => u.IsDeleted == false)
             .Include(u => u.Roles)
             .FirstOrDefaultAsync();
         if (user == null)
