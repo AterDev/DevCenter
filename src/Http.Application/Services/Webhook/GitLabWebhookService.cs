@@ -12,7 +12,7 @@ public class GitLabWebhookService
     public static PipelineInfo? GetPipeLineInfo(PipelineRequest request)
     {
         var status = request.ObjectAttributes?.Status;
-        var jobs = request.Builds!.Select(b => "- " + b.Name).ToList();
+        var jobs = request.Builds!.Where(b => b.Status == "success").Select(b => "- " + b.Name).ToList();
         var josString = string.Join(System.Environment.NewLine, jobs);
         return string.IsNullOrWhiteSpace(status)
             || status.Equals("pending")
