@@ -14,6 +14,6 @@ public class PipelineInfo
     public string GetTitle()
     {
         var res = ProjectName + " 构建 ";
-        return Status == "success" ? "👍 " + res + "成功" : "❗ " + res + Status;
+        return (Status is "success" or "scheduled") ? "👍 " + res + "成功" : "❗ " + res + Status;
     }
 }

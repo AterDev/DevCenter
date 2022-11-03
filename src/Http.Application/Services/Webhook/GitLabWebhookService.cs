@@ -12,7 +12,8 @@ public class GitLabWebhookService
     public static PipelineInfo? GetPipeLineInfo(PipelineRequest request)
     {
         var status = request.ObjectAttributes?.Status;
-        var job = string.Join(",", request.Builds!.Select(b => b.Name).ToList());
+        var jobs = request.Builds!.Select(b => "- " + b.Name).ToList();
+        var josString = string.Join(System.Environment.NewLine, jobs);
         return string.IsNullOrWhiteSpace(status)
             || status.Equals("pending")
             || status.Equals("running")
@@ -25,7 +26,7 @@ public class GitLabWebhookService
                 Duration = request.ObjectAttributes?.Duration,
                 FinishTime = request.Commit?.Timestamp,
                 ProjectName = request.Project?.Name,
-                Job = job,
+                Job = josString,
                 Url = request.Project?.WebUrl + "/-/pipelines/" + request.ObjectAttributes?.Id,
                 Status = status
             };
