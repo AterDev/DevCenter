@@ -7,7 +7,6 @@ global using Core.Entities.Code;
 global using Core.Entities.Resource;
 global using Core.Models;
 global using Core.Utils;
-global using EFCore.BulkExtensions;
 global using EntityFramework;
 global using Http.Application.CommandStore;
 global using Http.Application.IManager;
