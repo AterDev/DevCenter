@@ -3,13 +3,14 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "prestart": "node aspnetcore-https",
+    "start": "run-script-os",
+    "start:windows": "ng serve --port 44474 --ssl --ssl-cert \"%APPDATA%\\ASP.NET\\https\\%npm_package_name%.pem\" --ssl-key \"%APPDATA%\\ASP.NET\\https\\%npm_package_name%.key\"",
+    "start:default": "ng serve --port 44474 --ssl --ssl-cert \"$HOME/.aspnet/https/${npm_package_name}.pem\" --ssl-key \"$HOME/.aspnet/https/${npm_package_name}.key\"",
     "build": "ng build",
+    "build:ssr": "ng run AterStudio:server:dev",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "dev:ssr": "ng run admin:serve-ssr",
-    "serve:ssr": "node dist/server/main.js",
-    "build:ssr": "ng build && ng run admin:server"
+    "test": "ng test"
   },
   "private": true,
   "dependencies": {
@@ -30,6 +31,7 @@
     "jest-editor-support": "*",
     "monaco-editor": "^0.33.0",
     "ng-ckeditor5-classic": "^13.2.1",
+    "run-script-os": "^1.1.6",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
