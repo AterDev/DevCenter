@@ -9,17 +9,18 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace EntityFramework.Migrator.Migrations
+namespace Http.API.Migrations
 {
-    [DbContext(typeof(ContextBase))]
-    [Migration("20220805140559_20220805-220552")]
-    partial class _20220805220552
+    [DbContext(typeof(CommandDbContext))]
+    [Migration("20230103101808_init")]
+    partial class init
     {
+        /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.7")
+                .HasAnnotation("ProductVersion", "7.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseHiLo(modelBuilder, "EntityFrameworkHiLoSequence");
@@ -843,7 +844,9 @@ namespace EntityFramework.Migrator.Migrations
 
                     b.HasIndex("ResourceTypeId");
 
-                    b.ToView("ResrouceView");
+                    b.ToTable((string)null);
+
+                    b.ToView("ResrouceView", (string)null);
                 });
 
             modelBuilder.Entity("Core.Entities.Role", b =>

@@ -1,31 +1,42 @@
-﻿namespace Http.Application.Services;
+﻿using Microsoft.Extensions.Logging;
+
+namespace Http.Application.Services;
 
 public class InitDataTask
 {
     public static async Task InitDataAsync(IServiceProvider provider)
     {
-        var context = provider.GetRequiredService<ContextBase>();
+        var context = provider.GetRequiredService<CommandDbContext>();
+        var loggerFactory = provider.GetRequiredService<ILoggerFactory>();
+        var logger = loggerFactory.CreateLogger<InitDataTask>();
+        string? connectionString = context.Database.GetConnectionString();
         try
         {
-            var timeout = context.Database.GetCommandTimeout();
-            context.Database.SetCommandTimeout(5);
-            // 判断是否初始化
-            var role = await context.Roles.SingleOrDefaultAsync(r => r.Name.ToLower() == "admin");
-            if (role == null)
+            context.Database.Migrate();
+            if (!await context.Database.CanConnectAsync())
             {
-                Console.WriteLine("初始化数据");
-                await InitRoleAndUserAsync(context);
+                logger.LogError("数据库无法连接:{message}", connectionString);
+                return;
             }
-            var resourceAttributeDefines = await context.ResourceAttributeDefines.FirstOrDefaultAsync();
-            if (resourceAttributeDefines == null)
+            else
             {
-                await InitResourceAsync(context);
+                // 判断是否初始化
+                var role = await context.Roles.SingleOrDefaultAsync(r => r.Name.ToLower() == "admin");
+                if (role == null)
+                {
+                    logger.LogInformation("初始化数据");
+                    await InitRoleAndUserAsync(context);
+                }
+                var resourceAttributeDefines = await context.ResourceAttributeDefines.FirstOrDefaultAsync();
+                if (resourceAttributeDefines == null)
+                {
+                    await InitResourceAsync(context);
+                }
             }
-            context.Database.SetCommandTimeout(timeout);
         }
         catch (Exception ex)
         {
-            Console.WriteLine("检查数据库连接:" + ex.Message);
+            logger.LogError("初始化异常,请检查数据库配置：{message}", ex.Message);
         }
     }
 
