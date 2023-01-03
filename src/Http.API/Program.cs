@@ -1,11 +1,12 @@
 using System.Text;
+using Http.API;
 using Http.Application.Services.Webhook;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.IdentityModel.Tokens;
-using NSwag;
-using NSwag.Generation.Processors.Security;
+using Microsoft.OpenApi.Models;
 using Share.Options;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -106,28 +107,37 @@ services.AddCors(options =>
 
 services.AddHealthChecks();
 // api 接口文档设置
-services.AddOpenApiDocument(c =>
+builder.Services.AddSwaggerGen(c =>
 {
-    c.GenerateXmlObjects = true;
-    c.GenerateEnumMappingDescription = true;
-    c.UseControllerSummaryAsTagDescription = true;
-    c.PostProcess = (document) =>
+
+    c.SwaggerDoc("v1", new OpenApiInfo
     {
-        document.Info.Title = "DevCenter";
-        document.Info.Description = "Api 文档";
-        document.Info.Version = "1.0";
-    };
-    // 为swagger添加jwt authorize
-    c.AddSecurity("JWT", Enumerable.Empty<string>(), new OpenApiSecurityScheme
+        Title = "DevCenter",
+        Description = "API",
+        Version = "v1"
+    });
+    string[] xmlFiles = Directory.GetFiles(AppContext.BaseDirectory, "*.xml", SearchOption.TopDirectoryOnly);
+    foreach (string item in xmlFiles)
     {
-        Type = OpenApiSecuritySchemeType.ApiKey,
-        Name = "Authorization",
-        In = OpenApiSecurityApiKeyLocation.Header,
-        Description = "Type into the textbox: Bearer {your JWT token}."
+        try
+        {
+            c.IncludeXmlComments(item, includeControllerXmlComments: true);
+        }
+        catch (Exception) { }
+    }
+    c.DescribeAllParametersInCamelCase();
+    c.CustomOperationIds((z) =>
+    {
+        ControllerActionDescriptor descriptor = (ControllerActionDescriptor)z.ActionDescriptor;
+        return $"{descriptor.ControllerName}_{descriptor.ActionName}";
     });
 
-    c.OperationProcessors.Add(
-        new AspNetCoreOperationSecurityScopeProcessor("JWT"));
+    c.SchemaFilter<EnumSchemaFilter>();
+    c.MapType<DateOnly>(() => new OpenApiSchema
+    {
+        Type = "string",
+        Format = "date"
+    });
 });
 services.AddControllers()
     .AddJsonOptions(options =>
@@ -148,8 +158,6 @@ if (app.Environment.IsDevelopment())
 {
     app.UseCors("default");
     app.UseDeveloperExceptionPage();
-    app.UseOpenApi();
-    app.UseSwaggerUi3(c => { c.DocumentTitle = "文档"; });
     app.UseStaticFiles();
 }
 else
@@ -183,10 +191,12 @@ app.UseHealthChecks("/health");
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-});
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller}/{action=Index}/{id?}");
+
+app.MapFallbackToFile("index.html");
 
 app.Run();
 
