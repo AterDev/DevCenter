@@ -60,7 +60,7 @@ public class AuthController : ControllerBase
             return new AuthResult
             {
                 Id = user.Id,
-                Role = role?.Name ?? "",
+                Role = role?.IdentifyName ?? "",
                 Token = token,
                 Username = user.UserName
             };

@@ -164,16 +164,17 @@ if (app.Environment.IsDevelopment())
 {
     app.UseCors("default");
     app.UseDeveloperExceptionPage();
-    app.UseStaticFiles();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 else
 {
     // 生产环境需要新的配置
     app.UseCors("default");
-    app.UseStaticFiles();
     //app.UseHsts();
     //app.UseHttpsRedirection();
 }
+app.UseStaticFiles();
 // 异常统一处理
 app.UseExceptionHandler(handler =>
 {
@@ -196,9 +197,6 @@ app.UseHealthChecks("/health");
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.UseSwagger();
-app.UseSwaggerUI();
 
 app.MapControllerRoute(
     name: "default",
