@@ -18,7 +18,7 @@ public class InitDataTask
             else
             {
                 // 判断是否初始化
-                var role = await context.Roles.SingleOrDefaultAsync(r => r.Name.ToLower() == "admin");
+                var role = await context.Roles.SingleOrDefaultAsync(r => r.IdentifyName.ToLower() == "admin");
                 if (role == null)
                 {
                     logger.LogInformation("初始化数据");

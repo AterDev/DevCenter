@@ -34,7 +34,6 @@ services.AddDbContextPool<CommandDbContext>(option =>
     });
 });
 
-
 // redis
 //builder.Services.AddStackExchangeRedisCache(options =>
 //{
@@ -109,6 +108,8 @@ services.AddCors(options =>
 #endregion
 
 services.AddHealthChecks();
+
+#if DEBUG
 // api 接口文档设置
 builder.Services.AddSwaggerGen(c =>
 {
@@ -142,6 +143,8 @@ builder.Services.AddSwaggerGen(c =>
         Format = "date"
     });
 });
+#endif
+
 services.AddControllers()
     .AddJsonOptions(options =>
     {
@@ -178,8 +181,7 @@ app.UseExceptionHandler(handler =>
     {
         context.Response.StatusCode = 500;
         var exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
-        var result = new
-        {
+        var result = new {
             Title = "程序内部错误:" + exception?.Message,
             Detail = exception?.Source + exception?.StackTrace,
             Status = 500,
@@ -194,6 +196,9 @@ app.UseHealthChecks("/health");
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.MapControllerRoute(
     name: "default",
