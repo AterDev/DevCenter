@@ -27,7 +27,7 @@ public class UserRoleTest : BaseTest
         var roles = new List<Role>();
         for (int i = 0; i < 20; i++)
         {
-            var newRole = new Role { Name = "role" + i };
+            var newRole = new Role { Name = "role" + i, IdentifyName = "role" };
             await _roleStore.AddAsync(newRole);
         }
         //await _roleStore._context.AddRangeAsync(roles);

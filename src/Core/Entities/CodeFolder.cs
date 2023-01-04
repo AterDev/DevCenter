@@ -8,7 +8,7 @@ namespace Core.Entities;
 public class CodeFolder : EntityBase
 {
     [MaxLength(100)]
-    public string Name { get; set; } = default!;
+    public required string Name { get; set; }
 
     public CodeFolder? Parent { get; set; }
     public List<CodeFolder>? Children { get; set; }

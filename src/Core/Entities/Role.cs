@@ -10,9 +10,9 @@ public class Role : EntityBase
     /// 角色名称
     /// </summary>
     [MaxLength(30)]
-    public string Name { get; set; } = default!;
+    public required string Name { get; set; }
     [MaxLength(30)]
-    public string IdentifyName { get; set; } = default!;
+    public required string IdentifyName { get; set; }
     [MaxLength(200)]
     public string? Description { get; set; }
     /// <summary>

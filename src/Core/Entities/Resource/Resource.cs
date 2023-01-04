@@ -6,7 +6,7 @@
 public class Resource : EntityBase
 {
     [MaxLength(100)]
-    public string Name { get; set; } = default!;
+    public required string Name { get; set; } 
     [MaxLength(400)]
     public string? Description { get; set; }
 
@@ -21,7 +21,7 @@ public class Resource : EntityBase
     /// <summary>
     /// 所属资源组
     /// </summary>
-    public ResourceGroup Group { get; set; } = default!;
+    public required ResourceGroup Group { get; set; }
 
     public List<ResourceTags>? Tags { get; set; }
 }

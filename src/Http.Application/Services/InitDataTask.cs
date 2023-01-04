@@ -1,7 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-
-namespace Http.Application.Services;
-
+﻿namespace Http.Application.Services;
 public class InitDataTask
 {
     public static async Task InitDataAsync(IServiceProvider provider)
@@ -47,11 +44,13 @@ public class InitDataTask
     {
         var role = new Role()
         {
-            Name = "Admin"
+            Name = "管理员",
+            IdentifyName = "Admin"
         };
         var userRole = new Role()
         {
-            Name = "User"
+            Name = "用户",
+            IdentifyName = "User"
         };
         var salt = HashCrypto.BuildSalt();
         var user = new User()

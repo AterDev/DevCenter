@@ -6,7 +6,7 @@
 public class ResourceTags : EntityBase
 {
     [MaxLength(100)]
-    public string Name { get; set; } = default!;
+    public required string Name { get; set; }
     [MaxLength(20)]
     public string? Color { get; set; } = Helper.GetRandColor();
     [MaxLength(30)]

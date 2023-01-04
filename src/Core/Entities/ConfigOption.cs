@@ -8,7 +8,7 @@ namespace Core.Entities;
 public class ConfigOption : EntityBase
 {
     [MaxLength(60)]
-    public string Name { get; set; } = default!;
+    public required string Name { get; set; }
 
     public ValueType Type { get; set; } = ValueType.Default;
     [MaxLength(20)]

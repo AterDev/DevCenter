@@ -9,19 +9,19 @@ public class Document : EntityBase
     /// 文件名
     /// </summary>
     [MaxLength(100)]
-    public string FileName { get; set; } = default!;
+    public required string FileName { get; set; } 
 
     /// <summary>
     /// 文件类型
     /// </summary>
     [MaxLength(20)]
-    public string Ext { get; set; } = default!;
+    public required string Ext { get; set; } 
 
     /// <summary>
     /// 文件路径
     /// </summary>
     [MaxLength(200)]
-    public string FilePath { get; set; } = default!;
+    public required string FilePath { get; set; } 
 
     public DocFolder? Folder { get; set; }
 }

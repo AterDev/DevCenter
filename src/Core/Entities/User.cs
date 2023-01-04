@@ -11,7 +11,7 @@ public class User : EntityBase
     /// 用户名
     /// </summary>
     [MaxLength(30)]
-    public string UserName { get; set; } = default!;
+    public required string UserName { get; set; } 
     /// <summary>
     /// 真实姓名
     /// </summary>

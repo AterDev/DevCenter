@@ -201,6 +201,16 @@ app.MapControllerRoute(
 
 app.MapFallbackToFile("index.html");
 
-app.Run();
+using (app)
+{
+    app.Start();
+    // 初始化工作
+    await using (var scope = app.Services.CreateAsyncScope())
+    {
+        var provider = scope.ServiceProvider;
+        await InitDataTask.InitDataAsync(provider);
+    }
+    app.WaitForShutdown();
+}
 
 public partial class Program { }
