@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Text;
 using Http.API;
 using Http.Application.Services.Webhook;
@@ -6,7 +7,13 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using OpenTelemetry.Resources;
 using Share.Options;
+using OpenTelemetry;
+using OpenTelemetry.Logs;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Trace;
+using OpenTelemetry.Exporter;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +40,47 @@ services.AddDbContextPool<CommandDbContext>(option =>
         sql.CommandTimeout(10);
     });
 });
+#region OpenTelemetry
+// config logger
+var serviceName = "VOF";
+var serviceVersion = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "unknown";
+var resource = ResourceBuilder.CreateDefault().AddService(serviceName: serviceName, serviceVersion: serviceVersion);
+
+var otlpEndpoint = configuration.GetSection("OTLP")
+    .GetValue<string>("Endpoint")
+    ?? "http://localhost:4317";
+
+var otlpConfig = new Action<OtlpExporterOptions>(opt =>
+{
+    opt.Endpoint = new Uri(otlpEndpoint);
+});
+
+builder.Logging.ClearProviders();
+builder.Logging.AddOpenTelemetry(options =>
+{
+    options.SetResourceBuilder(resource);
+    options.AddOtlpExporter(otlpConfig);
+});
+// tracing
+builder.Services.AddOpenTelemetry()
+    .WithTracing(options =>
+    {
+        options.AddSource(serviceName)
+            .SetResourceBuilder(resource)
+            .AddHttpClientInstrumentation()
+            .AddAspNetCoreInstrumentation()
+            .AddOtlpExporter(otlpConfig);
+    })
+    .WithMetrics(options =>
+    {
+        options.AddMeter(serviceName)
+            .SetResourceBuilder(resource)
+            .AddHttpClientInstrumentation()
+            .AddAspNetCoreInstrumentation()
+            .AddOtlpExporter(otlpConfig);
+    }).StartWithHost();
+
+#endregion
 
 // redis
 //builder.Services.AddStackExchangeRedisCache(options =>
@@ -69,23 +117,6 @@ services.AddAuthentication(options =>
     };
 });
 
-// use OpenIddict
-//services.AddAuthentication(options =>
-//{
-//    options.DefaultScheme = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme;
-//});
-//services.AddOpenIddict()
-//    .AddValidation(options =>
-//    {
-//        options.SetIssuer("https://localhost:5001/");
-//        options.UseIntrospection()
-//            .SetClientId("api")
-//            .SetClientSecret("myApiTestSecret");
-
-//        options.UseSystemNetHttp();
-//        options.UseAspNetCore();
-//    });
-
 // 验证
 services.AddAuthorization(options =>
 {
@@ -113,7 +144,6 @@ services.AddHealthChecks();
 // api 接口文档设置
 builder.Services.AddSwaggerGen(c =>
 {
-
     c.SwaggerDoc("v1", new OpenApiInfo
     {
         Title = "DevCenter",
