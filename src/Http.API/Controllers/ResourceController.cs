@@ -57,14 +57,14 @@ public class ResourceController : RestControllerBase<IResourceManager>
         [FromServices] IResourceTypeDefinitionManager typeDefinitionManager,
         [FromServices] IResourceTagsManager tagsManager)
     {
-        var resource = form.MapTo<ResourceAddDto, Resource>();
+        Resource resource = form.MapTo<ResourceAddDto, Resource>();
 
-        var group = await groupManager.GetCurrent(form.GroupId);
+        ResourceGroup? group = await groupManager.GetCurrent(form.GroupId);
         if (group == null)
         {
             return BadRequest("不存在的资源组");
         }
-        var type = await typeDefinitionManager.GetCurrent(form.ResourceTypeId);
+        ResourceTypeDefinition? type = await typeDefinitionManager.GetCurrent(form.ResourceTypeId);
         if (type == null)
         {
             return BadRequest("不存在的类型");
@@ -75,16 +75,16 @@ public class ResourceController : RestControllerBase<IResourceManager>
 
         if (form.TagIds != null)
         {
-            var tags = await tagsManager.Command.ListAsync(t => form.TagIds.Contains(t.Id));
+            List<ResourceTags> tags = await tagsManager.Command.ListAsync(t => form.TagIds.Contains(t.Id));
             resource.Tags = tags;
         }
         if (form.AttributeAddItem != null)
         {
-            var attributes = new List<ResourceAttribute>();
+            List<ResourceAttribute> attributes = new();
 
             form.AttributeAddItem.ForEach(a =>
             {
-                var attribute = new ResourceAttribute();
+                ResourceAttribute attribute = new();
                 attribute = attribute.Merge(a);
                 attributes.Add(attribute);
             });
@@ -103,7 +103,7 @@ public class ResourceController : RestControllerBase<IResourceManager>
     [HttpPut("{id}")]
     public async Task<ActionResult<Resource?>> UpdateAsync([FromRoute] Guid id, ResourceUpdateDto form)
     {
-        var current = await manager.GetCurrent(id);
+        Resource? current = await manager.GetCurrent(id);
         return current == null ? (ActionResult<Resource?>)NotFound() : (ActionResult<Resource?>)await manager.UpdateAsync(current, form);
     }
 
@@ -115,7 +115,7 @@ public class ResourceController : RestControllerBase<IResourceManager>
     [HttpGet("{id}")]
     public async Task<ActionResult<Resource?>> GetDetailAsync([FromRoute] Guid id)
     {
-        var res = await manager.FindAsync<Resource>(u => u.Id == id);
+        Resource? res = await manager.FindAsync<Resource>(u => u.Id == id);
         return res == null ? NotFound() : res;
     }
 
@@ -128,7 +128,7 @@ public class ResourceController : RestControllerBase<IResourceManager>
     [HttpDelete("{id}")]
     public async Task<ActionResult<Resource?>> DeleteAsync([FromRoute] Guid id)
     {
-        var entity = await manager.GetCurrent(id);
+        Resource? entity = await manager.GetCurrent(id);
         return entity == null ? NotFound() : await manager.DeleteAsync(entity);
     }
 

@@ -11,9 +11,9 @@ public class GitLabWebhookService
 
     public static PipelineInfo? GetPipeLineInfo(PipelineRequest request)
     {
-        var status = request.ObjectAttributes?.Status;
-        var jobs = request.Builds!.Where(b => b.Status == "success").Select(b => "- " + b.Name).ToList();
-        var josString = string.Join(System.Environment.NewLine, jobs);
+        string? status = request.ObjectAttributes?.Status;
+        List<string> jobs = request.Builds!.Where(b => b.Status == "success").Select(b => "- " + b.Name).ToList();
+        string josString = string.Join(System.Environment.NewLine, jobs);
         return string.IsNullOrWhiteSpace(status)
             || status.Equals("pending")
             || status.Equals("running")
@@ -35,18 +35,18 @@ public class GitLabWebhookService
     public static IssueInfo? GetIssueInfo(IssueRequest request)
     {
         // close,update,open
-        var action = request.ObjectAttributes.Action ?? "";
+        string action = request.ObjectAttributes.Action ?? "";
         if (action.Equals("update"))
         {
             return default;
         }
 
-        var content = request.ObjectAttributes.Description;
+        string content = request.ObjectAttributes.Description;
         if (content.Length > 50)
         {
             content = content[..50];
         }
-        var tags = request.Labels?.Select(l => l.Title).ToList();
+        List<string?>? tags = request.Labels?.Select(l => l.Title).ToList();
         return new IssueInfo(request.ObjectAttributes.Title, content)
         {
             ProjectName = request.Project?.Name,
@@ -59,15 +59,15 @@ public class GitLabWebhookService
 
     public static NoteInfo? GetNoteInfo(NoteRequest request)
     {
-        var noteableId = request.ObjectAttributes!.NoteableId;
+        long? noteableId = request.ObjectAttributes!.NoteableId;
         if (noteableId == null)
         {
             return default;
         }
 
-        var content = request.ObjectAttributes.Note!;
+        string content = request.ObjectAttributes.Note!;
 
-        var noteUsers = content.Split(" ")
+        List<string> noteUsers = content.Split(" ")
             .Where(s => s.StartsWith("@"))
             .Select(s => s.Replace("@", "")).ToList();
 

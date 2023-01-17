@@ -27,11 +27,11 @@ public class RoleManager : DomainManagerBase<Role, RoleUpdateDto, RoleFilterDto,
     /// <returns></returns>
     public async Task<bool> SetResourceGroupsAsync(RoleResourceDto dto)
     {
-        var role = await Command.Db.Include(r => r.ResourceGroups)
+        Role? role = await Command.Db.Include(r => r.ResourceGroups)
             .FirstOrDefaultAsync(r => r.Id == dto.RoleId);
         role!.ResourceGroups = null;
 
-        var groups = await Stores.ResourceGroupCommand
+        List<ResourceGroup> groups = await Stores.ResourceGroupCommand
             .ListAsync(g => dto.GroupIds.Contains(g.Id));
         role.ResourceGroups = groups;
         return await SaveChangesAsync() > 0;

@@ -45,58 +45,58 @@ public class ContextBase : DbContext
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        builder.UseHiLo();
-        builder.Entity<ResourceView>()
+        _ = builder.UseHiLo();
+        _ = builder.Entity<ResourceView>()
             .ToView("ResrouceView")
             .HasNoKey();
 
-        builder.Entity<Blog>(e =>
+        _ = builder.Entity<Blog>(e =>
         {
-            e.HasIndex(e => e.Title).IsUnique();
+            _ = e.HasIndex(e => e.Title).IsUnique();
         });
-        builder.Entity<BlogCatalog>(e =>
+        _ = builder.Entity<BlogCatalog>(e =>
         {
-            e.HasIndex(e => e.Name);
-            e.HasIndex(e => e.Level);
+            _ = e.HasIndex(e => e.Name);
+            _ = e.HasIndex(e => e.Level);
         });
-        builder.Entity<BlogTag>(e =>
+        _ = builder.Entity<BlogTag>(e =>
         {
-            e.HasIndex(e => e.Name);
+            _ = e.HasIndex(e => e.Name);
         });
-        builder.Entity<Resource>(e =>
+        _ = builder.Entity<Resource>(e =>
         {
-            e.HasIndex(a => a.Name);
-        });
-
-        builder.Entity<ResourceGroup>(e =>
-        {
-            e.HasIndex(a => a.Name);
-        });
-        builder.Entity<ResourceTags>(e =>
-        {
-            e.HasIndex(a => a.Name);
-        });
-        builder.Entity<ResourceTypeDefinition>(e =>
-        {
-            e.HasIndex(a => a.Name);
-        });
-        builder.Entity<Environment>(e =>
-        {
-            e.HasIndex(a => a.Name);
+            _ = e.HasIndex(a => a.Name);
         });
 
-        builder.Entity<User>(e =>
+        _ = builder.Entity<ResourceGroup>(e =>
         {
-            e.HasIndex(a => a.Email);
-            e.HasIndex(a => a.PhoneNumber);
-            e.HasIndex(a => a.UserName);
-            e.HasIndex(a => a.IsDeleted);
-            e.HasIndex(a => a.CreatedTime);
+            _ = e.HasIndex(a => a.Name);
+        });
+        _ = builder.Entity<ResourceTags>(e =>
+        {
+            _ = e.HasIndex(a => a.Name);
+        });
+        _ = builder.Entity<ResourceTypeDefinition>(e =>
+        {
+            _ = e.HasIndex(a => a.Name);
+        });
+        _ = builder.Entity<Environment>(e =>
+        {
+            _ = e.HasIndex(a => a.Name);
+        });
+
+        _ = builder.Entity<User>(e =>
+        {
+            _ = e.HasIndex(a => a.Email);
+            _ = e.HasIndex(a => a.PhoneNumber);
+            _ = e.HasIndex(a => a.UserName);
+            _ = e.HasIndex(a => a.IsDeleted);
+            _ = e.HasIndex(a => a.CreatedTime);
 
         });
-        builder.Entity<Role>(e =>
+        _ = builder.Entity<Role>(e =>
         {
-            e.HasIndex(m => m.Name);
+            _ = e.HasIndex(m => m.Name);
         });
 
         base.OnModelCreating(builder);

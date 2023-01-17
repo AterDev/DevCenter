@@ -32,7 +32,7 @@ public class RestApiBase<TDataStore, TEntity, TAdd, TUpdate, TFilter, TItem>
     [HttpPost]
     public virtual async Task<ActionResult<TEntity>> AddAsync(TAdd form)
     {
-        var data = (TEntity)Activator.CreateInstance(typeof(TEntity))!;
+        TEntity data = (TEntity)Activator.CreateInstance(typeof(TEntity))!;
         data = data.Merge(form);
         return await _store.AddAsync(data);
     }
@@ -68,7 +68,7 @@ public class RestApiBase<TDataStore, TEntity, TAdd, TUpdate, TFilter, TItem>
     [HttpGet("{id}")]
     public virtual async Task<ActionResult<TEntity?>> GetDetailAsync([FromRoute] Guid id)
     {
-        var data = await _store.FindAsync(id);
+        TEntity? data = await _store.FindAsync(id);
         return data == null ? (ActionResult<TEntity?>)NotFound() : (ActionResult<TEntity?>)data;
     }
 
@@ -115,8 +115,7 @@ public class RestApiBase<TDataStore, TEntity, TAdd, TUpdate, TFilter, TItem>
     /// <returns></returns>
     public override NotFoundObjectResult NotFound([ActionResultObjectValue] object? value)
     {
-        var res = new
-        {
+        var res = new {
             Title = "访问的资源不存在",
             Detail = value?.ToString(),
             Status = 404,
@@ -132,8 +131,7 @@ public class RestApiBase<TDataStore, TEntity, TAdd, TUpdate, TFilter, TItem>
     /// <returns></returns>
     public override ConflictObjectResult Conflict([ActionResultObjectValue] object? error)
     {
-        var res = new
-        {
+        var res = new {
             Title = "重复的资源",
             Detail = error?.ToString(),
             Status = 409,

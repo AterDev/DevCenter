@@ -16,7 +16,7 @@ public class ResourceAttributeDefineManager : DomainManagerBase<ResourceAttribut
 
     public override async Task<PageList<ResourceAttributeDefineItemDto>> FilterAsync(ResourceAttributeDefineFilterDto filter)
     {
-        var query = Queryable;
+        IQueryable<ResourceAttributeDefine> query = Queryable;
         if (filter.IsEnable != null)
         {
             query = query.Where(e => e.IsEnable == filter.IsEnable);
@@ -24,7 +24,7 @@ public class ResourceAttributeDefineManager : DomainManagerBase<ResourceAttribut
 
         if (filter.TypeId != null)
         {
-            var ids = await Query.Context.ResourceTypeDefinitions
+            List<Guid> ids = await Query.Context.ResourceTypeDefinitions
                 .Where(r => r.Id == filter.TypeId)
                 .SelectMany(s => s.AttributeDefines!)
                 .Select(d => d.Id)

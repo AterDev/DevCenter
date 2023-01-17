@@ -6,7 +6,7 @@
 public class Environment : EntityBase
 {
     [MaxLength(50)]
-    public required string Name { get; set; } 
+    public required string Name { get; set; }
     [MaxLength(200)]
     public string? Description { get; set; }
     [MaxLength(20)]

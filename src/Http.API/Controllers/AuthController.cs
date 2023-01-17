@@ -30,7 +30,7 @@ public class AuthController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<AuthResult>> LoginAsync(LoginDto dto)
     {
-        var user = await userManager.Query.Db.Where(u => u.UserName.Equals(dto.UserName)
+        User? user = await userManager.Query.Db.Where(u => u.UserName.Equals(dto.UserName)
             || u.Email.Equals(dto.UserName))
             .Where(u => u.IsDeleted == false)
             .Include(u => u.Roles)
@@ -42,18 +42,18 @@ public class AuthController : ControllerBase
 
         if (HashCrypto.Validate(dto.Password, user.PasswordSalt, user.PasswordHash))
         {
-            var sign = _config.GetSection("Jwt")["Sign"];
-            var issuer = _config.GetSection("Jwt")["Issuer"];
-            var audience = _config.GetSection("Jwt")["Audience"];
+            string? sign = _config.GetSection("Jwt")["Sign"];
+            string? issuer = _config.GetSection("Jwt")["Issuer"];
+            string? audience = _config.GetSection("Jwt")["Audience"];
 
-            var role = user.Roles?.FirstOrDefault();
-            var time = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            Role? role = user.Roles?.FirstOrDefault();
+            long time = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
             //1天后过期
-            var jwt = new JwtService(sign, audience, issuer)
+            JwtService jwt = new(sign, audience, issuer)
             {
                 TokenExpires = 60 * 24 * 7,
             };
-            var token = jwt.GetToken(user.Id.ToString(), role?.IdentifyName ?? "");
+            string token = jwt.GetToken(user.Id.ToString(), role?.IdentifyName ?? "");
             // 登录状态存储到Redis
             //await _redis.SetValueAsync("login" + user.Id.ToString(), true, 60 * 24 * 7);
 

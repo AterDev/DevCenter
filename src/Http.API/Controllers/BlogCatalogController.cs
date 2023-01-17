@@ -37,7 +37,7 @@ public class BlogCatalogController :
     [HttpPost]
     public async Task<ActionResult<BlogCatalog>> AddAsync(BlogCatalogAddDto form)
     {
-        var entity = form.MapTo<BlogCatalogAddDto, BlogCatalog>();
+        BlogCatalog entity = form.MapTo<BlogCatalogAddDto, BlogCatalog>();
         return await manager.AddAsync(entity);
     }
 
@@ -50,7 +50,7 @@ public class BlogCatalogController :
     [HttpPut("{id}")]
     public async Task<ActionResult<BlogCatalog?>> UpdateAsync([FromRoute] Guid id, BlogCatalogUpdateDto form)
     {
-        var user = await manager.GetCurrent(id);
+        BlogCatalog? user = await manager.GetCurrent(id);
         return user == null ? (ActionResult<BlogCatalog?>)NotFound() : (ActionResult<BlogCatalog?>)await manager.UpdateAsync(user, form);
     }
 
@@ -58,7 +58,7 @@ public class BlogCatalogController :
     [HttpGet("{id}")]
     public async Task<ActionResult<BlogCatalog?>> GetDetailAsync([FromRoute] Guid id)
     {
-        var res = await manager.FindAsync<BlogCatalog>(u => u.Id == id);
+        BlogCatalog? res = await manager.FindAsync<BlogCatalog>(u => u.Id == id);
         return res == null ? NotFound() : res;
     }
 
@@ -70,7 +70,7 @@ public class BlogCatalogController :
     [HttpDelete("{id}")]
     public async Task<ActionResult<BlogCatalog?>> DeleteAsync([FromRoute] Guid id)
     {
-        var entity = await manager.GetCurrent(id);
+        BlogCatalog? entity = await manager.GetCurrent(id);
         return entity == null ? (ActionResult<BlogCatalog?>)NotFound() : (ActionResult<BlogCatalog?>)await manager.DeleteAsync(entity);
     }
 }

@@ -35,8 +35,8 @@ public class UserManager : DomainManagerBase<User, UserUpdateDto, UserFilterDto,
             user.PasswordSalt = HashCrypto.BuildSalt();
             user.PasswordHash = HashCrypto.GeneratePwd(dto.Password, user.PasswordSalt);
         }
-        await base.UpdateAsync(user, dto);
-        await SaveChangesAsync();
+        _ = await base.UpdateAsync(user, dto);
+        _ = await SaveChangesAsync();
         return user;
     }
 
@@ -45,7 +45,7 @@ public class UserManager : DomainManagerBase<User, UserUpdateDto, UserFilterDto,
         // TODO:根据实际业务构建筛选条件
         if (filter.RoleId != null)
         {
-            var role = await Stores.RoleQuery.FindAsync<Role>(filter.RoleId.Value);
+            Role? role = await Stores.RoleQuery.FindAsync<Role>(filter.RoleId.Value);
             Queryable = Queryable.Where(u => u.Roles!.Contains(role!));
         }
         return await base.FilterAsync(filter);

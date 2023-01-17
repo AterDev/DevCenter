@@ -62,12 +62,12 @@ public class ResourceGroupController :
     [Authorize("Admin")]
     public async Task<ActionResult<ResourceGroup>> AddAsync(ResourceGroupAddDto form)
     {
-        var environment = await manager.Stores.EnvironmentCommand.FindAsync(e => e.Id == form.EnvironmentId);
+        Environment? environment = await manager.Stores.EnvironmentCommand.FindAsync(e => e.Id == form.EnvironmentId);
         if (environment == null)
         {
             return BadRequest("未找到关联的环境");
         }
-        var entity = form.MapTo<ResourceGroupAddDto, ResourceGroup>();
+        ResourceGroup entity = form.MapTo<ResourceGroupAddDto, ResourceGroup>();
         entity.Environment = environment;
         return await manager.AddAsync(entity);
     }
@@ -81,7 +81,7 @@ public class ResourceGroupController :
     [HttpPut("{id}")]
     public async Task<ActionResult<ResourceGroup?>> UpdateAsync([FromRoute] Guid id, ResourceGroupUpdateDto form)
     {
-        var group = await manager.GetCurrent(id);
+        ResourceGroup? group = await manager.GetCurrent(id);
         return group == null ? NotFound() : await manager.UpdateAsync(group, form);
     }
 
@@ -93,7 +93,7 @@ public class ResourceGroupController :
     [HttpGet("{id}")]
     public async Task<ActionResult<ResourceGroup?>> GetDetailAsync([FromRoute] Guid id)
     {
-        var res = await manager.FindAsync(id);
+        ResourceGroup? res = await manager.FindAsync(id);
         return res == null ? NotFound() : res;
     }
 
@@ -106,7 +106,7 @@ public class ResourceGroupController :
     [HttpDelete("{id}")]
     public async Task<ActionResult<ResourceGroup?>> DeleteAsync([FromRoute] Guid id)
     {
-        var entity = await manager.GetCurrent(id);
+        ResourceGroup? entity = await manager.GetCurrent(id);
         return entity == null ? NotFound() : await manager.DeleteAsync(entity);
     }
 }

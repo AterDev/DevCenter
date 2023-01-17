@@ -26,7 +26,7 @@ public class ResourceTypeDefinitionManager : DomainManagerBase<ResourceTypeDefin
         if (dto.AttributeDefineIds != null)
         {
             // 通过父类的 Stores 查询其他实体的内容
-            var attributeDefines = await Stores.ResourceAttributeDefineCommand.Db
+            List<ResourceAttributeDefine> attributeDefines = await Stores.ResourceAttributeDefineCommand.Db
                 .Where(a => dto.AttributeDefineIds.Contains(a.Id))
                 .ToListAsync();
 

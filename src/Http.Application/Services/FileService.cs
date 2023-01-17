@@ -25,19 +25,19 @@ public class FileService
     /// <returns></returns>
     public string SaveFile(string path, Stream stream)
     {
-        var filePath = Path.Combine(LocalPath, path);
+        string filePath = Path.Combine(LocalPath, path);
         if (File.Exists(filePath))
         {
             return filePath;
         }
         // 创建目录
-        var dirPath = Path.GetDirectoryName(filePath);
+        string? dirPath = Path.GetDirectoryName(filePath);
         if (!Directory.Exists(dirPath))
         {
-            Directory.CreateDirectory(dirPath!);
+            _ = Directory.CreateDirectory(dirPath!);
         }
-        using var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write);
-        stream.Seek(0, SeekOrigin.Begin);
+        using FileStream fileStream = new(filePath, FileMode.Create, FileAccess.Write);
+        _ = stream.Seek(0, SeekOrigin.Begin);
         stream.CopyTo(fileStream);
         return filePath;
     }

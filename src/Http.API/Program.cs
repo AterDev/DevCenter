@@ -1,4 +1,3 @@
-using System.Reflection;
 using System.Text;
 using Http.API;
 using Http.Application.Services.Webhook;
@@ -7,23 +6,18 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using OpenTelemetry.Resources;
 using Share.Options;
-using OpenTelemetry;
-using OpenTelemetry.Logs;
-using OpenTelemetry.Metrics;
-using OpenTelemetry.Trace;
-using OpenTelemetry.Exporter;
 
-var builder = WebApplication.CreateBuilder(args);
 
-var services = builder.Services;
-var configuration = builder.Configuration;
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+IServiceCollection services = builder.Services;
+ConfigurationManager configuration = builder.Configuration;
 
 services.Configure<WebhookOptions>(configuration.GetSection("Webhook"));
 services.AddHttpContextAccessor();
 // database sql
-var connectionString = configuration.GetConnectionString("Default");
+string? connectionString = configuration.GetConnectionString("Default");
 services.AddDbContextPool<QueryDbContext>(option =>
 {
     option.UseNpgsql(connectionString, sql =>
@@ -40,55 +34,7 @@ services.AddDbContextPool<CommandDbContext>(option =>
         sql.CommandTimeout(10);
     });
 });
-#region OpenTelemetry
-// config logger
-var serviceName = "VOF";
-var serviceVersion = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "unknown";
-var resource = ResourceBuilder.CreateDefault().AddService(serviceName: serviceName, serviceVersion: serviceVersion);
 
-var otlpEndpoint = configuration.GetSection("OTLP")
-    .GetValue<string>("Endpoint")
-    ?? "http://localhost:4317";
-
-var otlpConfig = new Action<OtlpExporterOptions>(opt =>
-{
-    opt.Endpoint = new Uri(otlpEndpoint);
-});
-
-builder.Logging.ClearProviders();
-builder.Logging.AddOpenTelemetry(options =>
-{
-    options.SetResourceBuilder(resource);
-    options.AddOtlpExporter(otlpConfig);
-});
-// tracing
-builder.Services.AddOpenTelemetry()
-    .WithTracing(options =>
-    {
-        options.AddSource(serviceName)
-            .SetResourceBuilder(resource)
-            .AddHttpClientInstrumentation()
-            .AddAspNetCoreInstrumentation()
-            .AddOtlpExporter(otlpConfig);
-    })
-    .WithMetrics(options =>
-    {
-        options.AddMeter(serviceName)
-            .SetResourceBuilder(resource)
-            .AddHttpClientInstrumentation()
-            .AddAspNetCoreInstrumentation()
-            .AddOtlpExporter(otlpConfig);
-    }).StartWithHost();
-
-#endregion
-
-// redis
-//builder.Services.AddStackExchangeRedisCache(options =>
-//{
-//    options.Configuration = builder.Configuration.GetConnectionString("Redis");
-//    options.InstanceName = builder.Configuration.GetConnectionString("RedisInstanceName");
-//});
-//services.AddSingleton(typeof(RedisService));
 services.AddSingleton(typeof(GitLabWebhookService));
 services.AddSingleton(typeof(DingTalkWebhookService));
 services.AddDataStore();
@@ -181,12 +127,12 @@ services.AddControllers()
         options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     });
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 // 初始化工作
-await using (var scope = app.Services.CreateAsyncScope())
+await using (AsyncServiceScope scope = app.Services.CreateAsyncScope())
 {
-    var provider = scope.ServiceProvider;
+    IServiceProvider provider = scope.ServiceProvider;
     await InitDataTask.InitDataAsync(provider);
 }
 
@@ -211,7 +157,7 @@ app.UseExceptionHandler(handler =>
     handler.Run(async context =>
     {
         context.Response.StatusCode = 500;
-        var exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
+        Exception? exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
         var result = new {
             Title = "程序内部错误:" + exception?.Message,
             Detail = exception?.Source + exception?.StackTrace,
@@ -238,9 +184,9 @@ using (app)
 {
     app.Start();
     // 初始化工作
-    await using (var scope = app.Services.CreateAsyncScope())
+    await using (AsyncServiceScope scope = app.Services.CreateAsyncScope())
     {
-        var provider = scope.ServiceProvider;
+        IServiceProvider provider = scope.ServiceProvider;
         await InitDataTask.InitDataAsync(provider);
     }
     app.WaitForShutdown();

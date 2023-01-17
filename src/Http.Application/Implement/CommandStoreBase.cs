@@ -30,10 +30,10 @@ public class CommandStoreBase<TContext, TEntity> : ICommandStore<TEntity>, IComm
     {
         Expression<Func<TEntity, bool>> exp = e => true;
         whereExp ??= exp;
-        var _query = _db.Where(whereExp).AsQueryable();
+        IQueryable<TEntity> _query = _db.Where(whereExp).AsQueryable();
         if (navigations != null)
         {
-            foreach (var item in navigations)
+            foreach (string item in navigations)
             {
                 _query = _query.Include(item);
             }
@@ -50,7 +50,7 @@ public class CommandStoreBase<TContext, TEntity> : ICommandStore<TEntity>, IComm
     {
         Expression<Func<TEntity, bool>> exp = e => true;
         whereExp ??= exp;
-        var res = await _db.Where(whereExp)
+        List<TEntity> res = await _db.Where(whereExp)
             .ToListAsync();
         return res;
     }
@@ -62,7 +62,7 @@ public class CommandStoreBase<TContext, TEntity> : ICommandStore<TEntity>, IComm
     /// <returns></returns>
     public virtual async Task<TEntity> CreateAsync(TEntity entity)
     {
-        await _db.AddAsync(entity);
+        _ = await _db.AddAsync(entity);
         return entity;
     }
 
@@ -73,7 +73,7 @@ public class CommandStoreBase<TContext, TEntity> : ICommandStore<TEntity>, IComm
     /// <returns></returns>
     public virtual TEntity Update(TEntity entity)
     {
-        _db.Update(entity);
+        _ = _db.Update(entity);
         return entity;
     }
 
@@ -90,7 +90,7 @@ public class CommandStoreBase<TContext, TEntity> : ICommandStore<TEntity>, IComm
         }
         else
         {
-            _db.Remove(entity!);
+            _ = _db.Remove(entity!);
         }
         return entity;
     }
@@ -110,13 +110,13 @@ public class CommandStoreBase<TContext, TEntity> : ICommandStore<TEntity>, IComm
                 .ForEach(block =>
                 {
                     _db.AddRange(block);
-                    _context.SaveChanges();
+                    _ = _context.SaveChanges();
                 });
         }
         else
         {
             await _db.AddRangeAsync(entities);
-            await SaveChangeAsync();
+            _ = await SaveChangeAsync();
         }
         return entities;
     }

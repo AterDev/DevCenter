@@ -9,22 +9,21 @@ public class QueryStoreBase<TContext, TEntity> :
     where TContext : DbContext
     where TEntity : EntityBase
 {
-    private readonly TContext _context;
     protected readonly ILogger _logger;
     /// <summary>
     /// 当前实体DbSet
     /// </summary>
     protected readonly DbSet<TEntity> _db;
     public DbSet<TEntity> Db => _db;
-    public TContext Context => _context;
+    public TContext Context { get; }
     public IQueryable<TEntity> _query;
     public bool EnableSoftDelete { get; set; } = true;
 
     public QueryStoreBase(TContext context, ILogger logger)
     {
-        _context = context;
+        Context = context;
         _logger = logger;
-        _db = _context.Set<TEntity>();
+        _db = Context.Set<TEntity>();
         _query = EnableSoftDelete
             ? _db.Where(d => !d.IsDeleted).AsQueryable()
             : _db.AsQueryable();
@@ -37,7 +36,7 @@ public class QueryStoreBase<TContext, TEntity> :
 
     public virtual async Task<TDto?> FindAsync<TDto>(Guid id) where TDto : class
     {
-        var res = await _query.Where(d => d.Id == id)
+        TDto? res = await _query.Where(d => d.Id == id)
             .AsNoTracking()
             .ProjectTo<TDto>()
             .FirstOrDefaultAsync();
@@ -56,7 +55,7 @@ public class QueryStoreBase<TContext, TEntity> :
     {
         Expression<Func<TEntity, bool>> exp = e => true;
         whereExp ??= exp;
-        var res = await _query.Where(whereExp)
+        TDto? res = await _query.Where(whereExp)
             .ProjectTo<TDto>()
             .FirstOrDefaultAsync();
         ResetQuery();
@@ -73,7 +72,7 @@ public class QueryStoreBase<TContext, TEntity> :
     {
         Expression<Func<TEntity, bool>> exp = e => true;
         whereExp ??= exp;
-        var res = await _query.Where(whereExp)
+        List<TItem> res = await _query.Where(whereExp)
             .ProjectTo<TItem>()
             .ToListAsync();
         ResetQuery();
@@ -102,8 +101,8 @@ public class QueryStoreBase<TContext, TEntity> :
 
         _query = query;
 
-        var count = _query.Count();
-        var data = await _query
+        int count = _query.Count();
+        List<TItem> data = await _query
             .ProjectTo<TItem>()
             .Skip((pageIndex - 1) * pageSize)
             .Take(pageSize)
@@ -142,8 +141,8 @@ public class QueryStoreBase<TContext, TEntity> :
         {
             _query = _query.OrderBy(order);
         }
-        var count = _query.Count();
-        var data = await _query
+        int count = _query.Count();
+        List<TItem> data = await _query
             .ProjectTo<TItem>()
             .Skip((pageIndex - 1) * pageSize)
             .Take(pageSize)

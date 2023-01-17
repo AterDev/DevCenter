@@ -36,8 +36,8 @@ public class CodeLibraryController :
     [HttpPost]
     public async Task<ActionResult<CodeLibrary>> AddAsync(CodeLibraryAddDto form)
     {
-        var entity = form.MapTo<CodeLibraryAddDto, CodeLibrary>();
-        var user = await _user.GetUserAsync();
+        CodeLibrary entity = form.MapTo<CodeLibraryAddDto, CodeLibrary>();
+        User? user = await _user.GetUserAsync();
         if (user == null)
         {
             return NotFound();
@@ -55,7 +55,7 @@ public class CodeLibraryController :
     [HttpPut("{id}")]
     public async Task<ActionResult<CodeLibrary?>> UpdateAsync([FromRoute] Guid id, CodeLibraryUpdateDto form)
     {
-        var user = await manager.GetCurrent(id);
+        CodeLibrary? user = await manager.GetCurrent(id);
         return user == null ? (ActionResult<CodeLibrary?>)NotFound() : (ActionResult<CodeLibrary?>)await manager.UpdateAsync(user, form);
     }
 
@@ -63,7 +63,7 @@ public class CodeLibraryController :
     [HttpGet("{id}")]
     public async Task<ActionResult<CodeLibrary?>> GetDetailAsync([FromRoute] Guid id)
     {
-        var res = await manager.FindAsync<CodeLibrary>(u => u.Id == id);
+        CodeLibrary? res = await manager.FindAsync<CodeLibrary>(u => u.Id == id);
         return res == null ? NotFound() : res;
     }
 
@@ -75,7 +75,7 @@ public class CodeLibraryController :
     [HttpDelete("{id}")]
     public async Task<ActionResult<CodeLibrary?>> DeleteAsync([FromRoute] Guid id)
     {
-        var entity = await manager.GetCurrent(id);
+        CodeLibrary? entity = await manager.GetCurrent(id);
         return entity == null ? (ActionResult<CodeLibrary?>)NotFound() : (ActionResult<CodeLibrary?>)await manager.DeleteAsync(entity);
     }
 }

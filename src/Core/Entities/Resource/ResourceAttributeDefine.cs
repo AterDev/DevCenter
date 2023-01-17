@@ -8,7 +8,7 @@ namespace Core.Entities.Resource;
 public class ResourceAttributeDefine : EntityBase
 {
     [MaxLength(50)]
-    public string DisplayName { get; set; }
+    public string? DisplayName { get; set; }
     [MaxLength(60)]
     public string Name { get; set; } = string.Empty;
     public ValueType Type { get; set; } = ValueType.String;

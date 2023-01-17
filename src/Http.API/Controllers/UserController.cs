@@ -38,7 +38,7 @@ public class UserController :
     [HttpPost]
     public async Task<ActionResult<User>> AddAsync(UserAddDto form)
     {
-        var user = form.MapTo<UserAddDto, User>();
+        User user = form.MapTo<UserAddDto, User>();
         if (form.RoleIds != null)
         {
             user.Roles = await manager.GetRolesAsync(form.RoleIds);
@@ -70,7 +70,7 @@ public class UserController :
     {
         if (_user.IsAdmin || _user.UserId == id)
         {
-            var user = await manager.GetCurrent(id, "Roles");
+            User? user = await manager.GetCurrent(id, "Roles");
             return user == null ? (ActionResult<User?>)NotFound() : (ActionResult<User?>)await manager.UpdateAsync(user, form);
         }
         return Forbid();
@@ -86,7 +86,7 @@ public class UserController :
     {
         if (_user.UserId != null)
         {
-            var user = await manager.GetCurrent(_user.UserId.Value);
+            User? user = await manager.GetCurrent(_user.UserId.Value);
             return user != null ? (ActionResult<bool>)await manager.ChangePasswordAsync(user, newPassword) : (ActionResult<bool>)NotFound("非法用户");
         }
         return Forbid();
@@ -95,7 +95,7 @@ public class UserController :
     [HttpGet("{id}")]
     public async Task<ActionResult<User?>> GetDetailAsync([FromRoute] Guid id)
     {
-        var res = await manager.FindAsync<User>(u => u.Id == id);
+        User? res = await manager.FindAsync<User>(u => u.Id == id);
         return (res == null) ? NotFound() : res;
     }
 
@@ -108,7 +108,7 @@ public class UserController :
     [HttpDelete("{id}")]
     public async Task<ActionResult<User?>> DeleteAsync([FromRoute] Guid id)
     {
-        var entity = await manager.GetCurrent(id);
+        User? entity = await manager.GetCurrent(id);
         return entity == null ? NotFound() : await manager.DeleteAsync(entity);
     }
 }

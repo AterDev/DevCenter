@@ -36,7 +36,7 @@ public class ResourceTagsController :
     [HttpPost]
     public async Task<ActionResult<ResourceTags>> AddAsync(ResourceTagsAddDto form)
     {
-        var entity = form.MapTo<ResourceTagsAddDto, ResourceTags>();
+        ResourceTags entity = form.MapTo<ResourceTagsAddDto, ResourceTags>();
         return await manager.AddAsync(entity);
     }
 
@@ -49,7 +49,7 @@ public class ResourceTagsController :
     [HttpPut("{id}")]
     public async Task<ActionResult<ResourceTags?>> UpdateAsync([FromRoute] Guid id, ResourceTagsUpdateDto form)
     {
-        var user = await manager.GetCurrent(id);
+        ResourceTags? user = await manager.GetCurrent(id);
         return user == null ? (ActionResult<ResourceTags?>)NotFound() : (ActionResult<ResourceTags?>)await manager.UpdateAsync(user, form);
     }
 
@@ -61,7 +61,7 @@ public class ResourceTagsController :
     [HttpGet("{id}")]
     public async Task<ActionResult<ResourceTags?>> GetDetailAsync([FromRoute] Guid id)
     {
-        var res = await manager.FindAsync<ResourceTags>(u => u.Id == id);
+        ResourceTags? res = await manager.FindAsync<ResourceTags>(u => u.Id == id);
         return res == null ? NotFound() : res;
     }
 
@@ -74,7 +74,7 @@ public class ResourceTagsController :
     [HttpDelete("{id}")]
     public async Task<ActionResult<ResourceTags?>> DeleteAsync([FromRoute] Guid id)
     {
-        var entity = await manager.GetCurrent(id);
+        ResourceTags? entity = await manager.GetCurrent(id);
         return entity == null ? (ActionResult<ResourceTags?>)NotFound() : (ActionResult<ResourceTags?>)await manager.DeleteAsync(entity);
     }
 }

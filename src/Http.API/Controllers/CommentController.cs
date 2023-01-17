@@ -36,7 +36,7 @@ public class CommentController :
     [HttpPost]
     public async Task<ActionResult<Comment>> AddAsync(CommentAddDto form)
     {
-        var entity = form.MapTo<CommentAddDto, Comment>();
+        Comment entity = form.MapTo<CommentAddDto, Comment>();
         return await manager.AddAsync(entity);
     }
 
@@ -49,7 +49,7 @@ public class CommentController :
     [HttpPut("{id}")]
     public async Task<ActionResult<Comment?>> UpdateAsync([FromRoute] Guid id, CommentUpdateDto form)
     {
-        var user = await manager.GetCurrent(id);
+        Comment? user = await manager.GetCurrent(id);
         return user == null ? (ActionResult<Comment?>)NotFound() : (ActionResult<Comment?>)await manager.UpdateAsync(user, form);
     }
 
@@ -57,7 +57,7 @@ public class CommentController :
     [HttpGet("{id}")]
     public async Task<ActionResult<Comment?>> GetDetailAsync([FromRoute] Guid id)
     {
-        var res = await manager.FindAsync<Comment>(u => u.Id == id);
+        Comment? res = await manager.FindAsync<Comment>(u => u.Id == id);
         return res == null ? NotFound() : res;
     }
 
@@ -69,7 +69,7 @@ public class CommentController :
     [HttpDelete("{id}")]
     public async Task<ActionResult<Comment?>> DeleteAsync([FromRoute] Guid id)
     {
-        var entity = await manager.GetCurrent(id);
+        Comment? entity = await manager.GetCurrent(id);
         return entity == null ? (ActionResult<Comment?>)NotFound() : (ActionResult<Comment?>)await manager.DeleteAsync(entity);
     }
 }

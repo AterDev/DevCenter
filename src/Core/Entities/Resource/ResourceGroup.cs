@@ -6,7 +6,7 @@
 public class ResourceGroup : EntityBase
 {
     [MaxLength(100)]
-    public required string Name { get; set; } 
+    public required string Name { get; set; }
     /// <summary>
     /// 描述
     /// </summary>

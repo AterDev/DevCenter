@@ -36,7 +36,7 @@ public class ResourceTypeDefinitionController :
     [HttpPost]
     public async Task<ActionResult<ResourceTypeDefinition>> AddAsync(ResourceTypeDefinitionAddDto form)
     {
-        var entity = form.MapTo<ResourceTypeDefinitionAddDto, ResourceTypeDefinition>();
+        ResourceTypeDefinition entity = form.MapTo<ResourceTypeDefinitionAddDto, ResourceTypeDefinition>();
         return await manager.AddAsync(entity);
     }
 
@@ -49,7 +49,7 @@ public class ResourceTypeDefinitionController :
     [HttpPut("{id}")]
     public async Task<ActionResult<ResourceTypeDefinition?>> UpdateAsync([FromRoute] Guid id, ResourceTypeDefinitionUpdateDto form)
     {
-        var entity = await manager.GetCurrent(id);
+        ResourceTypeDefinition? entity = await manager.GetCurrent(id);
         return entity == null ? NotFound() : await manager.UpdateAsync(entity, form);
     }
 
@@ -61,7 +61,7 @@ public class ResourceTypeDefinitionController :
     [HttpGet("{id}")]
     public async Task<ActionResult<ResourceTypeDefinition?>> GetDetailAsync([FromRoute] Guid id)
     {
-        var res = await manager.FindAsync(id);
+        ResourceTypeDefinition? res = await manager.FindAsync(id);
         return res == null ? NotFound() : res;
     }
 
@@ -74,7 +74,7 @@ public class ResourceTypeDefinitionController :
     [HttpDelete("{id}")]
     public async Task<ActionResult<ResourceTypeDefinition?>> DeleteAsync([FromRoute] Guid id)
     {
-        var entity = await manager.GetCurrent(id);
+        ResourceTypeDefinition? entity = await manager.GetCurrent(id);
         return entity == null ? NotFound() : await manager.DeleteAsync(entity);
     }
 }

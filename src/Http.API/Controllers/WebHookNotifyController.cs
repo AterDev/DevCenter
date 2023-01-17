@@ -44,7 +44,7 @@ public class WebHookNotifyController : ControllerBase
             {
                 if (Request.Headers.TryGetValue(GitLabHeader.Event, out StringValues events))
                 {
-                    var eventType = events.FirstOrDefault();
+                    string? eventType = events.FirstOrDefault();
                     _webhookService.SetConfig(subscriber.Trim());
                     await HookHandlerAsync(eventType!, request);
                     return Ok();
@@ -64,18 +64,18 @@ public class WebHookNotifyController : ControllerBase
         switch (eventType)
         {
             case GitLabEventType.Pipeline:
-                var pipeline = GitLabWebhookService.GetPipeLineInfo(request.Deserialize<PipelineRequest>()!);
+                PipelineInfo? pipeline = GitLabWebhookService.GetPipeLineInfo(request.Deserialize<PipelineRequest>()!);
 
                 await _webhookService.SendPipelineNotifyAsync(pipeline);
                 break;
 
             case GitLabEventType.Issue:
-                var issue = GitLabWebhookService.GetIssueInfo(request.Deserialize<IssueRequest>()!);
+                IssueInfo? issue = GitLabWebhookService.GetIssueInfo(request.Deserialize<IssueRequest>()!);
                 await _webhookService.SendIssueNotifyAsync(issue);
                 break;
             case GitLabEventType.Note:
 
-                var note = GitLabWebhookService.GetNoteInfo(request.Deserialize<NoteRequest>()!);
+                NoteInfo? note = GitLabWebhookService.GetNoteInfo(request.Deserialize<NoteRequest>()!);
                 await _webhookService.SendNoteAsync(note);
                 break;
             default:

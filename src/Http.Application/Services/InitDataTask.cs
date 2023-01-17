@@ -3,9 +3,9 @@ public class InitDataTask
 {
     public static async Task InitDataAsync(IServiceProvider provider)
     {
-        var context = provider.GetRequiredService<CommandDbContext>();
-        var loggerFactory = provider.GetRequiredService<ILoggerFactory>();
-        var logger = loggerFactory.CreateLogger<InitDataTask>();
+        CommandDbContext context = provider.GetRequiredService<CommandDbContext>();
+        ILoggerFactory loggerFactory = provider.GetRequiredService<ILoggerFactory>();
+        ILogger<InitDataTask> logger = loggerFactory.CreateLogger<InitDataTask>();
         string? connectionString = context.Database.GetConnectionString();
         try
         {
@@ -18,13 +18,13 @@ public class InitDataTask
             else
             {
                 // 判断是否初始化
-                var role = await context.Roles.SingleOrDefaultAsync(r => r.IdentifyName.ToLower() == "admin");
+                Role? role = await context.Roles.SingleOrDefaultAsync(r => r.IdentifyName.ToLower() == "admin");
                 if (role == null)
                 {
                     logger.LogInformation("初始化数据");
                     await InitRoleAndUserAsync(context);
                 }
-                var resourceAttributeDefines = await context.ResourceAttributeDefines.FirstOrDefaultAsync();
+                ResourceAttributeDefine? resourceAttributeDefines = await context.ResourceAttributeDefines.FirstOrDefaultAsync();
                 if (resourceAttributeDefines == null)
                 {
                     await InitResourceAsync(context);
@@ -33,7 +33,7 @@ public class InitDataTask
         }
         catch (Exception ex)
         {
-            logger.LogError("初始化异常,请检查数据库配置：{message}", ex.Message);
+            logger.LogError("初始化异常,请检查数据库配置：{message}", ex.Message + ex.Source + ex.StackTrace);
         }
     }
 
@@ -42,18 +42,18 @@ public class InitDataTask
     /// </summary>
     public static async Task InitRoleAndUserAsync(ContextBase context)
     {
-        var role = new Role()
+        Role role = new()
         {
             Name = "管理员",
             IdentifyName = "Admin"
         };
-        var userRole = new Role()
+        Role userRole = new()
         {
             Name = "用户",
             IdentifyName = "User"
         };
-        var salt = HashCrypto.BuildSalt();
-        var user = new User()
+        string salt = HashCrypto.BuildSalt();
+        User user = new()
         {
             UserName = "admin",
             Email = "admin@dusi.dev",
@@ -62,10 +62,10 @@ public class InitDataTask
             PasswordHash = HashCrypto.GeneratePwd("123456", salt),
             Roles = new List<Role>() { role },
         };
-        context.Roles.Add(userRole);
-        context.Roles.Add(role);
-        context.Users.Add(user);
-        await context.SaveChangesAsync();
+        _ = context.Roles.Add(userRole);
+        _ = context.Roles.Add(role);
+        _ = context.Users.Add(user);
+        _ = await context.SaveChangesAsync();
     }
 
     /// <summary>
@@ -76,20 +76,20 @@ public class InitDataTask
     public static async Task InitResourceAsync(ContextBase context)
     {
         // 定义资源属性
-        var attributes = Config.AttributeDefines;
+        List<ResourceAttributeDefine> attributes = Config.AttributeDefines;
         await context.AddRangeAsync(attributes);
 
         // 资源类型
-        var resourceTypes = Config.TypeDefinitions;
+        List<ResourceTypeDefinition> resourceTypes = Config.TypeDefinitions;
         await context.AddRangeAsync(resourceTypes);
 
         // 标签
-        var resourceTags = Config.ResourceTags;
+        List<ResourceTags> resourceTags = Config.ResourceTags;
         await context.AddRangeAsync(resourceTags);
         // 环境
-        var environments = Config.Environments;
+        List<Environment> environments = Config.Environments;
         await context.AddRangeAsync(environments);
-        await context.SaveChangesAsync();
+        _ = await context.SaveChangesAsync();
 
     }
 }

@@ -27,12 +27,12 @@ public class GitLabCIGenerator
         /// <summary>
         /// 构建生成的目录,CI主机的目录
         /// </summary>
-        public string PublishPath { get; set; }
+        public string? PublishPath { get; set; }
         /// <summary>
         /// 远程运行的目录
         /// </summary>
         public string RunPath { get; set; } = default!;
-        public string ServiceName { get; set; }
+        public string? ServiceName { get; set; }
     }
 
     /// <summary>
@@ -60,7 +60,7 @@ public class GitLabCIGenerator
     #endregion
     #region 模板
 
-    private static string JobTmp = @"stages:    
+    private static readonly string JobTmp = @"stages:    
   - publish
 ${JobName}: 
   variables:
@@ -70,7 +70,7 @@ ${JobName}:
     RUN_PATH: '${RunPath}'
   stage: publish";
 
-    private static string Rules = @"
+    private static readonly string Rules = @"
   rules: 
     - if: '$CI_PIPELINE_SOURCE == ""push"" && $CI_COMMIT_BRANCH == ""${BranchName}""'
       changes:
@@ -80,7 +80,7 @@ ${JobName}:
     /// <summary>
     /// 文件复制脚本
     /// </summary>
-    private static string CopyTmp = @"
+    private static readonly string CopyTmp = @"
     - mkdir -p $PUBLISH_PATH
     - cd $PUBLISH_PATH
     - ssh $SSH_HOST sudo mkdir -p $RUN_PATH
@@ -90,7 +90,7 @@ ${JobName}:
     /// <summary>
     /// dotnet 构建及复制脚本
     /// </summary>
-    private static string DotNetTmp = @"
+    private static readonly string DotNetTmp = @"
     - mkdir -p $PUBLISH_PATH
     - dotnet build $PROJECT_PATH
     - dotnet publish $PROJECT_PATH -c Release -o $PUBLISH_PATH
@@ -113,15 +113,15 @@ ${JobName}:
     /// <returns></returns>
     public static string GetYmlContent(SSHOption option)
     {
-        var content = JobTmp.Replace("${JobName}", option.JobName)
+        string content = JobTmp.Replace("${JobName}", option.JobName)
             .Replace("${SSH_HOST}", option.SSHHost)
             .Replace("${ProjectPath}", option.ProjectPath)
             .Replace("${PublishPath}", option.PublishPath)
             .Replace("${RunPath}", option.RunPath);
 
-        var rules = Rules.Replace("${ProjectPath}", option.ProjectPath)
+        string rules = Rules.Replace("${ProjectPath}", option.ProjectPath)
             .Replace("${BranchName}", option.BranchName);
-        var scripts = "  script:";
+        string scripts = "  script:";
         switch (option.Type)
         {
             case JobType.Dotnet:

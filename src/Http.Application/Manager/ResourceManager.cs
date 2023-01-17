@@ -47,30 +47,30 @@ public class ResourceManager : DomainManagerBase<Resource, ResourceUpdateDto, Re
 
     public override async Task<Resource> UpdateAsync(Resource entity, ResourceUpdateDto dto)
     {
-        var resource = entity;
+        Resource resource = entity;
         resource!.Attributes = null;
         resource!.Tags = null;
         if (dto.ResourceTypeId != null)
         {
-            var resourceType = await typeDefinitionManager.GetCurrent(dto.ResourceTypeId.Value);
+            ResourceTypeDefinition? resourceType = await typeDefinitionManager.GetCurrent(dto.ResourceTypeId.Value);
             resource.ResourceType = resourceType!;
         }
         if (dto.GroupId != null)
         {
-            var group = await resourceGroupManager.GetCurrent(dto.GroupId.Value);
+            ResourceGroup? group = await resourceGroupManager.GetCurrent(dto.GroupId.Value);
             resource.Group = group!;
         }
         if (dto.TagIds != null)
         {
-            var tags = await tagsManager.Command.ListAsync(t => dto.TagIds.Contains(t.Id));
+            List<ResourceTags> tags = await tagsManager.Command.ListAsync(t => dto.TagIds.Contains(t.Id));
             resource.Tags = tags;
         }
         if (dto.AttributeAddItem != null)
         {
-            var attributes = new List<ResourceAttribute>();
+            List<ResourceAttribute> attributes = new();
             dto.AttributeAddItem.ForEach(a =>
             {
-                var attribute = new ResourceAttribute();
+                ResourceAttribute attribute = new();
                 attribute = attribute.Merge(a);
                 attributes.Add(attribute);
             });
@@ -81,7 +81,7 @@ public class ResourceManager : DomainManagerBase<Resource, ResourceUpdateDto, Re
 
     public override async Task<PageList<ResourceItemDto>> FilterAsync(ResourceFilterDto filter)
     {
-        var query = Queryable;
+        IQueryable<Resource> query = Queryable;
         if (filter.GroupId != null)
         {
             query = query.Where(q => q.Group.Id == filter.GroupId);
@@ -96,16 +96,16 @@ public class ResourceManager : DomainManagerBase<Resource, ResourceUpdateDto, Re
     /// <returns></returns>
     public async Task<List<Resource>> GetAllResourcesAsync(Guid UserId)
     {
-        var roles = await Stores.UserQuery.Db.Where(u => u.Id == UserId)
+        List<Role> roles = await Stores.UserQuery.Db.Where(u => u.Id == UserId)
             .SelectMany(s => s.Roles!)
             .ToListAsync();
 
-        var groupIds = await Stores.RoleQuery.Db.Where(r => roles.Contains(r))
+        List<Guid> groupIds = await Stores.RoleQuery.Db.Where(r => roles.Contains(r))
             .SelectMany(r => r.ResourceGroups!)
             .Select(s => s.Id)
             .ToListAsync();
 
-        var resources = await Query.Db.Where(r => groupIds.Contains(r.Group.Id))
+        List<Resource> resources = await Query.Db.Where(r => groupIds.Contains(r.Group.Id))
             .Include(r => r.Attributes)
             .ToListAsync();
         return resources;
@@ -123,22 +123,22 @@ public class ResourceManager : DomainManagerBase<Resource, ResourceUpdateDto, Re
 
     public async Task<ResourceSelectDataDto> GetRelationSelectDataAsync()
     {
-        var _context = Query.Context;
-        var types = await _context.ResourceTypeDefinitions
+        QueryDbContext _context = Query.Context;
+        List<Selection> types = await _context.ResourceTypeDefinitions
            .Select(s => new Selection
            {
                Id = s.Id,
                Name = s.Name
            }).ToListAsync();
 
-        var tags = await _context.ResourceTags
+        List<Selection> tags = await _context.ResourceTags
             .Select(s => new Selection
             {
                 Id = s.Id,
                 Name = s.Name
             }).ToListAsync();
 
-        var group = await _context.ResourceGroups
+        List<Selection> group = await _context.ResourceGroups
             .Select(s => new Selection
             {
                 Id = s.Id,

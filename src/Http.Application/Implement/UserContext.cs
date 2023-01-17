@@ -20,11 +20,11 @@ public class UserContext : IUserContext
     public UserContext(IHttpContextAccessor httpContextAccessor, CommandDbContext context)
     {
         _httpContextAccessor = httpContextAccessor;
-        if (Guid.TryParse(FindClaim(ClaimTypes.NameIdentifier)?.Value, out var userId) && userId != Guid.Empty)
+        if (Guid.TryParse(FindClaim(ClaimTypes.NameIdentifier)?.Value, out Guid userId) && userId != Guid.Empty)
         {
             UserId = userId;
         }
-        if (Guid.TryParse(FindClaim(ClaimTypes.GroupSid)?.Value, out var groupSid) && groupSid != Guid.Empty)
+        if (Guid.TryParse(FindClaim(ClaimTypes.GroupSid)?.Value, out Guid groupSid) && groupSid != Guid.Empty)
         {
             GroupId = groupSid;
         }

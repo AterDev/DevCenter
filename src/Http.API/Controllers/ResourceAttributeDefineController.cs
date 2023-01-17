@@ -37,7 +37,7 @@ public class ResourceAttributeDefineController :
     [Authorize("Admin")]
     public async Task<ActionResult<ResourceAttributeDefine>> AddAsync(ResourceAttributeDefineAddDto form)
     {
-        var entity = form.MapTo<ResourceAttributeDefineAddDto, ResourceAttributeDefine>();
+        ResourceAttributeDefine entity = form.MapTo<ResourceAttributeDefineAddDto, ResourceAttributeDefine>();
         return await manager.AddAsync(entity);
     }
 
@@ -51,7 +51,7 @@ public class ResourceAttributeDefineController :
     [Authorize("Admin")]
     public async Task<ActionResult<ResourceAttributeDefine?>> UpdateAsync([FromRoute] Guid id, ResourceAttributeDefineUpdateDto form)
     {
-        var user = await manager.GetCurrent(id);
+        ResourceAttributeDefine? user = await manager.GetCurrent(id);
         return user == null ? (ActionResult<ResourceAttributeDefine?>)NotFound() : (ActionResult<ResourceAttributeDefine?>)await manager.UpdateAsync(user, form);
     }
 
@@ -59,7 +59,7 @@ public class ResourceAttributeDefineController :
     [HttpGet("{id}")]
     public async Task<ActionResult<ResourceAttributeDefine?>> GetDetailAsync([FromRoute] Guid id)
     {
-        var res = await manager.FindAsync<ResourceAttributeDefine>(u => u.Id == id);
+        ResourceAttributeDefine? res = await manager.FindAsync<ResourceAttributeDefine>(u => u.Id == id);
         return res == null ? NotFound() : res;
     }
 
@@ -73,7 +73,7 @@ public class ResourceAttributeDefineController :
     [Authorize("Admin")]
     public async Task<ActionResult<ResourceAttributeDefine?>> DeleteAsync([FromRoute] Guid id)
     {
-        var entity = await manager.GetCurrent(id);
+        ResourceAttributeDefine? entity = await manager.GetCurrent(id);
         return entity == null ? (ActionResult<ResourceAttributeDefine?>)NotFound() : (ActionResult<ResourceAttributeDefine?>)await manager.DeleteAsync(entity);
     }
 }

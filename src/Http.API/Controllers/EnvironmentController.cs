@@ -36,7 +36,7 @@ public class EnvironmentController :
     [HttpPost]
     public async Task<ActionResult<Environment>> AddAsync(EnvironmentAddDto form)
     {
-        var entity = form.MapTo<EnvironmentAddDto, Environment>();
+        Environment entity = form.MapTo<EnvironmentAddDto, Environment>();
         return await manager.AddAsync(entity);
     }
 
@@ -49,7 +49,7 @@ public class EnvironmentController :
     [HttpPut("{id}")]
     public async Task<ActionResult<Environment?>> UpdateAsync([FromRoute] Guid id, EnvironmentUpdateDto form)
     {
-        var user = await manager.GetCurrent(id);
+        Environment? user = await manager.GetCurrent(id);
         return user == null ? (ActionResult<Environment?>)NotFound() : (ActionResult<Environment?>)await manager.UpdateAsync(user, form);
     }
 
@@ -61,7 +61,7 @@ public class EnvironmentController :
     [HttpGet("{id}")]
     public async Task<ActionResult<Environment?>> GetDetailAsync([FromRoute] Guid id)
     {
-        var res = await manager.FindAsync<Environment>(u => u.Id == id);
+        Environment? res = await manager.FindAsync<Environment>(u => u.Id == id);
         return res == null ? NotFound() : res;
     }
 
@@ -74,7 +74,7 @@ public class EnvironmentController :
     [HttpDelete("{id}")]
     public async Task<ActionResult<Environment?>> DeleteAsync([FromRoute] Guid id)
     {
-        var entity = await manager.GetCurrent(id);
+        Environment? entity = await manager.GetCurrent(id);
         return entity == null ? (ActionResult<Environment?>)NotFound() : (ActionResult<Environment?>)await manager.DeleteAsync(entity);
     }
 }

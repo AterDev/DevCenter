@@ -31,7 +31,7 @@ public class DataStoreBase<TContext, TEntity, TUpdate, TFilter, TItem> : IDataSt
     /// <returns></returns>
     public virtual async Task<TEntity?> FindAsync(Guid id, bool noTracking = false)
     {
-        var query = _db.Where(s => s.Id == id).AsQueryable();
+        IQueryable<TEntity> query = _db.Where(s => s.Id == id).AsQueryable();
         if (noTracking == true)
         {
             query = query.AsNoTracking();
@@ -47,7 +47,7 @@ public class DataStoreBase<TContext, TEntity, TUpdate, TFilter, TItem> : IDataSt
     /// <returns></returns>
     public virtual async Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> expression, bool noTracking = false)
     {
-        var query = _db.Where(expression).AsQueryable();
+        IQueryable<TEntity> query = _db.Where(expression).AsQueryable();
         if (noTracking == true)
         {
             query = query.AsNoTracking();
@@ -64,7 +64,7 @@ public class DataStoreBase<TContext, TEntity, TUpdate, TFilter, TItem> : IDataSt
     /// <returns></returns>
     public virtual async Task<List<TItem>> FindAsync(TFilter filter, bool noTracking = true)
     {
-        var query = _query.OrderByDescending(d => d.CreatedTime).AsQueryable();
+        IQueryable<TEntity> query = _query.OrderByDescending(d => d.CreatedTime).AsQueryable();
 
         if (noTracking == true)
         {
@@ -84,7 +84,7 @@ public class DataStoreBase<TContext, TEntity, TUpdate, TFilter, TItem> : IDataSt
     /// <returns></returns>
     public virtual async Task<PageList<TItem>> FindWithPageAsync(TFilter filter)
     {
-        var count = _query.Count();
+        int count = _query.Count();
         if (filter.PageIndex < 1)
         {
             filter.PageIndex = 1;
@@ -95,7 +95,7 @@ public class DataStoreBase<TContext, TEntity, TUpdate, TFilter, TItem> : IDataSt
             filter.PageSize = 0;
         }
 
-        var data = await _query.AsNoTracking()
+        List<TItem> data = await _query.AsNoTracking()
             .Skip((filter.PageIndex!.Value - 1) * filter.PageSize!.Value)
             .Take(filter.PageSize!.Value)
             .Select<TEntity, TItem>()
@@ -110,33 +110,33 @@ public class DataStoreBase<TContext, TEntity, TUpdate, TFilter, TItem> : IDataSt
 
     public virtual async Task<bool> DeleteAsync(Guid id)
     {
-        var data = await _db.FindAsync(id);
+        TEntity? data = await _db.FindAsync(id);
         if (data == null) { return false; }
-        _db.Remove(data);
+        _ = _db.Remove(data);
         return await _context.SaveChangesAsync() > 0;
     }
 
     public virtual async Task<TEntity> AddAsync(TEntity data)
     {
-        _db.Add(data);
-        await _context.SaveChangesAsync();
+        _ = _db.Add(data);
+        _ = await _context.SaveChangesAsync();
         return data;
     }
 
     public virtual async Task<TEntity?> UpdateAsync(Guid id, TUpdate dto)
     {
-        var data = await _db.FindAsync(id);
+        TEntity? data = await _db.FindAsync(id);
         if (data == null) { return null; }
         // merge data and save 
-        data.Merge(dto, false);
+        _ = data.Merge(dto, false);
         data.UpdatedTime = DateTimeOffset.UtcNow;
-        await _context.SaveChangesAsync();
+        _ = await _context.SaveChangesAsync();
         return data;
     }
 
     public virtual async Task<bool> Exist(Guid id)
     {
-        var data = await _db.FindAsync(id);
+        TEntity? data = await _db.FindAsync(id);
         return data != null;
     }
 
@@ -153,11 +153,11 @@ public class DataStoreBase<TContext, TEntity, TUpdate, TFilter, TItem> : IDataSt
     {
         try
         {
-            var data = _db.Where(item => ids.Contains(item.Id))
+            List<TEntity> data = _db.Where(item => ids.Contains(item.Id))
                 .ToList();
-            foreach (var item in data)
+            foreach (TEntity? item in data)
             {
-                item.Merge(dto);
+                _ = item.Merge(dto);
             }
             return await _context.SaveChangesAsync();
         }
@@ -174,7 +174,7 @@ public class DataStoreBase<TContext, TEntity, TUpdate, TFilter, TItem> : IDataSt
     {
         try
         {
-            var data = _db.Where(item => ids.Contains(item.Id))
+            List<TEntity> data = _db.Where(item => ids.Contains(item.Id))
                 .ToList();
             _context.RemoveRange(data);
             return await _context.SaveChangesAsync();

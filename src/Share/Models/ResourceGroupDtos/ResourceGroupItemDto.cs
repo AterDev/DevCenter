@@ -29,8 +29,8 @@ public class ResourceGroupItemDto
 
     public Guid Id { get; set; } = default!;
 
-    public Environment Environment { get; set; }
+    public Environment? Environment { get; set; }
 
-    public List<Resource> Resource { get; set; }
+    public List<Resource>? Resource { get; set; }
 
 }

@@ -12,7 +12,7 @@ public class ResourceGroupManager : DomainManagerBase<ResourceGroup, ResourceGro
     {
         if (dto.EnvironmentId != null)
         {
-            var environment = await Stores.EnvironmentCommand.FindAsync(e => e.Id == dto.EnvironmentId);
+            Environment? environment = await Stores.EnvironmentCommand.FindAsync(e => e.Id == dto.EnvironmentId);
             if (environment != null)
             {
                 entity.Environment = environment;
@@ -34,13 +34,13 @@ public class ResourceGroupManager : DomainManagerBase<ResourceGroup, ResourceGro
         if (filter.UserId != null)
         {
             // 查询用户对应的角色
-            var roles = await Stores.QueryContext.Users.Where(u => u.Id == filter.UserId)
+            List<Role> roles = await Stores.QueryContext.Users.Where(u => u.Id == filter.UserId)
                 .SelectMany(u => u.Roles!).ToListAsync();
             if (roles.Any())
             {
                 // 查询角色包含的资源组
-                var roleIds = roles.Select(r => r.Id).ToList();
-                var groups = await Stores.QueryContext.Roles
+                List<Guid> roleIds = roles.Select(r => r.Id).ToList();
+                List<ResourceGroup> groups = await Stores.QueryContext.Roles
                     .AsNoTracking()
                     .Where(r => roleIds.Contains(r.Id))
                     .SelectMany(r => r.ResourceGroups!)
@@ -48,7 +48,7 @@ public class ResourceGroupManager : DomainManagerBase<ResourceGroup, ResourceGro
 
                 if (groups.Any())
                 {
-                    var groupIds = groups.Select(g => g.Id).ToList();
+                    List<Guid> groupIds = groups.Select(g => g.Id).ToList();
                     Queryable = Queryable.Where(q => groupIds.Contains(q.Id));
                 }
             }
@@ -62,8 +62,8 @@ public class ResourceGroupManager : DomainManagerBase<ResourceGroup, ResourceGro
         {
             Queryable = Queryable.Where(q => q.Environment.Id == filter.EnvironmentId);
         }
-        var count = Queryable.Count();
-        var data = await Queryable.AsNoTracking()
+        int count = Queryable.Count();
+        List<ResourceGroupItemDto> data = await Queryable.AsNoTracking()
             .OrderBy(q => q.Sort)
             .OrderBy(q => q.Environment.Name)
             .Include(q => q.Environment)
@@ -103,7 +103,7 @@ public class ResourceGroupManager : DomainManagerBase<ResourceGroup, ResourceGro
     {
         if (roleId != null)
         {
-            var role = await Stores.QueryContext.Roles.FindAsync(roleId);
+            Role? role = await Stores.QueryContext.Roles.FindAsync(roleId);
             Queryable = Queryable.Where(d => d.Roles!.Contains(role!));
         }
         return await Queryable.Select<ResourceGroup, ResourceGroupRoleDto>()

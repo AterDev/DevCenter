@@ -6,7 +6,7 @@
 public class Resource : EntityBase
 {
     [MaxLength(100)]
-    public required string Name { get; set; } 
+    public required string Name { get; set; }
     [MaxLength(400)]
     public string? Description { get; set; }
 
