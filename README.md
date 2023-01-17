@@ -9,7 +9,59 @@
 在`Http.Application`项目中的`Config`类，定义了初始数据，你可以在部署前进行自定义。
 
 ## Docker
-支持中...
+您可以自己配置好数据库，然后启动容器时将`连接字符串`作为`环境变量`传入。
+
+```pwsh
+# 拉取镜像
+docker pull niltor/dev-center:latest
+# 运行，指定数据库连接字符串(不要使用localhost)
+docker run -p 9161:80 -d --name DevCenter -e ConnectionStrings__Default="Server=192.168.0.1;Port=5432;Database=DevCenter;User Id=postgres;Password=root;" niltor/dev-center 
+```
+
+## Docker Compose
+如果你还没有准备和配置好数据库，可以使用`docker-compose`直接启动相关服务。
+
+```pwsh
+docker-compose -p dev up -d
+```
+
+`docker-compose.yaml`
+```yaml
+version: "1"
+networks:
+  devCenter:
+services:
+  dev-center:
+    image: niltor/dev-center:latest
+    ports:
+      - "9161:80"
+    environment:
+      ConnectionStrings__Default: "Server=db;Port=5432;Database=DevCenter;User Id=postgres;password=root;"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - devCenter
+
+  db:
+    image: postgres:15.1-alpine
+    command:
+      - -i
+      # ports:
+      # - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: "root"
+
+    healthcheck:
+      test: [ "CMD", "pg_isready" ]
+      interval: 3s
+      timeout: 2s
+      retries: 5
+    networks:
+      - devCenter
+
+```
+
 
 # 使用
 默认管理用户为`admin/123456`。
