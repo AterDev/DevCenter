@@ -25,7 +25,7 @@ internal class Config
         new ResourceAttributeDefine()
         {
             DisplayName = "Url",
-            Name ="rul",
+            Name ="url",
             Sort =2,
             Type = Core.Models.ValueType.String
         },
