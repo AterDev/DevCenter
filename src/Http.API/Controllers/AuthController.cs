@@ -55,7 +55,8 @@ public class AuthController : ControllerBase
             };
             string token = jwt.GetToken(user.Id.ToString(), role?.IdentifyName ?? "");
             // 登录状态存储到Redis
-            //await _redis.SetValueAsync("login" + user.Id.ToString(), true, 60 * 24 * 7);
+
+            // await _redis.SetValueAsync("login" + user.Id.ToString(), true, 60 * 24 * 7);
 
             return new AuthResult
             {

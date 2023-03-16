@@ -1,5 +1,6 @@
 ﻿{
   "RootPath": "./",
+  "ProjectId": "1fde9246-fc79-49c0-8458-919470880c65",
   "DtoPath": "Share",
   "EntityPath": "Core",
   "DbContextPath": "Database/EntityFramework",
@@ -8,5 +9,7 @@
   "IdStyle": "Id",
   "IdType": "Guid",
   "CreatedTimeName": "CreatedTime",
-  "UpdatedTimeName": "UpdatedTime"
+  "UpdatedTimeName": "UpdatedTime",
+  "SwaggerPath": null,
+  "WebAppPath": null
 }
