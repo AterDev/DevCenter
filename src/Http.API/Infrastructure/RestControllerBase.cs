@@ -1,16 +1,23 @@
+using System.Diagnostics;
+using Core.Const;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Http.API.Infrastructure;
 
 /// <summary>
-/// 带Manager的控制器
+/// 管理后台权限控制器
 /// </summary>
+[Route("api/admin/[controller]")]
+[ApiExplorerSettings(GroupName = "admin")]
+[Authorize(Const.Admin)]
 public class RestControllerBase<TManager> : RestControllerBase
      where TManager : class
 {
     protected readonly TManager manager;
     protected readonly ILogger _logger;
     protected readonly IUserContext _user;
+
     public RestControllerBase(
         TManager manager,
         IUserContext user,
@@ -23,12 +30,43 @@ public class RestControllerBase<TManager> : RestControllerBase
     }
 
 }
+
+/// <summary>
+/// 用户端权限控制器
+/// </summary>
+/// <typeparam name="TManager"></typeparam>
+[Authorize(Const.User)]
+[ApiExplorerSettings(GroupName = "client")]
+public class ClientControllerBase<TManager> : RestControllerBase
+     where TManager : class
+{
+    protected readonly TManager manager;
+    protected readonly ILogger _logger;
+    protected readonly IUserContext _user;
+
+    public ClientControllerBase(
+        TManager manager,
+        IUserContext user,
+        ILogger logger
+        )
+    {
+        this.manager = manager;
+        _user = user;
+        _logger = logger;
+    }
+
+    protected async Task<User?> GetUserAsync()
+    {
+        return await _user.GetUserAsync();
+    }
+}
+
 /// <summary>
 /// http api 基类，重写ControllerBase中的方法
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
-[Authorize("User")]
+[Produces("application/json")]
 public class RestControllerBase : ControllerBase
 {
 
@@ -37,7 +75,7 @@ public class RestControllerBase : ControllerBase
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    [ApiExplorerSettings(IgnoreApi = true)]
+    [NonAction]
     public override NotFoundObjectResult NotFound([ActionResultObjectValue] object? value)
     {
         var res = new {
@@ -46,6 +84,8 @@ public class RestControllerBase : ControllerBase
             Status = 404,
             TraceId = HttpContext.TraceIdentifier
         };
+        var at = Activity.Current;
+        at?.SetTag("responseBody", value);
         return base.NotFound(res);
     }
 
@@ -54,7 +94,7 @@ public class RestControllerBase : ControllerBase
     /// </summary>
     /// <param name="error"></param>
     /// <returns></returns>
-    [ApiExplorerSettings(IgnoreApi = true)]
+    [NonAction]
     public override ConflictObjectResult Conflict([ActionResultObjectValue] object? error)
     {
         var res = new {
@@ -63,6 +103,48 @@ public class RestControllerBase : ControllerBase
             Status = 409,
             TraceId = HttpContext.TraceIdentifier
         };
+        var at = Activity.Current;
+        at?.SetTag("responseBody", error);
         return base.Conflict(res);
+    }
+
+    /// <summary>
+    /// 500业务错误
+    /// </summary>
+    /// <param name="detail"></param>
+    /// <returns></returns>
+    [NonAction]
+    public ObjectResult Problem(string? detail = null)
+    {
+        var res = new {
+            Title = "业务错误",
+            Detail = detail,
+            Status = 500,
+            TraceId = HttpContext.TraceIdentifier
+        };
+        var at = Activity.Current;
+        at?.SetTag("responseBody", detail);
+        return new ObjectResult(res)
+        {
+            StatusCode = 500,
+
+        };
+    }
+
+    /// <summary>
+    /// 400返回格式处理
+    /// </summary>
+    /// <param name="error"></param>
+    /// <returns></returns>
+    [NonAction]
+    public override BadRequestObjectResult BadRequest([ActionResultObjectValue] object? error)
+    {
+        var res = new {
+            Title = "请求错误",
+            Detail = error?.ToString(),
+            Status = 400,
+            TraceId = HttpContext.TraceIdentifier
+        };
+        return base.BadRequest(res);
     }
 }

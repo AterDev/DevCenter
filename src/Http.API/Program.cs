@@ -1,4 +1,5 @@
 using System.Text;
+using Core.Const;
 using Http.API;
 using Http.Application.Services.Webhook;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -66,9 +67,9 @@ services.AddAuthentication(options =>
 // 验证
 services.AddAuthorization(options =>
 {
-    options.AddPolicy("User", policy =>
+    options.AddPolicy(Const.User, policy =>
         policy.RequireRole("Admin", "User", "Developer", "DevOps"));
-    options.AddPolicy("Admin", policy =>
+    options.AddPolicy(Const.Admin, policy =>
         policy.RequireRole("Admin"));
 });
 

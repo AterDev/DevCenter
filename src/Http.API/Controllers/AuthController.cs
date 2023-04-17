@@ -48,23 +48,28 @@ public class AuthController : ControllerBase
 
             Role? role = user.Roles?.FirstOrDefault();
             long time = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-            //1天后过期
-            JwtService jwt = new(sign, audience, issuer)
+            if (!string.IsNullOrWhiteSpace(sign) &&
+            !string.IsNullOrWhiteSpace(issuer) &&
+            !string.IsNullOrWhiteSpace(audience))
             {
-                TokenExpires = 60 * 24 * 7,
-            };
-            string token = jwt.GetToken(user.Id.ToString(), role?.IdentifyName ?? "");
-            // 登录状态存储到Redis
+                JwtService jwt = new(sign, audience, issuer)
+                {
+                    TokenExpires = 60 * 24 * 7,
+                };
+                string token = jwt.GetToken(user.Id.ToString(), role?.IdentifyName ?? "");
 
-            // await _redis.SetValueAsync("login" + user.Id.ToString(), true, 60 * 24 * 7);
-
-            return new AuthResult
+                return new AuthResult
+                {
+                    Id = user.Id,
+                    Role = role?.IdentifyName ?? "",
+                    Token = token,
+                    Username = user.UserName
+                };
+            }
+            else
             {
-                Id = user.Id,
-                Role = role?.IdentifyName ?? "",
-                Token = token,
-                Username = user.UserName
-            };
+                throw new Exception("缺少Jwt配置内容");
+            }
         }
         else
         {
