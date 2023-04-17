@@ -44,4 +44,9 @@ public class UserContext : IUserContext
     {
         return await _context.Users.FindAsync(UserId);
     }
+
+    public bool IsRole(string roleName)
+    {
+        return Roles != null && Roles.Any(r => r.ToLower() == roleName);
+    }
 }

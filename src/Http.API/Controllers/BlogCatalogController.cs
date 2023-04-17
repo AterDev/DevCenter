@@ -50,7 +50,7 @@ public class BlogCatalogController :
     [HttpPut("{id}")]
     public async Task<ActionResult<BlogCatalog?>> UpdateAsync([FromRoute] Guid id, BlogCatalogUpdateDto form)
     {
-        BlogCatalog? user = await manager.GetCurrent(id);
+        BlogCatalog? user = await manager.GetCurrentAsync(id);
         return user == null ? (ActionResult<BlogCatalog?>)NotFound() : (ActionResult<BlogCatalog?>)await manager.UpdateAsync(user, form);
     }
 
@@ -70,7 +70,7 @@ public class BlogCatalogController :
     [HttpDelete("{id}")]
     public async Task<ActionResult<BlogCatalog?>> DeleteAsync([FromRoute] Guid id)
     {
-        BlogCatalog? entity = await manager.GetCurrent(id);
+        BlogCatalog? entity = await manager.GetCurrentAsync(id);
         return entity == null ? (ActionResult<BlogCatalog?>)NotFound() : (ActionResult<BlogCatalog?>)await manager.DeleteAsync(entity);
     }
 }

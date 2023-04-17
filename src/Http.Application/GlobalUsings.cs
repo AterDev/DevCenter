@@ -19,3 +19,4 @@ global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Logging;
 global using Share.Models;
 global using Environment = Core.Entities.Resource.Environment;
+global using Core.Entities.GitLab;

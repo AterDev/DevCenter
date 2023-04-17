@@ -38,6 +38,8 @@ services.AddDbContextPool<CommandDbContext>(option =>
 
 services.AddSingleton(typeof(GitLabWebhookService));
 services.AddSingleton(typeof(DingTalkWebhookService));
+
+services.AddHttpContextAccessor();
 services.AddDataStore();
 services.AddManager();
 //services.AddScoped(typeof(FileService));

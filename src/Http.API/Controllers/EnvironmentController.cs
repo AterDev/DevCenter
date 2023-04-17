@@ -49,7 +49,7 @@ public class EnvironmentController :
     [HttpPut("{id}")]
     public async Task<ActionResult<Environment?>> UpdateAsync([FromRoute] Guid id, EnvironmentUpdateDto form)
     {
-        Environment? user = await manager.GetCurrent(id);
+        Environment? user = await manager.GetCurrentAsync(id);
         return user == null ? (ActionResult<Environment?>)NotFound() : (ActionResult<Environment?>)await manager.UpdateAsync(user, form);
     }
 
@@ -74,7 +74,7 @@ public class EnvironmentController :
     [HttpDelete("{id}")]
     public async Task<ActionResult<Environment?>> DeleteAsync([FromRoute] Guid id)
     {
-        Environment? entity = await manager.GetCurrent(id);
+        Environment? entity = await manager.GetCurrentAsync(id);
         return entity == null ? (ActionResult<Environment?>)NotFound() : (ActionResult<Environment?>)await manager.DeleteAsync(entity);
     }
 }

@@ -19,3 +19,8 @@ global using Microsoft.Extensions.DependencyInjection;
 // global using Core.Identity;
 global using Share.Models;
 global using Environment = Core.Entities.Resource.Environment;
+
+
+global using Http.API.Infrastructure;
+global using Core.Const;
+global using Core.Entities.GitLab;

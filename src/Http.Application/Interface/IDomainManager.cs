@@ -1,4 +1,5 @@
-﻿namespace Http.Application.Interface;
+using System.Linq.Expressions;
+namespace Http.Application.Interface;
 
 /// <summary>
 /// 仓储数据管理接口
@@ -15,8 +16,9 @@ public interface IDomainManager<TEntity, TUpdate, TFilter, TItem>
     /// 获取当前对象,通常是在修改前进行查询
     /// </summary>
     /// <param name="id"></param>
+    /// <param name="navigations"></param>
     /// <returns></returns>
-    Task<TEntity?> GetCurrent(Guid id, params string[] navigations);
+    Task<TEntity?> GetCurrentAsync(Guid id, params string[] navigations);
     Task<TEntity> AddAsync(TEntity entity);
     Task<TEntity> UpdateAsync(TEntity entity, TUpdate dto);
     Task<TEntity?> FindAsync(Guid id);
@@ -27,7 +29,6 @@ public interface IDomainManager<TEntity, TUpdate, TFilter, TItem>
     /// <param name="whereExp"></param>
     /// <returns></returns>
     Task<TDto?> FindAsync<TDto>(Expression<Func<TEntity, bool>>? whereExp) where TDto : class;
-
     /// <summary>
     /// 列表条件查询
     /// </summary>
@@ -38,10 +39,10 @@ public interface IDomainManager<TEntity, TUpdate, TFilter, TItem>
     /// <summary>
     /// 分页查询
     /// </summary>
-    /// <typeparam name="TItem"></typeparam>
     /// <param name="filter"></param>
-    /// <param name="query"></param>
     /// <returns></returns>
     Task<PageList<TItem>> FilterAsync(TFilter filter);
     Task<TEntity?> DeleteAsync(TEntity entity, bool softDelete = true);
+
+    Task<bool> ExistAsync(Guid id);
 }

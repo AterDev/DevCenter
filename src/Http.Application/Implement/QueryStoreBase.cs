@@ -1,6 +1,8 @@
+using Microsoft.EntityFrameworkCore.Infrastructure;
+
 namespace Http.Application.Implement;
 /// <summary>
-/// 只读仓储
+/// 只读仓储基类,请勿直接修改本类内容,可修改 QuerySet<TEntity> 
 /// </summary>
 /// <typeparam name="TContext"></typeparam>
 /// <typeparam name="TEntity"></typeparam>
@@ -16,29 +18,59 @@ public class QueryStoreBase<TContext, TEntity> :
     protected readonly DbSet<TEntity> _db;
     public DbSet<TEntity> Db => _db;
     public TContext Context { get; }
-    public IQueryable<TEntity> _query;
-    public bool EnableSoftDelete { get; set; } = true;
+    public DatabaseFacade Database { get; init; }
+    public IQueryable<TEntity> _query { get; set; }
+
+    /// <summary>
+    ///  是否开户全局筛选
+    /// </summary>
+    public bool EnableGlobalQuery { get; set; } = true;
 
     public QueryStoreBase(TContext context, ILogger logger)
     {
         Context = context;
         _logger = logger;
         _db = Context.Set<TEntity>();
-        _query = EnableSoftDelete
-            ? _db.Where(d => !d.IsDeleted).AsQueryable()
-            : _db.AsQueryable();
+        _query = EnableGlobalQuery
+            ? _db.AsQueryable()
+            : _db.IgnoreQueryFilters().AsQueryable();
+        Database = Context.Database;
     }
+
 
     private void ResetQuery()
     {
-        _query = _db.AsQueryable();
+        _query = EnableGlobalQuery
+            ? _db.AsQueryable()
+            : _db.IgnoreQueryFilters().AsQueryable();
     }
 
-    public virtual async Task<TDto?> FindAsync<TDto>(Guid id) where TDto : class
+    public virtual async Task<TEntity?> FindAsync(Guid id)
+    {
+        TEntity? res = await _query.Where(d => d.Id == id)
+            .AsNoTracking()
+            .FirstOrDefaultAsync();
+        ResetQuery();
+        return res;
+    }
+
+    public virtual async Task<TDto?> FindAsync<TDto>(Guid id)
+        where TDto : class
     {
         TDto? res = await _query.Where(d => d.Id == id)
             .AsNoTracking()
             .ProjectTo<TDto>()
+            .FirstOrDefaultAsync();
+        ResetQuery();
+        return res;
+    }
+
+    public virtual async Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>>? whereExp)
+    {
+        Expression<Func<TEntity, bool>> exp = e => true;
+        whereExp ??= exp;
+        TEntity? res = await _query.Where(whereExp)
+            .AsNoTracking()
             .FirstOrDefaultAsync();
         ResetQuery();
         return res;
@@ -56,8 +88,21 @@ public class QueryStoreBase<TContext, TEntity> :
         Expression<Func<TEntity, bool>> exp = e => true;
         whereExp ??= exp;
         TDto? res = await _query.Where(whereExp)
+            .AsNoTracking()
             .ProjectTo<TDto>()
             .FirstOrDefaultAsync();
+        ResetQuery();
+        return res;
+    }
+
+
+    public virtual async Task<List<TEntity>> ListAsync(Expression<Func<TEntity, bool>>? whereExp)
+    {
+        Expression<Func<TEntity, bool>> exp = e => true;
+        whereExp ??= exp;
+        List<TEntity> res = await _query.Where(whereExp)
+            .AsNoTracking()
+            .ToListAsync();
         ResetQuery();
         return res;
     }
@@ -73,6 +118,7 @@ public class QueryStoreBase<TContext, TEntity> :
         Expression<Func<TEntity, bool>> exp = e => true;
         whereExp ??= exp;
         List<TItem> res = await _query.Where(whereExp)
+            .AsNoTracking()
             .ProjectTo<TItem>()
             .ToListAsync();
         ResetQuery();
@@ -103,10 +149,12 @@ public class QueryStoreBase<TContext, TEntity> :
 
         int count = _query.Count();
         List<TItem> data = await _query
-            .ProjectTo<TItem>()
+            .OrderByDescending(t => t.CreatedTime)
             .Skip((pageIndex - 1) * pageSize)
             .Take(pageSize)
+            .ProjectTo<TItem>()
             .ToListAsync();
+
         ResetQuery();
         return new PageList<TItem>
         {
@@ -125,7 +173,7 @@ public class QueryStoreBase<TContext, TEntity> :
     /// <param name="pageIndex"></param>
     /// <param name="pageSize"></param>
     /// <returns></returns>
-    public virtual async Task<PageList<TItem>> FilterAsync<TItem>(IQueryable<TEntity> query, Dictionary<string, bool>? order = null, int pageIndex = 1, int pageSize = 12)
+    public virtual async Task<PageList<TItem>> FilterAsync<TItem>(IQueryable<TEntity> query, int pageIndex = 1, int pageSize = 12, Dictionary<string, bool>? order = null)
     {
         if (pageIndex < 1)
         {
@@ -143,9 +191,11 @@ public class QueryStoreBase<TContext, TEntity> :
         }
         int count = _query.Count();
         List<TItem> data = await _query
-            .ProjectTo<TItem>()
+            .AsNoTracking()
             .Skip((pageIndex - 1) * pageSize)
             .Take(pageSize)
+            .OrderByDescending(t => t.CreatedTime)
+            .ProjectTo<TItem>()
             .ToListAsync();
         ResetQuery();
         return new PageList<TItem>

@@ -52,12 +52,12 @@ public class ResourceManager : DomainManagerBase<Resource, ResourceUpdateDto, Re
         resource!.Tags = null;
         if (dto.ResourceTypeId != null)
         {
-            ResourceTypeDefinition? resourceType = await typeDefinitionManager.GetCurrent(dto.ResourceTypeId.Value);
+            ResourceTypeDefinition? resourceType = await typeDefinitionManager.GetCurrentAsync(dto.ResourceTypeId.Value);
             resource.ResourceType = resourceType!;
         }
         if (dto.GroupId != null)
         {
-            ResourceGroup? group = await resourceGroupManager.GetCurrent(dto.GroupId.Value);
+            ResourceGroup? group = await resourceGroupManager.GetCurrentAsync(dto.GroupId.Value);
             resource.Group = group!;
         }
         if (dto.TagIds != null)

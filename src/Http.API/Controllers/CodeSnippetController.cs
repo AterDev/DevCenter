@@ -56,7 +56,7 @@ public class CodeSnippetController :
     [HttpPut("{id}")]
     public async Task<ActionResult<CodeSnippet?>> UpdateAsync([FromRoute] Guid id, CodeSnippetUpdateDto form)
     {
-        CodeSnippet? user = await manager.GetCurrent(id);
+        CodeSnippet? user = await manager.GetCurrentAsync(id);
         return user == null ? (ActionResult<CodeSnippet?>)NotFound() : (ActionResult<CodeSnippet?>)await manager.UpdateAsync(user, form);
     }
 
@@ -76,7 +76,7 @@ public class CodeSnippetController :
     [HttpDelete("{id}")]
     public async Task<ActionResult<CodeSnippet?>> DeleteAsync([FromRoute] Guid id)
     {
-        CodeSnippet? entity = await manager.GetCurrent(id);
+        CodeSnippet? entity = await manager.GetCurrentAsync(id);
         return entity == null ? (ActionResult<CodeSnippet?>)NotFound() : (ActionResult<CodeSnippet?>)await manager.DeleteAsync(entity);
     }
 }

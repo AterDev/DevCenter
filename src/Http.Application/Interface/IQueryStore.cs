@@ -11,7 +11,8 @@ public interface IQueryStore<TId, TEntity>
     /// <typeparam name="TDto"></typeparam>
     /// <param name="id"></param>
     /// <returns></returns>
-    Task<TDto?> FindAsync<TDto>(TId id) where TDto : class;
+    Task<TDto?> FindAsync<TDto>(TId id)
+        where TDto : class;
     Task<TDto?> FindAsync<TDto>(Expression<Func<TEntity, bool>>? whereExp) where TDto : class;
 
     /// <summary>

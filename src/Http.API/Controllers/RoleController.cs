@@ -49,7 +49,7 @@ public class RoleController :
     [HttpPut("{id}")]
     public async Task<ActionResult<Role?>> UpdateAsync([FromRoute] Guid id, RoleUpdateDto form)
     {
-        Role? current = await manager.GetCurrent(id);
+        Role? current = await manager.GetCurrentAsync(id);
         return current == null ? (ActionResult<Role?>)NotFound() : (ActionResult<Role?>)await manager.UpdateAsync(current, form);
     }
 
@@ -61,7 +61,7 @@ public class RoleController :
     [HttpPut("resourceGroup")]
     public async Task<ActionResult<bool>> SetResourceGroupsAsync([FromBody] RoleResourceDto dto)
     {
-        Role? current = await manager.GetCurrent(dto.RoleId);
+        Role? current = await manager.GetCurrentAsync(dto.RoleId);
         return current == null ? (ActionResult<bool>)NotFound() : (ActionResult<bool>)await manager.SetResourceGroupsAsync(dto);
     }
     /// <summary>
@@ -85,7 +85,7 @@ public class RoleController :
     [HttpDelete("{id}")]
     public async Task<ActionResult<Role?>> DeleteAsync([FromRoute] Guid id)
     {
-        Role? entity = await manager.GetCurrent(id);
+        Role? entity = await manager.GetCurrentAsync(id);
         return entity == null ? (ActionResult<Role?>)NotFound() : (ActionResult<Role?>)await manager.DeleteAsync(entity);
     }
 }

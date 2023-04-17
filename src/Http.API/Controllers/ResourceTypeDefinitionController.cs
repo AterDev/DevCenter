@@ -49,7 +49,7 @@ public class ResourceTypeDefinitionController :
     [HttpPut("{id}")]
     public async Task<ActionResult<ResourceTypeDefinition?>> UpdateAsync([FromRoute] Guid id, ResourceTypeDefinitionUpdateDto form)
     {
-        ResourceTypeDefinition? entity = await manager.GetCurrent(id);
+        ResourceTypeDefinition? entity = await manager.GetCurrentAsync(id);
         return entity == null ? NotFound() : await manager.UpdateAsync(entity, form);
     }
 
@@ -74,7 +74,7 @@ public class ResourceTypeDefinitionController :
     [HttpDelete("{id}")]
     public async Task<ActionResult<ResourceTypeDefinition?>> DeleteAsync([FromRoute] Guid id)
     {
-        ResourceTypeDefinition? entity = await manager.GetCurrent(id);
+        ResourceTypeDefinition? entity = await manager.GetCurrentAsync(id);
         return entity == null ? NotFound() : await manager.DeleteAsync(entity);
     }
 }

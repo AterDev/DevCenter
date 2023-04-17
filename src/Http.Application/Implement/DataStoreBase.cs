@@ -72,8 +72,8 @@ public class DataStoreBase<TContext, TEntity, TUpdate, TFilter, TItem> : IDataSt
         }
 
         return await query.Select<TEntity, TItem>()
-            .Skip((filter.PageIndex!.Value - 1) * filter.PageSize!.Value)
-            .Take(filter.PageSize.Value)
+            .Skip((filter.PageIndex - 1) * filter.PageSize)
+            .Take(filter.PageSize)
             .ToListAsync();
     }
 
@@ -96,15 +96,15 @@ public class DataStoreBase<TContext, TEntity, TUpdate, TFilter, TItem> : IDataSt
         }
 
         List<TItem> data = await _query.AsNoTracking()
-            .Skip((filter.PageIndex!.Value - 1) * filter.PageSize!.Value)
-            .Take(filter.PageSize!.Value)
+            .Skip((filter.PageIndex - 1) * filter.PageSize)
+            .Take(filter.PageSize)
             .Select<TEntity, TItem>()
             .ToListAsync();
         return new PageList<TItem>
         {
             Count = count,
             Data = data,
-            PageIndex = filter.PageIndex!.Value
+            PageIndex = filter.PageIndex
         };
     }
 

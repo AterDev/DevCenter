@@ -1,3 +1,11 @@
+using Core.Entities;
+using Core.Entities.Blog;
+using Core.Entities.Code;
+using Core.Entities.GitLab;
+using Core.Entities.Resource;
+using Share.Models.Webhook.GitLab;
+using User = Core.Entities.User;
+
 namespace Http.Application.Implement;
 public class DataStoreContext
 {
@@ -11,6 +19,9 @@ public class DataStoreContext
     public QuerySet<CodeSnippet> CodeSnippetQuery { get; init; }
     public QuerySet<Comment> CommentQuery { get; init; }
     public QuerySet<Environment> EnvironmentQuery { get; init; }
+    public QuerySet<GitLabCommit> GitLabCommitQuery { get; init; }
+    public QuerySet<GitLabProject> GitLabProjectQuery { get; init; }
+    public QuerySet<GitLabUser> GitLabUserQuery { get; init; }
     public QuerySet<ResourceAttributeDefine> ResourceAttributeDefineQuery { get; init; }
     public QuerySet<ResourceGroup> ResourceGroupQuery { get; init; }
     public QuerySet<Resource> ResourceQuery { get; init; }
@@ -25,6 +36,9 @@ public class DataStoreContext
     public CommandSet<CodeSnippet> CodeSnippetCommand { get; init; }
     public CommandSet<Comment> CommentCommand { get; init; }
     public CommandSet<Environment> EnvironmentCommand { get; init; }
+    public CommandSet<GitLabCommit> GitLabCommitCommand { get; init; }
+    public CommandSet<GitLabProject> GitLabProjectCommand { get; init; }
+    public CommandSet<GitLabUser> GitLabUserCommand { get; init; }
     public CommandSet<ResourceAttributeDefine> ResourceAttributeDefineCommand { get; init; }
     public CommandSet<Resource> ResourceCommand { get; init; }
     public CommandSet<ResourceGroup> ResourceGroupCommand { get; init; }
@@ -47,6 +61,9 @@ public class DataStoreContext
         CodeSnippetQueryStore codeSnippetQuery,
         CommentQueryStore commentQuery,
         EnvironmentQueryStore environmentQuery,
+        GitLabCommitQueryStore gitLabCommitQuery,
+        GitLabProjectQueryStore gitLabProjectQuery,
+        GitLabUserQueryStore gitLabUserQuery,
         ResourceAttributeDefineQueryStore resourceAttributeDefineQuery,
         ResourceGroupQueryStore resourceGroupQuery,
         ResourceQueryStore resourceQuery,
@@ -61,6 +78,9 @@ public class DataStoreContext
         CodeSnippetCommandStore codeSnippetCommand,
         CommentCommandStore commentCommand,
         EnvironmentCommandStore environmentCommand,
+        GitLabCommitCommandStore gitLabCommitCommand,
+        GitLabProjectCommandStore gitLabProjectCommand,
+        GitLabUserCommandStore gitLabUserCommand,
         ResourceAttributeDefineCommandStore resourceAttributeDefineCommand,
         ResourceCommandStore resourceCommand,
         ResourceGroupCommandStore resourceGroupCommand,
@@ -89,6 +109,12 @@ public class DataStoreContext
         AddCache(CommentQuery);
         EnvironmentQuery = environmentQuery;
         AddCache(EnvironmentQuery);
+        GitLabCommitQuery = gitLabCommitQuery;
+        AddCache(GitLabCommitQuery);
+        GitLabProjectQuery = gitLabProjectQuery;
+        AddCache(GitLabProjectQuery);
+        GitLabUserQuery = gitLabUserQuery;
+        AddCache(GitLabUserQuery);
         ResourceAttributeDefineQuery = resourceAttributeDefineQuery;
         AddCache(ResourceAttributeDefineQuery);
         ResourceGroupQuery = resourceGroupQuery;
@@ -117,6 +143,12 @@ public class DataStoreContext
         AddCache(CommentCommand);
         EnvironmentCommand = environmentCommand;
         AddCache(EnvironmentCommand);
+        GitLabCommitCommand = gitLabCommitCommand;
+        AddCache(GitLabCommitCommand);
+        GitLabProjectCommand = gitLabProjectCommand;
+        AddCache(GitLabProjectCommand);
+        GitLabUserCommand = gitLabUserCommand;
+        AddCache(GitLabUserCommand);
         ResourceAttributeDefineCommand = resourceAttributeDefineCommand;
         AddCache(ResourceAttributeDefineCommand);
         ResourceCommand = resourceCommand;
@@ -141,20 +173,22 @@ public class DataStoreContext
 
     public QuerySet<TEntity> QuerySet<TEntity>() where TEntity : EntityBase
     {
-        string typename = typeof(TEntity).Name + "QueryStore";
-        object set = GetSet(typename);
-        return set == null ? throw new ArgumentNullException($"{typename} class object not found") : (QuerySet<TEntity>)set;
+        var typename = typeof(TEntity).Name + "QueryStore";
+        var set = GetSet(typename);
+        if (set == null) throw new ArgumentNullException($"{typename} class object not found");
+        return (QuerySet<TEntity>)set;
     }
     public CommandSet<TEntity> CommandSet<TEntity>() where TEntity : EntityBase
     {
-        string typename = typeof(TEntity).Name + "CommandStore";
-        object set = GetSet(typename);
-        return set == null ? throw new ArgumentNullException($"{typename} class object not found") : (CommandSet<TEntity>)set;
+        var typename = typeof(TEntity).Name + "CommandStore";
+        var set = GetSet(typename);
+        if (set == null) throw new ArgumentNullException($"{typename} class object not found");
+        return (CommandSet<TEntity>)set;
     }
 
     private void AddCache(object set)
     {
-        string typeName = set.GetType().Name;
+        var typeName = set.GetType().Name;
         if (!SetCache.ContainsKey(typeName))
         {
             SetCache.Add(typeName, set);

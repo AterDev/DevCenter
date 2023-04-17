@@ -81,7 +81,7 @@ public class ResourceGroupController :
     [HttpPut("{id}")]
     public async Task<ActionResult<ResourceGroup?>> UpdateAsync([FromRoute] Guid id, ResourceGroupUpdateDto form)
     {
-        ResourceGroup? group = await manager.GetCurrent(id);
+        ResourceGroup? group = await manager.GetCurrentAsync(id);
         return group == null ? NotFound() : await manager.UpdateAsync(group, form);
     }
 
@@ -106,7 +106,7 @@ public class ResourceGroupController :
     [HttpDelete("{id}")]
     public async Task<ActionResult<ResourceGroup?>> DeleteAsync([FromRoute] Guid id)
     {
-        ResourceGroup? entity = await manager.GetCurrent(id);
+        ResourceGroup? entity = await manager.GetCurrentAsync(id);
         return entity == null ? NotFound() : await manager.DeleteAsync(entity);
     }
 }

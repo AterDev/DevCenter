@@ -73,8 +73,8 @@ public class ResourceGroupManager : DomainManagerBase<ResourceGroup, ResourceGro
                 .ThenInclude(r => r.Tags)
             .Include(q => q.Resources)!
                 .ThenInclude(r => r.ResourceType)
-            .Skip((filter.PageIndex!.Value - 1) * filter.PageSize!.Value)
-            .Take(filter.PageSize!.Value)
+            .Skip((filter.PageIndex - 1) * filter.PageSize)
+            .Take(filter.PageSize)
             .Select(s => new ResourceGroupItemDto()
             {
                 Id = s.Id,
@@ -90,7 +90,7 @@ public class ResourceGroupManager : DomainManagerBase<ResourceGroup, ResourceGro
         {
             Count = count,
             Data = data,
-            PageIndex = filter.PageIndex!.Value
+            PageIndex = filter.PageIndex
         };
     }
 

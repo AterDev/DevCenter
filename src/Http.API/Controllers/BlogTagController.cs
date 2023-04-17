@@ -49,7 +49,7 @@ public class BlogTagController :
     [HttpPut("{id}")]
     public async Task<ActionResult<BlogTag?>> UpdateAsync([FromRoute] Guid id, BlogTagUpdateDto form)
     {
-        BlogTag? user = await manager.GetCurrent(id);
+        BlogTag? user = await manager.GetCurrentAsync(id);
         return user == null ? (ActionResult<BlogTag?>)NotFound() : (ActionResult<BlogTag?>)await manager.UpdateAsync(user, form);
     }
 
@@ -69,7 +69,7 @@ public class BlogTagController :
     [HttpDelete("{id}")]
     public async Task<ActionResult<BlogTag?>> DeleteAsync([FromRoute] Guid id)
     {
-        BlogTag? entity = await manager.GetCurrent(id);
+        BlogTag? entity = await manager.GetCurrentAsync(id);
         return entity == null ? (ActionResult<BlogTag?>)NotFound() : (ActionResult<BlogTag?>)await manager.DeleteAsync(entity);
     }
 }

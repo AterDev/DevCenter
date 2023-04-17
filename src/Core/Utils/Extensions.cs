@@ -71,6 +71,18 @@ public static partial class Extensions
                 source.Expression, Expression.Quote(selector)));
     }
 
+    /// <summary>
+    /// 不为空时执行的条件
+    /// </summary>
+    /// <typeparam name="TSource"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="field">不为空的字段</param>
+    /// <param name="expression">不为空时执行的条件</param>
+    /// <returns></returns>
+    public static IQueryable<TSource> WhereNotNull<TSource>(this IQueryable<TSource> source, object? field, Expression<Func<TSource, bool>> expression)
+    {
+        return field != null ? source.Where(expression) : source;
+    }
     public static IQueryable<TResult> ProjectTo<TResult>(this IQueryable source)
     {
         return source.ProjectToType<TResult>();

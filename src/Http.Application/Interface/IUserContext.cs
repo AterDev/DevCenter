@@ -17,4 +17,5 @@ public interface IUserContext
     public Guid? GroupId { get; init; }
     Claim? FindClaim(string claimType);
     Task<User?> GetUserAsync();
+    bool IsRole(string roleName);
 }

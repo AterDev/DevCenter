@@ -34,7 +34,7 @@ public class ResourceAttributeDefineManager : DomainManagerBase<ResourceAttribut
                 query = query.Where(q => ids.Contains(q.Id));
             }
         }
-        return await Query.FilterAsync<ResourceAttributeDefineItemDto>(query, filter.OrderBy, filter.PageIndex ?? 1, filter.PageSize ?? 12);
+        return await Query.FilterAsync<ResourceAttributeDefineItemDto>(query, filter.PageIndex, filter.PageSize, filter.OrderBy);
     }
 
 }

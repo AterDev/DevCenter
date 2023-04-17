@@ -8,8 +8,7 @@ namespace Http.API.Infrastructure;
 /// <summary>
 /// 管理后台权限控制器
 /// </summary>
-[Route("api/admin/[controller]")]
-[ApiExplorerSettings(GroupName = "admin")]
+[Route("api/[controller]")]
 [Authorize(Const.Admin)]
 public class RestControllerBase<TManager> : RestControllerBase
      where TManager : class

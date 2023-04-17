@@ -49,7 +49,7 @@ public class ResourceTagsController :
     [HttpPut("{id}")]
     public async Task<ActionResult<ResourceTags?>> UpdateAsync([FromRoute] Guid id, ResourceTagsUpdateDto form)
     {
-        ResourceTags? user = await manager.GetCurrent(id);
+        ResourceTags? user = await manager.GetCurrentAsync(id);
         return user == null ? (ActionResult<ResourceTags?>)NotFound() : (ActionResult<ResourceTags?>)await manager.UpdateAsync(user, form);
     }
 
@@ -74,7 +74,7 @@ public class ResourceTagsController :
     [HttpDelete("{id}")]
     public async Task<ActionResult<ResourceTags?>> DeleteAsync([FromRoute] Guid id)
     {
-        ResourceTags? entity = await manager.GetCurrent(id);
+        ResourceTags? entity = await manager.GetCurrentAsync(id);
         return entity == null ? (ActionResult<ResourceTags?>)NotFound() : (ActionResult<ResourceTags?>)await manager.DeleteAsync(entity);
     }
 }

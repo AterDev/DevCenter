@@ -59,12 +59,12 @@ public class ResourceController : RestControllerBase<IResourceManager>
     {
         Resource resource = form.MapTo<ResourceAddDto, Resource>();
 
-        ResourceGroup? group = await groupManager.GetCurrent(form.GroupId);
+        ResourceGroup? group = await groupManager.GetCurrentAsync(form.GroupId);
         if (group == null)
         {
             return BadRequest("不存在的资源组");
         }
-        ResourceTypeDefinition? type = await typeDefinitionManager.GetCurrent(form.ResourceTypeId);
+        ResourceTypeDefinition? type = await typeDefinitionManager.GetCurrentAsync(form.ResourceTypeId);
         if (type == null)
         {
             return BadRequest("不存在的类型");
@@ -103,7 +103,7 @@ public class ResourceController : RestControllerBase<IResourceManager>
     [HttpPut("{id}")]
     public async Task<ActionResult<Resource?>> UpdateAsync([FromRoute] Guid id, ResourceUpdateDto form)
     {
-        Resource? current = await manager.GetCurrent(id);
+        Resource? current = await manager.GetCurrentAsync(id);
         return current == null ? (ActionResult<Resource?>)NotFound() : (ActionResult<Resource?>)await manager.UpdateAsync(current, form);
     }
 
@@ -128,7 +128,7 @@ public class ResourceController : RestControllerBase<IResourceManager>
     [HttpDelete("{id}")]
     public async Task<ActionResult<Resource?>> DeleteAsync([FromRoute] Guid id)
     {
-        Resource? entity = await manager.GetCurrent(id);
+        Resource? entity = await manager.GetCurrentAsync(id);
         return entity == null ? NotFound() : await manager.DeleteAsync(entity);
     }
 
