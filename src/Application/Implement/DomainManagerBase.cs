@@ -24,6 +24,7 @@ public class DomainManagerBase<TEntity, TUpdate, TFilter, TItem> : IDomainManage
     /// 是否自动保存(调用SaveChanges)
     /// </summary>
     public bool AutoSave { get; set; } = true;
+    public string? ErrorMessage { get; set; } = null;
     public DatabaseFacade Database { get; init; }
     public DomainManagerBase(DataStoreContext storeContext)
     {

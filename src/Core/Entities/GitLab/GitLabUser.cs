@@ -5,8 +5,8 @@ namespace Core.Entities.GitLab;
 /// <summary>
 /// gitlab 用户信息
 /// </summary>
-[Index(nameof(SourceId))]
-[Index(nameof(Email))]
+[Index(nameof(SourceId), IsUnique = true)]
+[Index(nameof(Email), IsUnique = true)]
 [Index(nameof(Name))]
 public class GitLabUser : EntityBase
 {
@@ -15,6 +15,9 @@ public class GitLabUser : EntityBase
     public required string Email { get; set; }
     [MaxLength(100)]
     public required string Name { get; set; }
+
+    [MaxLength(200)]
+    public string? AvatarUrl { get; set; }
 
     public List<GitLabCommit>? Commits { get; set; }
 }

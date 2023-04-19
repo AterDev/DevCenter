@@ -1,5 +1,6 @@
 using Core.Entities.Blog;
 using Core.Entities.Code;
+using Core.Entities.GitLab;
 using Core.Entities.Resource;
 using Environment = Core.Entities.Resource.Environment;
 
@@ -30,6 +31,10 @@ public class ContextBase : DbContext
     public DbSet<BlogCatalog> BlogCatalogs { get; set; } = null!;
     public DbSet<BlogTag> BlogTags { get; set; } = null!;
     public DbSet<Comment> Comments { get; set; } = null!;
+
+    public DbSet<GitLabUser> GitLabUsers { get; set; }
+    public DbSet<GitLabProject> GitLabProjects { get; set; }
+    public DbSet<GitLabCommit> GitLabCommits { get; set; }
 
 
     public ContextBase(DbContextOptions options) : base(options)

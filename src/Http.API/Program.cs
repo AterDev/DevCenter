@@ -38,6 +38,8 @@ services.AddDbContextPool<CommandDbContext>(option =>
     });
 });
 
+services.Configure<GitLabOption>(configuration.GetSection("GitLab"));
+
 services.AddSingleton(typeof(GitLabWebhookService));
 services.AddSingleton(typeof(DingTalkWebhookService));
 

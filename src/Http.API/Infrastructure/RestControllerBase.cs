@@ -10,7 +10,7 @@ namespace Http.API.Infrastructure;
 /// 管理后台权限控制器
 /// </summary>
 [Route("api/[controller]")]
-[Authorize(Const.Admin)]
+[Authorize(Const.User)]
 public class RestControllerBase<TManager> : RestControllerBase
      where TManager : class
 {
@@ -36,7 +36,7 @@ public class RestControllerBase<TManager> : RestControllerBase
 /// </summary>
 /// <typeparam name="TManager"></typeparam>
 [Authorize(Const.User)]
-[ApiExplorerSettings(GroupName = "client")]
+//[ApiExplorerSettings(GroupName = "client")]
 public class ClientControllerBase<TManager> : RestControllerBase
      where TManager : class
 {
