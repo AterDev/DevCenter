@@ -42,7 +42,7 @@
 
 	<ItemGroup>
 		<InternalsVisibleTo Include="Http.API.Test" />
-		<ProjectReference Include="..\Http.Application\Http.Application.csproj" />
+		<ProjectReference Include="..\Application\Application.csproj" />
 	</ItemGroup>
 
 	<Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
