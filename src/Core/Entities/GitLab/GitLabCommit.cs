@@ -8,7 +8,8 @@ namespace Core.Entities.GitLab;
 [Index(nameof(Name))]
 public class GitLabCommit : EntityBase
 {
-    public int SourceId { get; set; }
+    [MaxLength(100)]
+    public string SourceId { get; set; }
     [MaxLength(100)]
     public required string Name { get; set; }
 

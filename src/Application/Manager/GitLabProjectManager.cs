@@ -1,7 +1,4 @@
 using Share.Models.GitLabProjectDtos;
-using Application.Implement;
-using Application.Interface;
-using Application.IManager;
 using NGitLab;
 using Share.Options;
 using Microsoft.Extensions.Options;
@@ -47,6 +44,7 @@ public class GitLabProjectManager : DomainManagerBase<GitLabProject, GitLabProje
         var projects = client.Projects.Get(new NGitLab.Models.ProjectQuery
         {
             PerPage = 999,
+            Scope = NGitLab.Models.ProjectQueryScope.All
         })
             .Select(s => new GitLabProject
             {
