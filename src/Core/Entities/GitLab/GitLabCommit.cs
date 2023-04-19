@@ -6,6 +6,9 @@ namespace Core.Entities.GitLab;
 /// </summary>
 [Index(nameof(SourceId))]
 [Index(nameof(CommitTitle))]
+[Index(nameof(Year))]
+[Index(nameof(Month))]
+[Index(nameof(Day))]
 public class GitLabEvent : EntityBase
 {
     [MaxLength(100)]
