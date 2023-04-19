@@ -50,11 +50,26 @@ public class GitLabCommitController : ClientControllerBase<IGitLabCommitManager>
         return (res == null) ? NotFound() : res;
     }
 
+
+    /// <summary>
+    /// 同步用户
+    /// </summary>
+    /// <returns></returns>
     [AllowAnonymous]
     [HttpGet("sync/users")]
-    public List<GitLabUser>? SyncUsers()
+    public async Task<bool?> SyncUsersAsync()
     {
-        _gitLabUserManager.SyncUserAsync();
-        return default;
+        return await _gitLabUserManager.SyncUserAsync();
+    }
+
+    /// <summary>
+    /// 同步项目
+    /// </summary>
+    /// <returns></returns>
+    [AllowAnonymous]
+    [HttpGet("sync/projects")]
+    public async Task<bool?> SyncProjectsAsync()
+    {
+        return await _gitLabProjectManager.SyncProjectAsync();
     }
 }

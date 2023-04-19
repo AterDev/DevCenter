@@ -20,4 +20,5 @@ public interface IGitLabProjectManager : IDomainManager<GitLabProject, GitLabPro
     /// <param name="dto"></param>
     /// <returns></returns>
     Task<GitLabProject> CreateNewEntityAsync(GitLabProjectAddDto dto);
+    Task<bool?> SyncProjectAsync();
 }
