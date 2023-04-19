@@ -44,7 +44,7 @@ public class GitLabCommitController : ClientControllerBase<IGitLabCommitManager>
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet("{id}")]
-    public async Task<ActionResult<GitLabCommit?>> GetDetailAsync([FromRoute] Guid id)
+    public async Task<ActionResult<GitLabEvent?>> GetDetailAsync([FromRoute] Guid id)
     {
         var res = await manager.FindAsync(id);
         return (res == null) ? NotFound() : res;

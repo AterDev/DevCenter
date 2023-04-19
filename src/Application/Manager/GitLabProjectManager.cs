@@ -54,9 +54,10 @@ public class GitLabProjectManager : DomainManagerBase<GitLabProject, GitLabProje
             })
             .ToList();
         var sourceIds = projects.Select(u => u.SourceId).ToList();
-        var newIds = Query.Db.Where(s => !sourceIds.Contains(s.SourceId))
+        var currentIds = Query.Db
             .Select(s => s.SourceId)
             .ToList();
+        var newIds = sourceIds.Except(currentIds).ToList();
         var newProjects = projects.Where(u => newIds.Contains(u.SourceId)).ToList();
         await Command.Db.AddRangeAsync(newProjects);
         return await SaveChangesAsync() > 0;

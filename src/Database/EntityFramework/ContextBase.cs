@@ -2,6 +2,7 @@ using Core.Entities.Blog;
 using Core.Entities.Code;
 using Core.Entities.GitLab;
 using Core.Entities.Resource;
+using Core.Models;
 using Environment = Core.Entities.Resource.Environment;
 
 namespace EntityFramework;
@@ -34,7 +35,7 @@ public class ContextBase : DbContext
 
     public DbSet<GitLabUser> GitLabUsers { get; set; }
     public DbSet<GitLabProject> GitLabProjects { get; set; }
-    public DbSet<GitLabCommit> GitLabCommits { get; set; }
+    public DbSet<GitLabEvent> GitLabCommits { get; set; }
 
 
     public ContextBase(DbContextOptions options) : base(options)
@@ -50,7 +51,8 @@ public class ContextBase : DbContext
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        _ = builder.UseHiLo();
+        builder.Entity<EntityBase>().UseTpcMappingStrategy();
+
         _ = builder.Entity<ResourceView>()
             .ToView("ResrouceView")
             .HasNoKey();

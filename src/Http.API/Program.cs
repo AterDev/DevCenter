@@ -4,6 +4,7 @@ using Application.Services;
 using Application.Services.Webhook;
 using Core.Const;
 using Http.API;
+using Http.API.Jobs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc.Controllers;
@@ -46,6 +47,8 @@ services.AddSingleton(typeof(DingTalkWebhookService));
 services.AddHttpContextAccessor();
 services.AddDataStore();
 services.AddManager();
+
+services.AddHostedService<GitLabTask>();
 //services.AddScoped(typeof(FileService));
 
 #region 接口相关内容:jwt/授权/cors

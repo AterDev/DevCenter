@@ -5,10 +5,9 @@ namespace Core.Models;
 /// <summary>
 /// 数据加基础字段模型
 /// </summary>
-public class EntityBase
+public abstract class EntityBase
 {
     [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
     public DateTimeOffset CreatedTime { get; set; } = DateTimeOffset.UtcNow;
     public DateTimeOffset UpdatedTime { get; set; } = DateTimeOffset.UtcNow;

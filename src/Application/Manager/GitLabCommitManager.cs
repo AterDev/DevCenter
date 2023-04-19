@@ -5,13 +5,17 @@ using Application.IManager;
 using NGitLab;
 using Share.Options;
 using Microsoft.Extensions.Options;
+using System;
 
 namespace Application.Manager;
 
-public class GitLabCommitManager : DomainManagerBase<GitLabCommit, GitLabCommitUpdateDto, GitLabCommitFilterDto, GitLabCommitItemDto>, IGitLabCommitManager
+public class GitLabCommitManager : DomainManagerBase<GitLabEvent, GitLabCommitUpdateDto, GitLabCommitFilterDto, GitLabCommitItemDto>, IGitLabCommitManager
 {
     private readonly IUserContext _userContext;
     private readonly GitLabOption _gitlabOption;
+    public GitLabClient GitLabClient { get; set; }
+
+
     public GitLabCommitManager(
         DataStoreContext storeContext,
         IOptions<GitLabOption> gitlabOption,
@@ -19,6 +23,7 @@ public class GitLabCommitManager : DomainManagerBase<GitLabCommit, GitLabCommitU
     {
         _userContext = userContext;
         _gitlabOption = gitlabOption.Value;
+        GitLabClient = new GitLabClient(_gitlabOption.URL, _gitlabOption.PAT);
     }
 
     /// <summary>
@@ -26,9 +31,9 @@ public class GitLabCommitManager : DomainManagerBase<GitLabCommit, GitLabCommitU
     /// </summary>
     /// <param name="dto"></param>
     /// <returns></returns>
-    public Task<GitLabCommit> CreateNewEntityAsync(GitLabCommitAddDto dto)
+    public Task<GitLabEvent> CreateNewEntityAsync(GitLabCommitAddDto dto)
     {
-        var entity = dto.MapTo<GitLabCommitAddDto, GitLabCommit>();
+        var entity = dto.MapTo<GitLabCommitAddDto, GitLabEvent>();
         Command.Db.Entry(entity).Property("UserId").CurrentValue = dto.UserId;
         // or entity.UserId = dto.UserId;
         Command.Db.Entry(entity).Property("ProjectId").CurrentValue = dto.ProjectId;
@@ -44,67 +49,31 @@ public class GitLabCommitManager : DomainManagerBase<GitLabCommit, GitLabCommitU
     /// <returns></returns>
     public async Task<bool> SyncProjectCommitAsync(int projectId)
     {
-        var project = await Stores.GitLabProjectQuery.Db.SingleOrDefaultAsync(s => s.SourceId == projectId);
+        var project = await Stores.GitLabProjectCommand.Db.SingleOrDefaultAsync(s => s.SourceId == projectId);
         if (project != null)
         {
-            var client = new GitLabClient(_gitlabOption.URL, _gitlabOption.PAT);
+
             var exist = Query.Db.Any(q => q.Project.Id == project.Id);
             // get all users and project from database
-            var users = await Stores.GitLabUserQuery.Db.ToListAsync();
+            var users = await Stores.GitLabUserCommand.Db.ToListAsync();
 
-            if (exist)
+
+            users.ForEach(user =>
             {
-                // increment update
-                var commits = client.GetRepository(projectId)
-                    .GetCommits(new GetCommitsRequest
+                var events = GitLabClient.GetUserEvents(user.SourceId)
+                    .Get(new NGitLab.Models.EventQuery
                     {
-                        PerPage = 20,
-                        MaxResults = 20,
+                        PerPage = 1000
                     }).ToList();
-                // select commit not exist in database
-                var newCommitIds = Query.Db.Where(q => !commits.Select(c => c.Id.ToString()).ToList().Contains(q.SourceId))
-                    .Select(q => q.SourceId)
-                    .ToList();
 
-                var newCommits = commits.Where(w => newCommitIds.Contains(w.Id.ToString()))
-                    .Select(s => new GitLabCommit
-                    {
-                        Name = s.Title,
-                        Message = s.Message,
-                        SourceId = s.Id.ToString(),
-                        CreatedTime = s.CreatedAt,
-                        User = users.FirstOrDefault(f => f.Email == s.AuthorEmail)!,
-                        Project = project
-                    }).ToList();
-                await Command.Db.AddRangeAsync(newCommits);
-                return await SaveChangesAsync() > 0;
-            }
-            else
-            {
-                // 全量更新
-                var commits = client.GetRepository(projectId).GetCommits(new GetCommitsRequest
-                {
-                    //PerPage = 2000,
-                    MaxResults = 2000,
-                });
-                var newCommits = commits.Select(s => new GitLabCommit
-                {
-                    Name = s.Title,
-                    Message = s.Message,
-                    SourceId = s.Id.ToString(),
-                    CreatedTime = s.CreatedAt,
-                    User = users.FirstOrDefault(f => f.Email == s.AuthorEmail)!,
-                    Project = project
-                }).ToList();
+                Console.WriteLine(  );
+            });
 
-                await Command.Db.AddRangeAsync(newCommits);
-            }
-            return await SaveChangesAsync() > 0;
         }
         return default;
     }
 
-    public override async Task<GitLabCommit> UpdateAsync(GitLabCommit entity, GitLabCommitUpdateDto dto)
+    public override async Task<GitLabEvent> UpdateAsync(GitLabEvent entity, GitLabCommitUpdateDto dto)
     {
         return await base.UpdateAsync(entity, dto);
     }
@@ -125,7 +94,7 @@ public class GitLabCommitManager : DomainManagerBase<GitLabCommit, GitLabCommitU
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public async Task<GitLabCommit?> GetOwnedAsync(Guid id)
+    public async Task<GitLabEvent?> GetOwnedAsync(Guid id)
     {
         var query = Command.Db.Where(q => q.Id == id);
         // 获取用户所属的对象

@@ -19,5 +19,5 @@ public class GitLabUser : EntityBase
     [MaxLength(200)]
     public string? AvatarUrl { get; set; }
 
-    public List<GitLabCommit>? Commits { get; set; }
+    public List<GitLabEvent>? Commits { get; set; }
 }

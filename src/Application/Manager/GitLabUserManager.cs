@@ -56,10 +56,13 @@ public class GitLabUserManager : DomainManagerBase<GitLabUser, GitLabUserUpdateD
             })
             .ToList();
         // select database not exist ids
+
         var sourceIds = users.Select(u => u.SourceId).ToList();
-        var newIds = Query.Db.Where(s => !sourceIds.Contains(s.SourceId))
+        var currentIds = Query.Db
             .Select(s => s.SourceId)
             .ToList();
+
+        var newIds = sourceIds.Except(currentIds);
         var newUser = users.Where(u => newIds.Contains(u.SourceId)).ToList();
         await Command.Db.AddRangeAsync(newUser);
         return await SaveChangesAsync() > 0;

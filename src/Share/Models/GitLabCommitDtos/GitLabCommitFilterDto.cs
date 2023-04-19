@@ -3,7 +3,7 @@ namespace Share.Models.GitLabCommitDtos;
 /// <summary>
 /// 提交内容查询筛选
 /// </summary>
-/// <inheritdoc cref="Core.Entities.GitLab.GitLabCommit"/>
+/// <inheritdoc cref="Core.Entities.GitLab.GitLabEvent"/>
 public class GitLabCommitFilterDto : FilterBase
 {
     public int? SourceId { get; set; }

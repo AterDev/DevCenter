@@ -3,7 +3,7 @@ namespace Share.Models.GitLabCommitDtos;
 /// <summary>
 /// 提交内容概要
 /// </summary>
-/// <inheritdoc cref="Core.Entities.GitLab.GitLabCommit"/>
+/// <inheritdoc cref="Core.Entities.GitLab.GitLabEvent"/>
 public class GitLabCommitShortDto
 {
     public int SourceId { get; set; }

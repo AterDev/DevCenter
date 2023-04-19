@@ -21,7 +21,7 @@ public class DataStoreContext
     public QuerySet<CodeSnippet> CodeSnippetQuery { get; init; }
     public QuerySet<Comment> CommentQuery { get; init; }
     public QuerySet<Environment> EnvironmentQuery { get; init; }
-    public QuerySet<GitLabCommit> GitLabCommitQuery { get; init; }
+    public QuerySet<GitLabEvent> GitLabCommitQuery { get; init; }
     public QuerySet<GitLabProject> GitLabProjectQuery { get; init; }
     public QuerySet<GitLabUser> GitLabUserQuery { get; init; }
     public QuerySet<ResourceAttributeDefine> ResourceAttributeDefineQuery { get; init; }
@@ -38,7 +38,7 @@ public class DataStoreContext
     public CommandSet<CodeSnippet> CodeSnippetCommand { get; init; }
     public CommandSet<Comment> CommentCommand { get; init; }
     public CommandSet<Environment> EnvironmentCommand { get; init; }
-    public CommandSet<GitLabCommit> GitLabCommitCommand { get; init; }
+    public CommandSet<GitLabEvent> GitLabCommitCommand { get; init; }
     public CommandSet<GitLabProject> GitLabProjectCommand { get; init; }
     public CommandSet<GitLabUser> GitLabUserCommand { get; init; }
     public CommandSet<ResourceAttributeDefine> ResourceAttributeDefineCommand { get; init; }
