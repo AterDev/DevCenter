@@ -8,6 +8,7 @@ namespace Core.Entities.GitLab;
 [Index(nameof(SourceId), IsUnique = true)]
 [Index(nameof(Email), IsUnique = true)]
 [Index(nameof(Name))]
+[Index(nameof(CreatedTime))]
 public class GitLabUser : EntityBase
 {
     public int SourceId { get; set; }

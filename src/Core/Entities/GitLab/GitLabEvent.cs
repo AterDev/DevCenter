@@ -12,7 +12,7 @@ namespace Core.Entities.GitLab;
 public class GitLabEvent : EntityBase
 {
     [MaxLength(100)]
-    public string? SourceId { get; set; }
+    public int SourceId { get; set; }
 
     [MaxLength(100)]
     public required string BranchName { get; set; }

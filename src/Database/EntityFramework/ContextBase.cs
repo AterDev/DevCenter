@@ -35,7 +35,7 @@ public class ContextBase : DbContext
 
     public DbSet<GitLabUser> GitLabUsers { get; set; }
     public DbSet<GitLabProject> GitLabProjects { get; set; }
-    public DbSet<GitLabEvent> GitLabCommits { get; set; }
+    public DbSet<GitLabEvent> GitLabEvents { get; set; }
 
 
     public ContextBase(DbContextOptions options) : base(options)

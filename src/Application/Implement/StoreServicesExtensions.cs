@@ -58,7 +58,6 @@ public static class StoreServicesExtensions
         services.AddScoped<ICodeSnippetManager, CodeSnippetManager>();
         services.AddScoped<ICommentManager, CommentManager>();
         services.AddScoped<IEnvironmentManager, EnvironmentManager>();
-        services.AddScoped<IGitLabCommitManager, GitLabCommitManager>();
         services.AddScoped<IGitLabProjectManager, GitLabProjectManager>();
         services.AddScoped<IGitLabUserManager, GitLabUserManager>();
         services.AddScoped<IResourceAttributeDefineManager, ResourceAttributeDefineManager>();

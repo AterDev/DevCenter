@@ -21,4 +21,5 @@ public interface IGitLabUserManager : IDomainManager<GitLabUser, GitLabUserUpdat
     /// <returns></returns>
     Task<GitLabUser> CreateNewEntityAsync(GitLabUserAddDto dto);
     Task<bool?> SyncUserAsync();
+    Task<bool> SyncUserEventsAsync();
 }
