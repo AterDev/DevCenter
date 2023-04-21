@@ -75,7 +75,7 @@ public class DingTalkWebhookService
             content += "- 提交人: " + pipelineInfo.CommitUserName + System.Environment.NewLine;
             content += "- 提交内容: " + pipelineInfo.CommitContent + System.Environment.NewLine;
             content += "- 提交时间: " + pipelineInfo.FinishTime?.ToString("yyyy-MM-dd HH:mm:ss") + System.Environment.NewLine;
-            content += "- 流水线:`" + pipelineInfo.Job + "`" + System.Environment.NewLine;
+            content += "- 流水线:" + System.Environment.NewLine + pipelineInfo.Job + System.Environment.NewLine;
             content += "- 耗时: **" + pipelineInfo.Duration + "**秒" + System.Environment.NewLine;
             content += $@"## [查看详情]({pipelineInfo.Url})" + System.Environment.NewLine;
             MarkdownMessage msg = new()
